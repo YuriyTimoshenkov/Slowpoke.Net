@@ -1,5 +1,6 @@
 ﻿using System;
 using SlowpokeEngine;
+using SlowpokeEngine.Bodies;
 
 namespace SlowpokeSelfHost
 {

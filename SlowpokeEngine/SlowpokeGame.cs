@@ -1,31 +1,33 @@
 ﻿using System;
+using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Engines;
 
 namespace SlowpokeEngine
 {
 	public class SlowpokeGame
 	{
-		private MechanicEngine mechanicEngine;
-		private MapEngine MapEngine;
+		private readonly MechanicEngine _mechanicEngine;
+		private MapEngine _mapEngine;
 
 		public SlowpokeGame(MechanicEngine mechanicEngine, MapEngine mapEngine)
 		{
-			this.mechanicEngine = mechanicEngine;
-			this.MapEngine = mapEngine;
+			_mechanicEngine = mechanicEngine;
+			_mapEngine = mapEngine;
 
 			mechanicEngine.StartEngine ();
 		}
 
 		public void AddNPC(NPC npc)
 		{
-			mechanicEngine.Bodies.TryAdd(Guid.NewGuid (), npc);
-
-			npc.NewAction += (object sender, NewActionEventArgs e) => 
-				mechanicEngine.ActionQueue.Enqueue(new Tuple<Action, ActiveBody>(e.Action, npc));
+			_mechanicEngine.Bodies.TryAdd(Guid.NewGuid (), npc);
+			
+			//Очень стремно, нужна отписка от событий 
+			npc.NewAction += (sender, e) => _mechanicEngine.ActionQueue.Enqueue(new Tuple<Action, ActiveBody>(e.Action, npc));
 		}
 
 		public void StopGame()
 		{
-			mechanicEngine.StopEngine ();
+			_mechanicEngine.StopEngine ();
 		}
 	}
 }

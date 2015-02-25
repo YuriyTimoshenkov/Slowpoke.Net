@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Actions
 {
 	public class NewActionEventArgs : EventArgs
 	{
@@ -9,7 +9,7 @@ namespace SlowpokeEngine
 
 		public NewActionEventArgs (Action action)
 		{
-			this.Action = action;
+			Action = action;
 		}
 	}
 }
