@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 
 namespace SlowpokeEngine
 {
-	public class MechanicEngine
+	public class MechanicEngine : IActiveBodiesContainer
 	{
-		public ConcurrentDictionary<Guid, ActiveBody>  Bodies = new ConcurrentDictionary<Guid, ActiveBody>();
+		private ConcurrentDictionary<Guid, ActiveBody>  bodies = new ConcurrentDictionary<Guid, ActiveBody>();
+		public ConcurrentDictionary<Guid, ActiveBody> Bodies { get { return bodies; }}
+
 		public ConcurrentQueue<Tuple<Action,ActiveBody>> ActionQueue  = new ConcurrentQueue<Tuple<Action, ActiveBody>>();
 
 		private PhysicalEngine physicalEngine;
@@ -31,8 +33,8 @@ namespace SlowpokeEngine
 
 				if (ActionQueue.TryDequeue (out nextAction)) {
 					var result = physicalEngine.ProcessBodyAction (nextAction.Item1, nextAction.Item2);
-					Console.WriteLine (string.Format("Event has been processd for Body {0}, with result {1}",
-						nextAction.Item2.Id.ToString(), result.ResultType.ToString()));
+					Console.WriteLine (string.Format("Event has been processd for Body {0}, with result {1}, new position is x: {2}, y: {3}",
+						nextAction.Item2.Id.ToString(), result.ResultType.ToString(), nextAction.Item2.Position.Item1, nextAction.Item2.Position.Item2));
 				} else {
 					Console.WriteLine ("No actions were processed.");
 					Thread.Sleep (100);

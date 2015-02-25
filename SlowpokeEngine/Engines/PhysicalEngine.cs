@@ -24,6 +24,16 @@ namespace SlowpokeEngine
 
 		private PhysicsProcessingResult ProcessBodyActionMove(Action action, ActiveBody body)
 		{
+			var moveAction = (ActionMove)action;
+
+			//Calculate collision
+
+
+			body.Position = new Tuple<int, int> (
+				body.Position.Item1 + body.Direction.Item1,
+				body.Position.Item2 + body.Direction.Item2);
+			
+
 			return new PhysicsProcessingResult () { ResultType = PhysicsProcessingResultType.Ok };
 		}
 	}

@@ -48,6 +48,8 @@
     <Compile Include="Actions\ActionMove.cs" />
     <Compile Include="Actions\PhysicsProcessingResult.cs" />
     <Compile Include="Actions\PhysicsProcessingResultType.cs" />
+    <Compile Include="Engines\MapEngine.cs" />
+    <Compile Include="Engines\IActiveBodiesContainer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

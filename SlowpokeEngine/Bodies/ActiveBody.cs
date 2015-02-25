@@ -14,8 +14,10 @@ namespace SlowpokeEngine
 
 		public event EventHandler<NewActionEventArgs> NewAction;
 
-		public ActiveBody ()
+		public ActiveBody (Tuple<int,int> position, Tuple<int,int> direction)
 		{
+			this.Position = position;
+			this.Direction = direction;
 		}
 
 		protected void OnNewAction(NewActionEventArgs e)

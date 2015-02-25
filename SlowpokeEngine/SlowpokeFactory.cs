@@ -10,7 +10,10 @@ namespace SlowpokeEngine
 
 		public SlowpokeGame BuildGame()
 		{
-			return new SlowpokeGame (new MechanicEngine(new PhysicalEngine()));
+			var mechanicEngine = new MechanicEngine (new PhysicalEngine ());
+			var mapEngine = new MapEngine (mechanicEngine);
+
+			return new SlowpokeGame (mechanicEngine, mapEngine);
 		}
 	}
 }

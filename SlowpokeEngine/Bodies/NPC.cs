@@ -7,7 +7,7 @@ namespace SlowpokeEngine
 	{
 		Timer timer;
 
-		public NPC ()
+		public NPC ():base(new Tuple<int,int>(0,0),new Tuple<int,int>(1,1))
 		{
 			timer = new Timer (Move, null, 0, 1000);
 		}

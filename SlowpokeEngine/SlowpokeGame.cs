@@ -5,10 +5,12 @@ namespace SlowpokeEngine
 	public class SlowpokeGame
 	{
 		private MechanicEngine mechanicEngine;
+		private MapEngine MapEngine;
 
-		public SlowpokeGame(MechanicEngine mechanicEngine)
+		public SlowpokeGame(MechanicEngine mechanicEngine, MapEngine mapEngine)
 		{
 			this.mechanicEngine = mechanicEngine;
+			this.MapEngine = mapEngine;
 
 			mechanicEngine.StartEngine ();
 		}
