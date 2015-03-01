@@ -32,14 +32,6 @@ namespace SlowpokeEngine.Engines
 
 		public void EventLoop()
 		{
-			//спорный момент 
-			//я бы взял  EventWaitHandle WaitHandle;
-			// public bool IsRunning
-			//{
-			//	get { return !WaitHandle.WaitOne(0); }
-			//}
-			// while(IsRunning)
-
 			while (!_cancelationTokenSource.Token.IsCancellationRequested)
 			{
 				Tuple<Action, ActiveBody> nextAction;
