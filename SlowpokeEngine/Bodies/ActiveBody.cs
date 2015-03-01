@@ -27,7 +27,6 @@ namespace SlowpokeEngine.Bodies
 
 		protected void OnNewAction(NewActionEventArgs e)
 		{
-			//Вопрос? это сделано для меньше кода? 
 			e.Raise(this, ref NewAction);
 		}
 	}
