@@ -1,14 +1,8 @@
-﻿using System;
-
-namespace SlowpokeEngine
+﻿namespace SlowpokeEngine.Actions
 {
 	public class PhysicsProcessingResult
 	{
 		public PhysicsProcessingResultType ResultType { get; set; }
-
-		public PhysicsProcessingResult ()
-		{
-		}
 	}
 }
 

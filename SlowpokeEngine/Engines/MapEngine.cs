@@ -1,22 +1,31 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using SlowpokeEngine.Bodies;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Engines
 {
-	public class MapEngine
+	public class MapEngine : IEnumerable<ActiveBody>
 	{
-		private IActiveBodiesContainer activeBodiesContainer;
+		private readonly IActiveBodiesContainer _activeBodiesContainer;
 
-		public MapEngine (IActiveBodiesContainer activeBodiesContainer)
+		public MapEngine(IActiveBodiesContainer activeBodiesContainer)
 		{
-			this.activeBodiesContainer = activeBodiesContainer;
+			_activeBodiesContainer = activeBodiesContainer;
 		}
 
-		public IList<ActiveBody> GetBodiesForCollision()
+		public IEnumerator<ActiveBody> GetEnumerator()
 		{
-			return activeBodiesContainer.Bodies.Values.ToList();
+			return _activeBodiesContainer.Bodies.Values.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+		public IEnumerable<ActiveBody> GetBodiesForCollision()
+		{
+			return _activeBodiesContainer.Bodies.Values;
 		}
 	}
 }
-

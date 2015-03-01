@@ -1,24 +1,29 @@
 ﻿using System;
-using System.Threading;
+using SlowpokeEngine.Actions;
+using SlowpokeEngine.Extensions;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Bodies
 {
 	public abstract class ActiveBody
 	{
-		private Guid id = Guid.NewGuid();
-		public Guid Id { get { return id; }}
+		protected ActiveBody()
+		{
+			Id = Guid.NewGuid();
+		}
 
-		public Tuple<int,int> Direction { get; set; }
+		protected ActiveBody(Tuple<int, int> position, Tuple<int, int> direction)
+		{
+			Position = position;
+			Direction = direction;
+		}
 
-		public Tuple<int,int> Position { get; set; }
+		public Guid Id { get; private set; }
+
+		public Tuple<int, int> Direction { get; set; }
+
+		public Tuple<int, int> Position { get; set; }
 
 		public event EventHandler<NewActionEventArgs> NewAction;
-
-		public ActiveBody (Tuple<int,int> position, Tuple<int,int> direction)
-		{
-			this.Position = position;
-			this.Direction = direction;
-		}
 
 		protected void OnNewAction(NewActionEventArgs e)
 		{
@@ -26,4 +31,3 @@ namespace SlowpokeEngine
 		}
 	}
 }
-
