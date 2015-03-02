@@ -2,8 +2,8 @@
 {
 	public enum PhysicsProcessingResultType
 	{
-		Ok,
-		CollisionDetected
+		Ok = 0,
+		CollisionDetected = 1
 	}
 }
 
