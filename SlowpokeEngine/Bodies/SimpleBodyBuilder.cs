@@ -1,7 +1,6 @@
-﻿using System;
-using SlowpokeEngine.Bodies;
+﻿using SlowpokeEngine.Engines;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Bodies
 {
 	public class SimpleBodyBuilder : IBodyBuilder
 	{

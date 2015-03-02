@@ -15,7 +15,10 @@ namespace SlowpokeEngine.Engines
 			get { return _bodies; }
 		}
 			
-
+        /// <summary>
+        /// Есть элегантнее решение
+        /// </summary>
+        /// <returns></returns>
 		public IEnumerable<ActiveBody> GetBodiesForCollision()
 		{
 			return _bodies.Values;

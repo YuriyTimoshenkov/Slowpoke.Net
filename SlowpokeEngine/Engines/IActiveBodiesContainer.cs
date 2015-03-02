@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using SlowpokeEngine.Bodies;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Engines
 {
 	public interface IActiveBodiesContainer
 	{

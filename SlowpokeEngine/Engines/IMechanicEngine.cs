@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SlowpokeEngine.Actions;
 using SlowpokeEngine.Bodies;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Engines
 {
 	public interface IMechanicEngine
 	{

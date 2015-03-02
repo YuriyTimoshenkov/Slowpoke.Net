@@ -2,18 +2,26 @@
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
+using SlowpokeEngine.Actions;
 using SlowpokeEngine.Bodies;
 
 namespace SlowpokeEngine.Engines
 {
+    /// <summary>
+    /// Оставлю тут это тут но актуально для всего кода try/catch log -> throw
+    /// Лучше писать по ходу разработки ибо потом может свалить сервер в самом не ожиданном месте 
+    /// </summary>
 	public class MechanicEngine : IMechanicEngine
 	{
+        /// <summary>
+        /// Правда поле ? доступное для изменений и перетирания из вне? 
+        /// </summary>
 		public ConcurrentQueue<Tuple<BodyAction, ActiveBody>> ActionQueue = new ConcurrentQueue<Tuple<BodyAction, ActiveBody>>();
 
 		private CancellationTokenSource _cancelationTokenSource;
-		private readonly IPhysicalEngine _physicalEngine;
-		private readonly IMapEngine _mapEngine;
-		private readonly IBodyBuilder _bodyBuilder;
+		private readonly IPhysicalEngine _physicalEngine; //у переменной есть тип в котором явно есть слово Engine
+        private readonly IMapEngine _mapEngine; //у переменной есть тип в котором явно есть слово Engine
+        private readonly IBodyBuilder _bodyBuilder;//у переменной есть тип в котором явно есть слово builder
 
 		public MechanicEngine(IPhysicalEngine physicalEngine, IMapEngine mapEngine, IBodyBuilder bodyBuilder)
 		{
@@ -22,6 +30,7 @@ namespace SlowpokeEngine.Engines
 			_bodyBuilder = bodyBuilder;
 		}
 
+        //BodyAction <=> ActionBody я уже путаюсь 
 		public void ProcessAction(BodyAction action, ActiveBody body)
 		{
 			ActionQueue.Enqueue(new Tuple<BodyAction, ActiveBody>(action, body));

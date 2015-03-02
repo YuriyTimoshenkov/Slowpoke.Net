@@ -1,7 +1,12 @@
-﻿using SlowpokeEngine.Engines;
+﻿using SlowpokeEngine.Bodies;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Engines
 {
+
+    /// <summary>
+    /// КРУТО, я бы добавил try/cathc log-> throw
+    /// Builder понят правильно 
+    /// </summary>
 	public class MechanicEngineBuilder : IMechanicEngineBuilder
 	{
 		public IMechanicEngine Build()

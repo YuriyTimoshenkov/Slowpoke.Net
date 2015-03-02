@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using SlowpokeEngine.Bodies;
 using System.Collections.Generic;
+using SlowpokeEngine.Bodies;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Engines
 {
 	public interface IMapEngine
 	{
