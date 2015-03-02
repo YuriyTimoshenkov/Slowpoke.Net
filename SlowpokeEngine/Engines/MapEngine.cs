@@ -1,31 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using SlowpokeEngine.Bodies;
+using System.Collections.Concurrent;
+using System;
 
 namespace SlowpokeEngine.Engines
 {
-	public class MapEngine : IEnumerable<ActiveBody>
+	public class MapEngine : IMapEngine, IActiveBodiesContainer
 	{
-		private readonly IActiveBodiesContainer _activeBodiesContainer;
+		private readonly ConcurrentDictionary<Guid, ActiveBody> _bodies = new ConcurrentDictionary<Guid, ActiveBody>();
 
-		public MapEngine(IActiveBodiesContainer activeBodiesContainer)
+		public ConcurrentDictionary<Guid, ActiveBody> Bodies
 		{
-			_activeBodiesContainer = activeBodiesContainer;
+			get { return _bodies; }
 		}
-
-		public IEnumerator<ActiveBody> GetEnumerator()
-		{
-			return _activeBodiesContainer.Bodies.Values.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+			
 
 		public IEnumerable<ActiveBody> GetBodiesForCollision()
 		{
-			return _activeBodiesContainer.Bodies.Values;
+			return _bodies.Values;
 		}
 	}
 }

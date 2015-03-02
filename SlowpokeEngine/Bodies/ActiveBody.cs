@@ -6,16 +6,7 @@ namespace SlowpokeEngine.Bodies
 {
 	public abstract class ActiveBody
 	{
-		protected ActiveBody()
-		{
-			Id = Guid.NewGuid();
-		}
-
-		protected ActiveBody(Tuple<int, int> position, Tuple<int, int> direction)
-		{
-			Position = position;
-			Direction = direction;
-		}
+		protected readonly IMechanicEngine _mechanicEngine;
 
 		public Guid Id { get; private set; }
 
@@ -23,11 +14,16 @@ namespace SlowpokeEngine.Bodies
 
 		public Tuple<int, int> Position { get; set; }
 
-		public event EventHandler<NewActionEventArgs> NewAction;
 
-		protected void OnNewAction(NewActionEventArgs e)
+		protected ActiveBody(
+			Tuple<int, int> position, 
+			Tuple<int, int> direction,
+			IMechanicEngine mechanicEngine)
 		{
-			e.Raise(this, ref NewAction);
+			Id = Guid.NewGuid();
+			_mechanicEngine = mechanicEngine;
+			Position = position;
+			Direction = direction;
 		}
 	}
 }

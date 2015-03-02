@@ -6,23 +6,16 @@ namespace SlowpokeEngine
 {
 	public class SlowpokeGame
 	{
-		private readonly MechanicEngine _mechanicEngine;
-		private MapEngine _mapEngine;
+		private readonly IMechanicEngine _mechanicEngine;
 
-		public SlowpokeGame(MechanicEngine mechanicEngine, MapEngine mapEngine)
+		public SlowpokeGame()
 		{
-			_mechanicEngine = mechanicEngine;
-			_mapEngine = mapEngine;
+			var meb = new MechanicEngineBuilder ();
+			_mechanicEngine = meb.Build();
 
-			mechanicEngine.StartEngine ();
-		}
+			_mechanicEngine.AddNPCBody ();
 
-		public void AddNPC(NPC npc)
-		{
-			_mechanicEngine.Bodies.TryAdd(Guid.NewGuid (), npc);
-			
-			//Очень стремно, нужна отписка от событий 
-			npc.NewAction += (sender, e) => _mechanicEngine.ActionQueue.Enqueue(new Tuple<Action, ActiveBody>(e.Action, npc));
+			_mechanicEngine.StartEngine ();
 		}
 
 		public void StopGame()

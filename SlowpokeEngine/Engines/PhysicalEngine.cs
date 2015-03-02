@@ -5,18 +5,18 @@ using SlowpokeEngine.Bodies;
 
 namespace SlowpokeEngine.Engines
 {
-	public class PhysicalEngine
+	public class PhysicalEngine : IPhysicalEngine
 	{
-		private readonly Dictionary<Type, Func<Action,ActiveBody, PhysicsProcessingResult>> _actionHandlers = new Dictionary<Type, Func<Action, ActiveBody, PhysicsProcessingResult>> ();
+		private readonly Dictionary<Type, Func<BodyAction,ActiveBody, PhysicsProcessingResult>> _actionHandlers = new Dictionary<Type, Func<BodyAction, ActiveBody, PhysicsProcessingResult>> ();
 
 		public PhysicalEngine ()
 		{
-			_actionHandlers.Add (typeof(ActionMove), ProcessBodyActionMove);
+			_actionHandlers.Add (typeof(BodyActionMove), ProcessBodyActionMove);
 		}
 
-		public PhysicsProcessingResult ProcessBodyAction(Action action, ActiveBody body)
+		public PhysicsProcessingResult ProcessBodyAction(BodyAction action, ActiveBody body)
 		{
-			Func<Action,ActiveBody, PhysicsProcessingResult> handler;
+			Func<BodyAction,ActiveBody, PhysicsProcessingResult> handler;
 			if (_actionHandlers.TryGetValue (action.GetType (), out handler)) {
 				return handler (action, body);
 			}
@@ -24,9 +24,9 @@ namespace SlowpokeEngine.Engines
 			throw new Exception ("No ProcessBodyAction handlers found");
 		}
 
-		private PhysicsProcessingResult ProcessBodyActionMove(Action action, ActiveBody body)
+		private PhysicsProcessingResult ProcessBodyActionMove(BodyAction action, ActiveBody body)
 		{
-			var moveAction = (ActionMove)action; 
+			var moveAction = (BodyActionMove)action; 
 
 			//Calculate collision
 			body.Position = new Tuple<int, int> (

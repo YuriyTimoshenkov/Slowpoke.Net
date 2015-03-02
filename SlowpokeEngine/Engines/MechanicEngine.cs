@@ -6,35 +6,32 @@ using SlowpokeEngine.Bodies;
 
 namespace SlowpokeEngine.Engines
 {
-	public class MechanicEngine : IActiveBodiesContainer
+	public class MechanicEngine : IMechanicEngine
 	{
-		private readonly ConcurrentDictionary<Guid, ActiveBody> _bodies = new ConcurrentDictionary<Guid, ActiveBody>();
-
-		public ConcurrentQueue<Tuple<Action, ActiveBody>> ActionQueue = new ConcurrentQueue<Tuple<Action, ActiveBody>>();
+		public ConcurrentQueue<Tuple<BodyAction, ActiveBody>> ActionQueue = new ConcurrentQueue<Tuple<BodyAction, ActiveBody>>();
 
 		private CancellationTokenSource _cancelationTokenSource;
-		private readonly PhysicalEngine _physicalEngine;
+		private readonly IPhysicalEngine _physicalEngine;
+		private readonly IMapEngine _mapEngine;
+		private readonly IBodyBuilder _bodyBuilder;
 
-		public MechanicEngine(PhysicalEngine physicalEngine)
+		public MechanicEngine(IPhysicalEngine physicalEngine, IMapEngine mapEngine, IBodyBuilder bodyBuilder)
 		{
 			_physicalEngine = physicalEngine;
+			_mapEngine = mapEngine;
+			_bodyBuilder = bodyBuilder;
 		}
 
-		public ConcurrentDictionary<Guid, ActiveBody> Bodies
+		public void ProcessAction(BodyAction action, ActiveBody body)
 		{
-			get { return _bodies; }
+			ActionQueue.Enqueue(new Tuple<BodyAction, ActiveBody>(action, body));
 		}
 
-		public void ProcessAction(Action action, ActiveBody body)
-		{
-			ActionQueue.Enqueue(new Tuple<Action, ActiveBody>(action, body));
-		}
-
-		public void EventLoop()
+		private void EventLoop()
 		{
 			while (!_cancelationTokenSource.Token.IsCancellationRequested)
 			{
-				Tuple<Action, ActiveBody> nextAction;
+				Tuple<BodyAction, ActiveBody> nextAction;
 
 				if (ActionQueue.TryDequeue(out nextAction))
 				{
@@ -58,6 +55,13 @@ namespace SlowpokeEngine.Engines
 		public void StopEngine()
 		{
 			_cancelationTokenSource.Cancel();
+		}
+
+		public void AddNPCBody()
+		{
+			var newNpcBody = _bodyBuilder.BuildNPC (this);
+
+			_mapEngine.Bodies.TryAdd (newNpcBody.Id, newNpcBody);
 		}
 	}
 }
