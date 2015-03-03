@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SlowpokeEngine.Actions;
 using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Entities;
 
 namespace SlowpokeEngine.Engines
 {
@@ -12,6 +13,7 @@ namespace SlowpokeEngine.Engines
 		public PhysicalEngine ()
 		{
 			_actionHandlers.Add (typeof(BodyActionMove), ProcessBodyActionMove);
+			_actionHandlers.Add (typeof(BodyActionChangeDirection), ProcessBodyActionChangeDirection);
 		}
 
 		public PhysicsProcessingResult ProcessBodyAction(BodyAction action, ActiveBody body)
@@ -26,13 +28,25 @@ namespace SlowpokeEngine.Engines
 
 		private PhysicsProcessingResult ProcessBodyActionMove(BodyAction action, ActiveBody body)
 		{
-			var moveAction = (BodyActionMove)action; 
-
 			//Calculate collision
-			body.Position = new Tuple<int, int> (
-				body.Position.Item1 + body.Direction.Item1,
-				body.Position.Item2 + body.Direction.Item2);
+			body.Position = new Point (
+				body.Position.X + body.Direction.X,
+				body.Position.Y + body.Direction.Y);
 			
+
+			return new PhysicsProcessingResult
+			{
+				ResultType = PhysicsProcessingResultType.Ok
+			};
+		}
+
+	    private PhysicsProcessingResult ProcessBodyActionChangeDirection(BodyAction action, ActiveBody body)
+		{
+			var directionChanges = (BodyActionChangeDirection)action;
+
+			body.Direction = new Vector (
+				body.Direction.X + directionChanges.Dx,
+				body.Direction.Y + directionChanges.Dy);
 
 			return new PhysicsProcessingResult
 			{

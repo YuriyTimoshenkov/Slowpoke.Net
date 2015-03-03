@@ -38,11 +38,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bodies\ActiveBody.cs" />
     <Compile Include="Bodies\NPC.cs" />
-    <Compile Include="SlowpokeGame.cs" />
     <Compile Include="Engines\MechanicEngine.cs" />
     <Compile Include="Engines\PhysicalEngine.cs" />
     <Compile Include="Extensions\EventArgExtensions.cs" />
-    <Compile Include="Actions\ActionMove.cs" />
     <Compile Include="Actions\PhysicsProcessingResult.cs" />
     <Compile Include="Actions\PhysicsProcessingResultType.cs" />
     <Compile Include="Engines\MapEngine.cs" />
@@ -55,6 +53,14 @@
     <Compile Include="Bodies\SimpleBodyBuilder.cs" />
     <Compile Include="Engines\IMechanicEngineBuilder.cs" />
     <Compile Include="Engines\SimpleMechanicEngineBuilder.cs" />
+    <Compile Include="Entities\Point.cs" />
+    <Compile Include="Entities\Vector.cs" />
+    <Compile Include="Bodies\PlayerBody.cs" />
+    <Compile Include="Bodies\IPlayerBodyFacade.cs" />
+    <Compile Include="Actions\BodyActionMove.cs" />
+    <Compile Include="Engines\IViewPort.cs" />
+    <Compile Include="Engines\ViewPort.cs" />
+    <Compile Include="Actions\BodyActionChangeDirection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -62,5 +68,6 @@
     <Folder Include="Engines\" />
     <Folder Include="Actions\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Entities\" />
   </ItemGroup>
 </Project>

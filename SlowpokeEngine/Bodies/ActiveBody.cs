@@ -1,6 +1,7 @@
 ﻿using System;
 using SlowpokeEngine.Actions;
 using SlowpokeEngine.Extensions;
+using SlowpokeEngine.Entities;
 
 namespace SlowpokeEngine.Bodies
 {
@@ -10,14 +11,14 @@ namespace SlowpokeEngine.Bodies
 
 		public Guid Id { get; private set; }
 
-		public Tuple<int, int> Direction { get; set; }
+		public Vector Direction { get; set; }
 
-		public Tuple<int, int> Position { get; set; }
+		public Point Position { get; set; }
 
 
 		protected ActiveBody(
-			Tuple<int, int> position, 
-			Tuple<int, int> direction,
+			Point position, 
+			Vector direction,
 			IMechanicEngine mechanicEngine)
 		{
 			Id = Guid.NewGuid();
@@ -25,5 +26,7 @@ namespace SlowpokeEngine.Bodies
 			Position = position;
 			Direction = direction;
 		}
+
+		public virtual void ReleaseGame() {}
 	}
 }

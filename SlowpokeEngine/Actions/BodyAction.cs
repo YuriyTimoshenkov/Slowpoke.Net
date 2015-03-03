@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Actions
 {
 	public abstract class BodyAction
 	{

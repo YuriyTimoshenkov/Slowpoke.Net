@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Actions;
 
 namespace SlowpokeEngine.Engines
 {
@@ -15,11 +16,20 @@ namespace SlowpokeEngine.Engines
 		private readonly IMapEngine _mapEngine;
 		private readonly IBodyBuilder _bodyBuilder;
 
-		public MechanicEngine(IPhysicalEngine physicalEngine, IMapEngine mapEngine, IBodyBuilder bodyBuilder)
+		public IViewPort ViewPort { get; private set; }
+
+		public MechanicEngine(
+			IPhysicalEngine physicalEngine, 
+			IMapEngine mapEngine, 
+			IBodyBuilder bodyBuilder,
+			IViewPort viewPort
+		)
 		{
 			_physicalEngine = physicalEngine;
 			_mapEngine = mapEngine;
 			_bodyBuilder = bodyBuilder;
+
+			ViewPort = viewPort;
 		}
 
 		public void ProcessAction(BodyAction action, ActiveBody body)
@@ -36,11 +46,9 @@ namespace SlowpokeEngine.Engines
 				if (ActionQueue.TryDequeue(out nextAction))
 				{
 					var result = _physicalEngine.ProcessBodyAction(nextAction.Item1, nextAction.Item2);
-					Console.WriteLine("Event has been processd for Body {0}, with result {1}, new position is x: {2}, y: {3}", nextAction.Item2.Id, result.ResultType, nextAction.Item2.Position.Item1, nextAction.Item2.Position.Item2);
 				}
 				else
 				{
-					Console.WriteLine("No actions were processed.");
 					Thread.Sleep(100);
 				}
 			}
@@ -62,6 +70,33 @@ namespace SlowpokeEngine.Engines
 			var newNpcBody = _bodyBuilder.BuildNPC (this);
 
 			_mapEngine.Bodies.TryAdd (newNpcBody.Id, newNpcBody);
+		}
+
+		public IPlayerBodyFacade LoadPlayerBody()
+		{
+			var player = _bodyBuilder.LoadPlayerBody(this);
+
+			_mapEngine.Bodies.TryAdd (player.Id, player);
+
+			return player;
+		}
+
+		public void ReleasePlayerBody(Guid playerId)
+		{
+			ActiveBody player;
+
+			if (_mapEngine.Bodies.TryRemove (playerId, out player)) {
+				player.ReleaseGame ();
+			}
+		}
+
+		public IPlayerBodyFacade GetPlayerBody(Guid playerId)
+		{
+			ActiveBody playerBody;
+
+			_mapEngine.Bodies.TryGetValue (playerId, out playerBody);
+
+			return (IPlayerBodyFacade)playerBody;
 		}
 	}
 }
