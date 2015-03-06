@@ -17,7 +17,8 @@
 	         	// Declare a proxy to reference the hub.
 	            var gameProxy = $.connection.slowpokeHub;	
 
-	            gameProxy.server.loadPlayer().done(function(player)
+			    gameProxy.server.loadPlayer().done(function (player)
+
 	            {
 	            	$('#playerId').append(player.Id);
 
