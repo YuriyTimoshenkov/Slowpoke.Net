@@ -17,6 +17,8 @@ namespace WebHost
 
 		public static IMechanicEngine MechanicEngine;
 
+        public SlowpokeHub():base()
+        { }
 
 		public IPlayerBodyFacade LoadPlayer()
 		{

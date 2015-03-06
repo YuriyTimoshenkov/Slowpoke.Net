@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+
+@if (Request.IsAuthenticated)
+{
+    <div class="col-md-4">
+        <h2>Hello player <b>@ViewBag.User.UserName</b></h2>
+        <p>Check your perfomance counters here...</p>
+    </div>
+}
+else
+{
+    <div class="col-md-4">
+        <h2>Welcome to slowpoke.net game.</h2>
+    </div>
+}
+</div>
