@@ -12,6 +12,7 @@ namespace SlowpokeEngine.Bodies
 
         public void ProcessAction(BodyAction bodyAction)
         {
+            bodyAction.Body = this;
             _mechanicEngine.ProcessAction(bodyAction);
         }
     }

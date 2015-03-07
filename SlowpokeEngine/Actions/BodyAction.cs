@@ -14,6 +14,6 @@ namespace SlowpokeEngine.Actions
         }
 
         public Dictionary<string, object> Parameters { get; set; }
-        public ActiveBody Body { get; protected set; }
+        public ActiveBody Body { get; set; }
     }
 }

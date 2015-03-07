@@ -85,9 +85,9 @@ namespace SlowpokeEngine.Commons
             if (temp.Length == 0)
                 return 0;
 
-            if (temp.Length%2 == 0)
-                return (temp[temp.Length/2 - 1] + temp[temp.Length/2])/2m;
-            return temp[temp.Length/2];
+            return temp.Length%2 == 0
+                       ? (temp[temp.Length/2 - 1] + temp[temp.Length/2])/2m
+                       : temp[temp.Length/2];
         }
 
         public static T Merge<T>(this T source, T newValue) where T : class
@@ -99,10 +99,9 @@ namespace SlowpokeEngine.Commons
                 return source;
 
             foreach (var info in GetProperties(source.GetType()))
-            {
                 if (info.CanWrite)
                     info.SetValue(source, info.GetValue(newValue));
-            }
+            
             return source;
         }
 
@@ -113,10 +112,9 @@ namespace SlowpokeEngine.Commons
 
             var result = Activator.CreateInstance<T>();
 
-            foreach (var info in typeof (T).GetProperties())
-            {
+            foreach (var info in typeof(T).GetProperties())
                 info.SetValue(result, info.GetValue(source));
-            }
+
 
             return result;
         }
