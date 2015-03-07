@@ -1,20 +1,16 @@
-﻿using SlowpokeEngine.Engines;
-using SlowpokeEngine.Bodies;
+﻿using SlowpokeEngine.Bodies;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Engines
 {
-	public class MechanicEngineBuilder : IMechanicEngineBuilder
-	{
-		public IMechanicEngine Build()
-		{
-			var mapEngine = new MapEngine ();
-			var physicalEngine = new PhysicalEngine ();
-			var simpleBodyBuilder = new SimpleBodyBuilder ();
-			var viewPort = new ViewPort (mapEngine);
-
-			var mechanicEngine = new MechanicEngine (physicalEngine, mapEngine, simpleBodyBuilder, viewPort);
-
-			return mechanicEngine;
-		}
-	}
+    public class MechanicEngineBuilder : IMechanicEngineBuilder
+    {
+        public IMechanicEngine Build()
+        {
+            var mapEngine = new MapEngine();
+            return new MechanicEngine(new PhysicalEngine(),
+                                      mapEngine,
+                                      new SimpleBodyBuilder(),
+                                      new ViewPort(mapEngine));
+        }
+    }
 }

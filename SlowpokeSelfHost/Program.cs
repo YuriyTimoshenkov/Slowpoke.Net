@@ -1,46 +1,45 @@
 ﻿using System;
-using SlowpokeEngine;
-using SlowpokeEngine.Bodies;
+using System.Threading;
 using System.Threading.Tasks;
 using SlowpokeEngine.Actions;
-using System.Threading;
-using System.Linq;
+using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Engines;
 
 namespace SlowpokeSelfHost
 {
-	class MainClass
-	{
-		public static void Main (string[] args)
-		{
-			var meb = new MechanicEngineBuilder ();
-			var mechanicEngine = meb.Build();
+    internal class MainClass
+    {
+        public static void Main(string[] args)
+        {
+            var meb = new MechanicEngineBuilder();
+            var mechanicEngine = meb.Build();
 
-			mechanicEngine.AddNPCBody ();
+            mechanicEngine.AddNPCBody();
 
-			mechanicEngine.StartEngine ();
+            mechanicEngine.StartEngine();
 
-			var player = mechanicEngine.LoadPlayerBody();
+            var player = mechanicEngine.LoadPlayerBody();
 
-			new Task (() => {
-				while(true)
-				{
-					player.ProcessAction(new BodyActionMove());
-					Console.WriteLine("Current world state:");
+            new Task(() =>
+                     {
+                         while (true)
+                         {
+                             player.ProcessAction(new BodyActionMove());
+                             Console.WriteLine("Current world state:");
 
-				
 
-					foreach(var item in mechanicEngine.ViewPort.GetActiveBodies(player.Id))
-					{
-						Console.WriteLine("Body id: {0}, position: {1}", item.Id, item.Position.ToString());
-					}
+                             foreach (var item in mechanicEngine.ViewPort.GetActiveBodies(player.Id))
+                             {
+                                 Console.WriteLine("Body id: {0}, position: {1}", item.Id, item.Position);
+                             }
 
-					Thread.Sleep(1000);
-				}
-			}).Start ();
+                             Thread.Sleep(1000);
+                         }
+                     }).Start();
 
-			Console.ReadLine ();
+            Console.ReadLine();
 
-			mechanicEngine.StopEngine ();
-		}
-	}
+            mechanicEngine.StopEngine();
+        }
+    }
 }

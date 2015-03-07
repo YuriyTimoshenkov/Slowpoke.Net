@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SlowpokeEngine
+﻿namespace SlowpokeEngine.Engines
 {
 	public interface IMechanicEngineBuilder
 	{

@@ -2,11 +2,12 @@
 using System.Collections.Concurrent;
 using SlowpokeEngine.Bodies;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Engines
 {
-	public interface IActiveBodiesContainer
-	{
-		ConcurrentDictionary<Guid, ActiveBody>  Bodies {get;}
-	}
-}
+    public interface IActiveBodiesContainer
+    {
+        //ConcurrentDictionary<Guid, ActiveBody> Bodies { get; }
 
+        BodyCollection Bodies { get; }
+    }
+}

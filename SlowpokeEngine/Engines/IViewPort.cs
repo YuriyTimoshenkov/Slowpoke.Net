@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections;
-using SlowpokeEngine.Bodies;
 using System.Collections.Generic;
+using SlowpokeEngine.Bodies;
 
 namespace SlowpokeEngine.Engines
 {
-	public interface IViewPort
-	{
-		IEnumerable<ActiveBody> GetActiveBodies (Guid playerId);
-	}
+    public interface IViewPort
+    {
+        IEnumerable<ActiveBody> GetActiveBodies(Guid playerId);
+    }
 }
-
