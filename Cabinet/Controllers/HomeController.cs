@@ -1,8 +1,10 @@
-﻿using Cabinet.Models;
+﻿using Cabinet.Hubs;
+using Cabinet.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -27,11 +29,10 @@ namespace Cabinet.Controllers
             return View();
         }
 
-        public ActionResult Team()
+        [Authorize]
+        public ActionResult Crew()
         {
-
-            ViewBag.Message = "Your application description page.";
-
+            ViewBag.OnlineUsers = ApplicationUser.GetOnlineUsers();
             return View();
         }
     }

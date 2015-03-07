@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Cabinet.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
@@ -13,7 +14,8 @@ namespace Cabinet
             // Enable the application to use a cookie to store information for the signed in user
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                ExpireTimeSpan = new System.TimeSpan(0,0,10),
+                SlidingExpiration = false,
+                ExpireTimeSpan = ApplicationUser.SessionDuration,
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Account/Login")
             });

@@ -48,6 +48,7 @@ namespace Cabinet.Controllers
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
+                    user.LastAuth = DateTime.Now;
                     await UserManager.UpdateAsync(user);
                     await SignInAsync(user, model.RememberMe);
                     return RedirectToLocal(returnUrl);

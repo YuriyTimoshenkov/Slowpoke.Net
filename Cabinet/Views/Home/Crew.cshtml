@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "Crew";
+}
+
+@section ViewScripts{
+    @Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
+    @Scripts.Render("~/Scripts/jquery.signalR-2.2.0.js")
+    @Scripts.Render("~/signalr/hubs")
+}
+
+<div class="row">
+    <h2>Crew</h2>
+    <div class="col-md-4">
+        <p>Online users:</p>
+        <ul id="onlineusers">
+            @foreach (var user in ViewBag.OnlineUsers)
+            {
+                <li>@user.UserName</li>
+            }
+        </ul>
+    </div>
+    <br />
+</div>
+
+    <script type="text/javascript">
+        (function () {
+            var updateOnlineUsersView = function (users) {
+                console.log('updateOnlineUsers called: ' + users);
+
+                $('#onlineusers').empty();
+
+                users.forEach(function (element, index, array) {
+                    $('#onlineusers').append('<li>' + element + '</li>');
+                });
+            };
+            var cabinetHub = $.connection.cabinetHub;
+            cabinetHub.client.updateOnlineUsers = updateOnlineUsersView;
+
+            $.connection.hub.start({ transport: 'longPolling' })
+                .done(function () {
+                    console.log('Connected');
+                    cabinetHub.server.hello().done(function (value) {
+                        console.log('Hello result is:' + value);
+                    }
+                    );
+                })
+                .fail(function () { console.log('Could not Connect!'); });
+        }());
+    </script>
+

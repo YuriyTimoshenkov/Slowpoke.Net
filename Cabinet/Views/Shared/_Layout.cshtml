@@ -6,7 +6,10 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @if (IsSectionDefined("ViewScripts"))
+    {
+        @RenderSection("ViewScripts");
+    }
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -22,7 +25,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("My slowpoke", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Team", "Team", "Home")</li>
+                    @if (Request.IsAuthenticated)
+                    {
+                       <li>@Html.ActionLink("Crew", "Crew", "Home")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
