@@ -2,101 +2,85 @@
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
-using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Actions;
+using SlowpokeEngine.Bodies;
 
 namespace SlowpokeEngine.Engines
 {
-	public class MechanicEngine : IMechanicEngine
-	{
-		public ConcurrentQueue<Tuple<BodyAction, ActiveBody>> ActionQueue = new ConcurrentQueue<Tuple<BodyAction, ActiveBody>>();
+    public class MechanicEngine : IMechanicEngine
+    {
+        private readonly IBodyBuilder _bodyBuilder;
+        private readonly IMapEngine _mapEngine;
+        private readonly IPhysicalEngine _physicalEngine;
+        private CancellationTokenSource _cancelationTokenSource;
+        public ConcurrentQueue<BodyAction> ActionQueue = new ConcurrentQueue<BodyAction>();
 
-		private CancellationTokenSource _cancelationTokenSource;
-		private readonly IPhysicalEngine _physicalEngine;
-		private readonly IMapEngine _mapEngine;
-		private readonly IBodyBuilder _bodyBuilder;
+        public MechanicEngine(
+            IPhysicalEngine physicalEngine,
+            IMapEngine mapEngine,
+            IBodyBuilder bodyBuilder,
+            IViewPort viewPort
+            )
+        {
+            _physicalEngine = physicalEngine;
+            _mapEngine = mapEngine;
+            _bodyBuilder = bodyBuilder;
+            ViewPort = viewPort;
+        }
 
-		public IViewPort ViewPort { get; private set; }
+        public IViewPort ViewPort { get; private set; }
 
-		public MechanicEngine(
-			IPhysicalEngine physicalEngine, 
-			IMapEngine mapEngine, 
-			IBodyBuilder bodyBuilder,
-			IViewPort viewPort
-		)
-		{
-			_physicalEngine = physicalEngine;
-			_mapEngine = mapEngine;
-			_bodyBuilder = bodyBuilder;
+        public void ProcessAction(BodyAction action)
+        {
+            ActionQueue.Enqueue(action);
+        }
 
-			ViewPort = viewPort;
-		}
+        public void StartEngine()
+        {
+            _cancelationTokenSource = new CancellationTokenSource();
+            new Task(EventLoop, _cancelationTokenSource.Token, TaskCreationOptions.LongRunning).Start();
+        }
 
-		public void ProcessAction(BodyAction action, ActiveBody body)
-		{
-			ActionQueue.Enqueue(new Tuple<BodyAction, ActiveBody>(action, body));
-		}
+        public void StopEngine()
+        {
+            _cancelationTokenSource.Cancel();
+        }
 
-		private void EventLoop()
-		{
-			while (!_cancelationTokenSource.Token.IsCancellationRequested)
-			{
-				Tuple<BodyAction, ActiveBody> nextAction;
+        public void AddNPCBody()
+        {
+            _mapEngine.Bodies.Add(_bodyBuilder.BuildNPC(this));
+        }
 
-				if (ActionQueue.TryDequeue(out nextAction))
-				{
-					var result = _physicalEngine.ProcessBodyAction(nextAction.Item1, nextAction.Item2);
-				}
-				else
-				{
-					Thread.Sleep(100);
-				}
-			}
-		}
+        public IPlayerBodyFacade LoadPlayerBody()
+        {
+            var player = _bodyBuilder.LoadPlayerBody(this);
 
-		public void StartEngine()
-		{
-			_cancelationTokenSource = new CancellationTokenSource();
-			new Task(EventLoop, _cancelationTokenSource.Token, TaskCreationOptions.LongRunning).Start();
-		}
+            _mapEngine.Bodies.Add(player);
 
-		public void StopEngine()
-		{
-			_cancelationTokenSource.Cancel();
-		}
+            return player;
+        }
 
-		public void AddNPCBody()
-		{
-			var newNpcBody = _bodyBuilder.BuildNPC (this);
+        public void ReleasePlayerBody(Guid playerId)
+        {
+            _mapEngine.Bodies.Do(playerId, body => body.ReleaseGame());
+            _mapEngine.Bodies.Remove(playerId);
+        }
 
-			_mapEngine.Bodies.TryAdd (newNpcBody.Id, newNpcBody);
-		}
+        public IPlayerBodyFacade GetPlayerBody(Guid playerId)
+        {
+            return (IPlayerBodyFacade) _mapEngine.Bodies[playerId];
+        }
 
-		public IPlayerBodyFacade LoadPlayerBody()
-		{
-			var player = _bodyBuilder.LoadPlayerBody(this);
-
-			_mapEngine.Bodies.TryAdd (player.Id, player);
-
-			return player;
-		}
-
-		public void ReleasePlayerBody(Guid playerId)
-		{
-			ActiveBody player;
-
-			if (_mapEngine.Bodies.TryRemove (playerId, out player)) {
-				player.ReleaseGame ();
-			}
-		}
-
-		public IPlayerBodyFacade GetPlayerBody(Guid playerId)
-		{
-			ActiveBody playerBody;
-
-			_mapEngine.Bodies.TryGetValue (playerId, out playerBody);
-
-			return (IPlayerBodyFacade)playerBody;
-		}
-	}
+        private void EventLoop()
+        {
+            while (!_cancelationTokenSource.Token.IsCancellationRequested)
+            {
+                BodyAction nextAction;
+                if (ActionQueue.TryDequeue(out nextAction))
+                    _physicalEngine.ProcessBodyAction(nextAction);
+                else
+                    Thread.Sleep(100);
+            }
+        }
+    }
 }

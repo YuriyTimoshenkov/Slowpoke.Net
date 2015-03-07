@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Generic;
 using SlowpokeEngine.Bodies;
-using System.Collections.Generic;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Engines
 {
-	public interface IMapEngine
+	public interface IMapEngine : IActiveBodiesContainer
 	{
-		ConcurrentDictionary<Guid, ActiveBody> Bodies { get; }
-
 		IEnumerable<ActiveBody> GetBodiesForCollision ();
 	}
 }

@@ -1,12 +1,11 @@
-﻿using System;
-using SlowpokeEngine.Actions;
+﻿using SlowpokeEngine.Actions;
 using SlowpokeEngine.Bodies;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Engines
 {
 	public interface IPhysicalEngine
 	{
-		PhysicsProcessingResult ProcessBodyAction (BodyAction action, ActiveBody body);
+		PhysicsProcessingResult ProcessBodyAction (BodyAction action);
 	}
 }
 

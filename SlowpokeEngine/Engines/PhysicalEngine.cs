@@ -1,58 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using SlowpokeEngine.Actions;
 using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Entities;
 
 namespace SlowpokeEngine.Engines
 {
-	public class PhysicalEngine : IPhysicalEngine
-	{
-		private readonly Dictionary<Type, Func<BodyAction,ActiveBody, PhysicsProcessingResult>> _actionHandlers = new Dictionary<Type, Func<BodyAction, ActiveBody, PhysicsProcessingResult>> ();
+    public class PhysicalEngine : IPhysicalEngine
+    {
+        public delegate PhysicsProcessingResult ProcessActionHandler(BodyAction action);
 
-		public PhysicalEngine ()
-		{
-			_actionHandlers.Add (typeof(BodyActionMove), ProcessBodyActionMove);
-			_actionHandlers.Add (typeof(BodyActionChangeDirection), ProcessBodyActionChangeDirection);
-		}
+        private readonly ConcurrentDictionary<Type, ProcessActionHandler> _actionHandlers
+            = new ConcurrentDictionary<Type, ProcessActionHandler>();
 
-		public PhysicsProcessingResult ProcessBodyAction(BodyAction action, ActiveBody body)
-		{
-			Func<BodyAction,ActiveBody, PhysicsProcessingResult> handler;
-			if (_actionHandlers.TryGetValue (action.GetType (), out handler)) {
-				return handler (action, body);
-			}
+        public PhysicalEngine()
+        {
+            AddHandler<BodyActionMove>(Move);
+            AddHandler<BodyActionChangeDirection>(ChangeDirection);
+        }
 
-			throw new Exception ("No ProcessBodyAction handlers found");
-		}
+        public PhysicsProcessingResult ProcessBodyAction(BodyAction action)
+        {
+            ProcessActionHandler handler;
+            if (_actionHandlers.TryGetValue(action.GetType(), out handler))
+                return handler(action);
 
-		private PhysicsProcessingResult ProcessBodyActionMove(BodyAction action, ActiveBody body)
-		{
-			//Calculate collision
-			body.Position = new Point (
-				body.Position.X + body.Direction.X,
-				body.Position.Y + body.Direction.Y);
-			
+            throw new Exception("No ProcessBodyAction handlers found");
+        }
 
-			return new PhysicsProcessingResult
-			{
-				ResultType = PhysicsProcessingResultType.Ok
-			};
-		}
+        private void AddHandler<T>(ProcessActionHandler handler)
+        {
+            _actionHandlers.TryAdd(typeof (T), handler);
+        }
+        
+        #region Handlers
 
-	    private PhysicsProcessingResult ProcessBodyActionChangeDirection(BodyAction action, ActiveBody body)
-		{
-			var directionChanges = (BodyActionChangeDirection)action;
+        private static PhysicsProcessingResult Move(BodyAction action)
+        {
+            CalculateCollision(action.Body);
+            return PhysicsProcessingResult.Ok;
+        }
 
-			body.Direction = new Vector (
-				body.Direction.X + directionChanges.Dx,
-				body.Direction.Y + directionChanges.Dy);
+        private static void CalculateCollision(ActiveBody body)
+        {
+            body.Position = new Point(body.Position.X + body.Direction.X,
+                                      body.Position.Y + body.Direction.Y);
+        }
 
-			return new PhysicsProcessingResult
-			{
-				ResultType = PhysicsProcessingResultType.Ok
-			};
-		}
-	}
+        private static PhysicsProcessingResult ChangeDirection(BodyAction action)
+        {
+            var directionChanges = (BodyActionChangeDirection) action;
+
+            action.Body.Direction = new Vector(
+                action.Body.Direction.X + directionChanges.Dx,
+                action.Body.Direction.Y + directionChanges.Dy);
+
+            return PhysicsProcessingResult.Ok;
+        }
+
+        #endregion
+    }
 }
-

@@ -1,15 +1,14 @@
 ﻿using System;
-using SlowpokeEngine.Bodies;
-using SlowpokeEngine.Engines;
 using SlowpokeEngine.Actions;
+using SlowpokeEngine.Bodies;
 
-namespace SlowpokeEngine
+namespace SlowpokeEngine.Engines
 {
 	public interface IMechanicEngine
 	{
 		IViewPort ViewPort { get; }
 
-		void ProcessAction (BodyAction action, ActiveBody body);
+		void ProcessAction (BodyAction action);
 		void StartEngine();
 		void StopEngine();
 		void AddNPCBody();

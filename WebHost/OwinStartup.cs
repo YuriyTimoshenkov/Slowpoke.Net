@@ -3,6 +3,7 @@ using Owin;
 using Microsoft.Owin.Cors;
 using SlowpokeEngine;
 using Microsoft.AspNet.SignalR;
+using SlowpokeEngine.Engines;
 
 namespace WebHost
 {
