@@ -13,6 +13,7 @@ using Cabinet.Models;
 namespace Cabinet.Controllers
 {
     [Authorize]
+    [RequireHttps]
     public class AccountController : Controller
     {
         public AccountController()

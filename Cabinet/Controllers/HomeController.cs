@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace Cabinet.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
