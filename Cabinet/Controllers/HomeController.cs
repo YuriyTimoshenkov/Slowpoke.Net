@@ -21,6 +21,8 @@ namespace Cabinet.Controllers
         {
             _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
         }
+
+        [AuthorizeYT]
         public ActionResult Index()
         {
             ApplicationUser user = _userManager.FindByNameAsync(User.Identity.Name).Result;
