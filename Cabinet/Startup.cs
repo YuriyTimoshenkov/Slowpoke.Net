@@ -1,6 +1,5 @@
 ﻿using Microsoft.Owin;
 using Owin;
-using SlowpokeHubs;
 
 [assembly: OwinStartupAttribute(typeof(Cabinet.Startup))]
 namespace Cabinet
@@ -13,7 +12,7 @@ namespace Cabinet
             app.MapSignalR();
 
 
-            SlowpokeHub.Run();
+            //SlowpokeHub.Run();
         }
     }
 }

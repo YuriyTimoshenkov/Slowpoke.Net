@@ -2,6 +2,7 @@
 using Cabinet.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using SlowpokeHubs;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -22,7 +23,7 @@ namespace Cabinet.Controllers
             _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
         }
 
-        [AuthorizeYT]
+        
         public ActionResult Index()
         {
             ApplicationUser user = _userManager.FindByNameAsync(User.Identity.Name).Result;
@@ -37,6 +38,13 @@ namespace Cabinet.Controllers
         {
             ViewBag.OnlineUsers = ApplicationUser.GetOnlineUsers();
             return View();
+        }
+
+        public ActionResult Play()
+        {
+            string gameServerUrl = System.Configuration.ConfigurationManager.AppSettings["GameServerUrl"];
+            string redirectUrl = gameServerUrl + "?token=" + HttpContext.Request.Cookies[SlowpokeHub.TokenCookieName].Value;
+            return Redirect(redirectUrl);
         }
     }
 }

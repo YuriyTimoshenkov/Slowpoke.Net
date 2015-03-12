@@ -15,6 +15,9 @@ namespace SlowpokeHubs
 	{
 		private static ConcurrentDictionary<string, Guid> _connectionsPlayerMapping =
 			new ConcurrentDictionary<string, Guid>();
+        public static readonly string TokenCookieName = "SlowpokeToken";
+        public static readonly TimeSpan TokentDuration = new TimeSpan(0,5,0);
+
 
 		public static IMechanicEngine MechanicEngine;
 

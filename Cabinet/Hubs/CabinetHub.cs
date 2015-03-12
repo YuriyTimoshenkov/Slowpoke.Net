@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using Cabinet.Models;
+using Microsoft.Owin.Security.Cookies;
 
 namespace Cabinet.Hubs
 {
@@ -21,6 +22,11 @@ namespace Cabinet.Hubs
         {
             //Clients.All.updateOnlineUsers("Broadcast message.");
             return "Hello YT";
+        }
+
+        public string GetToken()
+        {
+            return Context.RequestCookies[".AspNet.ApplicationCookie"].Value;
         }
     }
 }
