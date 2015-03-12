@@ -9,13 +9,13 @@ namespace SlowpokeEngine
 	{
 		IViewPort ViewPort { get; }
 
-		void ProcessAction (BodyAction action, ActiveBody body);
 		void StartEngine();
 		void StopEngine();
-		void AddNPCBody();
 		IPlayerBodyFacade LoadPlayerBody();
-		void ReleasePlayerBody(Guid playerId);
+		void ReleaseActiveBody(Guid playerId);
 		IPlayerBodyFacade GetPlayerBody(Guid playerId);
+        void ProcessGameCommand(GameCommand command);
+        void AddActiveBody(ActiveBody body);
 	}
 }
 

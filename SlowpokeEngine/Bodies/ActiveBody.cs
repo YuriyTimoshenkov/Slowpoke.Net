@@ -5,7 +5,7 @@ using SlowpokeEngine.Entities;
 
 namespace SlowpokeEngine.Bodies
 {
-	public abstract class ActiveBody
+	public abstract class ActiveBody : Body
 	{
 		protected readonly IMechanicEngine _mechanicEngine;
 
@@ -13,10 +13,8 @@ namespace SlowpokeEngine.Bodies
 
 		public Vector Direction { get; set; }
 
-		public Point Position { get; set; }
 
-
-		protected ActiveBody(
+		public ActiveBody(
 			Point position, 
 			Vector direction,
 			IMechanicEngine mechanicEngine)
@@ -27,6 +25,7 @@ namespace SlowpokeEngine.Bodies
 			Direction = direction;
 		}
 
+        public virtual void Run() { }
 		public virtual void ReleaseGame() {}
 	}
 }

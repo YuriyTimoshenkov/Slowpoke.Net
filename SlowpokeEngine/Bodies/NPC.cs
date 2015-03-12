@@ -13,24 +13,27 @@ namespace SlowpokeEngine.Bodies
 			new Vector(1,1),
 			mechanicEngine)
 		{
-			timer = new Timer (Move, null, 0, 1000);
+			
 		}
 
+        public override void Run()
+        {
+            timer = new Timer(Move, null, 0, 1000);
+        }
 		private void Move(object state)
 		{
-			_mechanicEngine.ProcessAction (
-				new BodyActionMove (),
-				this
-			);
+			_mechanicEngine.ProcessGameCommand (new GameCommandMove (_mechanicEngine, this));
 
 			var newDirection = new Vector (
 				GetNewDirection (Direction.X, Position.X), 
 				GetNewDirection (Direction.Y, Position.Y));
 
 			if (Direction != newDirection)
-				_mechanicEngine.ProcessAction (
-					new BodyActionChangeDirection (newDirection.X - Direction.X, newDirection.Y - Direction.Y),
-					this);
+                _mechanicEngine.ProcessGameCommand(
+                    new GameCommandChangeDirection (
+                        newDirection.X - Direction.X, newDirection.Y - Direction.Y,
+                        _mechanicEngine, this
+                        ));
 		}
 
 		private int GetNewDirection(int current, int postition)

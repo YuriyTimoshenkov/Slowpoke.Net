@@ -7,7 +7,9 @@ namespace SlowpokeEngine.Bodies
 	{
 		Guid Id { get;}
 
-		void ProcessAction (BodyAction bodyAction);
+        void Move();
+        void ChangeDirection(int dX, int dY);
+        void Shoot(int weaponIndex);
 	}
 }
 

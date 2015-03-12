@@ -6,7 +6,7 @@ namespace SlowpokeEngine
 {
 	public interface IPhysicalEngine
 	{
-		PhysicsProcessingResult ProcessBodyAction (BodyAction action, ActiveBody body);
+		PhysicsProcessingResult ProcessBodyAction (GameCommand actio);
 	}
 }
 

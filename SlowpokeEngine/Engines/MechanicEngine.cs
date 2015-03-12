@@ -4,17 +4,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Actions;
+using System.Collections.Generic;
 
 namespace SlowpokeEngine.Engines
 {
 	public class MechanicEngine : IMechanicEngine
 	{
-		public ConcurrentQueue<Tuple<BodyAction, ActiveBody>> ActionQueue = new ConcurrentQueue<Tuple<BodyAction, ActiveBody>>();
+		public ConcurrentQueue<GameCommand> ActionQueue = new ConcurrentQueue<GameCommand>();
 
 		private CancellationTokenSource _cancelationTokenSource;
 		private readonly IPhysicalEngine _physicalEngine;
 		private readonly IMapEngine _mapEngine;
 		private readonly IBodyBuilder _bodyBuilder;
+        private readonly List<Tuple<Func<GameCommand, PhysicsProcessingResult,bool>, Action<GameCommand, PhysicsProcessingResult>>> _actionHandlers
+            = new List<Tuple<Func<GameCommand, PhysicsProcessingResult, bool>, Action<GameCommand, PhysicsProcessingResult>>>();
 
 		public IViewPort ViewPort { get; private set; }
 
@@ -30,22 +33,24 @@ namespace SlowpokeEngine.Engines
 			_bodyBuilder = bodyBuilder;
 
 			ViewPort = viewPort;
+
+            BuildPhysicsResultHandlers();
 		}
 
-		public void ProcessAction(BodyAction action, ActiveBody body)
+		public void ProcessAction(GameCommand command)
 		{
-			ActionQueue.Enqueue(new Tuple<BodyAction, ActiveBody>(action, body));
+            ActionQueue.Enqueue(command);
 		}
 
 		private void EventLoop()
 		{
 			while (!_cancelationTokenSource.Token.IsCancellationRequested)
 			{
-				Tuple<BodyAction, ActiveBody> nextAction;
+				GameCommand nextCommand;
 
-				if (ActionQueue.TryDequeue(out nextAction))
+                if (ActionQueue.TryDequeue(out nextCommand))
 				{
-					var result = _physicalEngine.ProcessBodyAction(nextAction.Item1, nextAction.Item2);
+                    nextCommand.Execute();
 				}
 				else
 				{
@@ -65,11 +70,13 @@ namespace SlowpokeEngine.Engines
 			_cancelationTokenSource.Cancel();
 		}
 
-		public void AddNPCBody()
+		public void AddActiveBody(ActiveBody body)
 		{
-			var newNpcBody = _bodyBuilder.BuildNPC (this);
+            if(_mapEngine.Bodies.TryAdd(body.Id, body))
+            {
+                body.Run();
+            }
 
-			_mapEngine.Bodies.TryAdd (newNpcBody.Id, newNpcBody);
 		}
 
 		public IPlayerBodyFacade LoadPlayerBody()
@@ -81,12 +88,13 @@ namespace SlowpokeEngine.Engines
 			return player;
 		}
 
-		public void ReleasePlayerBody(Guid playerId)
+		public void ReleaseActiveBody(Guid bodyId)
 		{
-			ActiveBody player;
+			ActiveBody body;
 
-			if (_mapEngine.Bodies.TryRemove (playerId, out player)) {
-				player.ReleaseGame ();
+            if (_mapEngine.Bodies.TryRemove(bodyId, out body))
+            {
+                body.ReleaseGame();
 			}
 		}
 
@@ -98,5 +106,33 @@ namespace SlowpokeEngine.Engines
 
 			return (IPlayerBodyFacade)playerBody;
 		}
-	}
+
+
+        public void ProcessGameCommand(GameCommand command)
+        {
+            var result = _physicalEngine.ProcessBodyAction(command);
+
+            _actionHandlers.ForEach((handler) =>
+                {
+                    if(handler.Item1(command, result))
+                        handler.Item2(command, result);
+                });
+        }
+
+        protected virtual void BuildPhysicsResultHandlers()
+        {
+            _actionHandlers.Add(new Tuple<Func<GameCommand, PhysicsProcessingResult, bool>, Action<GameCommand, PhysicsProcessingResult>>(
+                new Func<GameCommand, PhysicsProcessingResult, bool>((gameCommand, result) =>
+                    {
+                        return result is PhysicsProcessingResultCollision
+                            && ((PhysicsProcessingResultCollision) result).Bodies.Count == 1 
+                                && ((PhysicsProcessingResultCollision) result).Bodies[0].GetType() == typeof(PassiveBody);
+                    }),
+                new Action<GameCommand, PhysicsProcessingResult>((gameCommand, result) =>
+                    {
+                        ReleaseActiveBody(gameCommand.ActiveBody.Id);
+                    })
+                    ));
+        }
+    }
 }

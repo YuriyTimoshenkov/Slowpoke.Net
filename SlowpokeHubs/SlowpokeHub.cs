@@ -26,14 +26,12 @@ namespace SlowpokeHubs
             var meb = new MechanicEngineBuilder ();
 			SlowpokeHub.MechanicEngine = meb.Build();
 
-			SlowpokeHub.MechanicEngine.AddNPCBody();
+            var NPCBuilder = new SimpleBodyBuilder();
+
+            SlowpokeHub.MechanicEngine.AddActiveBody(NPCBuilder.BuildNPC(SlowpokeHub.MechanicEngine));
 
 			SlowpokeHub.MechanicEngine.StartEngine();
         }
-
-        public SlowpokeHub():base()
-        { }
-
 
 		public IPlayerBodyFacade LoadPlayer()
 		{
@@ -52,22 +50,29 @@ namespace SlowpokeHubs
 		{
 			var player = MechanicEngine.GetPlayerBody (playerId);
 
-			player.ProcessAction (new BodyActionMove());
+            player.Move();
 		}
 
 		public void ChangeBodyDirection(Guid playerId, int dX, int dY)
 		{
 			var player = MechanicEngine.GetPlayerBody (playerId);
 
-			player.ProcessAction (new BodyActionChangeDirection(dX, dY));
+            player.ChangeDirection(dX, dY);
 		}
+
+        public void Shoot(Guid playerId, int weaponindex)
+        {
+            var player = MechanicEngine.GetPlayerBody (playerId);
+
+            player.Shoot(weaponindex);
+        }
 
 		public override Task OnDisconnected (bool stopCalled)
 		{
 			Guid playerId;
 
 			if (_connectionsPlayerMapping.TryRemove (Context.ConnectionId, out playerId)) {
-				MechanicEngine.ReleasePlayerBody(playerId);
+				MechanicEngine.ReleaseActiveBody(playerId);
 			}
 
 			return base.OnDisconnected(stopCalled);

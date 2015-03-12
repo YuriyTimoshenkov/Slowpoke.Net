@@ -1,6 +1,6 @@
 ﻿namespace SlowpokeEngine.Actions
 {
-	public class BodyActionMove : BodyAction
+	public class PhysicsProcessingResult
 	{
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Entities;
+using SlowpokeEngine.Weapons;
 
 namespace SlowpokeEngine.Bodies
 {
@@ -16,10 +17,14 @@ namespace SlowpokeEngine.Bodies
 		{
 			//TODO: load config from DB, get some data from depended services and as a result - load player object
 
-			return new PlayerBody (
+			var player = new PlayerBody (
 				new Point (0, 0),
 				new Vector (1, 3),
 				mechanicEngine);
+
+            player.Weapons.Add(new WeaponGun(10,10,500, mechanicEngine));
+
+            return player;
 		}
 	}
 }

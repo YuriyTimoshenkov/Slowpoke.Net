@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -35,20 +35,23 @@
     <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bodies\Body.cs" />
+    <Compile Include="Bodies\PassiveBody.cs" />
+    <Compile Include="Commands\PhysicsProcessingResult.cs" />
+    <Compile Include="Commands\PhysicsProcessingResultCollision.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bodies\ActiveBody.cs" />
     <Compile Include="Bodies\NPC.cs" />
     <Compile Include="Engines\MechanicEngine.cs" />
     <Compile Include="Engines\PhysicalEngine.cs" />
     <Compile Include="Extensions\EventArgExtensions.cs" />
-    <Compile Include="Actions\PhysicsProcessingResult.cs" />
-    <Compile Include="Actions\PhysicsProcessingResultType.cs" />
+    <Compile Include="Commands\PhysicsProcessingResultEmpty.cs" />
     <Compile Include="Engines\MapEngine.cs" />
     <Compile Include="Engines\IActiveBodiesContainer.cs" />
     <Compile Include="Engines\IMapEngine.cs" />
     <Compile Include="Engines\IPhysicalEngine.cs" />
     <Compile Include="Engines\IMechanicEngine.cs" />
-    <Compile Include="Actions\BodyAction.cs" />
+    <Compile Include="Commands\GameCommand.cs" />
     <Compile Include="Bodies\IBodyBuilder.cs" />
     <Compile Include="Bodies\SimpleBodyBuilder.cs" />
     <Compile Include="Engines\IMechanicEngineBuilder.cs" />
@@ -57,17 +60,14 @@
     <Compile Include="Entities\Vector.cs" />
     <Compile Include="Bodies\PlayerBody.cs" />
     <Compile Include="Bodies\IPlayerBodyFacade.cs" />
-    <Compile Include="Actions\BodyActionMove.cs" />
+    <Compile Include="Commands\GameCommandMove.cs" />
     <Compile Include="Engines\IViewPort.cs" />
     <Compile Include="Engines\ViewPort.cs" />
-    <Compile Include="Actions\BodyActionChangeDirection.cs" />
+    <Compile Include="Commands\BodyActionChangeDirection.cs" />
+    <Compile Include="Weapons\Bullet.cs" />
+    <Compile Include="Weapons\WeaponBase.cs" />
+    <Compile Include="Weapons\WeaponGun.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Bodies\" />
-    <Folder Include="Engines\" />
-    <Folder Include="Actions\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Entities\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlowpokeHubs", "SlowpokeHub
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer", "GameServer\GameServer.csproj", "{87D58521-6925-4352-8550-D548C914406C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServerConsole", "TestServerConsole\TestServerConsole.csproj", "{EA621380-3842-4B9D-AB53-CD5A023E5D95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{87D58521-6925-4352-8550-D548C914406C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87D58521-6925-4352-8550-D548C914406C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87D58521-6925-4352-8550-D548C914406C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA621380-3842-4B9D-AB53-CD5A023E5D95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA621380-3842-4B9D-AB53-CD5A023E5D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA621380-3842-4B9D-AB53-CD5A023E5D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA621380-3842-4B9D-AB53-CD5A023E5D95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
