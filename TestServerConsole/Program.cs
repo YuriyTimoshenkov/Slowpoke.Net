@@ -13,6 +13,9 @@ namespace TestServerConsole
     {
         static void Main(string[] args)
         {
+            Func<string> lam = () => { return 2.ToString(); };
+
+            Console.WriteLine("This of l: {0}",lam());
             var meb = new MechanicEngineBuilder();
             var mechanicEngine = meb.Build();
 

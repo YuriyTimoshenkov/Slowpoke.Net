@@ -39,6 +39,7 @@
     <Compile Include="Bodies\PassiveBody.cs" />
     <Compile Include="Commands\PhysicsProcessingResult.cs" />
     <Compile Include="Commands\PhysicsProcessingResultCollision.cs" />
+    <Compile Include="Extensions\ActionHandlersManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bodies\ActiveBody.cs" />
     <Compile Include="Bodies\NPC.cs" />

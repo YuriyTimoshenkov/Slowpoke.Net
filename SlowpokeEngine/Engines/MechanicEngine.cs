@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Actions;
 using System.Collections.Generic;
+using System.Linq;
+using SlowpokeEngine.Extensions;
 
 namespace SlowpokeEngine.Engines
 {
@@ -16,8 +18,10 @@ namespace SlowpokeEngine.Engines
 		private readonly IPhysicalEngine _physicalEngine;
 		private readonly IMapEngine _mapEngine;
 		private readonly IBodyBuilder _bodyBuilder;
-        private readonly List<Tuple<Func<GameCommand, PhysicsProcessingResult,bool>, Action<GameCommand, PhysicsProcessingResult>>> _actionHandlers
-            = new List<Tuple<Func<GameCommand, PhysicsProcessingResult, bool>, Action<GameCommand, PhysicsProcessingResult>>>();
+
+        
+        private readonly ActionHandlersManager<Func<GameCommand, PhysicsProcessingResult,bool>, Action<GameCommand, PhysicsProcessingResult>> _actionHandlers
+            = new ActionHandlersManager<Func<GameCommand, PhysicsProcessingResult, bool>, Action<GameCommand, PhysicsProcessingResult>>();
 
 		public IViewPort ViewPort { get; private set; }
 
@@ -112,27 +116,25 @@ namespace SlowpokeEngine.Engines
         {
             var result = _physicalEngine.ProcessBodyAction(command);
 
-            _actionHandlers.ForEach((handler) =>
-                {
-                    if(handler.Item1(command, result))
-                        handler.Item2(command, result);
-                });
+            foreach (var handler in _actionHandlers)
+            {
+                if (handler.Item1(command, result))
+                    handler.Item2(command, result);
+            }
         }
 
         protected virtual void BuildPhysicsResultHandlers()
         {
-            _actionHandlers.Add(new Tuple<Func<GameCommand, PhysicsProcessingResult, bool>, Action<GameCommand, PhysicsProcessingResult>>(
-                new Func<GameCommand, PhysicsProcessingResult, bool>((gameCommand, result) =>
+            _actionHandlers.AddHandler((gameCommand, result) =>
                     {
                         return result is PhysicsProcessingResultCollision
                             && ((PhysicsProcessingResultCollision) result).Bodies.Count == 1 
                                 && ((PhysicsProcessingResultCollision) result).Bodies[0].GetType() == typeof(PassiveBody);
-                    }),
-                new Action<GameCommand, PhysicsProcessingResult>((gameCommand, result) =>
+                    },
+                    (gameCommand, result) =>
                     {
                         ReleaseActiveBody(gameCommand.ActiveBody.Id);
-                    })
-                    ));
+                    });
         }
     }
 }

@@ -4,13 +4,14 @@ using SlowpokeEngine.Actions;
 using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Entities;
 using SlowpokeEngine.Weapons;
+using SlowpokeEngine.Extensions;
 
 namespace SlowpokeEngine.Engines
 {
 	public class PhysicalEngine : IPhysicalEngine
 	{
-		private readonly List<Tuple<Func<GameCommand,bool>,Func<GameCommand, PhysicsProcessingResult>>> _actionHandlers =
-            new List<Tuple<Func<GameCommand, bool>, Func<GameCommand, PhysicsProcessingResult>>>();
+        ActionHandlersManager<Func<GameCommand, bool>, Func<GameCommand, PhysicsProcessingResult>> _actionHandlers =
+            new ActionHandlersManager<Func<GameCommand, bool>, Func<GameCommand, PhysicsProcessingResult>>();
 
 		public PhysicalEngine ()
 		{
@@ -42,8 +43,7 @@ namespace SlowpokeEngine.Engines
 
         private void BuildHandlers()
         {
-            _actionHandlers.Add(new Tuple<Func<GameCommand, bool>, Func<GameCommand, PhysicsProcessingResult>>(
-                new Func<GameCommand, bool>((command) =>
+            _actionHandlers.AddHandler((command) =>
                 {
                     if (!(command.ActiveBody is Bullet))
                         return false;
@@ -53,18 +53,17 @@ namespace SlowpokeEngine.Engines
                     Math.Pow(bullet.StartPosition.Y - bullet.Position.Y, 2)));
 
                     return distance >= bullet.ShootingDistance;
-                }),
-                new Func<GameCommand, PhysicsProcessingResult>((command) =>
+                },
+                (command) =>
                 {
                     return new PhysicsProcessingResultCollision(new List<Body>() {new PassiveBody()});
-                })));
+                });
 
-            _actionHandlers.Add(new Tuple<Func<GameCommand, bool>, Func<GameCommand, PhysicsProcessingResult>>(
-                new Func<GameCommand, bool>((command) =>
+            _actionHandlers.AddHandler((command) =>
                 {
                     return command is GameCommandMove;
-                }),
-                new Func<GameCommand, PhysicsProcessingResult>((command) =>
+                },
+                (command) =>
                 {
                     var body = command.ActiveBody;
 
@@ -73,14 +72,13 @@ namespace SlowpokeEngine.Engines
                     body.Position.Y + body.Direction.Y);
 
                     return new PhysicsProcessingResultEmpty(); 
-                })));
+                });
 
-            _actionHandlers.Add(new Tuple<Func<GameCommand, bool>, Func<GameCommand, PhysicsProcessingResult>>(
-                    new Func<GameCommand, bool>((command) =>
+            _actionHandlers.AddHandler((command) =>
                     {
                         return command is GameCommandChangeDirection;
-                    }),
-                    new Func<GameCommand, PhysicsProcessingResult>((command) =>
+                    },
+                    (command) =>
                     {
                         var directionChanges = (GameCommandChangeDirection)command;
                         var body = command.ActiveBody;
@@ -90,7 +88,7 @@ namespace SlowpokeEngine.Engines
                         body.Direction.Y + directionChanges.Dy);
 
                         return new PhysicsProcessingResultEmpty();
-                    })));
+                    });
         }
 	}
 }
