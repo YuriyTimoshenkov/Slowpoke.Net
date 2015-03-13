@@ -194,10 +194,6 @@
     <Compile Include="Hubs\UserActivityStatusTrackercs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-Cabinet-20150306012029.mdf" />
-    <Content Include="App_Data\aspnet-Cabinet-20150306012029_log.ldf">
-      <DependentUpon>aspnet-Cabinet-20150306012029.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
