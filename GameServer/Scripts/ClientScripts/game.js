@@ -16,11 +16,13 @@ function Game(worldWidth, worldHeight, player, cellSize, fps, gameProxy) {
     this.fps = fps;
     this.serverFramesQueue = [];
     this.world.createGameObject({"Id": player.Id, "type": "player"});
-    //console.log(4445);
-    //console.log(this.world[player.Id]);
-    //console.log(4445);
     this.frameManager = new FrameManager(this.world.allGameObjects[player.Id], this.world);
     this.gameProxy = gameProxy;
+
+    window.onkeydown = function (e) {
+        game.processInput(e);
+    }
+
 }
 
 Game.prototype = {
@@ -32,6 +34,7 @@ Game.prototype = {
     update: function () {
         this.prepareNextFrame();
         this.sendInputData();
+
         //this.gameProxy.server.moveBody(this.player.Id);
         console.log(this.serverFramesQueue.length)
     },
@@ -42,8 +45,8 @@ Game.prototype = {
     },
 
     setGameScreenSize: function () {
-        var width = $(window).width();
-        var height = $(window).height();
+        var width = $(document).width();
+        var height = $(document).height();
         console.log(777)
         console.log(width + " " + height)
         console.log(777)
@@ -61,8 +64,18 @@ Game.prototype = {
 
     prepareNextFrame: function () {
         var nextFrame = this.serverFramesQueue.shift();
-        if (nextFrame) this.frameManager.processFrame(nextFrame);
+
+        if (nextFrame) this.frameManager.processFrame(nextFrame)
         else console.log("No frames in the Queue. Processing prediction.")
+
+    },
+
+    processInput: function (e) {
+        if (e.keyCode == 32) { // Space
+            this.gameProxy.server.shoot(this.player.Id, 1)
+        }
     }
+
+
 };
 

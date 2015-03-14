@@ -24,6 +24,16 @@ GameObject.prototype = {
             context.fillRect(this.canvasXY.X, this.canvasXY.Y, 20, 20);
         }
 
+        else if (this.objectType == "bullet") {
+            context.beginPath();
+            context.arc(this.canvasXY.X, this.canvasXY.Y, 5, 0, 2 * Math.PI, false);
+            context.fillStyle = 'yellow';
+            context.fill();
+            context.lineWidth = 1;
+            context.strokeStyle = '#003300';
+            context.stroke();
+        }
+
         else throw "invalid gameObject type";
     }
 };

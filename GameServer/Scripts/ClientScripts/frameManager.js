@@ -29,13 +29,7 @@ FrameManager.prototype = {
 
 
         // Draw objects
-        console.log(1);
-        console.log(this.currentFrame.objects);
-        console.log(1);
-
         for (var id in this.currentFrame.objects) {
-            console.log(this.currentFrame.objects[id]);
-            //console.log(id);
             this.currentFrame.objects[id].draw(context)
         }
         //console.log("++++++++++++++++++++")
@@ -43,7 +37,7 @@ FrameManager.prototype = {
     },
 
     updateGameObjects: function(frame) {
-        console.log("Start Updating Objects");
+        // console.log("Start Updating Objects");
 
         // Convert frame data to dict {obj_id: obj}.
         var frameObjectsDict = (function () {
@@ -76,7 +70,7 @@ FrameManager.prototype = {
     },
 
     updateObject: function(objData) {
-        console.log("update start");
+        // console.log("update start");
         var id = objData["Id"];
         var obj = this.world.allGameObjects[id];
         // Update position
@@ -93,6 +87,7 @@ FrameManager.prototype = {
         // Calc object type
         var objType;
         if (id === this.target.Id) objType = "player";
+        else if ("StartPosition" in objData) objType = "bullet";
         else objType = "NPC";
         //console.log("ObjType: " + objType);
 
@@ -119,21 +114,14 @@ FrameManager.prototype = {
         });
 
         // Update objects
-
         for (var id in this.currentFrame.objects) {
             var obj = this.currentFrame.objects[id];
             if (obj.objectType !== "player"){
                 var dx = self.target.xy.X - obj.xy.X;
                 var dy = self.target.xy.Y - obj.xy.Y;
-                //console.log(222)
-                //console.log(dx + ", " + dy);
-                //console.log(222)
                 obj.canvasXY.X = self.target.canvasXY.X - dx;
                 obj.canvasXY.Y = self.target.canvasXY.Y - dy;
             }
-
         }
-
-
     }
 };
