@@ -18,8 +18,12 @@ namespace SlowpokeHubs
         public static readonly string TokenCookieName = "SlowpokeToken";
         public static readonly TimeSpan TokentDuration = new TimeSpan(0,5,0);
 
-
 		public static IMechanicEngine MechanicEngine;
+
+        public SlowpokeHub()
+        {
+
+        }
 
         public static void Run()
         {

@@ -70,5 +70,4 @@
     <Compile Include="Weapons\WeaponGun.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup />
 </Project>

@@ -4,7 +4,7 @@ using Microsoft.Owin.Security.Cookies;
 using Owin;
 using SlowpokeHubs;
 
-namespace Cabinet
+namespace GameServer
 {
     public partial class Startup
     {

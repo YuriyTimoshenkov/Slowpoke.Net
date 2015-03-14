@@ -2,8 +2,8 @@
 using Owin;
 using SlowpokeHubs;
 
-[assembly: OwinStartupAttribute(typeof(Cabinet.Startup))]
-namespace Cabinet
+[assembly: OwinStartupAttribute(typeof(GameServer.Startup))]
+namespace GameServer
 {
     public partial class Startup
     {

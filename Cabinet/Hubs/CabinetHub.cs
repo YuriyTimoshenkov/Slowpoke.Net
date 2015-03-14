@@ -28,5 +28,10 @@ namespace Cabinet.Hubs
         {
             return Context.RequestCookies[".AspNet.ApplicationCookie"].Value;
         }
+
+        public override System.Threading.Tasks.Task OnConnected()
+        {
+            return base.OnConnected();
+        }
     }
 }
