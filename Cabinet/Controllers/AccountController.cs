@@ -49,8 +49,7 @@ namespace Cabinet.Controllers
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
-                    user.LastAuth = DateTime.Now;
-                    await UserManager.UpdateAsync(user);
+                    await UpdateUserLastAuth(user);
                     await SignInAsync(user, model.RememberMe);
                     return RedirectToLocal(returnUrl);
                 }
@@ -62,6 +61,12 @@ namespace Cabinet.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        private async Task UpdateUserLastAuth(ApplicationUser user)
+        {
+            user.LastAuth = DateTime.Now;
+            await UserManager.UpdateAsync(user);
         }
 
         //
@@ -209,6 +214,7 @@ namespace Cabinet.Controllers
             var user = await UserManager.FindAsync(loginInfo.Login);
             if (user != null)
             {
+                await UpdateUserLastAuth(user);
                 await SignInAsync(user, isPersistent: false);
                 return RedirectToLocal(returnUrl);
             }

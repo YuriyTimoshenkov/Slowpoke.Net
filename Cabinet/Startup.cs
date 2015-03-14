@@ -10,9 +10,6 @@ namespace Cabinet
         {
             ConfigureAuth(app);
             app.MapSignalR();
-
-
-            //SlowpokeHub.Run();
         }
     }
 }

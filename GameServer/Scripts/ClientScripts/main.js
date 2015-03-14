@@ -10,11 +10,14 @@ $(function ()
 {
     console.log("Connection to gameProxy start.");
 
+    // Declare a proxy to reference the hub.
+    var gameProxy = $.connection.slowpokeHub;
+
+    $.connection.slowpokeHub.client.SomeMethod = function () { };
+
+
     $.connection.hub.start().done(function()
     {
-        // Declare a proxy to reference the hub.
-        var gameProxy = $.connection.slowpokeHub;
-
         gameProxy.server.loadPlayer().done(function (player)
 
         {
