@@ -3,7 +3,7 @@
  */
 
 //$.getScript("config.js");
-$.getScript("utils.js");
+//$.getScript("utils.js");
 function Game(worldWidth, worldHeight, player, cellSize, fps, gameProxy) {
     this.width = worldWidth; // cells in a row
     this.height = worldHeight; // cells in a column
@@ -12,15 +12,21 @@ function Game(worldWidth, worldHeight, player, cellSize, fps, gameProxy) {
     this.canvas = document.getElementById("canvas");
     this.context = this.canvas.getContext("2d");
     this.setGameScreenSize();
+
     this.world = new World(worldWidth, worldHeight, cellSize);
+
     this.fps = fps;
     this.serverFramesQueue = [];
-    this.world.createGameObject({"Id": player.Id, "type": "player"});
+
+    // Create empty player object
+    var playerObject = { "Id": player.Id, "ActiveBodyType": "player" };
+    this.world.createGameObject(playerObject);
+
     this.frameManager = new FrameManager(this.world.allGameObjects[player.Id], this.world);
     this.gameProxy = gameProxy;
-    this.assignEventHadlers();
     this.keyPressedHandler = new KeyPressedHandler();
     this.keyPressed = this.keyPressedHandler.keyPressed;
+    this.assignEventHadlers()
 
 }
 

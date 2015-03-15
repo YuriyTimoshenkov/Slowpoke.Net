@@ -35,7 +35,9 @@ GameObject.prototype = {
             context.stroke();
         }
 
-        else throw "invalid gameObject type";
+
+
+        else throw "GameObject: invalid gameObject type";
     }
 };
 

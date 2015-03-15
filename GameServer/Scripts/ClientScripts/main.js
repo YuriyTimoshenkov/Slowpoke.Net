@@ -3,9 +3,6 @@
  */
 
 
-
-
-
 $(function ()
 {
     console.log("Connection to gameProxy start.");
