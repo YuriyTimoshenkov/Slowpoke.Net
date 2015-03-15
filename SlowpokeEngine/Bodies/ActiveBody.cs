@@ -13,6 +13,8 @@ namespace SlowpokeEngine.Bodies
 
 		public Vector Direction { get; set; }
 
+        public string ActiveBodyType { get { return this.GetType().Name; } }
+
 
 		public ActiveBody(
 			Point position, 
