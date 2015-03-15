@@ -3,13 +3,14 @@
  */
 
 
-function GameObject(id, objectType, position, direction, canvasXY){
+function GameObject(id, objectType, position, direction, canvasXY) {
     this.id = id;
     this.objectType = objectType;
     this.xy = position || {X: 0, Y: 0};
     this.canvasXY = canvasXY || this.xy;
     this.direction = direction || {X: 0, Y: 0};
 }
+
 GameObject.prototype = {
     draw: function(context) {
         console.log("GameObject Draw: " + this.objectType);

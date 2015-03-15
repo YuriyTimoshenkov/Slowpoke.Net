@@ -2,8 +2,8 @@
  * Created by dimapct on 15.02.2015.
  */
 
-$.getScript("gameObject.js");
-$.getScript("gameMap.js");
+//$.getScript("gameObject.js");
+//$.getScript("gameMap.js");
 
 function World(width, height, cellSize) {
     //document.write("WorldInitStart");

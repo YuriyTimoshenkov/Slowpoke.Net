@@ -21,10 +21,10 @@ $(function ()
         gameProxy.server.loadPlayer().done(function (player)
 
         {
-            game = new Game(worldWidth, worldHeight, player, 50, 1000/60, gameProxy);
+            game = new Game(worldWidth, worldHeight, player, 50, updateFPS, gameProxy);
 
             // Start listening server
-            setInterval(function () {game.getFrameFromServer(player.Id, game.serverFramesQueue)}, 1000/60);
+            setInterval(function () { game.getFrameFromServer(player.Id, game.serverFramesQueue) }, serverRequestFPS);
 
             // Start game loop
             setInterval(function () {game.loop()}, game.fps);
