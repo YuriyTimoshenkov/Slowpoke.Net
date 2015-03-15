@@ -12,14 +12,9 @@ function World(width, height, cellSize) {
 World.prototype = {
     createGameObject: function (data) {
         console.log("World is creating object");
-        console.log(222)
-        console.log(data)
-        console.log(111)
         var objectType = data["ActiveBodyType"];
         var id = data["Id"];
-        console.log(999)
         var position = data["Position"];
-        console.log(888)
         var direction = data["Direction"];
         var obj;
 

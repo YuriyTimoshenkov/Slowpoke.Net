@@ -35,6 +35,7 @@ Game.prototype = {
     loop: function () {
         this.update();
         this.draw();
+        console.log("--------------------------------------");
     },
 
     update: function () {
@@ -100,16 +101,14 @@ Game.prototype = {
     assignEventHadlers: function (e) {
         var self = this;
         window.onkeydown = function (e) {
-            console.log("Processing keydown event")
+            // console.log("Processing keydown event")
             if (e.keyCode in self.keyPressed) {
-                console.log("Setting " + e.keyCode + "to True")
                 self.keyPressed[e.keyCode] = true;
             }
         }
     },
 
     moveUp: function () {
-        console.log("Moving body UP")
         this.gameProxy.server.moveBody(this.player.Id, 0, -1);
     },
 
