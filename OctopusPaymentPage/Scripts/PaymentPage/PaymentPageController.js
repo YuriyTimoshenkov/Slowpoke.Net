@@ -1,11 +1,20 @@
 ﻿var appMy = angular.module("PaymentPage", ['ngRoute'])
-    .factory('BooksFactory', function () {
-        var books = [{ Name: 'book1', Price: 33 }, { Name: 'book2', Price: 44.3 }];
+    .factory('PaymentFactory', function () {
+        var payment = [{Name:"to Service", Value: "Gold"},{Name: "Company",Value:"Slowpoke"}, {Name:"Amount", Value:13.33}];
         var factory = {};
-        factory.GetBooks = function () { return books; };
+        factory.GetPayment = function () { return payment; };
 
         return factory;
     })
-    .controller("SimpleController", function SimpleController($scope, BooksFactory) {
-        $scope.Books = BooksFactory.GetBooks();
+    .controller("PaymentFlowController", function ($scope, PaymentFactory, $location) {
+        $scope.payment = PaymentFactory.GetPayment();
+        $scope.Pay = function () {
+            $scope.payment.Result = "Succesfull !";
+            $location.path("/PaymentResult");
+        };
+    })
+    .config(function ($routeProvider) {
+        $routeProvider.when('/', { controller: 'PaymentFlowController', templateUrl: '/StaticViewTemplates/PaymentStart.html' })
+            .when('/PaymentDetails', { controller: 'PaymentFlowController', templateUrl: '/StaticViewTemplates/PaymentDetails.html' })
+            .when('/PaymentResult', { controller: 'PaymentFlowController', templateUrl: '/StaticViewTemplates/PaymentResult.html' })
     });

@@ -1,5 +1,6 @@
 ﻿using System;
 using SlowpokeEngine.Actions;
+using SlowpokeEngine.Entities;
 
 namespace SlowpokeEngine.Bodies
 {
@@ -7,7 +8,7 @@ namespace SlowpokeEngine.Bodies
 	{
 		Guid Id { get;}
 
-        void Move();
+        void Move(Vector direction);
         void ChangeDirection(int dX, int dY);
         void Shoot(int weaponIndex);
 	}

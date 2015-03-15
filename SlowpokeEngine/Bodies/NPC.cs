@@ -22,7 +22,7 @@ namespace SlowpokeEngine.Bodies
         }
 		private void Move(object state)
 		{
-			_mechanicEngine.ProcessGameCommand (new GameCommandMove (_mechanicEngine, this));
+			_mechanicEngine.ProcessGameCommand (new GameCommandMove (this.Direction, _mechanicEngine, this));
 
 			var newDirection = new Vector (
 				GetNewDirection (Direction.X, Position.X), 

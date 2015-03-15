@@ -36,7 +36,7 @@ namespace SlowpokeEngine.Weapons
 
         private void Move(object state)
         {
-            _mechanicEngine.ProcessGameCommand(new GameCommandMove(_mechanicEngine, this));
+            _mechanicEngine.ProcessGameCommand(new GameCommandMove(this.Direction, _mechanicEngine, this));
         }
 
         public override void ReleaseGame()

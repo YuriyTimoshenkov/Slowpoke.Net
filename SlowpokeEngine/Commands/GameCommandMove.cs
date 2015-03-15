@@ -1,10 +1,16 @@
 ﻿using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Entities;
 namespace SlowpokeEngine.Actions
 {
 	public class GameCommandMove : GameCommand
 	{
-        public GameCommandMove(IMechanicEngine mechanicEngine, ActiveBody activeBody) :
-            base(mechanicEngine, activeBody) { }
+        public Vector Direction { get; private set; }
+
+        public GameCommandMove(Vector direction, IMechanicEngine mechanicEngine, ActiveBody activeBody) :
+            base(mechanicEngine, activeBody) 
+        {
+            Direction = direction;
+        }
 	}
 }
 

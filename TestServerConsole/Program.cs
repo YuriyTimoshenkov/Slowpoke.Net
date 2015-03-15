@@ -1,5 +1,7 @@
-﻿using SlowpokeEngine;
+﻿using MathNet.Numerics.LinearAlgebra;
+using SlowpokeEngine;
 using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +15,6 @@ namespace TestServerConsole
     {
         static void Main(string[] args)
         {
-            Func<string> lam = () => { return 2.ToString(); };
-
-            Console.WriteLine("This of l: {0}",lam());
             var meb = new MechanicEngineBuilder();
             var mechanicEngine = meb.Build();
 
@@ -33,7 +32,7 @@ namespace TestServerConsole
                 {
                     while(true)
                     {
-                        player.Move();
+                        player.Move(new Vector(1,1));
                         Console.WriteLine("New Era");
                         foreach (var body in mechanicEngine.ViewPort.GetActiveBodies(player.Id))
                         {

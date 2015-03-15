@@ -7,10 +7,11 @@ using System.Linq;
 using SlowpokeEngine.Actions;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using SlowpokeEngine.Entities;
 
 namespace SlowpokeHubs
 {
-    [Authorize]
+    //[Authorize]
 	public class SlowpokeHub : Hub
 	{
 		private static ConcurrentDictionary<string, Guid> _connectionsPlayerMapping =
@@ -50,11 +51,11 @@ namespace SlowpokeHubs
 			return MechanicEngine.ViewPort.GetActiveBodies (playerId).ToList ();
 		}
 
-		public void MoveBody(Guid playerId)
+		public void MoveBody(Guid playerId, int x, int y)
 		{
 			var player = MechanicEngine.GetPlayerBody (playerId);
 
-            player.Move();
+            player.Move(new Vector(x,y));
 		}
 
 		public void ChangeBodyDirection(Guid playerId, int dX, int dY)

@@ -29,18 +29,6 @@ namespace SlowpokeEngine.Engines
             return new PhysicsProcessingResultEmpty();
 		}
 
-	    private PhysicsProcessingResult ProcessBodyActionChangeDirection(GameCommand command)
-		{
-			var directionChanges = (GameCommandChangeDirection)command;
-            var body = command.ActiveBody;
-
-			body.Direction = new Vector (
-				body.Direction.X + directionChanges.Dx,
-				body.Direction.Y + directionChanges.Dy);
-
-            return new PhysicsProcessingResultEmpty(); 
-		}
-
         private void BuildHandlers()
         {
             _actionHandlers.AddHandler((command) =>
@@ -66,10 +54,18 @@ namespace SlowpokeEngine.Engines
                 (command) =>
                 {
                     var body = command.ActiveBody;
+                    var moveCommand = (GameCommandMove)command;
+
+                    //Calculate scalar direction vector
+                    var magnitute = Math.Sqrt(Math.Pow(moveCommand.Direction.X, 2) + Math.Pow(moveCommand.Direction.Y, 2));
+                    var unitDirectionVector = new Vector(
+                        (int)Math.Round(moveCommand.Direction.X / magnitute),
+                        (int)Math.Round(moveCommand.Direction.X / magnitute));
+                   
 
                     body.Position = new Point(
-                    body.Position.X + body.Direction.X,
-                    body.Position.Y + body.Direction.Y);
+                    body.Position.X + unitDirectionVector.X,
+                    body.Position.Y + unitDirectionVector.Y);
 
                     return new PhysicsProcessingResultEmpty(); 
                 });

@@ -972,6 +972,9 @@
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\PaymentPage\PaymentPageController.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="StaticViewTemplates\PaymentDetails.html" />
+    <Content Include="StaticViewTemplates\PaymentResult.html" />
+    <Content Include="StaticViewTemplates\PaymentStart.html" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -992,6 +995,7 @@
     </Content>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Scripts\version.json" />
+    <Content Include="StaticViewTemplates\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
