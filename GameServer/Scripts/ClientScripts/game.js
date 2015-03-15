@@ -2,30 +2,31 @@
  * Created by dimapct on 12.02.2015.
  */
 
-//$.getScript("config.js");
-//$.getScript("utils.js");
 function Game(worldWidth, worldHeight, player, cellSize, fps, gameProxy) {
     this.width = worldWidth; // cells in a row
     this.height = worldHeight; // cells in a column
     this.player = player;
     this.cellSize = cellSize;
+    this.gameProxy = gameProxy;
+    this.fps = fps;
+    this.serverFramesQueue = [];
+
+    // Configure canvas
     this.canvas = document.getElementById("canvas");
     this.context = this.canvas.getContext("2d");
     this.setGameScreenSize();
 
+    // Create world
     this.world = new World(worldWidth, worldHeight, cellSize);
 
-    this.fps = fps;
-    this.serverFramesQueue = [];
-
     // Create empty player object
-    var playerObject = { "Id": player.Id, "ActiveBodyType": "player" };
+    var playerObject = { "Id": player.Id, "ActiveBodyType": "PlayerBody" };
     this.world.createGameObject(playerObject);
+    this.frameManager = new FrameManager(this.world.allGameObjects[0], this.world);
 
-    this.frameManager = new FrameManager(this.world.allGameObjects[player.Id], this.world);
-    this.gameProxy = gameProxy;
     this.keyPressedHandler = new KeyPressedHandler();
     this.keyPressed = this.keyPressedHandler.keyPressed;
+
     this.assignEventHadlers()
 
 }

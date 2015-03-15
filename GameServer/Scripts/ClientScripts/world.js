@@ -27,14 +27,14 @@ World.prototype = {
             obj = new GameObject(id, objectType, position, direction)
         }
 
-        else if (objectType == "player") {
+        else if (objectType == "PlayerBody") {
             // ТУТ БАГ!! !! !((;;! (;(;(
             var canvasXY = { X: $(window).width() / 2, Y: $(window).height() / 2 };
             console.log(canvasXY.X + "!!!!!!");
             obj = new GameObject(id, objectType, position, direction, canvasXY)
         }
 
-        else if (objectType == "bullet") {
+        else if (objectType == "Bullet") {
             obj = new GameObject(id, objectType, position, direction)
         }
 

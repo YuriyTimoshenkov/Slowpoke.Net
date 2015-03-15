@@ -13,7 +13,7 @@ function KeyPressedHandler() {
 KeyPressedHandler.prototype = {
     clearAll: function () {
         for (var key in this.keyPressed) {
-            console.log(key)
+            //console.log(key)
             this.keyPressed[key] = false;
         }
     }

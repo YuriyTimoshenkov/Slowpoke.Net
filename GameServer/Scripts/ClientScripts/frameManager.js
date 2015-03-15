@@ -4,6 +4,9 @@
 
 
 function FrameManager(target, world) {
+    console.log(404)
+    console.log(target)
+    console.log(404)
     this.target = target;
     this.world = world;
     this.currentFrame = { cells: [], objects: [] }
@@ -134,7 +137,7 @@ FrameManager.prototype = {
 
         // Update objects
         this.currentFrame.objects.forEach(function (obj) {
-            if (obj.objectType !== "player") {
+            if (obj.objectType !== "PlayerBody") {
                 var dx = self.target.xy.X - obj.xy.X;
                 var dy = self.target.xy.Y - obj.xy.Y;
                 //console.log(222)

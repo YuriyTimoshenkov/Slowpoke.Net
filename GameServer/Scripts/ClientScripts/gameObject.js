@@ -14,7 +14,7 @@ function GameObject(id, objectType, position, direction, canvasXY) {
 GameObject.prototype = {
     draw: function(context) {
         console.log("GameObject Draw: " + this.objectType);
-        if (this.objectType == "player"){
+        if (this.objectType == "PlayerBody") {
             context.fillStyle = "red";
             context.fillRect(this.canvasXY.X, this.canvasXY.Y, 20, 20);
 
@@ -25,7 +25,7 @@ GameObject.prototype = {
             context.fillRect(this.canvasXY.X, this.canvasXY.Y, 20, 20);
         }
 
-        else if (this.objectType == "bullet") {
+        else if (this.objectType == "Bullet") {
             context.beginPath();
             context.arc(this.canvasXY.X, this.canvasXY.Y, 5, 0, 2 * Math.PI, false);
             context.fillStyle = 'yellow';
