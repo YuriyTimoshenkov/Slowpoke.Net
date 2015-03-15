@@ -60,7 +60,7 @@ namespace SlowpokeEngine.Engines
                     var magnitute = Math.Sqrt(Math.Pow(moveCommand.Direction.X, 2) + Math.Pow(moveCommand.Direction.Y, 2));
                     var unitDirectionVector = new Vector(
                         (int)Math.Round(moveCommand.Direction.X / magnitute),
-                        (int)Math.Round(moveCommand.Direction.X / magnitute));
+                        (int)Math.Round(moveCommand.Direction.Y / magnitute));
                    
 
                     body.Position = new Point(
