@@ -1,4 +1,6 @@
-﻿function KeyPressedHandler() {
+﻿
+
+function KeyPressedHandler() {
     this.keyPressed = {
         32: false,  // Space
         87: false,  // W
