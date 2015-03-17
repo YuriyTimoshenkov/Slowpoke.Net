@@ -74,7 +74,7 @@ FrameManager.prototype = {
         var obj = this.world.allGameObjects.filter(function (obj) { return objId == obj.id })[0];
 
         // Update position
-        obj.xy = objData["Position"];
+        obj.gameRect.center = objData["Position"];
 
         // Update direction
         obj.direction = objData["Direction"];
@@ -88,29 +88,26 @@ FrameManager.prototype = {
     updateCanvasXY: function () {
         var self = this;
 
-        var calcDiff = function (item) {
-
-        };
-        // Update cells
-        this.currentFrame.cells.forEach(function (row) {
-            row.forEach(function (cell) {
-                var dx = self.target.xy.X - cell.X;
-                var dy = self.target.xy.Y - cell.Y;
-
-                cell.canvasX = self.target.canvasXY.X - dx;
-                cell.canvasY = self.target.canvasXY.Y - dy;
-            })
-        });
-
         // Update objects
         this.currentFrame.objects.forEach(function (obj) {
             if (obj.objectType !== "PlayerBody") {
-                var dx = self.target.xy.X - obj.xy.X;
-                var dy = self.target.xy.Y - obj.xy.Y;
+                var dx = self.target.gameRect.x - obj.gameRect.x;
+                var dy = self.target.gameRect.y - obj.gameRect.y;
 
-                obj.canvasXY.X = self.target.canvasXY.X - dx;
-                obj.canvasXY.Y = self.target.canvasXY.Y - dy;
+                obj.canvasXY.x = self.target.canvasXY.x - dx;
+                obj.canvasXY.y = self.target.canvasXY.y - dy;
             }
+        });
+
+        // Update cells
+        this.currentFrame.cells.forEach(function (row) {
+            row.forEach(function (cell) {
+                var dx = self.gameRect.x - cell.gameRect.x;
+                var dy = self.gameRect.y - cell.gameRect.y;
+
+                cell.canvasX = self.target.canvasXY.x - dx;
+                cell.canvasY = self.target.canvasXY.y - dy;
+            })
         });
     }
 };
