@@ -1,7 +1,25 @@
 ﻿<div class="container">
-    <p>Please, provide us with you card details >></p>
-    <div>Number:<input ng-model="payment.CardNumber"/></div>
-    <div>Expires:<input ng-model="payment.Expires" /></div>
-    <div>CV:<input ng-model="payment.CV" /></div>
-    <button ng-click="Pay()">Pay</button>
+    <div ng-hide="payment.Confirmation" >
+        <p>Please, provide us with you card details >></p>
+        <form ng-submit="Pay()" name="paymentForm">
+            <div>
+                Number:<input ng-model="payment.CardNumber" value="{{CardNumber}}" ng-pattern="/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/"
+                              name="card" required placeholder="XXXX-XXXX-XXXX-XXXX" />
+                <span ng-show="paymentForm.card.$error.pattern">Not a valid value</span>
+                <span ng-show="paymentForm.card.$error.required">This field is required</span>
+            </div>
+            <div>
+                Expires:<input type="date" ng-model="payment.Expires" name="expires" required />
+                <span ng-show="paymentForm.expires.$error.required">This field is required</span>
+            </div>
+            <div>
+                CV:<input type="number" ng-pattern="/^[0-9]{3}$/" ng-model="payment.CV" name="csv" required
+                          placeholder="XXX" />
+                <span ng-show="paymentForm.csv.$error.pattern">Not a valid value</span>
+                <span ng-show="paymentForm.csv.$error.required">This field is required</span>
+            </div>
+            <button type="submit" ng-disabled="paymentForm.$invalid"> Pay</button>
+        </form>
+    </div>
+    <div ng-show="payment.Confirmation">Payment processing in progress...</div>
 </div>

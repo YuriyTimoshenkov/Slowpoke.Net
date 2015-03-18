@@ -1,5 +1,6 @@
 ﻿<div class="container">
-    <p>You are going to pay >></p>
-    <div>Payment result: {{payment.Result}}</div>
-    <a href="#/">To original</a>
+    <div ng-attr-style="{{ payment.Result.isSuccess ? 'color: green' : 'color: red'}}">
+        <p>Payment result: {{payment.Result.Message}}</p>
+    </div>
+    <a ng-href="{{returnUrl}}">To original</a>
 </div>

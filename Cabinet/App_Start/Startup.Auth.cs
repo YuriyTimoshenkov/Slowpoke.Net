@@ -15,7 +15,7 @@ namespace Cabinet
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
-            
+
             // Enable the application to use a cookie to store information for the signed in user
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -30,7 +30,7 @@ namespace Cabinet
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             app.UseGoogleAuthentication(
-                new GoogleOAuth2AuthenticationOptions() 
+                new GoogleOAuth2AuthenticationOptions()
                 {
                     ClientId = "435653818711-f8f47f2re8hlp7tecddltbu3k1gp0ktd.apps.googleusercontent.com",
                     ClientSecret = "SLafHhtu3khQoBcjPoBqVsBp",
