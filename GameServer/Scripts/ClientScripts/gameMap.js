@@ -5,8 +5,9 @@
 function Cell(xy, size, terrain) {
     this.X = xy[0];
     this.Y = xy[1];
-    this.canvasX = this.X;
-    this.canvasY = this.Y;
+    this.gameRect = new Rect(xy[0], xy[1], size, size)
+    this.canvasX = this.gameRect.x;
+    this.canvasY = this.gameRect.y;
     this.width = size;
     this.height = size;
     this.terrain = terrain || 'meadow';

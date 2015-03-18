@@ -11,7 +11,7 @@ function World(width, height, cellSize) {
 
 World.prototype = {
     createGameObject: function (data) {
-        console.log("World is creating object");
+        //console.log("World is creating object");
         var objectType = data["ActiveBodyType"];
         var id = data["Id"];
         var position = data["Position"];
@@ -24,7 +24,7 @@ World.prototype = {
 
         else if (objectType == "PlayerBody") {
             // ТУТ БАГ!! !! !((;;! (;(;(
-            var canvasXY = { X: $(window).width() / 2, Y: $(window).height() / 2 };
+            var canvasXY = { x: $(window).width() / 2, y: $(window).height() / 2 };
             console.log(canvasXY.X + "!!!!!!");
             obj = new GameObject(id, objectType, position, direction, canvasXY)
         }
@@ -33,7 +33,7 @@ World.prototype = {
             obj = new GameObject(id, objectType, position, direction)
         }
 
-        else throw "World2: invalid gameObject type: " + objectType;
+        else throw "World: invalid gameObject type: " + objectType;
 
         this.allGameObjects.push(obj)
     }
