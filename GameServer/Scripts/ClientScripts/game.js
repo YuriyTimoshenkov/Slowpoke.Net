@@ -5,7 +5,7 @@
 function Game(worldWidth, worldHeight, player, cellSize, fps, gameProxy) {
     this.width = worldWidth; // cells in a row
     this.height = worldHeight; // cells in a column
-    this.player = player;
+    //this.player = player;
     this.cellSize = cellSize;
     this.gameProxy = gameProxy;
     this.fps = fps;
@@ -19,16 +19,15 @@ function Game(worldWidth, worldHeight, player, cellSize, fps, gameProxy) {
     // Create world
     this.world = new World(worldWidth, worldHeight, cellSize);
 
-    // Create empty player object
-    var playerObject = { "Id": player.Id, "ActiveBodyType": "PlayerBody" };
-    this.world.createGameObject(playerObject);
-    this.frameManager = new FrameManager(this.world.allGameObjects[0], this.world);
+    // Create empty player object to use in FrameManager
+    this.world.createGameObject({ "Id": player.Id, "ActiveBodyType": "PlayerBody", "Direction": { X: 0, Y: 0 }, "Position": { X: 0, Y: 0 } });
+    this.player = this.world.allGameObjects[0];
+    this.frameManager = new FrameManager(this.player, this.world);
 
     this.keyPressedHandler = new KeyPressedHandler();
     this.keyPressed = this.keyPressedHandler.keyPressed;
 
-    this.assignEventHadlers()
-
+    this.assignInputEventHadlers()
 }
 
 Game.prototype = {
@@ -41,6 +40,8 @@ Game.prototype = {
     update: function () {
         this.processInput();
         this.prepareNextFrame();
+
+        
         console.log("Frames in queue: " + this.serverFramesQueue.length)
     },
 
@@ -61,8 +62,9 @@ Game.prototype = {
 
     getFrameFromServer: function () {
         var self = this;
-        this.gameProxy.server.getActiveBodies(self.player.Id).done(function(obj) {
-            self.serverFramesQueue.push(obj)})
+        this.gameProxy.server.getActiveBodies(self.player.id).done(function (obj) {
+            self.serverFramesQueue.push(obj);
+        }).fail(function (error) { console.log("Oppa" + error) });
     },
 
     sendInputData: function () {},
@@ -76,7 +78,7 @@ Game.prototype = {
 
     processInput: function () {
         if (this.keyPressed[32]) { // Space
-            this.gameProxy.server.shoot(this.player.Id, 1)
+            this.gameProxy.server.shoot(this.player.id, 1)
         }
 
         if (this.keyPressed[87]) { // W
@@ -98,7 +100,7 @@ Game.prototype = {
         this.keyPressedHandler.clearAll();
     },
 
-    assignEventHadlers: function (e) {
+    assignInputEventHadlers: function () {
         var self = this;
         window.onkeydown = function (e) {
             // console.log("Processing keydown event")
@@ -106,22 +108,66 @@ Game.prototype = {
                 self.keyPressed[e.keyCode] = true;
             }
         }
+
+        this.canvas.onmousemove = function (e) { self.handleMouseMove(e) }
     },
 
     moveUp: function () {
-        this.gameProxy.server.moveBody(this.player.Id, 0, -1);
+        this.gameProxy.server.moveBody(this.player.id, 0, -1);
     },
 
     moveDown: function () {
-        this.gameProxy.server.moveBody(this.player.Id, 0, 1);
+        this.gameProxy.server.moveBody(this.player.id, 0, 1);
     },
 
     moveLeft: function () {
-        this.gameProxy.server.moveBody(this.player.Id, -1, 0);
+        this.gameProxy.server.moveBody(this.player.id, -1, 0);
     },
 
     moveRight: function () {
-        this.gameProxy.server.moveBody(this.player.Id, 1, 0);
+        this.gameProxy.server.moveBody(this.player.id, 1, 0);
     },
+
+    handleMouseMove: function (e) {
+        var center = this.player.canvasRect.center;
+        var mouse = new Point(e.clientX, e.clientY);
+        
+
+        console.log(999)
+        console.log(mouse)
+        console.log(center)
+
+
+        // Get mouse vector not normalized
+        var mouseVectorNotNormalized = new Point(center.x - mouse.x, center.y - mouse.y);
+        console.log(mouseVectorNotNormalized)
+
+        // Calculate mouse vector length
+        var mouseVectorLength = Math.sqrt(Math.pow(mouseVectorNotNormalized.x, 2) + Math.pow(mouseVectorNotNormalized.y, 2));
+        console.log(mouseVectorLength)
+
+        // Normalize mouse vector
+        var mouseVectorNormalized = new Point(mouseVectorNotNormalized.x / mouseVectorLength, mouseVectorNotNormalized.y / mouseVectorLength);
+        console.log(mouseVectorNormalized)
+
+        // Get mouse point with distance 1 from center
+        var mousePoint = new Point(center.x - mouseVectorNormalized.x, center.y - mouseVectorNormalized.y);
+
+        // Get direction point with distance 1 from center
+        var directionPoint = new Point(center.x + this.player.direction.X, center.y + this.player.direction.Y);
+        console.log(directionPoint)
+
+        // Get vector delta
+        var dx = Math.round(directionPoint.x - mousePoint.x);
+        var dy = Math.round(directionPoint.y - mousePoint.y);
+
+        // Request server
+        this.gameProxy.server.changeBodyDirection(this.player.id, dx, dy).fail(function (error) { console.log("yyye" + error) });
+        console.log(dx)
+        console.log(dy)
+        console.log(999)
+
+
+    }
 };
 

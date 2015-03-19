@@ -4,9 +4,6 @@
 
 
 function FrameManager(target, world) {
-    console.log(404)
-    console.log(target)
-    console.log(404)
     this.target = target;
     this.world = world;
     this.currentFrame = { cells: [], objects: [] }
@@ -19,6 +16,7 @@ FrameManager.prototype = {
         this.currentFrame.cells = this.world.gameMap.cells;
         this.currentFrame.objects = this.world.allGameObjects;
         this.updateCanvasXY();
+
     },
 
     draw: function (context) {
@@ -31,8 +29,10 @@ FrameManager.prototype = {
         });
 
         // Draw objects
-        this.currentFrame.objects.forEach(function (obj) { obj.draw(context) });
-
+        this.currentFrame.objects.forEach(function (obj) {
+            
+            obj.draw(context)
+        });
     },
 
     updateGameObjects: function (frame) {
@@ -73,6 +73,10 @@ FrameManager.prototype = {
         var objId = objData["Id"];
         var obj = this.world.allGameObjects.filter(function (obj) { return objId == obj.id })[0];
 
+
+        if (obj.objectType == "PlayerBody") {
+        }
+
         // Update position
         obj.gameRect.center = objData["Position"];
 
@@ -94,19 +98,19 @@ FrameManager.prototype = {
                 var dx = self.target.gameRect.x - obj.gameRect.x;
                 var dy = self.target.gameRect.y - obj.gameRect.y;
 
-                obj.canvasXY.x = self.target.canvasXY.x - dx;
-                obj.canvasXY.y = self.target.canvasXY.y - dy;
+                obj.canvasRect.x = self.target.canvasRect.x - dx;
+                obj.canvasRect.y = self.target.canvasRect.y - dy;
             }
         });
 
         // Update cells
         this.currentFrame.cells.forEach(function (row) {
             row.forEach(function (cell) {
-                var dx = self.gameRect.x - cell.gameRect.x;
-                var dy = self.gameRect.y - cell.gameRect.y;
+                var dx = self.target.gameRect.x - cell.gameRect.x;
+                var dy = self.target.gameRect.y - cell.gameRect.y;
 
-                cell.canvasX = self.target.canvasXY.x - dx;
-                cell.canvasY = self.target.canvasXY.y - dy;
+                cell.canvasX = self.target.canvasRect.x - dx;
+                cell.canvasY = self.target.canvasRect.y - dy;
             })
         });
     }
