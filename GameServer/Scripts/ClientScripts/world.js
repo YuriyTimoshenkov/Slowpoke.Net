@@ -6,6 +6,7 @@
 function World(width, height, cellSize) {
     this.allGameObjects = [];
     this.gameMap = new GameMap(width, height, cellSize);
+
 }
 
 
@@ -15,6 +16,7 @@ World.prototype = {
         var objectType = data["ActiveBodyType"];
         var id = data["Id"];
         var position = data["Position"];
+        
         var direction = data["Direction"];
         var obj;
 
@@ -25,7 +27,7 @@ World.prototype = {
         else if (objectType == "PlayerBody") {
             // ТУТ БАГ!! !! !((;;! (;(;(
             var canvasXY = { x: $(window).width() / 2, y: $(window).height() / 2 };
-            console.log(canvasXY.X + "!!!!!!");
+            console.log("PlayerBody Canvas Point: (" + canvasXY.x + ", " + canvasXY.y + ")");
             obj = new GameObject(id, objectType, position, direction, canvasXY)
         }
 

@@ -6,10 +6,17 @@
 function GameObject(id, objectType, position, direction, canvasXY) {
     this.id = id;
     this.objectType = objectType;
-    //this.xy = position || { X: 0, Y: 0 };
-    this.gameRect = new Rect(0, 0, 20, 20);
+    this.objectSize = 20;
+    this.gameRect = new Rect(0, 0, this.objectSize, this.objectSize);
     this.gameRect.center = position;
-    this.canvasXY = canvasXY || { x: this.gameRect.x, y: this.gameRect.y };
+
+
+    var self = this;
+    this.canvasRect = (function() {
+        if (canvasXY) return new Rect(canvasXY.x, canvasXY.y, self.objectSize, self.objectSize)
+        else return new Rect(0, 0, self.objectSize, self.objectSize)
+    })();
+
     this.direction = direction || {X: 0, Y: 0};
 }
 
@@ -18,18 +25,34 @@ GameObject.prototype = {
         console.log("GameObject Draw: " + this.objectType);
         if (this.objectType == "PlayerBody") {
             context.fillStyle = "red";
-            context.fillRect(this.canvasXY.x, this.canvasXY.y, 20, 20);
+            context.fillRect(this.canvasRect.x, this.canvasRect.y, 20, 20);
+
+            console.log("Player Direction:")
+            console.log(this.direction)
+
+            // Draw weapon
+            var newX = this.canvasRect.center.x + this.direction.X * 5;
+            var newY = this.canvasRect.center.y + this.direction.Y * 5;
+            context.beginPath();
+            context.moveTo(this.canvasRect.center.x, this.canvasRect.center.y);
+            context.lineTo(newX, newY);
+            context.lineWidth = 3;
+            context.stroke();
+
+            // Transformation
+            //context.translate(this.canvasRect.center.x, this.canvasRect.center.y);
+            //context.rotate(30 * Math.PI / 180);
 
         }
 
         else if (this.objectType == "NPC") {
             context.fillStyle = "black";
-            context.fillRect(this.canvasXY.x, this.canvasXY.y, 20, 20);
+            context.fillRect(this.canvasRect.x, this.canvasRect.y, 20, 20);
         }
 
         else if (this.objectType == "Bullet") {
             context.beginPath();
-            context.arc(this.canvasXY.x, this.canvasXY.y, 5, 0, 2 * Math.PI, false);
+            context.arc(this.canvasRect.x, this.canvasRect.y, 5, 0, 2 * Math.PI, false);
             context.fillStyle = 'yellow';
             context.fill();
             context.lineWidth = 1;

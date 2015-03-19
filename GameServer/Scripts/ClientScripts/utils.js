@@ -9,7 +9,6 @@ function KeyPressedHandler() {
         65: false,  // A
     };
 };
-
 KeyPressedHandler.prototype = {
     clearAll: function () {
         for (var key in this.keyPressed) {
@@ -20,6 +19,10 @@ KeyPressedHandler.prototype = {
 }
 
 
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}
 
 function Rect(x, y, w, h) {
     this.x = x;
@@ -27,14 +30,17 @@ function Rect(x, y, w, h) {
     this.width = w;
     this.height = h;
 }
-
 Rect.prototype = {
-    get center() { return [this.x + this.width / 2, this.y + this.height / 2] },
-    set center(newValue) {
-        this.x = newValue.X - this.width / 2;
-        this.y = newValue.Y - this.height / 2;
+
+    get centerx() { return this.x + this.width / 2 },
+    set centerx(value) { this.x = value - this.width / 2 },
+
+    get centery() { return this.y + this.height / 2 },
+    set centery(value) { this.y = value - this.height / 2 },
+
+    get center() { return new Point(this.centerx, this.centery) },
+    set center(value) {
+        this.centerx = value.X;
+        this.centery = value.Y;    
     }
-
-
-
 }
