@@ -104,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
+    <Content Include="Scripts\ClientScripts\controls-manager.js" />
+    <Content Include="Scripts\ClientScripts\factories.js" />
+    <Content Include="Scripts\ClientScripts\server-proxy.js" />
     <Content Include="Scripts\ClientScripts\utils.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
     <Content Include="Scripts\jquery-2.1.3.min.js" />

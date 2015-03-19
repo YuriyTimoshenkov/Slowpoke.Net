@@ -2,32 +2,78 @@
  * Created by dimapct on 12.02.2015.
  */
 
-function Game(worldWidth, worldHeight, player, cellSize, fps, gameProxy) {
-    this.width = worldWidth; // cells in a row
-    this.height = worldHeight; // cells in a column
+function Game(worldWidth, worldHeight, cellSize, fps, serverProxy, cManager) {
+    self = this
+    this.width = worldWidth // cells in a row
+    this.height = worldHeight;// cells in a column
     //this.player = player;
-    this.cellSize = cellSize;
-    this.gameProxy = gameProxy;
+    this.cellSize = cellSize
+    this.serverProxy = serverProxy
     this.fps = fps;
-    this.serverFramesQueue = [];
+    this.serverFramesQueue = []
+    this.controlsManager = cManager;
 
     // Configure canvas
     this.canvas = document.getElementById("canvas");
     this.context = this.canvas.getContext("2d");
-    this.setGameScreenSize();
+    this.setGameScreenSize()
 
     // Create world
-    this.world = new World(worldWidth, worldHeight, cellSize);
+    this.world = new World(worldWidth, worldHeight, cellSize)
 
-    // Create empty player object to use in FrameManager
-    this.world.createGameObject({ "Id": player.Id, "ActiveBodyType": "PlayerBody", "Direction": { X: 0, Y: 0 }, "Position": { X: 0, Y: 0 } });
-    this.player = this.world.allGameObjects[0];
-    this.frameManager = new FrameManager(this.player, this.world);
+    this.run = function () {
+        self.serverProxy.run(function () {
+            self.serverProxy.loadPlayer(self.loadPlayer, self.errorHandler)
+        }, self.errorHandler)
+    }
 
-    this.keyPressedHandler = new KeyPressedHandler();
-    this.keyPressed = this.keyPressedHandler.keyPressed;
+    this.moveUp = function () {
+        self.serverProxy.moveBody(self.player.id, 0, -1);
+    }
 
-    this.assignInputEventHadlers()
+    this.moveDown = function () {
+        self.serverProxy.moveBody(self.player.id, 0, 1);
+    }
+
+    this.moveLeft = function () {
+        self.serverProxy.moveBody(self.player.id, -1, 0);
+    }
+
+    this.moveRight = function () {
+        self.serverProxy.moveBody(self.player.id, 1, 0);
+    }
+
+    this.loadPlayer = function (player) {
+        self.player = player
+
+        // Create empty player object to use in FrameManager
+        self.world.createGameObject({ "Id": player.Id, "ActiveBodyType": "PlayerBody", "Direction": { X: 0, Y: 0 }, "Position": { X: 0, Y: 0 } })
+        self.player = self.world.allGameObjects[0]
+        self.frameManager = new FrameManager(self.player, self.world)
+
+        //self.keyPressedHandler = new KeyPressedHandler()
+        //self.keyPressed = self.keyPressedHandler.keyPressed
+
+        //self.assignInputEventHadlers()
+        self.controlsManager.addMoveUpHandler(self.moveUp);
+        self.controlsManager.addMoveDownHandler(self.moveDown);
+        self.controlsManager.addMoveRightHandler(self.moveRight);
+        self.controlsManager.addMoveLeftHandler(self.moveLeft);
+        self.controlsManager.addShootHandler(function () {
+            self.serverProxy.shoot(self.player.id, 1)
+        });
+
+        // Start listening server
+        setInterval(function () { self.getFrameFromServer() }, serverRequestFPS)
+
+        // Start game loop
+        setInterval(function () { self.loop() }, updateFPS)
+
+    }
+
+    this.errorHandler = function (error) {
+        console.log(error)
+    }
 }
 
 Game.prototype = {
@@ -38,7 +84,7 @@ Game.prototype = {
     },
 
     update: function () {
-        this.processInput();
+        //this.processInput();
         this.prepareNextFrame();
 
         
@@ -62,9 +108,9 @@ Game.prototype = {
 
     getFrameFromServer: function () {
         var self = this;
-        this.gameProxy.server.getActiveBodies(self.player.id).done(function (obj) {
+        this.serverProxy.getActiveBodies(self.player.id, function (obj) {
             self.serverFramesQueue.push(obj);
-        }).fail(function (error) { console.log("Oppa" + error) });
+        }, function (error) { console.log("Oppa" + error) });
     },
 
     sendInputData: function () {},
@@ -76,29 +122,29 @@ Game.prototype = {
 
     },
 
-    processInput: function () {
-        if (this.keyPressed[32]) { // Space
-            this.gameProxy.server.shoot(this.player.id, 1)
-        }
+    //processInput: function () {
+    //    if (this.keyPressed[32]) { // Space
+    //        this.serverProxy.shoot(this.player.id, 1)
+    //    }
 
-        if (this.keyPressed[87]) { // W
-            this.moveUp()
-        }
+    //    if (this.keyPressed[87]) { // W
+    //        this.moveUp()
+    //    }
 
-        else if (this.keyPressed[68]) { // D
-            this.moveRight()
-        }
+    //    else if (this.keyPressed[68]) { // D
+    //        this.moveRight()
+    //    }
 
-        else if (this.keyPressed[83]) { // S
-            this.moveDown()
-        }
+    //    else if (this.keyPressed[83]) { // S
+    //        this.moveDown()
+    //    }
 
-        else if (this.keyPressed[65]) { // A
-            this.moveLeft()
-        }
+    //    else if (this.keyPressed[65]) { // A
+    //        this.moveLeft()
+    //    }
 
-        this.keyPressedHandler.clearAll();
-    },
+    //    this.keyPressedHandler.clearAll();
+    //},
 
     assignInputEventHadlers: function () {
         var self = this;
@@ -112,21 +158,7 @@ Game.prototype = {
         this.canvas.onmousemove = function (e) { self.handleMouseMove(e) }
     },
 
-    moveUp: function () {
-        this.gameProxy.server.moveBody(this.player.id, 0, -1);
-    },
-
-    moveDown: function () {
-        this.gameProxy.server.moveBody(this.player.id, 0, 1);
-    },
-
-    moveLeft: function () {
-        this.gameProxy.server.moveBody(this.player.id, -1, 0);
-    },
-
-    moveRight: function () {
-        this.gameProxy.server.moveBody(this.player.id, 1, 0);
-    },
+   
 
     handleMouseMove: function (e) {
         var center = this.player.canvasRect.center;
@@ -162,7 +194,7 @@ Game.prototype = {
         var dy = Math.round(directionPoint.y - mousePoint.y);
 
         // Request server
-        this.gameProxy.server.changeBodyDirection(this.player.id, dx, dy).fail(function (error) { console.log("yyye" + error) });
+        this.serverProxy.changeBodyDirection(this.player.id, dx, dy);
         console.log(dx)
         console.log(dy)
         console.log(999)
