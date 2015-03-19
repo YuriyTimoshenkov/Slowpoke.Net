@@ -132,27 +132,37 @@ Game.prototype = {
         var center = this.player.canvasRect.center;
         var mouse = new Point(e.clientX, e.clientY);
         
-        // Get mouse vector
-        var mouseVector = new Point(center.x - mouse.x, center.y - mouse.y);
-        // Calculate mouse vector length
-        var mouseVectorLength = Math.sqrt(Math.pow(mouseVector.x, 2) + Math.pow(mouseVector.y, 2));
 
-        // Normilize mouse vector
-        var mouseVectorLengthNorm = new Point(mouseVector.x / mouseVectorLength, mouseVector.y / mouseVectorLength);
-
-        // Get direction vector
-        var directionVector = new Point(this.player.canvasRect.centerx + this.player.direction.X,
-                                        this.player.canvasRect.centery + this.player.direction.Y);
-
-        // Get vector delta
         console.log(999)
         console.log(mouse)
         console.log(center)
 
-        var dx = Math.round(directionVector.x - mouseVectorLengthNorm.x);
-        var dy = Math.round(directionVector.y - mouseVectorLengthNorm.y);
 
-        this.gameProxy.server.changeBodyDirection(this.player.id, dx, dy).fail(function (error) { console.log("yyye" + error)});
+        // Get mouse vector not normalized
+        var mouseVectorNotNormalized = new Point(center.x - mouse.x, center.y - mouse.y);
+        console.log(mouseVectorNotNormalized)
+
+        // Calculate mouse vector length
+        var mouseVectorLength = Math.sqrt(Math.pow(mouseVectorNotNormalized.x, 2) + Math.pow(mouseVectorNotNormalized.y, 2));
+        console.log(mouseVectorLength)
+
+        // Normalize mouse vector
+        var mouseVectorNormalized = new Point(mouseVectorNotNormalized.x / mouseVectorLength, mouseVectorNotNormalized.y / mouseVectorLength);
+        console.log(mouseVectorNormalized)
+
+        // Get mouse point with distance 1 from center
+        var mousePoint = new Point(center.x - mouseVectorNormalized.x, center.y - mouseVectorNormalized.y);
+
+        // Get direction point with distance 1 from center
+        var directionPoint = new Point(center.x + this.player.direction.X, center.y + this.player.direction.Y);
+        console.log(directionPoint)
+
+        // Get vector delta
+        var dx = Math.round(directionPoint.x - mousePoint.x);
+        var dy = Math.round(directionPoint.y - mousePoint.y);
+
+        // Request server
+        this.gameProxy.server.changeBodyDirection(this.player.id, dx, dy).fail(function (error) { console.log("yyye" + error) });
         console.log(dx)
         console.log(dy)
         console.log(999)
