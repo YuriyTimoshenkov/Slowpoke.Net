@@ -1,0 +1,10 @@
+﻿
+
+@Html.ActionLink("Pay", "Pay",
+    new { OrderId = ViewBag.orderId, 
+        Amount = ViewBag.amount,
+        CallbackUrl = ViewBag.callbackUrl,
+        ReturnUrl = ViewBag.returnUrl,
+        CompanyName = ViewBag.companyName,
+        ServiceName = ViewBag.serviceName,
+        Sign = ViewBag.sign})

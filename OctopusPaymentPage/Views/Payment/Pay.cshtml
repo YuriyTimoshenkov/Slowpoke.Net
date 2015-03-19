@@ -1,0 +1,7 @@
+﻿@section Scripts {
+
+    <script>
+        window.app.value('PaymentRequest', @Html.Raw(Json.Encode(@ViewBag.AppValue)));
+    </script>
+}
+<div ng-view=""></div>
