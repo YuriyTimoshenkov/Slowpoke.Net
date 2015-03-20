@@ -31,8 +31,8 @@ GameObject.prototype = {
             console.log(this.direction)
 
             // Draw weapon
-            var newX = this.canvasRect.center.x + this.direction.X * 5;
-            var newY = this.canvasRect.center.y + this.direction.Y * 5;
+            var newX = this.canvasRect.center.x + this.direction.X * 50;
+            var newY = this.canvasRect.center.y + this.direction.Y * 50;
             context.beginPath();
             context.moveTo(this.canvasRect.center.x, this.canvasRect.center.y);
             context.lineTo(newX, newY);

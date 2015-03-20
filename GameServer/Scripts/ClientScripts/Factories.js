@@ -8,10 +8,17 @@ function gameBuilder() {
     var serverProxy = new serverProxyFactory().createServerProxy('/')
     var viewM = new viewManagerFactory().createViewManager()
     var gameWorldM = new gameWorldManagerFactory().createGameWorldManager()
-    var controlsM = new controlsManager()
+    var controlsM = new controlsManagerFactory().createControlsManager(serverProxy)
 
     this.buildGame = function () {
         return new Game(updateFPS, serverProxy, controlsM, viewM, gameWorldM)
+    }
+}
+
+function controlsManagerFactory(serverProxy) {
+    this.createControlsManager = function (serverProxy) {
+        var canvas = document.getElementById("canvas");
+        return new controlsManager(canvas, serverProxy)
     }
 }
 
