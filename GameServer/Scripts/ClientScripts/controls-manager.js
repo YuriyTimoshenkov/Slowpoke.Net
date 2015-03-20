@@ -1,5 +1,6 @@
-﻿function controlsManager() {
-    selfCM = this
+﻿function controlsManager()  {
+    var self = this
+
     this.keysHandlers = [
         { keyCode: 32, handler: [] },
         { keyCode: 87, handler: [] },
@@ -9,8 +10,8 @@
     ];
 
     window.onkeydown = function (e) {
-        selfCM.keysHandlers.forEach(function (element, index, array) {
-            if (e.keyCode == element.keyCode) {
+        self.keysHandlers.forEach(function (element, index, array) {
+            if (e.keyCode === element.keyCode) {
                 element.handler.forEach(function (element, index, array) {
                     element();
                 })
@@ -20,7 +21,7 @@
 
     this.addKeyHandler = function (keyCode, handler) {
         this.keysHandlers.forEach(function (element, index, array) {
-            if (element.keyCode == keyCode) {
+            if (element.keyCode === keyCode) {
                 element.handler.push(handler)
                 return
             }

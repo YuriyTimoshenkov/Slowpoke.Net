@@ -2,65 +2,51 @@
  * Created by dimapct on 12.02.2015.
  */
 
-function Game(worldWidth, worldHeight, cellSize, fps, serverProxy, cManager) {
-    self = this
-    this.width = worldWidth // cells in a row
-    this.height = worldHeight;// cells in a column
-    //this.player = player;
-    this.cellSize = cellSize
+function Game(fps, serverProxy, controlsManager, viewManager, gameWorldManager) {
+    var self = this
+
     this.serverProxy = serverProxy
     this.fps = fps;
     this.serverFramesQueue = []
-    this.controlsManager = cManager;
-
-    // Configure canvas
-    this.canvas = document.getElementById("canvas");
-    this.context = this.canvas.getContext("2d");
-    this.setGameScreenSize()
-
-    // Create world
-    this.world = new World(worldWidth, worldHeight, cellSize)
+    this.controlsManager = controlsManager
+    this.viewManager = viewManager
+    this.gameWorldManager = gameWorldManager
+    
 
     this.run = function () {
-        self.serverProxy.run(function () {
-            self.serverProxy.loadPlayer(self.loadPlayer, self.errorHandler)
+        serverProxy.run(function () {
+            serverProxy.loadPlayer(self.loadPlayer, self.errorHandler)
         }, self.errorHandler)
     }
 
     this.moveUp = function () {
-        self.serverProxy.moveBody(self.player.id, 0, -1);
+        serverProxy.moveBody(self.player.Id, 0, -1);
     }
 
     this.moveDown = function () {
-        self.serverProxy.moveBody(self.player.id, 0, 1);
+        serverProxy.moveBody(self.player.Id, 0, 1);
     }
 
     this.moveLeft = function () {
-        self.serverProxy.moveBody(self.player.id, -1, 0);
+        serverProxy.moveBody(self.player.Id, -1, 0);
     }
 
     this.moveRight = function () {
-        self.serverProxy.moveBody(self.player.id, 1, 0);
+        serverProxy.moveBody(self.player.Id, 1, 0);
     }
 
     this.loadPlayer = function (player) {
         self.player = player
 
-        // Create empty player object to use in FrameManager
-        self.world.createGameObject({ "Id": player.Id, "ActiveBodyType": "PlayerBody", "Direction": { X: 0, Y: 0 }, "Position": { X: 0, Y: 0 } })
-        self.player = self.world.allGameObjects[0]
-        self.frameManager = new FrameManager(self.player, self.world)
+        gameWorldManager.init(player.Id, self.serverFramesQueue)
+        viewManager.setTarget(gameWorldManager.player);
 
-        //self.keyPressedHandler = new KeyPressedHandler()
-        //self.keyPressed = self.keyPressedHandler.keyPressed
-
-        //self.assignInputEventHadlers()
-        self.controlsManager.addMoveUpHandler(self.moveUp);
-        self.controlsManager.addMoveDownHandler(self.moveDown);
-        self.controlsManager.addMoveRightHandler(self.moveRight);
-        self.controlsManager.addMoveLeftHandler(self.moveLeft);
-        self.controlsManager.addShootHandler(function () {
-            self.serverProxy.shoot(self.player.id, 1)
+        controlsManager.addMoveUpHandler(self.moveUp);
+        controlsManager.addMoveDownHandler(self.moveDown);
+        controlsManager.addMoveRightHandler(self.moveRight);
+        controlsManager.addMoveLeftHandler(self.moveLeft);
+        controlsManager.addShootHandler(function () {
+            serverProxy.shoot(self.player.Id, 1)
         });
 
         // Start listening server
@@ -78,73 +64,17 @@ function Game(worldWidth, worldHeight, cellSize, fps, serverProxy, cManager) {
 
 Game.prototype = {
     loop: function () {
-        this.update();
-        this.draw();
+        this.gameWorldManager.updateWorld()
+        this.viewManager.render(this.gameWorldManager.getCurrentFrame())
         console.log("--------------------------------------");
     },
 
-    update: function () {
-        //this.processInput();
-        this.prepareNextFrame();
-
-        
-        console.log("Frames in queue: " + this.serverFramesQueue.length)
-    },
-
-    draw: function () {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.frameManager.draw(this.context)
-    },
-
-    setGameScreenSize: function () {
-        var width = $(document).width();
-        var height = $(document).height();
-        console.log(777)
-        console.log(width + " " + height)
-        console.log(777)
-        this.canvas.width = width;
-        this.canvas.height = height;
-    },
-
     getFrameFromServer: function () {
-        var self = this;
-        this.serverProxy.getActiveBodies(self.player.id, function (obj) {
+        var self = this
+        this.serverProxy.getActiveBodies(this.player.Id, function (obj) {
             self.serverFramesQueue.push(obj);
         }, function (error) { console.log("Oppa" + error) });
     },
-
-    sendInputData: function () {},
-
-    prepareNextFrame: function () {
-        var nextFrame = this.serverFramesQueue.shift();
-        if (nextFrame) this.frameManager.processFrame(nextFrame)
-        else console.log("No frames in the Queue. Processing prediction.")
-
-    },
-
-    //processInput: function () {
-    //    if (this.keyPressed[32]) { // Space
-    //        this.serverProxy.shoot(this.player.id, 1)
-    //    }
-
-    //    if (this.keyPressed[87]) { // W
-    //        this.moveUp()
-    //    }
-
-    //    else if (this.keyPressed[68]) { // D
-    //        this.moveRight()
-    //    }
-
-    //    else if (this.keyPressed[83]) { // S
-    //        this.moveDown()
-    //    }
-
-    //    else if (this.keyPressed[65]) { // A
-    //        this.moveLeft()
-    //    }
-
-    //    this.keyPressedHandler.clearAll();
-    //},
 
     assignInputEventHadlers: function () {
         var self = this;

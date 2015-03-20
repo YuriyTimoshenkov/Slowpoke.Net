@@ -106,8 +106,10 @@
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\ClientScripts\controls-manager.js" />
     <Content Include="Scripts\ClientScripts\factories.js" />
+    <Content Include="Scripts\ClientScripts\game-world-manager.js" />
     <Content Include="Scripts\ClientScripts\server-proxy.js" />
     <Content Include="Scripts\ClientScripts\utils.js" />
+    <Content Include="Scripts\ClientScripts\view-manager.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
     <Content Include="Scripts\jquery-2.1.3.min.js" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
@@ -123,11 +125,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Scripts\ClientScripts\config.js" />
-    <Content Include="Scripts\ClientScripts\frameManager.js" />
     <Content Include="Scripts\ClientScripts\game.js" />
     <Content Include="Scripts\ClientScripts\gameMap.js" />
     <Content Include="Scripts\ClientScripts\gameObject.js" />
-    <Content Include="Scripts\ClientScripts\jquery.js" />
     <Content Include="Scripts\ClientScripts\main.js" />
     <Content Include="Scripts\ClientScripts\world.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />

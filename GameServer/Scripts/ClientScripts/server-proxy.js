@@ -1,6 +1,4 @@
 ﻿function serverProxyPrototype(url) {
-    var url = url;
-
     this.run = function (doneHandler, failHandler) {
     }
 
@@ -21,7 +19,6 @@
 }
 
 function serverProxySignalR(url) {
-    var url = url;
     var gameProxy = $.connection.slowpokeHub;
 
     gameProxy.client.SomeMethod = function () { }

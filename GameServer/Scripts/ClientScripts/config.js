@@ -2,7 +2,7 @@
  * Created by dimapct on 12.02.2015.
  */
 
-var updateFPS = 1000/1;
+var updateFPS = 1000/30;
 var serverRequestFPS = updateFPS;
 
 var requestAddress = "http://104.236.42.106:8083/getviewstate/";
@@ -28,6 +28,7 @@ var inputMap = [
 
 var worldWidth = inputMap[0].length;
 var worldHeight = inputMap.length;
+var cellSize = 50;
 
 
 // Terrain types

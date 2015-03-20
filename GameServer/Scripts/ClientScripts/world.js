@@ -38,5 +38,7 @@ World.prototype = {
         else throw "World: invalid gameObject type: " + objectType;
 
         this.allGameObjects.push(obj)
+
+        return obj
     }
 };
