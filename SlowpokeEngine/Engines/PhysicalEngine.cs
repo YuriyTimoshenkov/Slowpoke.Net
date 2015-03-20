@@ -56,16 +56,11 @@ namespace SlowpokeEngine.Engines
                     var body = command.ActiveBody;
                     var moveCommand = (GameCommandMove)command;
 
-                    //Calculate scalar direction vector
-                    var magnitute = Math.Sqrt(Math.Pow(moveCommand.Direction.X, 2) + Math.Pow(moveCommand.Direction.Y, 2));
-                    var unitDirectionVector = new Vector(
-                        (int)Math.Round(moveCommand.Direction.X / magnitute),
-                        (int)Math.Round(moveCommand.Direction.Y / magnitute));
-                   
+                    var moveUnitVector = Vector.CalculateUnitVector(moveCommand.Direction);
 
                     body.Position = new Point(
-                    body.Position.X + unitDirectionVector.X,
-                    body.Position.Y + unitDirectionVector.Y);
+                    body.Position.X + moveUnitVector.X,
+                    body.Position.Y + moveUnitVector.Y);
 
                     return new PhysicsProcessingResultEmpty(); 
                 });
@@ -79,9 +74,7 @@ namespace SlowpokeEngine.Engines
                         var directionChanges = (GameCommandChangeDirection)command;
                         var body = command.ActiveBody;
 
-                        body.Direction = new Vector(
-                        body.Direction.X + directionChanges.Dx,
-                        body.Direction.Y + directionChanges.Dy);
+                        body.Direction = Vector.CalculateUnitVector(directionChanges.Direction);
 
                         return new PhysicsProcessingResultEmpty();
                     });

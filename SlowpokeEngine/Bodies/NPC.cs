@@ -31,7 +31,7 @@ namespace SlowpokeEngine.Bodies
 			if (Direction != newDirection)
                 _mechanicEngine.ProcessGameCommand(
                     new GameCommandChangeDirection (
-                        newDirection.X - Direction.X, newDirection.Y - Direction.Y,
+                        new Vector(newDirection.X - Direction.X, newDirection.Y - Direction.Y),
                         _mechanicEngine, this
                         ));
 		}

@@ -9,7 +9,7 @@ namespace SlowpokeEngine.Bodies
 		Guid Id { get;}
 
         void Move(Vector direction);
-        void ChangeDirection(int dX, int dY);
+        void ChangeDirection(Vector direction);
         void Shoot(int weaponIndex);
 	}
 }

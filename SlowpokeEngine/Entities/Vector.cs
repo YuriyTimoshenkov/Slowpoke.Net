@@ -63,6 +63,15 @@ namespace SlowpokeEngine.Entities
 			return new Vector(pt.X - sz.X, pt.Y - sz.Y);
 		} 
 
+        public static Vector CalculateUnitVector(Vector vector)
+        {
+            //Calculate scalar direction vector
+            var magnitute = Math.Sqrt(Math.Pow(vector.X, 2) + Math.Pow(vector.Y, 2));
+            return new Vector(
+                (int)Math.Round(vector.X / magnitute),
+                (int)Math.Round(vector.Y / magnitute));
+        }
+
 		public override bool Equals(object obj)
 		{
 			if (!(obj is Vector)) return false;

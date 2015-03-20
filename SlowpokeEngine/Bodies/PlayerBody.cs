@@ -30,9 +30,9 @@ namespace SlowpokeEngine.Bodies
             ProcessAction(new GameCommandMove(direction, _mechanicEngine, this));
         }
 
-        public void ChangeDirection(int dX, int dY)
+        public void ChangeDirection(Vector direction)
         {
-            ProcessAction(new GameCommandChangeDirection(dX, dY, _mechanicEngine, this));
+            ProcessAction(new GameCommandChangeDirection(direction, _mechanicEngine, this));
         }
 
         public void Shoot(int weaponIndex)

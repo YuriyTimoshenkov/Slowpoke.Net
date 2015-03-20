@@ -58,11 +58,11 @@ namespace SlowpokeHubs
             player.Move(new Vector(x,y));
 		}
 
-		public void ChangeBodyDirection(Guid playerId, int dX, int dY)
+		public void ChangeBodyDirection(Guid playerId, int x, int y)
 		{
 			var player = MechanicEngine.GetPlayerBody (playerId);
 
-            player.ChangeDirection(dX, dY);
+            player.ChangeDirection(new Vector(x, y));
 		}
 
         public void Shoot(Guid playerId, int weaponindex)
