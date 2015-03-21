@@ -12,6 +12,7 @@ function Game(fps, serverProxy, controlsManager, viewManager, gameWorldManager) 
     this.viewManager = viewManager
     this.gameWorldManager = gameWorldManager
     
+    this.controlsManager.canvas.onmousemove = function (e) { self.controlsManager.handleMouseMove(e, self.gameWorldManager.world.allGameObjects[0]) }
 
     this.run = function () {
         serverProxy.run(function () {
@@ -86,50 +87,6 @@ Game.prototype = {
         }
 
         this.canvas.onmousemove = function (e) { self.handleMouseMove(e) }
-    },
-
-   
-
-    handleMouseMove: function (e) {
-        var center = this.player.canvasRect.center;
-        var mouse = new Point(e.clientX, e.clientY);
-        
-
-        console.log(999)
-        console.log(mouse)
-        console.log(center)
-
-
-        // Get mouse vector not normalized
-        var mouseVectorNotNormalized = new Point(center.x - mouse.x, center.y - mouse.y);
-        console.log(mouseVectorNotNormalized)
-
-        // Calculate mouse vector length
-        var mouseVectorLength = Math.sqrt(Math.pow(mouseVectorNotNormalized.x, 2) + Math.pow(mouseVectorNotNormalized.y, 2));
-        console.log(mouseVectorLength)
-
-        // Normalize mouse vector
-        var mouseVectorNormalized = new Point(mouseVectorNotNormalized.x / mouseVectorLength, mouseVectorNotNormalized.y / mouseVectorLength);
-        console.log(mouseVectorNormalized)
-
-        // Get mouse point with distance 1 from center
-        var mousePoint = new Point(center.x - mouseVectorNormalized.x, center.y - mouseVectorNormalized.y);
-
-        // Get direction point with distance 1 from center
-        var directionPoint = new Point(center.x + this.player.direction.X, center.y + this.player.direction.Y);
-        console.log(directionPoint)
-
-        // Get vector delta
-        var dx = Math.round(directionPoint.x - mousePoint.x);
-        var dy = Math.round(directionPoint.y - mousePoint.y);
-
-        // Request server
-        this.serverProxy.changeBodyDirection(this.player.id, dx, dy);
-        console.log(dx)
-        console.log(dy)
-        console.log(999)
-
-
     }
 };
 
