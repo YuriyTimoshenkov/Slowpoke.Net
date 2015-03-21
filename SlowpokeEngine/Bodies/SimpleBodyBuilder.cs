@@ -22,7 +22,7 @@ namespace SlowpokeEngine.Bodies
 				new Vector (1, 3),
 				mechanicEngine);
 
-            player.Weapons.Add(new WeaponGun(10,100,500, mechanicEngine));
+            player.Weapons.Add(new WeaponGun(10,100,10, mechanicEngine));
 
             return player;
 		}
