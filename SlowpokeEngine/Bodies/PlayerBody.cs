@@ -15,7 +15,7 @@ namespace SlowpokeEngine.Bodies
             Point position, 
 			Vector direction,
 			IMechanicEngine mechanicEngine
-            ):base(position, direction,  mechanicEngine)
+            ):base(new ShapeCircle(5,position), direction,  mechanicEngine)
         {
             Weapons = new List<WeaponBase>();
         }
@@ -39,7 +39,7 @@ namespace SlowpokeEngine.Bodies
         {
             if(weaponIndex >= 0 && Weapons.Count >= weaponIndex)
             {
-                Weapons[weaponIndex-1].Shoot(Position, Direction);
+                Weapons[weaponIndex - 1].Shoot(Shape.Position, Direction);
             }
         }
     }

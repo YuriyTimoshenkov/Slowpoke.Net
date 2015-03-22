@@ -9,7 +9,7 @@ namespace SlowpokeEngine.Bodies
 	{
 		private volatile Timer timer;
 		public NPC (IMechanicEngine mechanicEngine):base(
-			new Point(0,0),
+			new ShapeCircle(5, new Point(0,0)),
 			new Vector(1,1),
 			mechanicEngine)
 		{
@@ -25,8 +25,8 @@ namespace SlowpokeEngine.Bodies
 			_mechanicEngine.ProcessGameCommand (new GameCommandMove (this.Direction, _mechanicEngine, this));
 
 			var newDirection = new Vector (
-				GetNewDirection (Direction.X, Position.X), 
-				GetNewDirection (Direction.Y, Position.Y));
+				GetNewDirection (Direction.X, Shape.Position.X),
+                GetNewDirection(Direction.Y, Shape.Position.Y));
 
 			if (Direction != newDirection)
                 _mechanicEngine.ProcessGameCommand(
