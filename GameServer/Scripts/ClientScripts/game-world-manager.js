@@ -8,7 +8,7 @@
     this.updateWorld = function () {
         console.log("Start Updating Objects")
 
-        var frame = this.serverFramesQueue.pop()
+        var frame = this.serverFramesQueue.shift()
 
         if (!frame)
             return
