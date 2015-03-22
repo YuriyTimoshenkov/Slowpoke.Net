@@ -68,8 +68,8 @@ namespace SlowpokeEngine.Entities
             //Calculate scalar direction vector
             var magnitute = Math.Sqrt(Math.Pow(vector.X, 2) + Math.Pow(vector.Y, 2));
             return new Vector(
-                (int)Math.Round(vector.X / magnitute),
-                (int)Math.Round(vector.Y / magnitute));
+                (int)Math.Round(vector.X / magnitute * 5),
+                (int)Math.Round(vector.Y / magnitute * 5));
         }
 
 		public override bool Equals(object obj)

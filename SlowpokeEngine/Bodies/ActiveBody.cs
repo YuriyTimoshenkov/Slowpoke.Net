@@ -17,13 +17,13 @@ namespace SlowpokeEngine.Bodies
 
 
 		public ActiveBody(
-			Point position, 
+			Shape shape, 
 			Vector direction,
 			IMechanicEngine mechanicEngine)
 		{
 			Id = Guid.NewGuid();
 			_mechanicEngine = mechanicEngine;
-			Position = position;
+			Shape = shape;
 			Direction = direction;
 		}
 

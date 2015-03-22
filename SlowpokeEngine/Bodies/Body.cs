@@ -9,6 +9,6 @@ namespace SlowpokeEngine.Bodies
 {
     public abstract class Body
     {
-        public Point Position { get; set; }
+        public Shape Shape { get; set; }
     }
 }

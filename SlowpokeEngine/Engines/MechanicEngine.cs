@@ -7,6 +7,7 @@ using SlowpokeEngine.Actions;
 using System.Collections.Generic;
 using System.Linq;
 using SlowpokeEngine.Extensions;
+using SlowpokeEngine.Weapons;
 
 namespace SlowpokeEngine.Engines
 {
@@ -128,12 +129,20 @@ namespace SlowpokeEngine.Engines
             _actionHandlers.AddHandler((gameCommand, result) =>
                     {
                         return result is PhysicsProcessingResultCollision
-                            && ((PhysicsProcessingResultCollision) result).Bodies.Count == 1 
-                                && ((PhysicsProcessingResultCollision) result).Bodies[0].GetType() == typeof(PassiveBody);
+                            && gameCommand.ActiveBody is Bullet; 
                     },
                     (gameCommand, result) =>
                     {
+                        var resultCollision = (PhysicsProcessingResultCollision)result;
                         ReleaseActiveBody(gameCommand.ActiveBody.Id);
+
+                        foreach(var body in resultCollision.Bodies)
+                        {
+                            if(body is ActiveBody)
+                            {
+                                ReleaseActiveBody(((ActiveBody)body).Id);
+                            }
+                        }
                     });
         }
     }

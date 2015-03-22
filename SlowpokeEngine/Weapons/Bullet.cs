@@ -22,7 +22,7 @@ namespace SlowpokeEngine.Weapons
             int speed,
             Point position, 
 			Vector direction,
-			IMechanicEngine mechanicEngine):base(position, direction, mechanicEngine)
+			IMechanicEngine mechanicEngine):base(new ShapeCircle(2,position), direction, mechanicEngine)
         {
             StartPosition = position;
             ShootingDistance = shootingDistance;

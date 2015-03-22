@@ -1,6 +1,7 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using SlowpokeEngine;
 using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Engines;
 using SlowpokeEngine.Entities;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace TestServerConsole
                         Console.WriteLine("New Era");
                         foreach (var body in mechanicEngine.ViewPort.GetActiveBodies(player.Id))
                         {
-                            Console.WriteLine("Body Id: {0}, new position: {1}", body.Id, body.Position.ToString());
+                            Console.WriteLine("Body Id: {0}, new position: {1}", body.Id, body.Shape.Position.ToString());
                         }
 
                         Thread.Sleep(1000);

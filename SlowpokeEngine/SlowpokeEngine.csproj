@@ -43,6 +43,11 @@
     <Compile Include="Bodies\PassiveBody.cs" />
     <Compile Include="Commands\PhysicsProcessingResult.cs" />
     <Compile Include="Commands\PhysicsProcessingResultCollision.cs" />
+    <Compile Include="Engines\IShapeCollisionManager.cs" />
+    <Compile Include="Engines\ShapeCollisionManager.cs" />
+    <Compile Include="Entities\Shape.cs" />
+    <Compile Include="Entities\ShapeCircle.cs" />
+    <Compile Include="Entities\ShapeRectangle.cs" />
     <Compile Include="Extensions\ActionHandlersManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bodies\ActiveBody.cs" />
