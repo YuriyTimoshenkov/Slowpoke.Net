@@ -27,6 +27,9 @@ namespace SlowpokeEngine.Weapons
             StartPosition = position;
             ShootingDistance = shootingDistance;
             _speed = speed;
+            
+            //calculate position
+            Shape.Position = Direction.MovePoint(Shape.Position, Shape.MaxDimension);
         }
 
         public override void Run()

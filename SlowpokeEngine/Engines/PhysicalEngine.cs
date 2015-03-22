@@ -5,6 +5,7 @@ using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Entities;
 using SlowpokeEngine.Weapons;
 using SlowpokeEngine.Extensions;
+using System.Linq;
 
 namespace SlowpokeEngine.Engines
 {
@@ -62,17 +63,13 @@ namespace SlowpokeEngine.Engines
                     var body = command.ActiveBody;
                     var moveCommand = (GameCommandMove)command;
 
-                    var moveUnitVector = Vector.CalculateUnitVector(moveCommand.Direction);
-
-                    body.Shape.Position = new Point(
-                    body.Shape.Position.X + moveUnitVector.X,
-                    body.Shape.Position.Y + moveUnitVector.Y);
+                    body.Shape.Position = moveCommand.Direction.MovePoint(body.Shape.Position,1);
 
 
                     //get all bodies for collision checking
                     List<Body> collisionBodies = new List<Body>();
 
-                    foreach(var bodyItem in _mapEngine.GetBodiesForCollision())
+                    foreach(var bodyItem in _mapEngine.GetBodiesForCollision().Where( v => v.Id != body.Id))
                     {
                         if(_shapeCollisionManager.CheckCollision(body.Shape, bodyItem.Shape))
                         {

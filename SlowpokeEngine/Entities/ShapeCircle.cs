@@ -10,6 +10,14 @@ namespace SlowpokeEngine.Entities
     {
         public int Radius { get; set; }
 
+        public override int MaxDimension
+        {
+            get
+            {
+                return Radius;
+            }
+        }
+
         public ShapeCircle(int radius, Point point)
             : base(point)
         {

@@ -29,6 +29,13 @@ namespace SlowpokeEngine.Entities
 			Y = y;
 		}
 
+        public Point MovePoint(Point point, int distance)
+        {
+            var unitVector = Vector.CalculateUnitVector(this);
+
+            return new Point(point.X + unitVector.X * distance, point.Y + unitVector.Y * distance);
+        }
+
 		#region Static
 
 		public static readonly Vector Empty = new Vector();

@@ -39,7 +39,11 @@ namespace SlowpokeEngine.Bodies
         {
             if(weaponIndex >= 0 && Weapons.Count >= weaponIndex)
             {
-                Weapons[weaponIndex - 1].Shoot(Shape.Position, Direction);
+                //calculate start point
+                var startPosition = Direction.MovePoint(
+                    Shape.Position, Shape.MaxDimension);
+
+                Weapons[weaponIndex - 1].Shoot(startPosition, Direction);
             }
         }
     }

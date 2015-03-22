@@ -11,6 +11,14 @@ namespace SlowpokeEngine.Entities
         public int Width { get; set; }
         public int Height { get; set; }
 
+        public override int MaxDimension
+        {
+            get
+            {
+                return Width > Height ? Width : Height;                    
+            }
+        }
+
         public ShapeRectangle(int width, int height, Point position):base(position)
         {
             Width = width;

@@ -55,21 +55,24 @@ namespace SlowpokeHubs
 		{
 			var player = MechanicEngine.GetPlayerBody (playerId);
 
-            player.Move(new Vector(x,y));
+            if (player != null)
+                player.Move(new Vector(x,y));
 		}
 
 		public void ChangeBodyDirection(Guid playerId, int x, int y)
 		{
 			var player = MechanicEngine.GetPlayerBody (playerId);
 
-            player.ChangeDirection(new Vector(x, y));
+            if(player != null)
+                player.ChangeDirection(new Vector(x, y));
 		}
 
         public void Shoot(Guid playerId, int weaponindex)
         {
             var player = MechanicEngine.GetPlayerBody (playerId);
 
-            player.Shoot(weaponindex);
+            if (player != null)
+                player.Shoot(weaponindex);
         }
 
 		public override Task OnDisconnected (bool stopCalled)
