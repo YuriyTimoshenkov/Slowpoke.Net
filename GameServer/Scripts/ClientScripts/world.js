@@ -15,7 +15,7 @@ World.prototype = {
         //console.log("World is creating object");
         var objectType = data["ActiveBodyType"];
         var id = data["Id"];
-        var position = data["Position"];
+        var position = data["Shape"]["Position"];
         
         var direction = data["Direction"];
         var obj;

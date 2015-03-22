@@ -17,6 +17,23 @@
         this.target = target
     }
 
+    this.calculatePlayerDirectionVector = function (point) {
+        var playerCenter = this.target.canvasRect.center;
+        var vectorMultiplier = 10;
+        var mouse = point;
+
+        // Get mouse vector not normalized
+        var mouseVectorNotNormalized = new Point(mouse.x - playerCenter.x, mouse.y - playerCenter.y);
+
+        // Calculate mouse vector length
+        var mouseVectorLength = Math.sqrt(Math.pow(mouseVectorNotNormalized.x, 2) + Math.pow(mouseVectorNotNormalized.y, 2));
+
+        // Normalize mouse vector
+        var mouseVectorNormalized = new Point(Math.round(mouseVectorNotNormalized.x / mouseVectorLength * vectorMultiplier),
+                                              Math.round(mouseVectorNotNormalized.y / mouseVectorLength * vectorMultiplier));
+        return mouseVectorNormalized;
+    }
+
     this.updateCanvasXY = function (frame) {
         var self = this;
 
