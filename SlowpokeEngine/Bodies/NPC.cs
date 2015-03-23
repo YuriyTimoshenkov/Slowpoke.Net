@@ -8,8 +8,8 @@ namespace SlowpokeEngine.Bodies
 	public class NPC : ActiveBody
 	{
 		private volatile Timer timer;
-		public NPC (IMechanicEngine mechanicEngine):base(
-			new ShapeCircle(5, new Point(0,0)),
+		public NPC (Shape shape, IMechanicEngine mechanicEngine):base(
+			shape,
 			new Vector(1,1),
 			mechanicEngine)
 		{

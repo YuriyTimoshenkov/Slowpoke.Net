@@ -31,6 +31,15 @@
     <Reference Include="MathNet.Numerics">
       <HintPath>..\packages\MathNet.Numerics.3.5.0\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -40,9 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bodies\Body.cs" />
+    <Compile Include="Bodies\Factories\UnityBodyBuilder.cs" />
     <Compile Include="Bodies\PassiveBody.cs" />
     <Compile Include="Commands\PhysicsProcessingResult.cs" />
     <Compile Include="Commands\PhysicsProcessingResultCollision.cs" />
+    <Compile Include="Engines\Factories\UnityMechanicEngineBuilder.cs" />
     <Compile Include="Engines\IShapeCollisionManager.cs" />
     <Compile Include="Engines\ShapeCollisionManager.cs" />
     <Compile Include="Entities\Shape.cs" />
@@ -63,9 +74,9 @@
     <Compile Include="Engines\IMechanicEngine.cs" />
     <Compile Include="Commands\GameCommand.cs" />
     <Compile Include="Bodies\IBodyBuilder.cs" />
-    <Compile Include="Bodies\SimpleBodyBuilder.cs" />
+    <Compile Include="Bodies\Factories\SimpleBodyBuilder.cs" />
     <Compile Include="Engines\IMechanicEngineBuilder.cs" />
-    <Compile Include="Engines\SimpleMechanicEngineBuilder.cs" />
+    <Compile Include="Engines\Factories\SimpleMechanicEngineBuilder.cs" />
     <Compile Include="Entities\Point.cs" />
     <Compile Include="Entities\Vector.cs" />
     <Compile Include="Bodies\PlayerBody.cs" />

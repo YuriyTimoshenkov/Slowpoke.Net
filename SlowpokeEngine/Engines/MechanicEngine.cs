@@ -66,9 +66,13 @@ namespace SlowpokeEngine.Engines
 
 		public void StartEngine()
 		{
+            BuildWorld();
+
+
 			_cancelationTokenSource = new CancellationTokenSource();
 			new Task(EventLoop, _cancelationTokenSource.Token, TaskCreationOptions.LongRunning).Start();
 		}
+
 
 		public void StopEngine()
 		{
@@ -144,6 +148,11 @@ namespace SlowpokeEngine.Engines
                             }
                         }
                     });
+        }
+
+        private void BuildWorld()
+        {
+            AddActiveBody(_bodyBuilder.BuildNPC(this));
         }
     }
 }

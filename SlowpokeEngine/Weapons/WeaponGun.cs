@@ -11,21 +11,24 @@ namespace SlowpokeEngine.Weapons
     class WeaponGun : WeaponBase
     {
         private int _bulletSpeed;
+        private int _bulletSize;
 
 
         public WeaponGun(
             int damage,
+            int bulletSize,
             int shootingDistance,
             int bulletSpeed,
             IMechanicEngine mechanicEngine
             ):base(damage, shootingDistance, mechanicEngine)
         {
             _bulletSpeed = bulletSpeed;
+            _bulletSize = bulletSize;
         }
 
         public override void Shoot(Point startPosition, Vector direction)
         {
-            var bullet = new Bullet(_shootingDistance, _bulletSpeed, startPosition, direction, _mechanicEngine);
+            var bullet = new Bullet(_shootingDistance, _bulletSpeed, new ShapeCircle(_bulletSize, startPosition), direction, _mechanicEngine);
 
             _mechanicEngine.AddActiveBody(bullet);
         }

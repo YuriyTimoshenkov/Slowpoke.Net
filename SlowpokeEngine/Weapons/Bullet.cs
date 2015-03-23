@@ -20,16 +20,16 @@ namespace SlowpokeEngine.Weapons
         public Bullet(
             int shootingDistance,
             int speed,
-            Point position, 
+            Shape shape, 
 			Vector direction,
-			IMechanicEngine mechanicEngine):base(new ShapeCircle(2,position), direction, mechanicEngine)
+			IMechanicEngine mechanicEngine):base(shape, direction, mechanicEngine)
         {
-            StartPosition = position;
             ShootingDistance = shootingDistance;
             _speed = speed;
             
             //calculate position
             Shape.Position = Direction.MovePoint(Shape.Position, Shape.MaxDimension);
+            StartPosition = Shape.Position;
         }
 
         public override void Run()

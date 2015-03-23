@@ -3,7 +3,7 @@ using SlowpokeEngine.Bodies;
 
 namespace SlowpokeEngine
 {
-	public class MechanicEngineBuilder : IMechanicEngineBuilder
+	public class SimpleMechanicEngineBuilder : IMechanicEngineBuilder
 	{
 		public IMechanicEngine Build()
 		{

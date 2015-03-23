@@ -12,10 +12,10 @@ namespace SlowpokeEngine.Bodies
         public List<WeaponBase> Weapons { get; private set; }
 
         public PlayerBody(
-            Point position, 
+            Shape shape,
 			Vector direction,
 			IMechanicEngine mechanicEngine
-            ):base(new ShapeCircle(5,position), direction,  mechanicEngine)
+            ):base(shape, direction,  mechanicEngine)
         {
             Weapons = new List<WeaponBase>();
         }

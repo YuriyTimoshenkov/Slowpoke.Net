@@ -16,14 +16,10 @@ namespace TestServerConsole
     {
         static void Main(string[] args)
         {
-            var meb = new MechanicEngineBuilder();
+            var meb = new UnityMechanicEngineBuilder();
             var mechanicEngine = meb.Build();
 
             mechanicEngine.StartEngine();
-
-            var NPCBuilder = new SimpleBodyBuilder();
-
-            mechanicEngine.AddActiveBody(NPCBuilder.BuildNPC(mechanicEngine));
 
             var player = mechanicEngine.LoadPlayerBody();
             player.Shoot(1);
