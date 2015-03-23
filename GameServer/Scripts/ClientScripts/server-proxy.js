@@ -5,16 +5,16 @@
     this.loadPlayer = function (doneHandler, failHandler) {
     }
 
-    this.getActiveBodies = function (playerId, doneHandler, failHandler) {
+    this.getActiveBodies = function (doneHandler, failHandler) {
     };
 
-    this.shoot = function (playerId) {
+    this.shoot = function (weaponNumber) {
     }
 
-    this.moveBody = function (playerId, x, y) {
+    this.moveBody = function (x, y) {
     }
 
-    this.changeBodyDirection = function (playerId, dx, dy) {
+    this.changeBodyDirection = function (dx, dy) {
     }
 }
 
@@ -31,16 +31,16 @@ function serverProxySignalR(url) {
     this.loadPlayer = function (doneHandler, failHandler) {
         gameProxy.server.loadPlayer().done(doneHandler).fail(failHandler);
     }
-    this.getActiveBodies = function (playerId, doneHandler, failHandler) {
-        gameProxy.server.getActiveBodies(playerId).done(doneHandler).fail(failHandler);
+    this.getActiveBodies = function (doneHandler, failHandler) {
+        gameProxy.server.getActiveBodies().done(doneHandler).fail(failHandler);
     };
-    this.shoot = function (playerId) {
-        gameProxy.server.shoot(playerId, 1)
+    this.shoot = function (weaponNumber) {
+        gameProxy.server.shoot(weaponNumber)
     }
-    this.moveBody = function (playerId, x, y) {
-        gameProxy.server.moveBody(playerId, x, y)
+    this.moveBody = function (x, y) {
+        gameProxy.server.moveBody(x, y)
     }
-    this.changeBodyDirection = function (playerId, dx, dy) {
-        gameProxy.server.changeBodyDirection(playerId, dx, dy)
+    this.changeBodyDirection = function (dx, dy) {
+        gameProxy.server.changeBodyDirection(dx, dy)
     }
 }

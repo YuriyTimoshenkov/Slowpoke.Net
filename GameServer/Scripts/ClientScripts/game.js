@@ -20,35 +20,43 @@ function Game(fps, serverProxy, controlsManager, viewManager, gameWorldManager) 
     }
 
     this.moveUp = function () {
-        serverProxy.moveBody(self.player.Id, 0, -1);
+        serverProxy.moveBody(0, -1);
     }
 
     this.moveDown = function () {
-        serverProxy.moveBody(self.player.Id, 0, 1);
+        serverProxy.moveBody(0, 1);
     }
 
     this.moveLeft = function () {
-        serverProxy.moveBody(self.player.Id, -1, 0);
+        serverProxy.moveBody(-1, 0);
     }
 
     this.moveRight = function () {
-        serverProxy.moveBody(self.player.Id, 1, 0);
+        serverProxy.moveBody(1, 0);
+    }
+
+    this.shoot = function () {
+        serverProxy.shoot(1)
+    }
+
+    this.handleMouseMove = function (e) {
+        var newPlayerDirectionVector = self.viewManager.calculatePlayerDirectionVector(new Point(e.clientX, e.clientY))
+        self.serverProxy.changeBodyDirection(newPlayerDirectionVector.x, newPlayerDirectionVector.y)
     }
 
     this.loadPlayer = function (player) {
         self.player = player
 
         gameWorldManager.init(player.Id, self.serverFramesQueue)
-        viewManager.setTarget(gameWorldManager.player);
+        viewManager.setTarget(gameWorldManager.player)
 
-        controlsManager.addMoveUpHandler(self.moveUp);
-        controlsManager.addMoveDownHandler(self.moveDown);
-        controlsManager.addMoveRightHandler(self.moveRight);
-        controlsManager.addMoveLeftHandler(self.moveLeft);
-        controlsManager.addShootHandler(function () {
-            serverProxy.shoot(self.player.Id, 1)
-        });
+        controlsManager.addMoveUpHandler(self.moveUp)
+        controlsManager.addMoveDownHandler(self.moveDown)
+        controlsManager.addMoveRightHandler(self.moveRight)
+        controlsManager.addMoveLeftHandler(self.moveLeft)
+        controlsManager.addShootHandler(self.shoot)
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
+
 
         // Start listening server
         setInterval(function () { self.getFrameFromServer() }, serverRequestFPS)
@@ -61,11 +69,6 @@ function Game(fps, serverProxy, controlsManager, viewManager, gameWorldManager) 
     this.errorHandler = function (error) {
         console.log(error)
     }
-
-    this.handleMouseMove = function (e) {
-        var newPlayerDirectionVector = self.viewManager.calculatePlayerDirectionVector(new Point(e.clientX, e.clientY))
-        self.serverProxy.changeBodyDirection(self.player.Id, newPlayerDirectionVector.x, newPlayerDirectionVector.y);
-    }
 }
 
 Game.prototype = {
@@ -77,23 +80,9 @@ Game.prototype = {
 
     getFrameFromServer: function () {
         var self = this
-        this.serverProxy.getActiveBodies(this.player.Id, function (obj) {
+        this.serverProxy.getActiveBodies(function (obj) {
             self.serverFramesQueue.push(obj);
         }, function (error) { console.log("Oppa" + error) });
-    },
-
-    //assignInputEventHadlers: function () {
-    //    var self = this;
-    //    window.onkeydown = function (e) {
-    //        // console.log("Processing keydown event")
-    //        if (e.keyCode in self.keyPressed) {
-    //            self.keyPressed[e.keyCode] = true;
-    //        }
-    //    }
-
-    //    this.canvas.onmousemove = function (e) { self.handleMouseMove(e) }
-    //},
-
-
+    }
 };
 

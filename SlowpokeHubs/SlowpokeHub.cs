@@ -46,30 +46,30 @@ namespace SlowpokeHubs
 			return player;
 		}
 
-		public List<ActiveBody> GetActiveBodies(Guid playerId)
+		public List<ActiveBody> GetActiveBodies()
 		{
-			return MechanicEngine.ViewPort.GetActiveBodies (playerId).ToList ();
+            return MechanicEngine.ViewPort.GetActiveBodies(_connectionsPlayerMapping[Context.ConnectionId]).ToList();
 		}
 
-		public void MoveBody(Guid playerId, int x, int y)
+		public void MoveBody(int x, int y)
 		{
-			var player = MechanicEngine.GetPlayerBody (playerId);
+            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId]);
 
             if (player != null)
                 player.Move(new Vector(x,y));
 		}
 
-		public void ChangeBodyDirection(Guid playerId, int x, int y)
+		public void ChangeBodyDirection(int x, int y)
 		{
-			var player = MechanicEngine.GetPlayerBody (playerId);
+            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId]);
 
             if(player != null)
                 player.ChangeDirection(new Vector(x, y));
 		}
 
-        public void Shoot(Guid playerId, int weaponindex)
+        public void Shoot(int weaponindex)
         {
-            var player = MechanicEngine.GetPlayerBody (playerId);
+            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId]);
 
             if (player != null)
                 player.Shoot(weaponindex);
