@@ -23,7 +23,7 @@ namespace SlowpokeEngine
 
         public GameSession(Guid characterId)
         {
-            StartTime = DateTime.Now;
+            StartTime = EndTime = DateTime.Now;
             CharacterId = characterId;
             Id = Guid.NewGuid();
         }

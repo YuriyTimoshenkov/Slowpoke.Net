@@ -9,7 +9,7 @@ namespace SlowpokeEngine.Bodies
 	{
 		protected readonly IMechanicEngine _mechanicEngine;
 
-		public Guid Id { get; private set; }
+		public Guid Id { get; set; }
 
 		public Vector Direction { get; set; }
 

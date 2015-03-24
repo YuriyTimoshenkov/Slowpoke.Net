@@ -14,6 +14,7 @@ namespace SlowpokeEngine
             UnityContainer unityContainer = new UnityContainer();
 
             unityContainer.RegisterInstance<UnityContainer>(unityContainer);
+            unityContainer.RegisterType<ICharacterRepository, CharacterRepositoryEF>();
             unityContainer.RegisterType<IMapEngine, MapEngine>(new ContainerControlledLifetimeManager());
             unityContainer.RegisterType<IGameSessionRepository, GameSessionRepositoryEF>();
             unityContainer.RegisterType<IShapeCollisionManager, ShapeCollisionManager>();
