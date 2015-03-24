@@ -88,9 +88,9 @@ namespace SlowpokeEngine.Engines
 
 		}
 
-		public IPlayerBodyFacade LoadPlayerBody()
+		public IPlayerBodyFacade LoadPlayerBody(Guid characterId)
 		{
-			var player = _bodyBuilder.LoadPlayerBody(this);
+            var player = _bodyBuilder.LoadPlayerBody(characterId, this);
 
 			_mapEngine.Bodies.TryAdd (player.Id, player);
 

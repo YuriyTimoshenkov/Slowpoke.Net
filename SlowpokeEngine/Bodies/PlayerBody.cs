@@ -4,20 +4,26 @@ using SlowpokeEngine.Entities;
 using SlowpokeEngine.Actions;
 using System.Collections.Generic;
 using SlowpokeEngine.Weapons;
+using SlowpokeEngine.DAL;
 
 namespace SlowpokeEngine.Bodies
 {
 	public class PlayerBody : ActiveBody, IPlayerBodyFacade
 	{
         public List<WeaponBase> Weapons { get; private set; }
+        public Guid SessionId { get; set; }
+
+        private IGameSessionRepository _sessionRepository;
 
         public PlayerBody(
             Shape shape,
 			Vector direction,
-			IMechanicEngine mechanicEngine
+			IMechanicEngine mechanicEngine,
+            IGameSessionRepository sessionRepository
             ):base(shape, direction,  mechanicEngine)
         {
             Weapons = new List<WeaponBase>();
+            _sessionRepository = sessionRepository;
         }
 
 		public void ProcessAction (GameCommand bodyAction)

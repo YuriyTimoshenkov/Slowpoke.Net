@@ -28,6 +28,12 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="MathNet.Numerics">
       <HintPath>..\packages\MathNet.Numerics.3.5.0\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
@@ -42,6 +48,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,6 +60,13 @@
     <Compile Include="Bodies\PassiveBody.cs" />
     <Compile Include="Commands\PhysicsProcessingResult.cs" />
     <Compile Include="Commands\PhysicsProcessingResultCollision.cs" />
+    <Compile Include="DAL\EntityFrameworkImpl\CharacterRepositoryEF.cs" />
+    <Compile Include="DAL\EntityFrameworkImpl\GameSessionRepositoryEF.cs" />
+    <Compile Include="DAL\EntityFrameworkImpl\GameStorage.cs" />
+    <Compile Include="DAL\GameCharacter.cs" />
+    <Compile Include="DAL\GameSession.cs" />
+    <Compile Include="DAL\ICharacterRepository.cs" />
+    <Compile Include="DAL\IGameSessionRepository.cs" />
     <Compile Include="Engines\Factories\UnityMechanicEngineBuilder.cs" />
     <Compile Include="Engines\IShapeCollisionManager.cs" />
     <Compile Include="Engines\ShapeCollisionManager.cs" />
@@ -90,6 +104,7 @@
     <Compile Include="Weapons\WeaponGun.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -11,7 +11,7 @@ namespace SlowpokeEngine
 
 		void StartEngine();
 		void StopEngine();
-		IPlayerBodyFacade LoadPlayerBody();
+		IPlayerBodyFacade LoadPlayerBody(Guid characterId);
 		void ReleaseActiveBody(Guid playerId);
 		IPlayerBodyFacade GetPlayerBody(Guid playerId);
         void ProcessGameCommand(GameCommand command);

@@ -40,7 +40,8 @@ namespace SlowpokeHubs
 
 		public IPlayerBodyFacade LoadPlayer()
 		{
-			var player = MechanicEngine.LoadPlayerBody();
+            //Load player
+			var player = MechanicEngine.LoadPlayerBody(Guid.NewGuid());
 			_connectionsPlayerMapping.TryAdd(Context.ConnectionId, player.Id);
 
 			return player;

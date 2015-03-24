@@ -3,6 +3,7 @@ using SlowpokeEngine.Bodies;
 using Microsoft.Practices.Unity;
 using SlowpokeEngine.Entities;
 using SlowpokeEngine.Weapons;
+using SlowpokeEngine.DAL;
 
 namespace SlowpokeEngine
 {
@@ -14,6 +15,7 @@ namespace SlowpokeEngine
 
             unityContainer.RegisterInstance<UnityContainer>(unityContainer);
             unityContainer.RegisterType<IMapEngine, MapEngine>(new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IGameSessionRepository, GameSessionRepositoryEF>();
             unityContainer.RegisterType<IShapeCollisionManager, ShapeCollisionManager>();
             unityContainer.RegisterType<IPhysicalEngine, PhysicalEngine>();
             unityContainer.RegisterType<IViewPort, ViewPort>();
@@ -26,7 +28,8 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<PlayerBody>(new InjectionConstructor(
                 new ShapeCircle(5, new Point(0, 0)),
                 new Vector(1, 3),
-                typeof(IMechanicEngine)
+                typeof(IMechanicEngine),
+                typeof(IGameSessionRepository)
                 ));
             unityContainer.RegisterType<WeaponGun>(new InjectionConstructor(
                 10, 2, 100, 10, typeof(IMechanicEngine)

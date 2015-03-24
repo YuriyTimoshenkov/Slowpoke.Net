@@ -13,14 +13,15 @@ namespace SlowpokeEngine.Bodies
 			return new NPC (new ShapeCircle(10, new Point(0,0)), mechanicEngine);
 		}
 
-		public PlayerBody LoadPlayerBody (IMechanicEngine mechanicEngine)
+		public PlayerBody LoadPlayerBody (Guid characterId, IMechanicEngine mechanicEngine)
 		{
 			//TODO: load config from DB, get some data from depended services and as a result - load player object
 
 			var player = new PlayerBody (
                 new ShapeCircle(5, new Point(0, 0)),
 				new Vector (1, 3),
-				mechanicEngine);
+				mechanicEngine,
+                null);
 
             player.Weapons.Add(new WeaponGun(10, 2, 100, 10, mechanicEngine));
 

@@ -1,6 +1,7 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using SlowpokeEngine;
 using SlowpokeEngine.Bodies;
+using SlowpokeEngine.DAL;
 using SlowpokeEngine.Engines;
 using SlowpokeEngine.Entities;
 using System;
@@ -21,7 +22,7 @@ namespace TestServerConsole
 
             mechanicEngine.StartEngine();
 
-            var player = mechanicEngine.LoadPlayerBody();
+            var player = mechanicEngine.LoadPlayerBody(Guid.NewGuid());
             player.Shoot(1);
 
             new Task(
