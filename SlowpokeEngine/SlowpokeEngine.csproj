@@ -63,8 +63,10 @@
     <Compile Include="DAL\EntityFrameworkImpl\CharacterRepositoryEF.cs" />
     <Compile Include="DAL\EntityFrameworkImpl\GameSessionRepositoryEF.cs" />
     <Compile Include="DAL\EntityFrameworkImpl\GameStorage.cs" />
-    <Compile Include="DAL\GameCharacter.cs" />
-    <Compile Include="DAL\GameSession.cs" />
+    <Compile Include="Entities\Factories\ICharacterFactory.cs" />
+    <Compile Include="Entities\Factories\SimpleCharacterFactory.cs" />
+    <Compile Include="Entities\GameCharacter.cs" />
+    <Compile Include="Entities\GameSession.cs" />
     <Compile Include="DAL\ICharacterRepository.cs" />
     <Compile Include="DAL\IGameSessionRepository.cs" />
     <Compile Include="Engines\Factories\UnityMechanicEngineBuilder.cs" />

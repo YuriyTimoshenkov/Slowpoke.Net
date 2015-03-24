@@ -16,7 +16,7 @@ namespace SlowpokeEngine.DAL
 
         public GameCharacter Find(Guid ownerUserId)
         {
-            return _gameStorage.Characters.FirstOrDefault(character => character.OnwerUserId == ownerUserId);
+            return _gameStorage.Characters.FirstOrDefault(character => character.OwnerUserId == ownerUserId);
         }
 
         public void Add(GameCharacter character)

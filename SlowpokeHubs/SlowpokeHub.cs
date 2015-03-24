@@ -8,6 +8,7 @@ using SlowpokeEngine.Actions;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using SlowpokeEngine.Entities;
+using System.Security.Claims;
 
 namespace SlowpokeHubs
 {
@@ -40,11 +41,7 @@ namespace SlowpokeHubs
 
 		public IPlayerBodyFacade LoadPlayer()
 		{
-            //Load player
-			var player = MechanicEngine.LoadPlayerBody(Guid.NewGuid());
-			_connectionsPlayerMapping.TryAdd(Context.ConnectionId, player.Id);
-
-			return player;
+            return MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId]);
 		}
 
 		public List<ActiveBody> GetActiveBodies()
@@ -89,6 +86,12 @@ namespace SlowpokeHubs
 
 		public override Task OnConnected ()
 		{
+            Guid userId = Guid.Parse(((ClaimsIdentity)Context.User.Identity).FindFirst(v => v.Type == ClaimTypes.NameIdentifier).Value);
+
+           var player = MechanicEngine.LoadPlayerBody(userId);
+
+           _connectionsPlayerMapping.TryAdd(Context.ConnectionId, player.Id);
+
 			return base.OnConnected ();
 		}
 	}

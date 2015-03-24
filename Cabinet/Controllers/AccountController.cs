@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Cabinet.Models;
+using SlowpokeEngine.Entities.Factories;
+using SlowpokeEngine.DAL;
 
 namespace Cabinet.Controllers
 {
@@ -90,6 +92,10 @@ namespace Cabinet.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    //Create default game character
+                    var newCharacter = new SimpleCharacterFactory().Create(Guid.Parse(user.Id));
+                    new CharacterRepositoryEF().Add(newCharacter);
+
                     await SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
