@@ -5,6 +5,7 @@ using Cabinet.Services;
 using Common;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using SlowpokeEngine.DAL;
 using SlowpokeHubs;
 using System;
 using System.Collections.Generic;
@@ -34,10 +35,22 @@ namespace Cabinet.Controllers
             if (Request.IsAuthenticated)
             {
                 ApplicationUser user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+                Guid userId = Guid.Parse(User.Identity.GetUserId());
 
-                ViewBag.MyAccountBalance = _paymentManager.AccountBalance(User.Identity.GetUserId());
                 ViewBag.User = user;
+
+                //Get all character
+                var characterRepo = new CharacterRepositoryEF();
+                ViewBag.Characters = characterRepo.Find(userId);
+
+                //Get last 10 game sessions
+                var gameSessionsRepo = new GameSessionRepositoryEF();
+                var gameSessions = gameSessionsRepo.Find(userId).OrderByDescending(v => v.StartTime).Take(10);
+                ViewBag.GameSessions = gameSessions;
+                ViewBag.GameSessionsCount = gameSessions.Count();
             }
+
+            
 
             return View();
         }
@@ -49,7 +62,25 @@ namespace Cabinet.Controllers
             return View();
         }
 
-        public ActionResult Play()
+        [Authorize]
+        public ActionResult Characters()
+        {
+            //Get all character
+            var characterRepo = new CharacterRepositoryEF();
+            ViewBag.Characters = characterRepo.Find(Guid.Parse(User.Identity.GetUserId()));
+
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult Shop()
+        {
+            ViewBag.MyAccountBalance = _paymentManager.AccountBalance(User.Identity.GetUserId());
+
+            return View();
+        }
+
+        public ActionResult Play(PlayViewModel character)
         {
             string gameServerUrl = System.Configuration.ConfigurationManager.AppSettings["GameServerUrl"];
             string redirectUrl = gameServerUrl + "?token=" + HttpContext.Request.Cookies[SlowpokeHub.TokenCookieName].Value;

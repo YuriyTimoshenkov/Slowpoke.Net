@@ -52,6 +52,13 @@ namespace SlowpokeEngine.Bodies
                 Weapons[weaponIndex - 1].Shoot(startPosition, Direction);
             }
         }
+
+        public override void ReleaseGame()
+        {
+            _sessionRepository.CloseSession(SessionId);
+
+            base.ReleaseGame();
+        }
     }
 }
 

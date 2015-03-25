@@ -8,9 +8,9 @@ namespace SlowpokeEngine.Entities.Factories
 {
     public class SimpleCharacterFactory : ICharacterFactory
     {
-        public GameCharacter Create(Guid ownerUserId)
+        public GameCharacter Create(Guid ownerUserId, string Name)
         {
-            return new GameCharacter(ownerUserId);
+            return new GameCharacter(ownerUserId, Name);
         }
     }
 }

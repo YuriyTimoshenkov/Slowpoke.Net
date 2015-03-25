@@ -7,33 +7,47 @@
 @if (Request.IsAuthenticated)
 {
     <div class="row">
-        <div class="col-md-4">
-            <h2>Hello player <b>@ViewBag.User.UserName</b></h2>
-            <a type="button" class="btn btn-default" aria-label="Left Align" href="/Home/Play">Play</a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <h2>My account balance: @ViewBag.MyAccountBalance</h2>
-        </div>
-    </div>
-    <div class="row">
-        @using (Html.BeginForm("BuyGold", "Home", FormMethod.Post))
-        {
-            <div class="form-group">
-                @Html.Label("Amount", new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBox("Amount", 0, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Buy" class="btn btn-default" />
+            @using (Html.BeginForm("Play", "Home", FormMethod.Post))
+            {
+                <div class="form-group">
+                    @Html.Label("Choose you character", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-2">
+                        @Html.DropDownList("CharacterId", new SelectList(ViewBag.Characters, "Id","Name"))
                     </div>
-            </div>
-        }
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-2">
+                        <input type="submit" value="Play" class="btn btn-default" />
+                    </div>
+                </div>
+            }
     </div>
-}
+    <div class="row">
+        <h2>Last game sessions: </h2>
+        @if (ViewBag.GameSessionsCount > 0)
+        {
+            <table class="table">
+                <tr>
+                    <th>Started: </th>
+                    <th>Duration: </th>
+                    <th>Character: </th>
+                </tr>
+                @foreach (var gameSession in ViewBag.GameSessions)
+                {
+                    <tr>
+                        <td>@gameSession.StartTime</td>
+                        <td>@gameSession.Duration.ToString(@"dd\.hh\:mm\:ss")</td>
+                        <td>@gameSession.Character.Name</td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <div>No sessions available...</div>
+        }
+            </div>
+  }
 else
 {
     <div class="row">

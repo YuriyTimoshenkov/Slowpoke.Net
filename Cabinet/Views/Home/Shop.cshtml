@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Shop";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>My account balance: @ViewBag.MyAccountBalance</h2>
+    </div>
+</div>
+<div class="row">
+    @using (Html.BeginForm("BuyGold", "Home", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.Label("Amount", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBox("Amount", 0, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Buy" class="btn btn-default" />
+            </div>
+        </div>
+    }
+</div>
+
+
+
+    

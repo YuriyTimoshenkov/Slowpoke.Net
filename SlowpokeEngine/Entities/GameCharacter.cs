@@ -11,12 +11,17 @@ namespace SlowpokeEngine
         public Guid Id { get; set; }
         public Guid OwnerUserId { get; set; }
 
+        public ICollection<GameSession> Sessions { get; set; }
+
+        public string Name { get; set; }
+
         public GameCharacter() { }
 
-        public GameCharacter(Guid onwerUserId)
+        public GameCharacter(Guid onwerUserId, string name)
         {
             Id = Guid.NewGuid();
             OwnerUserId = onwerUserId;
+            Name = name;
         }
     }
 }

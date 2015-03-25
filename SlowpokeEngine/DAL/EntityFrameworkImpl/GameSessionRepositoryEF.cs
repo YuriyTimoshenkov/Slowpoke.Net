@@ -27,5 +27,10 @@ namespace SlowpokeEngine.DAL
 
             _gameStorage.SaveChanges();
         }
+
+        public IEnumerable<GameSession> Find(Guid userId)
+        {
+            return _gameStorage.Sessions.Include("Character").Where(v => v.Character.OwnerUserId == userId);
+        }
     }
 }

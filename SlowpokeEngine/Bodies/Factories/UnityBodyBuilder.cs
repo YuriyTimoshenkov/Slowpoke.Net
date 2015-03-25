@@ -4,6 +4,7 @@ using SlowpokeEngine.Entities;
 using SlowpokeEngine.Weapons;
 using Microsoft.Practices.Unity;
 using SlowpokeEngine.DAL;
+using System.Linq;
 
 namespace SlowpokeEngine.Bodies
 {
@@ -32,7 +33,7 @@ namespace SlowpokeEngine.Bodies
         public PlayerBody LoadPlayerBody(Guid characterId, IMechanicEngine mechanicEngine)
 		{
 			//TODO: load config from DB, get some data from depended services and as a result - load player object
-            var character = _characterRepository.Find(characterId);
+            var character = _characterRepository.Find(characterId).FirstOrDefault();
             
             var player = _unityContainer.Resolve<PlayerBody>();
             player.Weapons.Add(_unityContainer.Resolve<WeaponGun>());
@@ -42,7 +43,7 @@ namespace SlowpokeEngine.Bodies
 
 
             //Create session
-            var newSession = new GameSession(characterId);
+            var newSession = new GameSession(character.Id);
             _sessionRepository.AddSession(newSession);
 
             player.SessionId = newSession.Id;

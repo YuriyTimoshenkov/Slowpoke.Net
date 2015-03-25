@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Characters";
+}
+
+<div class="row">
+    <h2>My characters: </h2>
+    <ul>
+        @foreach (var character in ViewBag.Characters)
+        {
+            <li>@character.Name</li>
+        }
+    </ul>
+</div>
+
+    

@@ -14,9 +14,9 @@ namespace SlowpokeEngine.DAL
             _gameStorage = new GameStorage("DefaultConnection");
         }
 
-        public GameCharacter Find(Guid ownerUserId)
+        public IEnumerable<GameCharacter> Find(Guid ownerUserId)
         {
-            return _gameStorage.Characters.FirstOrDefault(character => character.OwnerUserId == ownerUserId);
+            return _gameStorage.Characters.Where(character => character.OwnerUserId == ownerUserId);
         }
 
         public void Add(GameCharacter character)

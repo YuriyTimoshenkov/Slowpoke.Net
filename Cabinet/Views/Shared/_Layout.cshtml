@@ -27,6 +27,8 @@
                     <li>@Html.ActionLink("My slowpoke", "Index", "Home")</li>
                     @if (Request.IsAuthenticated)
                     {
+                       <li>@Html.ActionLink("Characters", "Characters", "Home")</li>
+                       <li>@Html.ActionLink("Shop", "Shop", "Home")</li>
                        <li>@Html.ActionLink("Crew", "Crew", "Home")</li>
                     }
                 </ul>

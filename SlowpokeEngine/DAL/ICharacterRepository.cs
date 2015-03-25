@@ -9,7 +9,7 @@ namespace SlowpokeEngine.DAL
 {
     public interface ICharacterRepository
     {
-        GameCharacter Find(Guid userId);
+        IEnumerable<GameCharacter> Find(Guid userId);
         void Add(GameCharacter character);
     }
 }

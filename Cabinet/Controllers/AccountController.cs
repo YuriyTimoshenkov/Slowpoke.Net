@@ -92,9 +92,7 @@ namespace Cabinet.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    //Create default game character
-                    var newCharacter = new SimpleCharacterFactory().Create(Guid.Parse(user.Id));
-                    new CharacterRepositoryEF().Add(newCharacter);
+                    CreateGameCharacter(user);
 
                     await SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
@@ -107,6 +105,13 @@ namespace Cabinet.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        private static void CreateGameCharacter(ApplicationUser user)
+        {
+            //Create default game character
+            var newCharacter = new SimpleCharacterFactory().Create(Guid.Parse(user.Id), user.UserName);
+            new CharacterRepositoryEF().Add(newCharacter);
         }
 
         //
@@ -284,10 +289,13 @@ namespace Cabinet.Controllers
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    CreateGameCharacter(user);
+
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
                         await SignInAsync(user, isPersistent: false);
+
                         return RedirectToLocal(returnUrl);
                     }
                 }

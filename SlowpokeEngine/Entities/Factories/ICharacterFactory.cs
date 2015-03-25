@@ -8,6 +8,6 @@ namespace SlowpokeEngine.Entities.Factories
 {
     public interface ICharacterFactory
     {
-        GameCharacter Create(Guid ownerUserId);
+        GameCharacter Create(Guid ownerUserId, string  Name);
     }
 }
