@@ -24,13 +24,14 @@ namespace SlowpokeEngine
 
             unityContainer.RegisterType<IBodyBuilder, UnityBodyBuilder>();
             unityContainer.RegisterType<NPC>(new InjectionConstructor(
-                new ShapeCircle(20, new Point(0, 0)), typeof(IMechanicEngine)
+                new ShapeCircle(20, new Point(0, 0)), typeof(IMechanicEngine), 100, 100
                 ));
             unityContainer.RegisterType<PlayerBody>(new InjectionConstructor(
                 new ShapeCircle(20, new Point(0, 0)),
                 new Vector(1, 3),
                 typeof(IMechanicEngine),
-                typeof(IGameSessionRepository)
+                typeof(IGameSessionRepository),
+                100, 100
                 ));
             unityContainer.RegisterType<WeaponGun>(new InjectionConstructor(
                 10, 2, 100, 10, typeof(IMechanicEngine)
