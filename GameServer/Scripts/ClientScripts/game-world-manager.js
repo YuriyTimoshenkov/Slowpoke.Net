@@ -66,6 +66,6 @@
 
     this.init = function (playerId, queue) {
         this.serverFramesQueue = queue
-        this.player = this.world.createGameObject({ "Id": playerId, "ActiveBodyType": "PlayerBody", "Direction": { X: 0, Y: 0 }, "Shape": { "Position": { X: 0, Y: 0 } } })
+        this.player = this.world.createGameObject({ "Id": playerId, "ActiveBodyType": "PlayerBody", "Direction": { X: 0, Y: 0 }, "Shape": { "Position": { X: 0, Y: 0 }, "Radius": 20 } })
     }
 }

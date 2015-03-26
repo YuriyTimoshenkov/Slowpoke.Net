@@ -57,7 +57,6 @@ function Game(fps, serverProxy, controlsManager, viewManager, gameWorldManager) 
         controlsManager.addShootHandler(self.shoot)
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
 
-
         // Start listening server
         setInterval(function () { self.getFrameFromServer() }, serverRequestFPS)
 

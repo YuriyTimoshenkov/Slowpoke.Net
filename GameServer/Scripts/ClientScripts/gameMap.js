@@ -17,7 +17,7 @@ function Cell(xy, size, terrain) {
         var terrainID = terrainClass[this.terrain];
         var color = terrainClass.props[terrainID].color;
         var image = new createjs.Shape();
-        image.graphics.drawRect(0, 0, this.size, this.size);
+        image.graphics.beginFill(color).drawRect(0, 0, this.size, this.size);
         this.image = image;
     }
 
