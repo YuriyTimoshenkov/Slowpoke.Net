@@ -28,7 +28,7 @@ namespace SlowpokeEngine.Weapons
 
         public override void Shoot(Point startPosition, Vector direction)
         {
-            var bullet = new Bullet(_shootingDistance, _bulletSpeed, new ShapeCircle(_bulletSize, startPosition), direction, _mechanicEngine);
+            var bullet = new Bullet(_shootingDistance, _bulletSpeed, _damage, new ShapeCircle(_bulletSize, startPosition), direction, _mechanicEngine);
 
             _mechanicEngine.AddActiveBody(bullet);
         }

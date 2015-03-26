@@ -19,8 +19,9 @@ namespace SlowpokeEngine.Bodies
             Shape shape,
 			Vector direction,
 			IMechanicEngine mechanicEngine,
-            IGameSessionRepository sessionRepository
-            ):base(shape, direction,  mechanicEngine)
+            IGameSessionRepository sessionRepository,
+            int life, int lifeMax
+            ):base(shape, direction,  mechanicEngine, life, lifeMax)
         {
             Weapons = new List<WeaponBase>();
             _sessionRepository = sessionRepository;

@@ -5,12 +5,26 @@
 
 <div class="row">
     <h2>My characters: </h2>
-    <ul>
-        @foreach (var character in ViewBag.Characters)
+        @if (ViewBag.CharactersCount > 0)
+                {
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Games played</th>
+                </tr>
+                @foreach (var character in ViewBag.Characters)
+                        {
+                    <tr>
+                        <td>@character.Name</td>
+                        <td>@character.SessionsCount</td>
+                    </tr>
+                        }
+            </table>
+                }
+        else
         {
-            <li>@character.Name</li>
+            <div>No characters available...</div>
         }
-    </ul>
 </div>
 
     

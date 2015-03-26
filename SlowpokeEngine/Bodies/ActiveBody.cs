@@ -15,19 +15,34 @@ namespace SlowpokeEngine.Bodies
 
         public string ActiveBodyType { get { return this.GetType().Name; } }
 
+        public int Life { get; private set; }
+        
+        public int LifeMax { get; private set; }
+
 
 		public ActiveBody(
 			Shape shape, 
 			Vector direction,
-			IMechanicEngine mechanicEngine)
+			IMechanicEngine mechanicEngine,
+            int life, int lifeMax)
 		{
 			Id = Guid.NewGuid();
 			_mechanicEngine = mechanicEngine;
 			Shape = shape;
 			Direction = direction;
+            Life = life;
+            LifeMax = lifeMax;
 		}
 
         public virtual void Run() { }
 		public virtual void ReleaseGame() {}
+
+        public virtual void Harm(int damage)
+        {
+            Life -= damage;
+
+            if (Life <= 0)
+                ReleaseGame();
+        }
 	}
 }

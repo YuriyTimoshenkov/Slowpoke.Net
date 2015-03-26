@@ -16,16 +16,19 @@ namespace SlowpokeEngine.Weapons
         public int ShootingDistance { get; private set; }
         private int _speed;
         private volatile Timer _timer;
+        public int Damage { get; private set;}
 
         public Bullet(
             int shootingDistance,
             int speed,
+            int damage,
             Shape shape, 
 			Vector direction,
-			IMechanicEngine mechanicEngine):base(shape, direction, mechanicEngine)
+			IMechanicEngine mechanicEngine):base(shape, direction, mechanicEngine,1,1)
         {
             ShootingDistance = shootingDistance;
             _speed = speed;
+            Damage = damage;
             
             //calculate position
             Shape.Position = Direction.MovePoint(Shape.Position, Shape.MaxDimension);

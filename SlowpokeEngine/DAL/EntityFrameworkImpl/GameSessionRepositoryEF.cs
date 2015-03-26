@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.Entity;
 
 namespace SlowpokeEngine.DAL
 {
@@ -30,7 +31,7 @@ namespace SlowpokeEngine.DAL
 
         public IEnumerable<GameSession> Find(Guid userId)
         {
-            return _gameStorage.Sessions.Include("Character").Where(v => v.Character.OwnerUserId == userId);
+            return _gameStorage.Sessions.Include(v => v.Character).Where(v => v.Character.OwnerUserId == userId);
         }
     }
 }

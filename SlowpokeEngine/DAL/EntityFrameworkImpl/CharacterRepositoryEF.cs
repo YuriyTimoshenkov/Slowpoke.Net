@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.Entity;
 
 namespace SlowpokeEngine.DAL
 {
@@ -14,9 +15,16 @@ namespace SlowpokeEngine.DAL
             _gameStorage = new GameStorage("DefaultConnection");
         }
 
-        public IEnumerable<GameCharacter> Find(Guid ownerUserId)
+        public IEnumerable<GameCharacter> Find(Guid ownerUserId, bool loadDependencies = false)
         {
-            return _gameStorage.Characters.Where(character => character.OwnerUserId == ownerUserId);
+            if (loadDependencies)
+            {
+                return _gameStorage.Characters.Include(v => v.Sessions).Where(character => character.OwnerUserId == ownerUserId);
+            }
+            else
+            {
+                return _gameStorage.Characters.Where(character => character.OwnerUserId == ownerUserId);
+            }
         }
 
         public void Add(GameCharacter character)

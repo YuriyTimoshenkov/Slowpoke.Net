@@ -138,13 +138,14 @@ namespace SlowpokeEngine.Engines
                     (gameCommand, result) =>
                     {
                         var resultCollision = (PhysicsProcessingResultCollision)result;
+                        var bullet = (Bullet)gameCommand.ActiveBody;
                         ReleaseActiveBody(gameCommand.ActiveBody.Id);
 
                         foreach(var body in resultCollision.Bodies)
                         {
                             if(body is ActiveBody)
                             {
-                                ReleaseActiveBody(((ActiveBody)body).Id);
+                                ((ActiveBody)body).Harm(bullet.Damage);
                             }
                         }
                     });

@@ -67,7 +67,10 @@ namespace Cabinet.Controllers
         {
             //Get all character
             var characterRepo = new CharacterRepositoryEF();
-            ViewBag.Characters = characterRepo.Find(Guid.Parse(User.Identity.GetUserId()));
+            var characters = characterRepo.Find(Guid.Parse(User.Identity.GetUserId()), true)
+                .Select(v => new ViewModelCharacterListItem () { Name = v.Name, SessionsCount = v.Sessions.Count() });
+            ViewBag.CharactersCount = characters.Count();
+            ViewBag.Characters = characters;
 
             return View();
         }
