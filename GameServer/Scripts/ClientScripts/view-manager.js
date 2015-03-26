@@ -6,6 +6,22 @@
 
     this.stage = new createjs.Stage(canvas);
 
+    this.circle = new createjs.Shape();
+    this.circle.graphics.beginFill("red").drawCircle(0, 0, 40);
+    this.circle.y = 50;
+    this.stage.addChild(this.circle);
+
+    createjs.Ticker.on("tick", tick);
+    createjs.Ticker.setFPS(30);
+
+    var self = this;
+    function tick(event) {
+        self.circle.x = self.circle.x + 5;
+        if (self.circle.x > self.stage.canvas.width) { self.circle.x = 0; }
+
+        self.stage.update(event); // important!!
+    }
+
     this.setFrameQueue = function (framesQueue) {
         this.framesQueue = framesQueue
     }
@@ -20,13 +36,12 @@
     }
 
     this.calculatePlayerDirectionVector = function (point) {
-        var playerCenter = this.target.canvasRect.center;
+        var playerCenter = this.target.gameRect.center;
         var vectorMultiplier = 10;
         var mouse = point;
 
         // Get mouse vector not normalized
-        var mouseVectorNotNo
-        rmalized = new Point(mouse.x - playerCenter.x, mouse.y - playerCenter.y);
+        var mouseVectorNotNormalized = new Point(mouse.x - playerCenter.x, mouse.y - playerCenter.y);
 
         // Calculate mouse vector length
         var mouseVectorLength = Math.sqrt(Math.pow(mouseVectorNotNormalized.x, 2) + Math.pow(mouseVectorNotNormalized.y, 2));
@@ -65,17 +80,23 @@
     }
 
     this.draw = function (frame) {
-        // Probably place for optimization
-        this.stage.removeAllChildren();
+        var self = this;
 
-        frame.objects.forEach(function (obj) {
-            this.stage.addChild(obj.image);
-        });
+        if (self.stage.children.length == 0) {
+            // Probably place for optimization
+            self.stage.removeAllChildren();
 
-        frame.cells.forEach(function (cell) {
-            this.stage.addChild(cell.image);
-        });
+            frame.objects.forEach(function (element, index, array) {
+                self.stage.addChild(element.image);
+            });
+
+            frame.cells.forEach(function (row, index, array) {
+                row.forEach(function (cell, index, array) {
+                    self.stage.addChild(cell.image);
+                })
+            })
+        }
         
-        this.stage.update();
+        //self.stage.update();
     }
 }

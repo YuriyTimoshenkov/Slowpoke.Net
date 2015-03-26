@@ -10,7 +10,7 @@
             @using (Html.BeginForm("Play", "Home", FormMethod.Post))
             {
                 <div class="form-group">
-                    @Html.Label("Choose you character", new { @class = "col-md-2 control-label" })
+                    @Html.Label("Choose your character", new { @class = "col-md-2 control-label" })
                     <div class="col-md-2">
                         @Html.DropDownList("CharacterId", new SelectList(ViewBag.Characters, "Id","Name"))
                     </div>

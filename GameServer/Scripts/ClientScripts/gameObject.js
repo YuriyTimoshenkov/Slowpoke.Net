@@ -29,15 +29,15 @@ GameObject.prototype = {
             case "PlayerBody":
                 var teamColor = "orange";
                 this.image = this.createHat(shapeRadius, teamColor);
-
+                break
             case "NPC":
                 var teamColor = "blue";
                 this.image = this.createHat(shapeRadius, teamColor);
-
+                break
             case "Bullet":
                 var color = "yellow";
                 this.createBullet(shapeRadius, color);
-
+                break
             default:
                 throw "gameObject: invalid gameObject type";
         };
@@ -60,11 +60,11 @@ GameObject.prototype = {
             case "orange":
                 circleBigColor = createjs.Graphics.getRGB(255, 127, 39, 1.0);
                 circleSmallColor = createjs.Graphics.getRGB(232, 90, 0, 1.0);
-
+                break
             case "blue":
                 circleBigColor = createjs.Graphics.getRGB(0, 162, 232, 1.0);
                 circleSmallColor = createjs.Graphics.getRGB(63, 72, 204, 1.0);
-
+                break
             default:
                 throw "gameObject: invalid team color"
         }

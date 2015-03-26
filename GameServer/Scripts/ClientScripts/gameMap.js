@@ -8,7 +8,7 @@ function Cell(xy, size, terrain) {
     this.size = size;
     this.gameRect = new Rect(xy[0], xy[1], size, size)
     this.image = null;
-    this.assignImage(size);
+
     this.width = size;
     this.height = size;
     this.terrain = terrain || "meadow";
@@ -19,8 +19,9 @@ function Cell(xy, size, terrain) {
         var image = new createjs.Shape();
         image.graphics.drawRect(0, 0, this.size, this.size);
         this.image = image;
-    };
+    }
 
+    this.assignImage();
 }
 
 Cell.prototype = {
