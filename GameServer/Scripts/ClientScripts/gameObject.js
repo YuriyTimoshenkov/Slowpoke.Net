@@ -3,64 +3,120 @@
  */
 
 
-function GameObject(id, objectType, position, direction, canvasXY) {
+function GameObject(id, objectType, position, direction, shapeRadius, canvasXY) {
+    var self = this;
+
     this.id = id;
     this.objectType = objectType;
     this.objectSize = 20;
     this.gameRect = new Rect(0, 0, this.objectSize, this.objectSize);
     this.gameRect.center = position;
-
-
-    var self = this;
-    this.canvasRect = (function() {
-        if (canvasXY) return new Rect(canvasXY.x, canvasXY.y, self.objectSize, self.objectSize)
-        else return new Rect(0, 0, self.objectSize, self.objectSize)
-    })();
-
     this.direction = direction || {X: 0, Y: 0};
+    this.image = null;
+    this.assignImage(canvasXY, shapeRadius);
+
+    // Special for player character
+    if (canvasXY) {
+        this.image.x = canvasXY.x;
+        this.image.y = canvasXY.y;
+    }
 }
 
 GameObject.prototype = {
+    assignImage: function (shapeRadius, canvasXY) {
+
+        switch (this.objectType) {
+            case "PlayerBody":
+                var teamColor = "orange";
+                this.image = this.createHat(shapeRadius, teamColor);
+
+            case "NPC":
+                var teamColor = "blue";
+                this.image = this.createHat(shapeRadius, teamColor);
+
+            case "Bullet":
+                var color = "yellow";
+                this.createBullet(shapeRadius, color);
+
+            default:
+                throw "gameObject: invalid gameObject type";
+        };
+    },
+
     draw: function(context) {
         console.log("GameObject Draw: " + this.objectType);
-        if (this.objectType == "PlayerBody") {
-            context.fillStyle = "red";
-            context.fillRect(this.canvasRect.x, this.canvasRect.y, 20, 20);
+        
+    },
 
-            console.log("Player Direction:")
-            console.log(this.direction)
+    createHat: function (hatRadius, teamColor) {
+        // SHAPE XY DIFFERS FROM CONTAINER XY ?? 
+        var image = new createjs.Container();
 
-            // Draw weapon
-            var newX = this.canvasRect.center.x + this.direction.X * 50;
-            var newY = this.canvasRect.center.y + this.direction.Y * 50;
-            context.beginPath();
-            context.moveTo(this.canvasRect.center.x, this.canvasRect.center.y);
-            context.lineTo(newX, newY);
-            context.lineWidth = 3;
-            context.stroke();
+        var lineColor = "black";
+        var circleBigColor;
+        var circleSmallColor;
 
-            // Transformation
-            //context.translate(this.canvasRect.center.x, this.canvasRect.center.y);
-            //context.rotate(30 * Math.PI / 180);
+        switch (teamColor) {
+            case "orange":
+                circleBigColor = createjs.Graphics.getRGB(255, 127, 39, 1.0);
+                circleSmallColor = createjs.Graphics.getRGB(232, 90, 0, 1.0);
 
+            case "blue":
+                circleBigColor = createjs.Graphics.getRGB(0, 162, 232, 1.0);
+                circleSmallColor = createjs.Graphics.getRGB(63, 72, 204, 1.0);
+
+            default:
+                throw "gameObject: invalid team color"
         }
 
-        else if (this.objectType == "NPC") {
-            context.fillStyle = "black";
-            context.fillRect(this.canvasRect.x, this.canvasRect.y, 20, 20);
-        }
 
-        else if (this.objectType == "Bullet") {
-            context.beginPath();
-            context.arc(this.canvasRect.x, this.canvasRect.y, 5, 0, 2 * Math.PI, false);
-            context.fillStyle = 'yellow';
-            context.fill();
-            context.lineWidth = 1;
-            context.strokeStyle = '#003300';
-            context.stroke();
-        }
+        var circleBigRadius = hatRadius;
+        var circleSmallRadius = circleBigRadius / 2.3;
 
-        else throw "GameObject: invalid gameObject type";
+        var circleBig = new createjs.Shape();
+        var circleSmall = new createjs.Shape();
+        var lineLeft = new createjs.Shape();
+        var lineRight = new createjs.Shape();
+
+        circleBig.graphics.setStrokeStyle(1).
+            beginStroke(lineColor).
+            beginFill(circleBigColor).
+            drawCircle(0, 0, circleBigRadius)
+
+        circleSmall.graphics.setStrokeStyle(1).
+            beginStroke(lineColor).
+            beginFill(circleSmallColor).
+            drawCircle(0, 0, circleSmallRadius);
+        circleSmall.x = -circleBigRadius * 0.15;
+        circleSmall.y = -circleBigRadius * 0.25;
+        circleSmall.scaleY = 0.8;
+
+        // Draw first line
+        lineLeft.graphics.setStrokeStyle(1).beginStroke(lineColor).
+        moveTo(circleSmall.x - circleSmallRadius, circleSmall.y).
+        lineTo(circleSmall.x - circleSmallRadius * 0.75, circleSmall.y + circleSmallRadius);
+
+        // Draw second line
+        lineRight.graphics.setStrokeStyle(1).beginStroke(lineColor).
+        moveTo(circleSmall.x + circleSmallRadius, circleSmall.y).
+        lineTo(circleSmall.x + circleSmallRadius * 1.25, circleSmall.y + circleSmallRadius);
+
+        image.addChild(circleBig, circleSmall, lineLeft, lineRight);
+
+        return image;
+    },
+
+    createBullet: function (bulletRadius, color) {
+        // SHAPE XY DIFFERS FROM CONTAINER XY ?? 
+
+        var image = new createjs.Shape();
+
+        image.graphics.setStrokeStyle(1).
+            beginStroke(lineColor).
+            beginFill(color).
+            drawCircle(0, 0, bulletRadius)
+        
+        return image;
     }
 };
 

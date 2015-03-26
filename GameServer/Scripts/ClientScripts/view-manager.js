@@ -1,8 +1,10 @@
 ﻿function viewManager(canvas, canvasSize){
-    this.drawContext = canvas.getContext("2d");
+    //this.drawContext = canvas.getContext("2d");
 
     canvas.width = canvasSize.width;
     canvas.height = canvasSize.height;
+
+    this.stage = new createjs.Stage(canvas);
 
     this.setFrameQueue = function (framesQueue) {
         this.framesQueue = framesQueue
@@ -23,7 +25,8 @@
         var mouse = point;
 
         // Get mouse vector not normalized
-        var mouseVectorNotNormalized = new Point(mouse.x - playerCenter.x, mouse.y - playerCenter.y);
+        var mouseVectorNotNo
+        rmalized = new Point(mouse.x - playerCenter.x, mouse.y - playerCenter.y);
 
         // Calculate mouse vector length
         var mouseVectorLength = Math.sqrt(Math.pow(mouseVectorNotNormalized.x, 2) + Math.pow(mouseVectorNotNormalized.y, 2));
@@ -43,8 +46,8 @@
                 var dx = self.target.gameRect.x - obj.gameRect.x;
                 var dy = self.target.gameRect.y - obj.gameRect.y;
 
-                obj.canvasRect.x = self.target.canvasRect.x - dx;
-                obj.canvasRect.y = self.target.canvasRect.y - dy;
+                obj.image.x = self.target.image.x - dx;
+                obj.image.y = self.target.image.y - dy;
             }
         })
 
@@ -54,29 +57,25 @@
                 var dx = self.target.gameRect.x - cell.gameRect.x;
                 var dy = self.target.gameRect.y - cell.gameRect.y;
 
-                cell.canvasX = self.target.canvasRect.x - dx;
-                cell.canvasY = self.target.canvasRect.y - dy;
+                // Cells are rects, and rects do not have center property
+                cell.image.x = self.target.image.x - dx - cell.size / 2;
+                cell.image.y = self.target.image.y - dy - cell.size / 2;
             })
         })
     }
 
     this.draw = function (frame) {
-        var self = this
+        // Probably place for optimization
+        this.stage.removeAllChildren();
 
-        self.drawContext.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Draw background
-        frame.cells.forEach(function (row) {
-            row.forEach(function (cell) {
-                cell.draw(self.drawContext)
-            });
-
-        });
-
-        // Draw objects
         frame.objects.forEach(function (obj) {
-            
-            obj.draw(self.drawContext)
+            this.stage.addChild(obj.image);
         });
+
+        frame.cells.forEach(function (cell) {
+            this.stage.addChild(cell.image);
+        });
+        
+        this.stage.update();
     }
 }

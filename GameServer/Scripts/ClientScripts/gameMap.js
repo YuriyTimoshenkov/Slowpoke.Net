@@ -5,12 +5,22 @@
 function Cell(xy, size, terrain) {
     this.X = xy[0];
     this.Y = xy[1];
+    this.size = size;
     this.gameRect = new Rect(xy[0], xy[1], size, size)
-    this.canvasX = this.gameRect.x;
-    this.canvasY = this.gameRect.y;
+    this.image = null;
+    this.assignImage(size);
     this.width = size;
     this.height = size;
-    this.terrain = terrain || 'meadow';
+    this.terrain = terrain || "meadow";
+
+    this.assignImage = function () {
+        var terrainID = terrainClass[this.terrain];
+        var color = terrainClass.props[terrainID].color;
+        var image = new createjs.Shape();
+        image.graphics.drawRect(0, 0, this.size, this.size);
+        this.image = image;
+    };
+
 }
 
 Cell.prototype = {
