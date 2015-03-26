@@ -8,8 +8,7 @@ function GameObject(id, objectType, position, direction, shapeRadius, canvasXY) 
 
     this.id = id;
     this.objectType = objectType;
-    this.objectSize = 20;
-    this.gameRect = new Rect(0, 0, this.objectSize, this.objectSize);
+    this.gameRect = new Rect(0, 0, shapeRadius, shapeRadius);
     this.gameRect.center = position;
     this.direction = direction || {X: 0, Y: 0};
     this.image = null;
@@ -23,8 +22,7 @@ function GameObject(id, objectType, position, direction, shapeRadius, canvasXY) 
 }
 
 GameObject.prototype = {
-    assignImage: function (shapeRadius, canvasXY) {
-
+    assignImage: function (canvasXY, shapeRadius) {
         switch (this.objectType) {
             case "PlayerBody":
                 var teamColor = "orange";
@@ -36,7 +34,7 @@ GameObject.prototype = {
                 break
             case "Bullet":
                 var color = "yellow";
-                this.createBullet(shapeRadius, color);
+                this.image = this.createBullet(shapeRadius, color);
                 break
             default:
                 throw "gameObject: invalid gameObject type";
@@ -108,11 +106,10 @@ GameObject.prototype = {
 
     createBullet: function (bulletRadius, color) {
         // SHAPE XY DIFFERS FROM CONTAINER XY ?? 
-
         var image = new createjs.Shape();
 
         image.graphics.setStrokeStyle(1).
-            beginStroke(lineColor).
+            beginStroke("black").
             beginFill(color).
             drawCircle(0, 0, bulletRadius)
         

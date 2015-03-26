@@ -6,21 +6,21 @@
 
     this.stage = new createjs.Stage(canvas);
 
-    this.circle = new createjs.Shape();
-    this.circle.graphics.beginFill("red").drawCircle(0, 0, 40);
-    this.circle.y = 50;
-    this.stage.addChild(this.circle);
+    //this.circle = new createjs.Shape();
+    //this.circle.graphics.beginFill("red").drawCircle(0, 0, 40);
+    //this.circle.y = 50;
+    //this.stage.addChild(this.circle);
 
-    createjs.Ticker.on("tick", tick);
-    createjs.Ticker.setFPS(30);
+    //createjs.Ticker.on("tick", tick);
+    //createjs.Ticker.setFPS(30);
 
     var self = this;
-    function tick(event) {
-        self.circle.x = self.circle.x + 5;
-        if (self.circle.x > self.stage.canvas.width) { self.circle.x = 0; }
+    //function tick(event) {
+    //    self.circle.x = self.circle.x + 5;
+    //    if (self.circle.x > self.stage.canvas.width) { self.circle.x = 0; }
 
-        self.stage.update(event); // important!!
-    }
+    //    self.stage.update(event); // important!!
+    //}
 
     this.setFrameQueue = function (framesQueue) {
         this.framesQueue = framesQueue
@@ -36,7 +36,7 @@
     }
 
     this.calculatePlayerDirectionVector = function (point) {
-        var playerCenter = this.target.gameRect.center;
+        var playerCenter = new Point(this.target.image.x, this.target.image.y);
         var vectorMultiplier = 10;
         var mouse = point;
 
@@ -81,22 +81,23 @@
 
     this.draw = function (frame) {
         var self = this;
-
-        if (self.stage.children.length == 0) {
-            // Probably place for optimization
-            self.stage.removeAllChildren();
-
-            frame.objects.forEach(function (element, index, array) {
-                self.stage.addChild(element.image);
-            });
-
-            frame.cells.forEach(function (row, index, array) {
-                row.forEach(function (cell, index, array) {
-                    self.stage.addChild(cell.image);
-                })
-            })
-        }
         
-        //self.stage.update();
+        // Probably place for optimization. To remove\add only those objects, which were changed
+        self.stage.removeAllChildren();
+
+        frame.cells.forEach(function (row, index, array) {
+            row.forEach(function (cell, index, array) {
+                console.log("we add cell");
+                self.stage.addChild(cell.image);
+            })
+        })
+
+        frame.objects.forEach(function (element, index, array) {
+            console.log("we add object");
+            console.log([element.image.x, element.image.y]);
+            self.stage.addChild(element.image);
+        });
+
+        self.stage.update();
     }
 }

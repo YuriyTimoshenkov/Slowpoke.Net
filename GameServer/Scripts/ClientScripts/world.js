@@ -34,6 +34,8 @@ World.prototype = {
         }
 
         else if (objectType == "Bullet") {
+            console.log("Bullet")
+            console.log(data["Shape"])
             obj = new GameObject(id, objectType, position, direction, shapeRadius)
         }
 
