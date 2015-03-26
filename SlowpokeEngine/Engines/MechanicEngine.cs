@@ -145,7 +145,11 @@ namespace SlowpokeEngine.Engines
                         {
                             if(body is ActiveBody)
                             {
-                                ((ActiveBody)body).Harm(bullet.Damage);
+                                var activeBody = ((ActiveBody)body);
+                                activeBody.Harm(bullet.Damage);
+
+                                if (activeBody.Life <= 0)
+                                    ReleaseActiveBody(activeBody.Id);
                             }
                         }
                     });

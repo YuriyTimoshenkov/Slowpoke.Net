@@ -35,14 +35,10 @@ namespace SlowpokeEngine.Bodies
 		}
 
         public virtual void Run() { }
-		public virtual void ReleaseGame() {}
-
+        public virtual void ReleaseGame() { }
         public virtual void Harm(int damage)
         {
             Life -= damage;
-
-            if (Life <= 0)
-                ReleaseGame();
         }
 	}
 }
