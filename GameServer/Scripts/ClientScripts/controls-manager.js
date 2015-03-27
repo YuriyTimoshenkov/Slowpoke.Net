@@ -35,7 +35,11 @@
     }
 
     this.addShootHandler = function (handler) {
-        this.addKeyHandler(32, handler)
+        this.canvas.onclick = function (e) {    
+            if (e.button === 0) {
+                handler()
+            }
+        }
     }
 
     this.addMoveRightHandler = function (handler) {
