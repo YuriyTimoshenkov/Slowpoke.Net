@@ -37,7 +37,7 @@ namespace SlowpokeEngine.Bodies
                         ));
 		}
 
-		private int GetNewDirection(int current, int postition)
+        private double GetNewDirection(double current, double postition)
 		{
 			if ((postition > 10 && current > 0) || (postition < 0 && current < 0))
 				return current *= -1;

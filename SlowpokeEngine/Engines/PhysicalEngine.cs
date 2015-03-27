@@ -93,10 +93,10 @@ namespace SlowpokeEngine.Engines
                     },
                     (command) =>
                     {
-                        var directionChanges = (GameCommandChangeDirection)command;
+                        var changeDirectionCommane = (GameCommandChangeDirection)command;
                         var body = command.ActiveBody;
 
-                        body.Direction = Vector.CalculateUnitVector(directionChanges.Direction);
+                        body.Direction = Vector.CalculateUnitVector(changeDirectionCommane.Direction);
 
                         return new PhysicsProcessingResultEmpty();
                     });

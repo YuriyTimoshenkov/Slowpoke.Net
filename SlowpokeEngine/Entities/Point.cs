@@ -13,17 +13,19 @@ namespace SlowpokeEngine.Entities
 			get { return X == 0 && Y == 0; }
 		}
 
-		public int X {
+		public double X {
 			get;
 			set;
 		}
 
-		public int Y {
+        public double Y
+        {
 			get;
 			set;
 		}
 
-		public Point(int x, int y):this()
+        public Point(double x, double y)
+            : this()
 		{
 			X = x;
 			Y = y;
@@ -70,12 +72,12 @@ namespace SlowpokeEngine.Entities
 			return comp.X == X && comp.Y == Y;
 		}
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
-			return X ^ Y;
+			return X.GetHashCode() ^ Y.GetHashCode();
 		}
 
-		public void Offset(int dx, int dy)
+        public void Offset(double dx, double dy)
 		{
 			X += dx;
 			Y += dy;
@@ -86,12 +88,12 @@ namespace SlowpokeEngine.Entities
 			Offset(p.X, p.Y);
 		}
 
-		public static implicit operator int[](Point p)
+        public static implicit operator double[](Point p)
 		{
 			return new[] {p.X, p.Y};
 		}
 
-		public static implicit operator Point(int[] array)
+        public static implicit operator Point(double[] array)
 		{
 			if(array == null)
 				return new Point(0,0);
@@ -101,16 +103,16 @@ namespace SlowpokeEngine.Entities
 					: new Point(array[0], array[1]);
 		}
 
-		public static implicit operator Point(Tuple<int, int> tuple)
+        public static implicit operator Point(Tuple<double, double> tuple)
 		{
 			return tuple == null
 				? new Point(0,0)
 					: new Point(tuple.Item1, tuple.Item2);
 		}
 
-		public static implicit operator Tuple<int, int>(Point p)
+        public static implicit operator Tuple<double, double>(Point p)
 		{
-			return new Tuple<int, int>(p.X, p.Y);
+			return new Tuple<double, double>(p.X, p.Y);
 		}
 
 

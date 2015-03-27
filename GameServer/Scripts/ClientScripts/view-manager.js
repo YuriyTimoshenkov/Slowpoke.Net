@@ -41,15 +41,9 @@
         var mouse = point;
 
         // Get mouse vector not normalized
-        var mouseVectorNotNormalized = new Point(mouse.x - playerCenter.x, mouse.y - playerCenter.y);
+        var mouseVectorNotNormalized = new Point(Math.round(mouse.x - playerCenter.x), Math.round(mouse.y - playerCenter.y));
 
-        // Calculate mouse vector length
-        var mouseVectorLength = Math.sqrt(Math.pow(mouseVectorNotNormalized.x, 2) + Math.pow(mouseVectorNotNormalized.y, 2));
-
-        // Normalize mouse vector
-        var mouseVectorNormalized = new Point(Math.round(mouseVectorNotNormalized.x / mouseVectorLength * vectorMultiplier),
-                                              Math.round(mouseVectorNotNormalized.y / mouseVectorLength * vectorMultiplier));
-        return mouseVectorNormalized;
+        return mouseVectorNotNormalized;
     }
 
     this.updateCanvasXY = function (frame) {
