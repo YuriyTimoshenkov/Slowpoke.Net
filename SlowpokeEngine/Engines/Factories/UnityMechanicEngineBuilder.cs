@@ -4,6 +4,7 @@ using Microsoft.Practices.Unity;
 using SlowpokeEngine.Entities;
 using SlowpokeEngine.Weapons;
 using SlowpokeEngine.DAL;
+using System;
 
 namespace SlowpokeEngine
 {
@@ -33,9 +34,12 @@ namespace SlowpokeEngine
                 typeof(IGameSessionRepository),
                 100, 100
                 ));
-            unityContainer.RegisterType<WeaponGun>(new InjectionConstructor(
-                10, 2, 100, 10, typeof(IMechanicEngine)
+            unityContainer.RegisterType<WeaponSimpleBullet>("Revolver",new InjectionConstructor(
+                10, 2, 100, 5, new TimeSpan(0, 0, 0, 0, 300), typeof(IMechanicEngine)
                 ));
+            unityContainer.RegisterType<WeaponSimpleBullet>("Gun", new InjectionConstructor(
+               10, 2, 300, 10, new TimeSpan(0, 0, 1), typeof(IMechanicEngine)
+               ));
 
             var mechanicEngine = unityContainer.Resolve<IMechanicEngine>();
 

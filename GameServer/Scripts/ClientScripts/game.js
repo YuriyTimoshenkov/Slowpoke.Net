@@ -36,7 +36,11 @@ function Game(fps, serverProxy, controlsManager, viewManager, gameWorldManager) 
     }
 
     this.shoot = function () {
-        serverProxy.shoot(1)
+        serverProxy.shoot()
+    }
+
+    this.changeWeapon = function () {
+        serverProxy.changeWeapon()
     }
 
     this.handleMouseMove = function (e) {
@@ -56,6 +60,7 @@ function Game(fps, serverProxy, controlsManager, viewManager, gameWorldManager) 
         controlsManager.addMoveLeftHandler(self.moveLeft)
         controlsManager.addShootHandler(self.shoot)
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
+        controlsManager.addChangeWeaponHandler(self.changeWeapon)
 
         // Start listening server
         setInterval(function () { self.getFrameFromServer() }, serverRequestFPS)

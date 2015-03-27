@@ -34,13 +34,16 @@ function serverProxySignalR(url) {
     this.getActiveBodies = function (doneHandler, failHandler) {
         gameProxy.server.getActiveBodies().done(doneHandler).fail(failHandler);
     };
-    this.shoot = function (weaponNumber) {
-        gameProxy.server.shoot(weaponNumber)
+    this.changeWeapon = function () {
+        gameProxy.server.changeWeapon()
     }
     this.moveBody = function (x, y) {
         gameProxy.server.moveBody(x, y)
     }
     this.changeBodyDirection = function (dx, dy) {
         gameProxy.server.changeBodyDirection(dx, dy)
+    }
+    this.shoot = function (weaponNumber) {
+        gameProxy.server.shoot()
     }
 }

@@ -11,6 +11,20 @@ namespace SlowpokeEngine.Bodies
 	public class PlayerBody : ActiveBody, IPlayerBodyFacade
 	{
         public List<WeaponBase> Weapons { get; private set; }
+
+        private int _currentWeaponIndex = 0;
+        public WeaponBase CurrentWeapon
+        {
+            get 
+            {
+                if (Weapons.Count > _currentWeaponIndex)
+                {
+                    return Weapons[_currentWeaponIndex];
+                }
+                else
+                    return null;
+            }
+        }
         public Guid SessionId { get; set; }
 
         private IGameSessionRepository _sessionRepository;
@@ -42,15 +56,15 @@ namespace SlowpokeEngine.Bodies
             ProcessAction(new GameCommandChangeDirection(direction, _mechanicEngine, this));
         }
 
-        public void Shoot(int weaponIndex)
+        public void Shoot()
         {
-            if(weaponIndex >= 0 && Weapons.Count >= weaponIndex)
+            if(CurrentWeapon != null)
             {
                 //calculate start point
                 var startPosition = Direction.MovePoint(
                     Shape.Position, Shape.MaxDimension);
 
-                Weapons[weaponIndex - 1].Shoot(startPosition, Direction);
+                CurrentWeapon.Shoot(startPosition, Direction);
             }
         }
 
@@ -59,6 +73,16 @@ namespace SlowpokeEngine.Bodies
             _sessionRepository.CloseSession(SessionId);
 
             base.ReleaseGame();
+        }
+
+        public void ChangeWeapon()
+        {
+            _currentWeaponIndex++;
+
+            if (Weapons.Count <= _currentWeaponIndex)
+            {
+                _currentWeaponIndex = 0;
+            }
         }
     }
 }

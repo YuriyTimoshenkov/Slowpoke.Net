@@ -10,7 +10,8 @@ namespace SlowpokeEngine.Bodies
 
         void Move(Vector direction);
         void ChangeDirection(Vector direction);
-        void Shoot(int weaponIndex);
+        void Shoot();
+        void ChangeWeapon();
 	}
 }
 

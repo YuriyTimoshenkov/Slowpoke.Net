@@ -13,8 +13,6 @@ namespace SlowpokeEngine.Weapons
         protected int _shootingDistance;
         protected IMechanicEngine _mechanicEngine;
 
-        public Guid Id { get; set; }
-
         public WeaponBase(int damage, int shootingDistance, IMechanicEngine mechanicEngine)
         {
             _damage = damage;

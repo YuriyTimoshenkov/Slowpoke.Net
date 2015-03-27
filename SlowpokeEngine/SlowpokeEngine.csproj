@@ -103,7 +103,7 @@
     <Compile Include="Commands\BodyActionChangeDirection.cs" />
     <Compile Include="Weapons\Bullet.cs" />
     <Compile Include="Weapons\WeaponBase.cs" />
-    <Compile Include="Weapons\WeaponGun.cs" />
+    <Compile Include="Weapons\WeaponSimpleBullet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

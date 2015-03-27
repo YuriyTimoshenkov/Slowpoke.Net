@@ -54,6 +54,10 @@
         this.addKeyHandler(65, handler)
     }
 
+    this.addChangeWeaponHandler = function (handler) {
+        this.addKeyHandler(32, handler)
+    }
+
     this.addMouseMoveHandler = function (handler) {
         this.canvas.onmousemove = function (e) { handler(e) }
     }

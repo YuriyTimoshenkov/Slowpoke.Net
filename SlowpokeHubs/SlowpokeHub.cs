@@ -65,12 +65,20 @@ namespace SlowpokeHubs
                 player.ChangeDirection(new Vector(x, y));
 		}
 
-        public void Shoot(int weaponindex)
+        public void Shoot()
         {
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId]);
 
             if (player != null)
-                player.Shoot(weaponindex);
+                player.Shoot();
+        }
+
+        public void ChangeWeapon()
+        {
+            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId]);
+
+            if (player != null)
+                player.ChangeWeapon();
         }
 
 		public override Task OnDisconnected (bool stopCalled)
