@@ -3,17 +3,21 @@
  */
 
 
-function GameObject(id, objectType, position, direction, shapeRadius, canvasXY) {
+function GameObject(id, objectType, position, direction, shapeRadius, life, maxLife, canvasXY) {
     var self = this;
 
     this.id = id;
     this.objectType = objectType;
-    this.gameRect = new Rect(0, 0, shapeRadius, shapeRadius);
+    this.gameRect = new Rect(0, 0, shapeRadius * 2, shapeRadius * 2);
     this.gameRect.center = position;
     this.direction = direction || {X: 0, Y: 0};
     this.image = null;
+    this.life = life || 0;
+    this.maxLife = maxLife || 0;
+    this.lifeText = null;
+    this.weaponImage = null;
     this.assignImage(canvasXY, shapeRadius);
-
+    
     // Special for player character
     if (canvasXY) {
         this.image.x = canvasXY.x;
@@ -27,10 +31,14 @@ GameObject.prototype = {
             case "PlayerBody":
                 var teamColor = "orange";
                 this.image = this.createHat(shapeRadius, teamColor);
+                //this.addWeaponImage();
+                this.addLifeText();
                 break
             case "NPC":
                 var teamColor = "blue";
                 this.image = this.createHat(shapeRadius, teamColor);
+                //this.addWeaponImage();
+                this.addLifeText();
                 break
             case "Bullet":
                 var color = "yellow";
@@ -41,10 +49,6 @@ GameObject.prototype = {
         };
     },
 
-    draw: function(context) {
-        console.log("GameObject Draw: " + this.objectType);
-        
-    },
 
     createHat: function (hatRadius, teamColor) {
         // SHAPE XY DIFFERS FROM CONTAINER XY ?? 
@@ -114,6 +118,57 @@ GameObject.prototype = {
             drawCircle(0, 0, bulletRadius)
         
         return image;
+    },
+
+    createLifeText: function () {
+        var textSize = 10;
+        return new createjs.Text(this.life, textSize + "px Arial", "purple");
+    },
+    addLifeText: function () {
+        this.lifeText = this.createLifeText();
+        this.lifeText.x = - this.gameRect.width / 1.5;
+        this.lifeText.y = - this.gameRect.height / 1.5;
+        this.image.addChild(this.lifeText);
+    },
+    removeLifeText: function () {
+        this.image.removeChild(this.lifeText);
+    },
+
+    updateLife: function (life) {
+        this.life = life;
+        this.updateLifeText();
+    },
+
+    updateLifeText: function () {
+        this.removeLifeText();
+        this.addLifeText();
+    },
+
+    addWeaponImage: function () {
+        this.weaponImage = this.createWeaponImage();
+        this.image.addChild(this.weaponImage);
+    },
+
+    createWeaponImage: function () {
+        var weapon = new createjs.Shape();
+        var weaponLength = 100;
+
+        var center = new Point(this.image.x, this.image.y);
+        var weaponPoint = new Point(center.x + this.direction.X * weaponLength, center.y + this.direction.Y * weaponLength);
+
+        weapon.graphics.setStrokeStyle(1).beginStroke("black").
+        moveTo(center.x, center.y).
+        lineTo(weaponPoint.x, weaponPoint.y);
+        return weapon
+    },
+
+    removeWeaponImage: function() {
+        this.image.removeChild(this.weaponImage);
+    },
+
+    updateWeapon: function () {
+        this.removeWeaponImage();
+        this.addWeaponImage();
     }
 };
 

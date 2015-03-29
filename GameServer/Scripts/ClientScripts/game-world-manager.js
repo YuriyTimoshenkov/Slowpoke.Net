@@ -63,6 +63,13 @@
 
         // Update direction
         obj.direction = objData["Direction"];
+        //obj.updateWeapon();
+
+
+        // Update life
+        if (obj.lifeText){
+            obj.updateLife(objData["Life"]);
+        }
 
     }
 
@@ -72,6 +79,6 @@
 
     this.init = function (playerId, queue) {
         this.serverFramesQueue = queue
-        this.player = this.world.createGameObject({ "Id": playerId, "ActiveBodyType": "PlayerBody", "Direction": { X: 0, Y: 0 }, "Shape": { "Position": { X: 0, Y: 0 }, "Radius": 20 } })
+        this.player = this.world.createGameObject({ "Id": playerId, "ActiveBodyType": "PlayerBody", "LifeMax": 123, "Life": 123, "Direction": { X: 0, Y: 0 }, "Shape": { "Position": { X: 0, Y: 0 }, "Radius": 20 } })
     }
 }
