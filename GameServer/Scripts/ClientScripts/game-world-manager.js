@@ -55,20 +55,24 @@
         var obj = this.world.allGameObjects.filter(function (obj) { return objId == obj.id })[0];
 
 
-        if (obj.objectType == "PlayerBody") {
-        }
+        //if (obj.objectType == "PlayerBody") {
+        //}
 
         // Update position
         obj.gameRect.center = objData["Shape"]["Position"];
 
         // Update direction
-        obj.direction = objData["Direction"];
-        //obj.updateWeapon();
+        var newDirection = objData["Direction"];
+        if (obj.direction.X !== newDirection.X || obj.direction.Y !== newDirection.Y) {
+            obj.direction = newDirection;
+            obj.updateWeapon();
 
+        }
 
         // Update life
-        if (obj.lifeText){
-            obj.updateLife(objData["Life"]);
+        var newLife = objData["Life"];
+        if (obj.life !== newLife && obj.lifeText){
+            obj.updateLife(newLife);
         }
 
     }
@@ -78,7 +82,8 @@
     }
 
     this.init = function (playerId, queue) {
-        this.serverFramesQueue = queue
+        this.serverFramesQueue = queue;
+        //Game.getFrameFromServer();
         this.player = this.world.createGameObject({ "Id": playerId, "ActiveBodyType": "PlayerBody", "LifeMax": 123, "Life": 123, "Direction": { X: 0, Y: 0 }, "Shape": { "Position": { X: 0, Y: 0 }, "Radius": 20 } })
     }
 }

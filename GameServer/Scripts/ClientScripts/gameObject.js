@@ -11,18 +11,18 @@ function GameObject(id, objectType, position, direction, shapeRadius, life, maxL
     this.gameRect = new Rect(0, 0, shapeRadius * 2, shapeRadius * 2);
     this.gameRect.center = position;
     this.direction = direction || {X: 0, Y: 0};
-    this.image = null;
+    this.image = new createjs.Container();
     this.life = life || 0;
     this.maxLife = maxLife || 0;
     this.lifeText = null;
     this.weaponImage = null;
     this.assignImage(canvasXY, shapeRadius);
-    
     // Special for player character
     if (canvasXY) {
         this.image.x = canvasXY.x;
         this.image.y = canvasXY.y;
     }
+    
 }
 
 GameObject.prototype = {
@@ -31,13 +31,13 @@ GameObject.prototype = {
             case "PlayerBody":
                 var teamColor = "orange";
                 this.image = this.createHat(shapeRadius, teamColor);
-                //this.addWeaponImage();
+                this.addWeaponImage();
                 this.addLifeText();
                 break
             case "NPC":
                 var teamColor = "blue";
                 this.image = this.createHat(shapeRadius, teamColor);
-                //this.addWeaponImage();
+                this.addWeaponImage();
                 this.addLifeText();
                 break
             case "Bullet":
@@ -151,10 +151,12 @@ GameObject.prototype = {
 
     createWeaponImage: function () {
         var weapon = new createjs.Shape();
-        var weaponLength = 100;
+        var weaponLength = 30;
 
-        var center = new Point(this.image.x, this.image.y);
+        //var center = new Point(this.image.x, this.image.y);
+        var center = new Point(0, 0);
         var weaponPoint = new Point(center.x + this.direction.X * weaponLength, center.y + this.direction.Y * weaponLength);
+
 
         weapon.graphics.setStrokeStyle(1).beginStroke("black").
         moveTo(center.x, center.y).
