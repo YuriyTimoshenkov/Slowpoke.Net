@@ -1,26 +1,11 @@
 ﻿function viewManager(canvas, canvasSize){
-    //this.drawContext = canvas.getContext("2d");
+    var self = this;
 
     canvas.width = canvasSize.width;
     canvas.height = canvasSize.height;
 
     this.stage = new createjs.Stage(canvas);
 
-    //this.circle = new createjs.Shape();
-    //this.circle.graphics.beginFill("red").drawCircle(0, 0, 40);
-    //this.circle.y = 50;
-    //this.stage.addChild(this.circle);
-
-    //createjs.Ticker.on("tick", tick);
-    //createjs.Ticker.setFPS(30);
-
-    var self = this;
-    //function tick(event) {
-    //    self.circle.x = self.circle.x + 5;
-    //    if (self.circle.x > self.stage.canvas.width) { self.circle.x = 0; }
-
-    //    self.stage.update(event); // important!!
-    //}
 
     this.setFrameQueue = function (framesQueue) {
         this.framesQueue = framesQueue
@@ -76,7 +61,8 @@
     this.draw = function (frame) {
         var self = this;
         
-        // Probably place for optimization. To remove\add only those objects, which were changed
+        // Probably place for optimization. 
+        // TODO: To remove\add only those objects, which were changed
         self.stage.removeAllChildren();
 
         frame.cells.forEach(function (row, index, array) {
