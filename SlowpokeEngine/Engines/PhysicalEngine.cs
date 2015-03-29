@@ -71,7 +71,7 @@ namespace SlowpokeEngine.Engines
 
                     foreach(var bodyItem in _mapEngine.GetBodiesForCollision().Where( v => v.Id != body.Id))
                     {
-                        if(_shapeCollisionManager.CheckCollision(body.Shape, bodyItem.Shape))
+                        if(_shapeCollisionManager.CheckCollision(body.Shape, bodyItem.Shape) && bodyItem.ActiveBodyType != "Bullet")
                         {
                             collisionBodies.Add(bodyItem);
                         }
