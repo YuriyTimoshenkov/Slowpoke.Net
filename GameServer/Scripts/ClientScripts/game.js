@@ -2,7 +2,7 @@
  * Created by dimapct on 12.02.2015.
  */
 
-function Game(fps, serverProxy, controlsManager, viewManager, gameWorldManager) {
+function Game(fps, serverProxy, controlsManager, viewManager) {
     var self = this
 
     this.serverProxy = serverProxy
@@ -10,12 +10,11 @@ function Game(fps, serverProxy, controlsManager, viewManager, gameWorldManager) 
     this.serverFramesQueue = []
     this.controlsManager = controlsManager
     this.viewManager = viewManager
-    this.gameWorldManager = gameWorldManager
     
     
     this.run = function () {
         serverProxy.run(function () {
-            serverProxy.loadPlayer(self.loadPlayer, self.errorHandler)
+            serverProxy.loadPlayer(self.handleLoadPlayer, self.errorHandler)
         }, self.errorHandler)
     }
 
@@ -48,11 +47,18 @@ function Game(fps, serverProxy, controlsManager, viewManager, gameWorldManager) 
         self.serverProxy.changeBodyDirection(newPlayerDirectionVector.x, newPlayerDirectionVector.y)
     }
 
-    this.loadPlayer = function (player) {
+    this.handleLoadPlayer = function (player) {
         self.player = player
 
-        gameWorldManager.init(player.Id, self.serverFramesQueue)
-        viewManager.setTarget(gameWorldManager.player)
+        //Load map
+        serverProxy.getMap(self.handleLoadMap, self.errorHandler)   
+    }
+
+    this.handleLoadMap = function (serverMap) {
+        self.gameWorldManager = new gameWorldManagerFactory().createGameWorldManager(serverMap)
+
+        self.gameWorldManager.init(self.player.Id, self.serverFramesQueue)
+        viewManager.setTarget(self.gameWorldManager.player)
 
         controlsManager.addMoveUpHandler(self.moveUp)
         controlsManager.addMoveDownHandler(self.moveDown)
@@ -67,7 +73,6 @@ function Game(fps, serverProxy, controlsManager, viewManager, gameWorldManager) 
 
         // Start game loop
         setInterval(function () { self.loop() }, updateFPS)
-
     }
 
     this.errorHandler = function (error) {

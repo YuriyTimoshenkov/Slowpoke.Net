@@ -46,6 +46,9 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -63,6 +66,10 @@
     <Compile Include="DAL\EntityFrameworkImpl\CharacterRepositoryEF.cs" />
     <Compile Include="DAL\EntityFrameworkImpl\GameSessionRepositoryEF.cs" />
     <Compile Include="DAL\EntityFrameworkImpl\GameStorage.cs" />
+    <Compile Include="Engines\Map\IMap.cs" />
+    <Compile Include="Engines\Map\IMapTile.cs" />
+    <Compile Include="Engines\Map\Map.cs" />
+    <Compile Include="Engines\Map\MapTile.cs" />
     <Compile Include="Entities\Factories\ICharacterFactory.cs" />
     <Compile Include="Entities\Factories\SimpleCharacterFactory.cs" />
     <Compile Include="Entities\GameCharacter.cs" />
@@ -83,9 +90,8 @@
     <Compile Include="Engines\PhysicalEngine.cs" />
     <Compile Include="Extensions\EventArgExtensions.cs" />
     <Compile Include="Commands\PhysicsProcessingResultEmpty.cs" />
-    <Compile Include="Engines\MapEngine.cs" />
-    <Compile Include="Engines\IActiveBodiesContainer.cs" />
-    <Compile Include="Engines\IMapEngine.cs" />
+    <Compile Include="Engines\Map\MapEngine.cs" />
+    <Compile Include="Engines\Map\IMapEngine.cs" />
     <Compile Include="Engines\IPhysicalEngine.cs" />
     <Compile Include="Engines\IMechanicEngine.cs" />
     <Compile Include="Commands\GameCommand.cs" />

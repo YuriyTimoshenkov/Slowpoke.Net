@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SlowpokeEngine.Extensions;
 using SlowpokeEngine.Weapons;
+using SlowpokeEngine.Engines.Map;
 
 namespace SlowpokeEngine.Engines
 {
@@ -92,7 +93,7 @@ namespace SlowpokeEngine.Engines
 		{
             var player = _bodyBuilder.LoadPlayerBody(characterId, this);
 
-			_mapEngine.Bodies.TryAdd (player.Id, player);
+            AddActiveBody(player);
 
 			return player;
 		}
