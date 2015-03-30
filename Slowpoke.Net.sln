@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctopusPaymentPage", "Octop
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{6932C8CF-F33F-4F40-9E12-C27473457E74}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlowpokeEngineTests", "SlowpokeEngineTests\SlowpokeEngineTests.csproj", "{58492E06-6654-408E-9F08-27920618D012}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{6932C8CF-F33F-4F40-9E12-C27473457E74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6932C8CF-F33F-4F40-9E12-C27473457E74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6932C8CF-F33F-4F40-9E12-C27473457E74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58492E06-6654-408E-9F08-27920618D012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58492E06-6654-408E-9F08-27920618D012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58492E06-6654-408E-9F08-27920618D012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58492E06-6654-408E-9F08-27920618D012}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

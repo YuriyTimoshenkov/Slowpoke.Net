@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using SlowpokeEngine.Entities;
 using System.Security.Claims;
+using SlowpokeEngine.Engines.Map;
 
 namespace SlowpokeHubs
 {
@@ -79,6 +80,11 @@ namespace SlowpokeHubs
 
             if (player != null)
                 player.ChangeWeapon();
+        }
+
+        public IMap GetMap()
+        {
+            return MechanicEngine.ViewPort.Map;
         }
 
 		public override Task OnDisconnected (bool stopCalled)

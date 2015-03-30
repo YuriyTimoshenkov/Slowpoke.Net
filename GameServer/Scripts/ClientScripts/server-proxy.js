@@ -34,6 +34,9 @@ function serverProxySignalR(url) {
     this.getActiveBodies = function (doneHandler, failHandler) {
         gameProxy.server.getActiveBodies().done(doneHandler).fail(failHandler);
     };
+    this.getMap = function (doneHandler, failHandler) {
+        gameProxy.server.getMap().done(doneHandler).fail(failHandler);
+    };
     this.changeWeapon = function () {
         gameProxy.server.changeWeapon()
     }

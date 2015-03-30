@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SlowpokeEngine.Weapons
 {
-    class Bullet : ActiveBody
+    public class Bullet : ActiveBody
     {
         public Point StartPosition { get; private set; }
         public int ShootingDistance { get; private set; }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Engines.Map;
 
 namespace SlowpokeEngine.Engines
 {
@@ -20,6 +21,11 @@ namespace SlowpokeEngine.Engines
 			return _mapEngine.Bodies.Values;
 		}
 		#endregion
-	}
+
+        public IMap Map
+        {
+            get { return _mapEngine.Map; }
+        }
+    }
 }
 

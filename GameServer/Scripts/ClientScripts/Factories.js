@@ -7,14 +7,11 @@
 function gameBuilder() {
     var serverProxy = new serverProxyFactory().createServerProxy('/')
     var viewM = new viewManagerFactory().createViewManager()
-    var gameWorldM = new gameWorldManagerFactory().createGameWorldManager()
+    //var gameWorldM = new gameWorldManagerFactory().createGameWorldManager()
     var controlsM = new controlsManagerFactory().createControlsManager()
 
-
-    console.log(4444444)
-    console.log(gameWorldM)
     this.buildGame = function () {
-        return new Game(updateFPS, serverProxy, controlsM, viewM, gameWorldM)
+        return new Game(updateFPS, serverProxy, controlsM, viewM)
     }
 }
 
@@ -35,8 +32,8 @@ function viewManagerFactory() {
 }
 
 function gameWorldManagerFactory() {
-    this.createGameWorldManager = function () {
-        var world = new World(worldWidth, worldHeight, cellSize)
+    this.createGameWorldManager = function (serverMap) {
+        var world = new World(serverMap)
         return new gameWorldManager(world)
     }
 }

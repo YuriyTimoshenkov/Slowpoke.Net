@@ -10,10 +10,10 @@ namespace SlowpokeEngine.Weapons
 {
     public class WeaponSimpleBullet : WeaponBase
     {
-        private int _bulletSpeed;
-        private int _bulletSize;
-        private TimeSpan _shootFrequency;
-        private DateTime _lastShoot = DateTime.Now;
+        protected int _bulletSpeed;
+        protected int _bulletSize;
+        protected TimeSpan _shootFrequency;
+        protected DateTime _lastShoot = DateTime.Now;
 
 
         public WeaponSimpleBullet(
@@ -34,12 +34,23 @@ namespace SlowpokeEngine.Weapons
         {
             if (DateTime.Now - _lastShoot > _shootFrequency)
             {
-                var bullet = new Bullet(_shootingDistance, _bulletSpeed, _damage, new ShapeCircle(_bulletSize, startPosition), direction, _mechanicEngine);
+                var bullets = CreateBullet(startPosition, direction);
 
-                _mechanicEngine.AddActiveBody(bullet);
+                foreach (var bullet in bullets)
+                {
+                    _mechanicEngine.AddActiveBody(bullet);
+                }
 
                 _lastShoot = DateTime.Now;
             }
+        }
+
+        protected virtual List<Bullet> CreateBullet(Point startPosition, Vector direction)
+        {
+            return new List<Bullet>
+            {
+                new Bullet(_shootingDistance, _bulletSpeed, _damage, new ShapeCircle(_bulletSize, startPosition), direction, _mechanicEngine)
+            };
         }
     }
 }

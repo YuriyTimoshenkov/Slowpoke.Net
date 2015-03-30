@@ -5,6 +5,9 @@ using SlowpokeEngine.Entities;
 using SlowpokeEngine.Weapons;
 using SlowpokeEngine.DAL;
 using System;
+using SlowpokeEngine.Engines.Map;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SlowpokeEngine
 {
@@ -16,7 +19,11 @@ namespace SlowpokeEngine
 
             unityContainer.RegisterInstance<UnityContainer>(unityContainer);
             unityContainer.RegisterType<ICharacterRepository, CharacterRepositoryEF>();
-            unityContainer.RegisterType<IMapEngine, MapEngine>(new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IMap, Map>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(BuildSimpleMap(), 50));
+            unityContainer.RegisterType<IMapEngine, MapEngine>(
+                new ContainerControlledLifetimeManager());
             unityContainer.RegisterType<IGameSessionRepository, GameSessionRepositoryEF>();
             unityContainer.RegisterType<IShapeCollisionManager, ShapeCollisionManager>();
             unityContainer.RegisterType<IPhysicalEngine, PhysicalEngine>();
@@ -48,5 +55,43 @@ namespace SlowpokeEngine
 
 			return mechanicEngine;
 		}
+
+        private List<List<IMapTile>> BuildSimpleMap()
+        {
+            string[,] rawMap = new string[16, 10] {
+        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
+        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
+        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
+        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
+        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
+        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
+        {"meadow", "meadow", "water", "meadow", "meadow", "road", "road", "road", "road", "road"},
+        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
+        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "rock"},
+        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
+        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
+        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
+        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
+        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
+        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
+        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"}
+        };
+
+            var finalMap = new List<List<IMapTile>>();
+
+            foreach (var row in Enumerable.Range(0, rawMap.GetLength(0)))
+            {
+                var newLayer = new List<IMapTile>();
+
+                foreach (var column in Enumerable.Range(0, rawMap.GetLength(1)))
+                {
+                    newLayer.Add(new MapTile(rawMap[row,column]));
+                }
+
+                finalMap.Add(newLayer);
+            }
+
+            return finalMap;
+        }
 	}
 }

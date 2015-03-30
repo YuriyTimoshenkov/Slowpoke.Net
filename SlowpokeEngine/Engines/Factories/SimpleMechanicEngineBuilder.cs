@@ -1,5 +1,6 @@
 ﻿using SlowpokeEngine.Engines;
 using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Engines.Map;
 
 namespace SlowpokeEngine
 {
@@ -7,7 +8,7 @@ namespace SlowpokeEngine
 	{
 		public IMechanicEngine Build()
 		{
-			var mapEngine = new MapEngine ();
+			var mapEngine = new MapEngine (new Map(null,50));
 			var physicalEngine = new PhysicalEngine (new ShapeCollisionManager(), mapEngine);
 			var simpleBodyBuilder = new SimpleBodyBuilder ();
 			var viewPort = new ViewPort (mapEngine);

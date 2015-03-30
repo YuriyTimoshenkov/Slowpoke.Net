@@ -9,14 +9,11 @@ using System.Threading.Tasks;
 
 namespace SlowpokeEngine.Weapons
 {
-    class WeaponMultipleShotgunBullet : WeaponBase
+    class WeaponMultipleShotgunBullet : WeaponSimpleBullet
     {
-        private int _bulletSpeed;
-        private int _bulletSize;
-        private TimeSpan _shootFrequency;
-        private DateTime _lastShoot = DateTime.Now;
-
-
+        double[] _bulletDeviationRadians = { 0.01, 0.025, 0.045, 
+                                     0, 
+                                     -0.01, -0.025, -0.045 };
         public WeaponMultipleShotgunBullet(
             int damage,
             int bulletSize,
@@ -24,34 +21,19 @@ namespace SlowpokeEngine.Weapons
             int bulletSpeed,
             TimeSpan shootFrequency,
             IMechanicEngine mechanicEngine
-            ):base(damage, shootingDistance, mechanicEngine)
-        {
-            _bulletSpeed = bulletSpeed;
-            _bulletSize = bulletSize;
-            _shootFrequency = shootFrequency;
-        }
+            ):base(damage, bulletSize, shootingDistance, bulletSpeed, shootFrequency,mechanicEngine) {}
 
-        public override void Shoot(Point startPosition, Vector direction)
+        protected override List<Bullet> CreateBullet(Point startPosition, Vector direction)
         {
-            if (DateTime.Now - _lastShoot > _shootFrequency)
-            {
-                double[] radians = { 0.01, 0.025, 0.045, 
-                                     0, 
-                                     -0.01, -0.025, -0.045 };
-               
-                for (int i = 0; i < 7; i++)
+            return Enumerable.Range(0, 7).Select(i =>
                 {
-                    var dirX = direction.X * Math.Cos(radians[i]) - direction.Y * Math.Sin(radians[i]);
-                    var dirY = direction.X * Math.Sin(radians[i]) + direction.Y * Math.Cos(radians[i]);
+                    var dirX = direction.X * Math.Cos(_bulletDeviationRadians[i]) - direction.Y * Math.Sin(_bulletDeviationRadians[i]);
+                    var dirY = direction.X * Math.Sin(_bulletDeviationRadians[i]) + direction.Y * Math.Cos(_bulletDeviationRadians[i]);
 
                     var newDirection = new Vector(dirX, dirY);
-            
-                    var bullet = new Bullet(_shootingDistance, _bulletSpeed, _damage, new ShapeCircle(_bulletSize, startPosition), newDirection, _mechanicEngine);
-                    _mechanicEngine.AddActiveBody(bullet);
-                }
-                               
-                _lastShoot = DateTime.Now;
-            }
+
+                    return new Bullet(_shootingDistance, _bulletSpeed, _damage, new ShapeCircle(_bulletSize, startPosition), newDirection, _mechanicEngine);
+                }).ToList();
         }
     }
 }

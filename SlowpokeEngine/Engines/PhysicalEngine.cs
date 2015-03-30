@@ -6,6 +6,7 @@ using SlowpokeEngine.Entities;
 using SlowpokeEngine.Weapons;
 using SlowpokeEngine.Extensions;
 using System.Linq;
+using SlowpokeEngine.Engines.Map;
 
 namespace SlowpokeEngine.Engines
 {

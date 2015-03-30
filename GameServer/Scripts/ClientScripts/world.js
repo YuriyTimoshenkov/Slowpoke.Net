@@ -3,9 +3,9 @@
  */
 
 
-function World(width, height, cellSize) {
+function World(serverMap) {
     this.allGameObjects = [];
-    this.gameMap = new GameMap(width, height, cellSize);
+    this.gameMap = new GameMap(serverMap);
 
 }
 
