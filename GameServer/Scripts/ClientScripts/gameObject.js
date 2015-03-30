@@ -156,7 +156,9 @@ GameObject.prototype = {
         //var center = new Point(this.image.x, this.image.y);
         var center = new Point(0, 0);
         var weaponPoint = new Point(center.x + this.direction.X * weaponLength, center.y + this.direction.Y * weaponLength);
-
+        console.log(333)
+        console.log(this.direction.X)
+        console.log(this.direction.Y)
 
         weapon.graphics.setStrokeStyle(1).beginStroke("black").
         moveTo(center.x, center.y).
