@@ -24,8 +24,8 @@ namespace SlowpokeEngine.Bodies
                 null,
                 100, 100);
 
-            player.Weapons.Add(new WeaponSimpleBullet(10, 2, 100, 10, new TimeSpan(0,0,1), mechanicEngine));
-            player.Weapons.Add(new WeaponSimpleBullet(10, 2, 200, 30, new TimeSpan(0, 0, 5), mechanicEngine));
+            player.AddWeapon(new WeaponSimpleBullet(10, 2, 100, 10, new TimeSpan(0,0,1), mechanicEngine));
+            player.AddWeapon(new WeaponSimpleBullet(10, 2, 200, 30, new TimeSpan(0, 0, 5), mechanicEngine));
 
             return player;
 		}

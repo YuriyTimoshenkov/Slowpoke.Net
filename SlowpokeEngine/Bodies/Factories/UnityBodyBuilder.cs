@@ -36,9 +36,9 @@ namespace SlowpokeEngine.Bodies
             var character = _characterRepository.Find(characterId).FirstOrDefault();
             
             var player = _unityContainer.Resolve<PlayerBody>();
-            player.Weapons.Add(_unityContainer.Resolve<WeaponSimpleBullet>("Revolver"));
-            player.Weapons.Add(_unityContainer.Resolve<WeaponSimpleBullet>("Gun"));
-            player.Weapons.Add(_unityContainer.Resolve<WeaponMultipleShotgunBullet>("Shotgun"));
+            player.AddWeapon(_unityContainer.Resolve<WeaponSimpleBullet>("Revolver"));
+            player.AddWeapon(_unityContainer.Resolve<WeaponSimpleBullet>("Gun"));
+            player.AddWeapon(_unityContainer.Resolve<WeaponMultipleShotgunBullet>("Shotgun"));
             
             //Fill playerBody with character data
             player.Id = character.Id;

@@ -10,21 +10,22 @@ namespace SlowpokeEngine.Bodies
 {
 	public class PlayerBody : ActiveBody, IPlayerBodyFacade
 	{
-        public List<WeaponBase> Weapons { get; private set; }
+        protected List<WeaponBase> _weapons { get; private set; }
 
         private int _currentWeaponIndex = 0;
         public WeaponBase CurrentWeapon
         {
             get 
             {
-                if (Weapons.Count > _currentWeaponIndex)
+                if (_weapons.Count > _currentWeaponIndex)
                 {
-                    return Weapons[_currentWeaponIndex];
+                    return _weapons[_currentWeaponIndex];
                 }
                 else
                     return null;
             }
         }
+        public int WeaponsCount { get { return _weapons.Count;  } }
         public Guid SessionId { get; set; }
 
         private IGameSessionRepository _sessionRepository;
@@ -37,11 +38,11 @@ namespace SlowpokeEngine.Bodies
             int life, int lifeMax
             ):base(shape, direction,  mechanicEngine, life, lifeMax)
         {
-            Weapons = new List<WeaponBase>();
+            _weapons = new List<WeaponBase>();
             _sessionRepository = sessionRepository;
         }
 
-		public void ProcessAction (GameCommand bodyAction)
+		private void ProcessAction (GameCommand bodyAction)
 		{
             _mechanicEngine.ProcessGameCommand(bodyAction);
 		}
@@ -79,10 +80,23 @@ namespace SlowpokeEngine.Bodies
         {
             _currentWeaponIndex++;
 
-            if (Weapons.Count <= _currentWeaponIndex)
+            if (_weapons.Count <= _currentWeaponIndex)
             {
                 _currentWeaponIndex = 0;
             }
+        }
+
+        public void AddWeapon(WeaponBase weapon)
+        {
+            _weapons.Add(weapon);
+        }
+
+        public void ThrowAwayCurrentWeapon()
+        {
+            _weapons.RemoveAt(_currentWeaponIndex);
+            
+            if(_currentWeaponIndex <= _weapons.Count)
+                _currentWeaponIndex--;
         }
     }
 }
