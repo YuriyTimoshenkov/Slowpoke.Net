@@ -20,12 +20,6 @@
             var idsDict = {};
             frame.forEach(function (obj) {
                 idsDict[obj.Id] = obj;
-
-                obj.Shape.Position.X = Math.round(obj.Shape.Position.X)
-                obj.Shape.Position.Y = Math.round(obj.Shape.Position.Y)
-
-                obj.Direction.X = Math.round(obj.Direction.X);
-                obj.Direction.Y = Math.round(obj.Direction.Y);
             });
             return idsDict;
         })();

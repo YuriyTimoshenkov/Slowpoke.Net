@@ -71,7 +71,12 @@ namespace SlowpokeEngine.Entities
 		public static Vector Subtract(Vector pt, Vector sz)
 		{
 			return new Vector(pt.X - sz.X, pt.Y - sz.Y);
-		} 
+		}
+
+        public static Vector Subtract(Point pt, Point sz)
+        {
+            return new Vector(pt.X - sz.X, pt.Y - sz.Y);
+        } 
 
         public static Vector CalculateUnitVector(Vector vector)
         {

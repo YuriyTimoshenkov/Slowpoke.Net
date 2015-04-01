@@ -20,14 +20,11 @@
         this.target = target
     }
 
-    this.calculatePlayerDirectionVector = function (point) {
+    this.calculatePlayerDirectionVector = function (mousePoint) {
         var playerCenter = new Point(this.target.image.x, this.target.image.y);
-        var vectorMultiplier = 10;
-        var mouse = point;
 
         // Get mouse vector not normalized
-        var mouseVectorNotNormalized = new Point(Math.round(mouse.x - playerCenter.x), Math.round(mouse.y - playerCenter.y));
-
+        var mouseVectorNotNormalized = new Point(Math.round(mousePoint.x - playerCenter.x), Math.round(mousePoint.y - playerCenter.y));
         return mouseVectorNotNormalized;
     }
 
@@ -67,14 +64,11 @@
 
         frame.cells.forEach(function (row, index, array) {
             row.forEach(function (cell, index, array) {
-                console.log("we add cell");
                 self.stage.addChild(cell.image);
             })
         })
 
         frame.objects.forEach(function (element, index, array) {
-            console.log("we add object");
-            console.log([element.image.x, element.image.y]);
             self.stage.addChild(element.image);
         });
 
