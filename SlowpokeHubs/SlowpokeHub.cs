@@ -36,6 +36,7 @@ namespace SlowpokeHubs
             var NPCBuilder = new SimpleBodyBuilder();
 
             SlowpokeHub.MechanicEngine.AddActiveBody(NPCBuilder.BuildNPC(SlowpokeHub.MechanicEngine));
+            SlowpokeHub.MechanicEngine.AddActiveBody(NPCBuilder.BuildNPCAI(SlowpokeHub.MechanicEngine));
 
 			SlowpokeHub.MechanicEngine.StartEngine();
         }

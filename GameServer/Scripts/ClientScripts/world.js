@@ -22,7 +22,7 @@ World.prototype = {
         var direction = data["Direction"];
         var obj;
 
-        if (objectType == "NPC") {
+        if (objectType == "NPC" || objectType == "NPCAI") {
             obj = new GameObject(id, objectType, position, direction, shapeRadius, life, lifeMax)
         }
 
