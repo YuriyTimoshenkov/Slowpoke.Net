@@ -35,6 +35,8 @@ namespace SlowpokeEngine.Bodies
 		}
 
         public virtual void Run() { }
+
+        public virtual void UpdateState() { }
         public virtual void ReleaseGame() { }
         public virtual void Harm(int damage)
         {
