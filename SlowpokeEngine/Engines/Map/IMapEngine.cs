@@ -9,10 +9,10 @@ namespace SlowpokeEngine.Engines.Map
 	public interface IMapEngine
 	{
         IMap Map { get; }
-		IEnumerable<ActiveBody> GetBodiesForCollision ();
-
-        [JsonIgnore]
+        IEnumerable<Body> GetBodiesForCollision(ActiveBody body);
         ConcurrentDictionary<Guid, ActiveBody> Bodies { get; }
+        void AddActiveBody(ActiveBody body);
+        void UpdateActiveBody(ActiveBody body);
 	}
 }
 

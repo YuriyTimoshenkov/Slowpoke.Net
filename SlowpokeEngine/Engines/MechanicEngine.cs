@@ -82,11 +82,8 @@ namespace SlowpokeEngine.Engines
 
 		public void AddActiveBody(ActiveBody body)
 		{
-            if(_mapEngine.Bodies.TryAdd(body.Id, body))
-            {
-                body.Run();
-            }
-
+            _mapEngine.AddActiveBody(body);
+            body.Run();
 		}
 
 		public IPlayerBodyFacade LoadPlayerBody(Guid characterId)

@@ -57,6 +57,7 @@
     <Compile Include="PlayerBodyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MapEngineTests.cs" />
+    <Compile Include="ShapeCollisionManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
