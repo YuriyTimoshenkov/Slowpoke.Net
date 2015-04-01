@@ -56,7 +56,11 @@ namespace SlowpokeEngine.Engines
 
                 if (ActionQueue.TryDequeue(out nextCommand))
 				{
+                    //Execute command
                     nextCommand.Execute();
+
+                    //Update all bodies
+                    UpdateBodies();
 				}
 				else
 				{
@@ -117,7 +121,6 @@ namespace SlowpokeEngine.Engines
 			return (IPlayerBodyFacade)playerBody;
 		}
 
-
         public void ProcessGameCommand(GameCommand command)
         {
             var result = _physicalEngine.ProcessBodyAction(command);
@@ -159,6 +162,14 @@ namespace SlowpokeEngine.Engines
         private void BuildWorld()
         {
             AddActiveBody(_bodyBuilder.BuildNPC(this));
+        }
+
+        private void UpdateBodies()
+        {
+            foreach(var body in _mapEngine.Bodies.Values)
+            {
+                body.UpdateState();
+            }
         }
     }
 }
