@@ -10,7 +10,7 @@ namespace SlowpokeEngine.Entities
     {
         public Point Position { get; set; }
 
-        public abstract int MaxDimension { get; }
+        public abstract double MaxDimension { get; }
 
         public Shape(Point position)
         {

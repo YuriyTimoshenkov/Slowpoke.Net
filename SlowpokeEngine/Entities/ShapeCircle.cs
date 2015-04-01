@@ -8,9 +8,9 @@ namespace SlowpokeEngine.Entities
 {
     public class ShapeCircle : Shape 
     {
-        public int Radius { get; set; }
+        public double Radius { get; set; }
 
-        public override int MaxDimension
+        public override double MaxDimension
         {
             get
             {
@@ -18,7 +18,7 @@ namespace SlowpokeEngine.Entities
             }
         }
 
-        public ShapeCircle(int radius, Point point)
+        public ShapeCircle(double radius, Point point)
             : base(point)
         {
             Radius = radius;

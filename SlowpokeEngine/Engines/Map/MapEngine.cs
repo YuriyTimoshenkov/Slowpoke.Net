@@ -44,8 +44,10 @@ namespace SlowpokeEngine.Engines.Map
                         1 + (tileY < Map.Height ? 1 : 0) + (tileY > 0 ? 1 : 0)))
                     {
                         IMapTile tile = Map.Tiles[y][x];
+
+
                         //Add active bodies
-                        foreach (var tileBody in tile.Bodies.Where(v => v != body))
+                        foreach (var tileBody in tile.Bodies.Where(v => v != body).Select(v => v).ToList())
                         {
                             result.Add(tileBody);
                         }
