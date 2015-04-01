@@ -30,13 +30,16 @@ namespace SlowpokeEngineTests
             var mechanicEngine = Substitute.For<IMechanicEngine>();
             mechanicEngine.ViewPort.Returns(v => viewPort);
 
+            var weapon = Substitute.For<WeaponBase>(10,100, mechanicEngine);
+
             var npc = new NPCAI(new ShapeCircle(2, new Point(20, 20)), mechanicEngine, 10, 10);
+            npc.AddWeapon(weapon);
 
             //Act
             npc.UpdateState();
 
             //Assert
-            mechanicEngine.Received().ProcessGameCommand(Arg.Is<GameCommandMove>(v => v.ActiveBody is Bullet));
+            weapon.Received().Shoot(Arg.Any<Point>(), Arg.Any<Vector>());
         }
     }
 }
