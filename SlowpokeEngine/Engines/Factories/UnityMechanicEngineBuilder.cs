@@ -34,6 +34,9 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<NPC>(new InjectionConstructor(
                 new ShapeCircle(20, new Point(0, 0)), typeof(IMechanicEngine), 100, 100
                 ));
+            unityContainer.RegisterType<NPCAI>(new InjectionConstructor(
+                new ShapeCircle(20, new Point(200, 200)), typeof(IMechanicEngine), 100, 100
+                ));
             unityContainer.RegisterType<PlayerBody>(new InjectionConstructor(
                 new ShapeCircle(20, new Point(0, 0)),
                 new Vector(1, 3),

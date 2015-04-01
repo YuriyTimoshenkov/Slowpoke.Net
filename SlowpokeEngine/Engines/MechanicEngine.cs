@@ -162,6 +162,7 @@ namespace SlowpokeEngine.Engines
         private void BuildWorld()
         {
             AddActiveBody(_bodyBuilder.BuildNPC(this));
+            AddActiveBody(_bodyBuilder.BuildNPCAI(this));
         }
 
         private void UpdateBodies()
