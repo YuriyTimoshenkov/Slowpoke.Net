@@ -16,6 +16,7 @@ namespace SlowpokeEngine
 		IPlayerBodyFacade GetPlayerBody(Guid playerId);
         void ProcessGameCommand(GameCommand command);
         void AddActiveBody(ActiveBody body);
+        void AddCommand(GameCommand command);
 	}
 }
 

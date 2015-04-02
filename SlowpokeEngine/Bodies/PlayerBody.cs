@@ -27,7 +27,7 @@ namespace SlowpokeEngine.Bodies
 
 		private void ProcessAction (GameCommand bodyAction)
 		{
-            _mechanicEngine.ProcessGameCommand(bodyAction);
+            _mechanicEngine.AddCommand(bodyAction);
 		}
 
         public void Move(Vector direction)

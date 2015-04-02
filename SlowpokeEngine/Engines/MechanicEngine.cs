@@ -14,7 +14,7 @@ namespace SlowpokeEngine.Engines
 {
 	public class MechanicEngine : IMechanicEngine
 	{
-		public ConcurrentQueue<GameCommand> ActionQueue = new ConcurrentQueue<GameCommand>();
+		private ConcurrentQueue<GameCommand> ActionQueue = new ConcurrentQueue<GameCommand>();
 
 		private CancellationTokenSource _cancelationTokenSource;
 		private readonly IPhysicalEngine _physicalEngine;
@@ -43,7 +43,7 @@ namespace SlowpokeEngine.Engines
             BuildPhysicsResultHandlers();
 		}
 
-		public void ProcessAction(GameCommand command)
+        public void AddCommand(GameCommand command)
 		{
             ActionQueue.Enqueue(command);
 		}
@@ -53,7 +53,7 @@ namespace SlowpokeEngine.Engines
 			while (!_cancelationTokenSource.Token.IsCancellationRequested)
 			{
 				GameCommand nextCommand;
-
+                
                 if (ActionQueue.TryDequeue(out nextCommand))
 				{
                     //Execute command
@@ -64,7 +64,7 @@ namespace SlowpokeEngine.Engines
 				}
 				else
 				{
-					Thread.Sleep(100);
+					Thread.Sleep(10);
 				}
 			}
 		}
@@ -75,7 +75,7 @@ namespace SlowpokeEngine.Engines
 
 
 			_cancelationTokenSource = new CancellationTokenSource();
-			new Task(EventLoop, _cancelationTokenSource.Token, TaskCreationOptions.LongRunning).Start();
+			new Task(EventLoop, _cancelationTokenSource.Token).Start();
 		}
 
 

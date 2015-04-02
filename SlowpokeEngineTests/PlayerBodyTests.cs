@@ -65,7 +65,7 @@ namespace SlowpokeEngineTests
 
             player.Move(direction);
 
-            mechanigEngine.Received().ProcessGameCommand(Arg.Is<GameCommandMove>(v =>
+            mechanigEngine.Received().AddCommand(Arg.Is<GameCommandMove>(v =>
                     v.Direction == direction));
         }
     }

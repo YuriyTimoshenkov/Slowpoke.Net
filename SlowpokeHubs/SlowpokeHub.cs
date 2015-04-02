@@ -21,7 +21,7 @@ namespace SlowpokeHubs
         public static readonly string TokenCookieName = "SlowpokeToken";
         public static readonly TimeSpan TokentDuration = new TimeSpan(0,5,0);
 
-		public static IMechanicEngine MechanicEngine;
+        public static IMechanicEngine MechanicEngine;
 
         public SlowpokeHub()
         {
@@ -34,8 +34,6 @@ namespace SlowpokeHubs
 			SlowpokeHub.MechanicEngine = meb.Build();
 
             var NPCBuilder = new SimpleBodyBuilder();
-
-            SlowpokeHub.MechanicEngine.AddActiveBody(NPCBuilder.BuildNPC(SlowpokeHub.MechanicEngine));
 
 			SlowpokeHub.MechanicEngine.StartEngine();
         }
