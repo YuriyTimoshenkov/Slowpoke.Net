@@ -48,10 +48,6 @@
         var objId = objData["Id"];
         var obj = this.world.allGameObjects.filter(function (obj) { return objId == obj.id })[0];
 
-
-        //if (obj.objectType == "PlayerBody") {
-        //}
-
         // Update position
         obj.gameRect.center = objData["Shape"]["Position"];
 
@@ -60,7 +56,6 @@
         if (obj.direction.X !== newDirection.X || obj.direction.Y !== newDirection.Y) {
             obj.direction = newDirection;
             obj.updateWeapon();
-
         }
 
         // Update life
@@ -68,7 +63,6 @@
         if (obj.life !== newLife && obj.lifeText){
             obj.updateLife(newLife);
         }
-
     }
 
     this.createObject = function (objData) {
