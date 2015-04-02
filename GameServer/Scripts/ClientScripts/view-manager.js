@@ -34,8 +34,8 @@
         // Update objects
         frame.objects.forEach(function (obj) {
             if (obj.objectType !== "PlayerBody") {
-                var dx = self.target.gameRect.x - obj.gameRect.x;
-                var dy = self.target.gameRect.y - obj.gameRect.y;
+                var dx = self.target.gameRect.centerx - obj.gameRect.centerx;
+                var dy = self.target.gameRect.centery - obj.gameRect.centery;
 
                 obj.image.x = self.target.image.x - dx;
                 obj.image.y = self.target.image.y - dy;
@@ -45,8 +45,8 @@
         // Update cells
         frame.cells.forEach(function (row) {
             row.forEach(function (cell) {
-                var dx = self.target.gameRect.x - cell.gameRect.x;
-                var dy = self.target.gameRect.y - cell.gameRect.y;
+                var dx = self.target.gameRect.centerx - cell.gameRect.centerx;
+                var dy = self.target.gameRect.centery - cell.gameRect.centery;
 
                 // Cells are rects, and rects do not have center property
                 cell.image.x = self.target.image.x - dx - cell.size / 2;
