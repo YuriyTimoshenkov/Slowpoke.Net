@@ -40,6 +40,12 @@ GameObject.prototype = {
                 this.addWeaponImage();
                 this.addLifeText();
                 break
+            case "NPCAI":
+                var teamColor = "blue";
+                this.image = this.createHat(shapeRadius, teamColor);
+                this.addWeaponImage();
+                this.addLifeText();
+                break
             case "Bullet":
                 var color = "yellow";
                 this.image = this.createBullet(shapeRadius, color);

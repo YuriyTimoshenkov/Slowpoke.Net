@@ -13,6 +13,8 @@ namespace SlowpokeEngine
 {
 	public class UnityMechanicEngineBuilder : IMechanicEngineBuilder
 	{
+        private readonly int _mapCellSize = 50;
+
 		public IMechanicEngine Build()
 		{
             UnityContainer unityContainer = new UnityContainer();
@@ -21,7 +23,7 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<ICharacterRepository, CharacterRepositoryEF>();
             unityContainer.RegisterType<IMap, Map>(
                 new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(BuildSimpleMap(), 50));
+                new InjectionConstructor(BuildSimpleMap(), _mapCellSize));
             unityContainer.RegisterType<IMapEngine, MapEngine>(
                 new ContainerControlledLifetimeManager());
             unityContainer.RegisterType<IGameSessionRepository, GameSessionRepositoryEF>();
@@ -32,10 +34,13 @@ namespace SlowpokeEngine
 
             unityContainer.RegisterType<IBodyBuilder, UnityBodyBuilder>();
             unityContainer.RegisterType<NPC>(new InjectionConstructor(
-                new ShapeCircle(20, new Point(0, 0)), typeof(IMechanicEngine), 100, 100
+                new ShapeCircle(20, new Point(300, 100)), typeof(IMechanicEngine), 100, 100
+                ));
+            unityContainer.RegisterType<NPCAI>(new InjectionConstructor(
+                new ShapeCircle(20, new Point(200, 200)), typeof(IMechanicEngine), 100, 100
                 ));
             unityContainer.RegisterType<PlayerBody>(new InjectionConstructor(
-                new ShapeCircle(20, new Point(0, 0)),
+                new ShapeCircle(20, new Point(300, 150)),
                 new Vector(1, 3),
                 typeof(IMechanicEngine),
                 typeof(IGameSessionRepository),
@@ -59,22 +64,22 @@ namespace SlowpokeEngine
         private List<List<IMapTile>> BuildSimpleMap()
         {
             string[,] rawMap = new string[16, 10] {
-        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
-        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
-        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
-        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
-        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
-        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
-        {"meadow", "meadow", "water", "meadow", "meadow", "road", "road", "road", "road", "road"},
-        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "meadow"},
-        {"meadow", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "rock"},
-        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
-        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
-        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
-        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
-        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
-        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"},
-        {"meadow", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "rock"}
+        {"water", "water", "water", "water", "water", "water", "water", "water", "water", "water"},
+        {"water", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "water"},
+        {"water", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "water"},
+        {"water", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "water"},
+        {"water", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "water"},
+        {"water", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "water"},
+        {"water", "meadow", "water", "meadow", "meadow", "road", "road", "road", "road", "water"},
+        {"water", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "water"},
+        {"water", "meadow", "water", "meadow", "meadow", "road", "meadow", "meadow", "meadow", "water"},
+        {"water", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "water"},
+        {"water", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "water"},
+        {"water", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "water"},
+        {"water", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "water"},
+        {"water", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "water"},
+        {"water", "meadow", "water", "rock", "rock", "road", "rock", "rock", "rock", "water"},
+        {"water", "water", "water", "water", "water", "water", "water", "water", "water", "water"}
         };
 
             var finalMap = new List<List<IMapTile>>();
@@ -85,7 +90,14 @@ namespace SlowpokeEngine
 
                 foreach (var column in Enumerable.Range(0, rawMap.GetLength(1)))
                 {
-                    newLayer.Add(new MapTile(rawMap[row,column]));
+                    var newTile = new MapTile(rawMap[row,column],
+                        rawMap[row, column] == "water" ? true : false,
+                        new Point(column, row), new ShapeRectangle(
+                            _mapCellSize,_mapCellSize,
+                            new Point(column * _mapCellSize + _mapCellSize / 2, row * _mapCellSize + _mapCellSize / 2)
+                            ));
+
+                    newLayer.Add(newTile);
                 }
 
                 finalMap.Add(newLayer);

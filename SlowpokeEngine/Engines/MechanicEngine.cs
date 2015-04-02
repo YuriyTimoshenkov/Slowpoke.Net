@@ -58,7 +58,11 @@ namespace SlowpokeEngine.Engines
 
                 if (ActionQueue.TryDequeue(out nextCommand))
 				{
+                    //Execute command
                     nextCommand.Execute();
+
+                    //Update all bodies
+                    UpdateBodies();
 				}
 				else
 				{
@@ -84,11 +88,8 @@ namespace SlowpokeEngine.Engines
 
 		public void AddActiveBody(ActiveBody body)
 		{
-            if(_mapEngine.Bodies.TryAdd(body.Id, body))
-            {
-                body.Run();
-            }
-
+            _mapEngine.AddActiveBody(body);
+            body.Run();
 		}
 
 		public IPlayerBodyFacade LoadPlayerBody(Guid characterId)
@@ -118,7 +119,6 @@ namespace SlowpokeEngine.Engines
 
 			return (IPlayerBodyFacade)playerBody;
 		}
-
 
         public void ProcessGameCommand(GameCommand command)
         {
@@ -161,6 +161,15 @@ namespace SlowpokeEngine.Engines
         private void BuildWorld()
         {
             AddActiveBody(_bodyBuilder.BuildNPC(this));
+            AddActiveBody(_bodyBuilder.BuildNPCAI(this));
+        }
+
+        private void UpdateBodies()
+        {
+            foreach(var body in _mapEngine.Bodies.Values)
+            {
+                body.UpdateState();
+            }
         }
     }
 }

@@ -30,6 +30,14 @@ namespace SlowpokeEngine.Bodies
             return _unityContainer.Resolve<NPC>();
 		}
 
+        public ActiveBody BuildNPCAI(IMechanicEngine mechanicEngine)
+        {
+            var npcai = _unityContainer.Resolve<NPCAI>();
+            npcai.AddWeapon(_unityContainer.Resolve<WeaponSimpleBullet>("Revolver"));
+            //TODO: load config from DB, get some data from depended services and as a result - build NPC
+            return npcai;
+        }
+
         public PlayerBody LoadPlayerBody(Guid characterId, IMechanicEngine mechanicEngine)
 		{
 			//TODO: load config from DB, get some data from depended services and as a result - load player object

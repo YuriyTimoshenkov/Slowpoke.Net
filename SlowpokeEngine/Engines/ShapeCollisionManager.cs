@@ -25,6 +25,17 @@ namespace SlowpokeEngine.Engines
                     return CircleCollision(shape1 as ShapeCircle, shape2 as ShapeCircle);
                 }
                 );
+
+            _collisionHandlers.AddHandler(
+                (shape1, shape2) =>
+                {
+                    return shape1 is ShapeCircle && shape2 is ShapeRectangle;
+                },
+                (shape1, shape2) =>
+                {
+                    return CircleRectangleCollision(shape1 as ShapeCircle, shape2 as ShapeRectangle);
+                }
+                );
         }
 
         private bool CircleCollision(ShapeCircle shape1, ShapeCircle shape2)
@@ -36,6 +47,23 @@ namespace SlowpokeEngine.Engines
 
 
             return radiusDistance >= positionDistance;
+        }
+
+        private bool CircleRectangleCollision(ShapeCircle circle, ShapeRectangle rectangle)
+        {
+            var circleDistanceX = Math.Abs(circle.Position.X - rectangle.Position.X);
+            var circleDistanceY = Math.Abs(circle.Position.Y - rectangle.Position.Y);
+
+            if (circleDistanceX > (rectangle.Width / 2 + circle.Radius)) { return false; }
+            if (circleDistanceY > (rectangle.Height / 2 + circle.Radius)) { return false; }
+
+            if (circleDistanceX <= (rectangle.Width / 2)) { return true; }
+            if (circleDistanceY <= (rectangle.Height / 2)) { return true; }
+
+            var cornerDistanceSQ = Math.Pow((circleDistanceX - rectangle.Width / 2), 2) +
+                         Math.Pow((circleDistanceY - rectangle.Height / 2), 2);
+            
+            return (cornerDistanceSQ <= Math.Pow(circle.Radius, 2));
         }
 
         public bool CheckCollision(Shape shape1, Shape shape2)

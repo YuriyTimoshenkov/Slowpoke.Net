@@ -45,39 +45,28 @@ namespace SlowpokeEngineTests
         public void Shoot_Successful()
         {
             var player = new PlayerBody(new ShapeCircle(0, new Point(0,0)), new Vector(0, 0), null, null, 0, 0);
-            bool shootCatched = false;
 
             var weapon = Substitute.For<WeaponBase>(0, 0, null);
-            weapon.When(v => v.Shoot(Arg.Any<Point>(), Arg.Any<Vector>()))
-                .Do(v =>
-                    {
-                        shootCatched = true;
-                    });
 
             player.AddWeapon(weapon);
             player.Shoot();
 
-            Assert.IsTrue(shootCatched);
+            weapon.Received().Shoot(Arg.Any<Point>(), Arg.Any<Vector>());
         }
 
         [TestMethod]
         public void Move_Successful()
         {
-            GameCommandMove moveCommand = null;
             Vector direction = new Vector(0, 1);
 
             var mechanigEngine = Substitute.For<IMechanicEngine>();
-            mechanigEngine.When(v => v.ProcessGameCommand(Arg.Any<GameCommand>()))
-                .Do(v =>
-                {
-                    moveCommand = (GameCommandMove)v.Args()[0];
-                });
 
             var player = new PlayerBody(new ShapeCircle(0, new Point(0, 0)), new Vector(0, 0), mechanigEngine, null, 0, 0);
 
             player.Move(direction);
 
-            Assert.IsTrue(moveCommand != null && moveCommand.Direction == direction);
+            mechanigEngine.Received().ProcessGameCommand(Arg.Is<GameCommandMove>(v =>
+                    v.Direction == direction));
         }
     }
 }

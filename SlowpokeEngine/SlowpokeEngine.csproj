@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Bodies\Body.cs" />
     <Compile Include="Bodies\Factories\UnityBodyBuilder.cs" />
+    <Compile Include="Bodies\NPCAI.cs" />
     <Compile Include="Bodies\PassiveBody.cs" />
     <Compile Include="Commands\PhysicsProcessingResult.cs" />
     <Compile Include="Commands\PhysicsProcessingResultCollision.cs" />

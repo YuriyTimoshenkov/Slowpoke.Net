@@ -52,7 +52,7 @@ namespace SlowpokeEngine.Engines
                 },
                 (command) =>
                 {
-                    return new PhysicsProcessingResultCollision(new List<Body>() {new PassiveBody()});
+                    return new PhysicsProcessingResultCollision(new List<Body>() {new PassiveBody(null)});
                 });
 
             _commandHandlers.AddHandler((command) =>
@@ -64,15 +64,17 @@ namespace SlowpokeEngine.Engines
                     var body = command.ActiveBody;
                     var moveCommand = (GameCommandMove)command;
 
+                    var previousPosition = body.Shape.Position;
                     body.Shape.Position = moveCommand.Direction.MovePoint(body.Shape.Position,1);
 
 
                     //get all bodies for collision checking
                     List<Body> collisionBodies = new List<Body>();
 
-                    foreach(var bodyItem in _mapEngine.GetBodiesForCollision().Where( v => v.Id != body.Id))
+                    foreach(var bodyItem in _mapEngine.GetBodiesForCollision(body).Where( v => v is PassiveBody || (v is ActiveBody &&  ((ActiveBody)v).Id != body.Id)))
                     {
-                        if(_shapeCollisionManager.CheckCollision(body.Shape, bodyItem.Shape) && bodyItem.ActiveBodyType != "Bullet")
+                        if(_shapeCollisionManager.CheckCollision(body.Shape, bodyItem.Shape) 
+                            && !(bodyItem is Bullet))
                         {
                             collisionBodies.Add(bodyItem);
                         }
@@ -80,10 +82,12 @@ namespace SlowpokeEngine.Engines
 
                     if (collisionBodies.Count > 0)
                     {
+                        body.Shape.Position = previousPosition;
                         return new PhysicsProcessingResultCollision(collisionBodies);
                     }
                     else
                     {
+                        _mapEngine.UpdateActiveBody(body);
                         return new PhysicsProcessingResultEmpty();
                     }
                 });
