@@ -91,8 +91,9 @@ namespace SlowpokeEngine.Bodies
             if (CurrentWeapon != null)
             {
                 //calculate start point
+                // Plus 1 step as Weapon gunpoint
                 var startPosition = Direction.MovePoint(
-                    Shape.Position, Shape.MaxDimension);
+                    Shape.Position, Shape.MaxDimension * 1.5);
 
                 CurrentWeapon.Shoot(startPosition, Direction);
             }

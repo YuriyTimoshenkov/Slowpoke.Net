@@ -141,6 +141,7 @@
     <Content Include="Scripts\ClientScripts\world.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\qunit-1.17.1.js" />
     <Content Include="Static\QUnitTests.html" />
     <Content Include="Static\Slowpoke.html" />
