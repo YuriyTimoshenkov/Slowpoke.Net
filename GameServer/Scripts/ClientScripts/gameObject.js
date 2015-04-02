@@ -30,20 +30,20 @@ GameObject.prototype = {
         switch (this.objectType) {
             case "PlayerBody":
                 var teamColor = "orange";
-                this.image = this.createHat(shapeRadius, teamColor);
                 this.addWeaponImage();
+                this.createHat(shapeRadius, teamColor);
                 this.addLifeText();
                 break
             case "NPC":
                 var teamColor = "blue";
-                this.image = this.createHat(shapeRadius, teamColor);
                 this.addWeaponImage();
+                this.createHat(shapeRadius, teamColor);
                 this.addLifeText();
                 break
             case "NPCAI":
                 var teamColor = "blue";
-                this.image = this.createHat(shapeRadius, teamColor);
                 this.addWeaponImage();
+                this.createHat(shapeRadius, teamColor);
                 this.addLifeText();
                 break
             case "Bullet":
@@ -58,8 +58,6 @@ GameObject.prototype = {
 
     createHat: function (hatRadius, teamColor) {
         // SHAPE XY DIFFERS FROM CONTAINER XY ?? 
-        var image = new createjs.Container();
-
         var lineColor = "black";
         var circleBigColor;
         var circleSmallColor;
@@ -109,9 +107,7 @@ GameObject.prototype = {
         moveTo(circleSmall.x + circleSmallRadius, circleSmall.y).
         lineTo(circleSmall.x + circleSmallRadius * 1.25, circleSmall.y + circleSmallRadius);
 
-        image.addChild(circleBig, circleSmall, lineLeft, lineRight);
-
-        return image;
+        this.image.addChild(circleBig, circleSmall, lineLeft, lineRight);
     },
 
     createBullet: function (bulletRadius, color) {
@@ -152,7 +148,7 @@ GameObject.prototype = {
 
     addWeaponImage: function () {
         this.weaponImage = this.createWeaponImage();
-        this.image.addChild(this.weaponImage);
+        this.image.addChildAt(this.weaponImage, 0);
     },
 
     createWeaponImage: function () {
@@ -163,7 +159,7 @@ GameObject.prototype = {
         var center = new Point(0, 0);
         var weaponPoint = new Point(center.x + this.direction.X * weaponLength, center.y + this.direction.Y * weaponLength);
 
-        weapon.graphics.setStrokeStyle(1).beginStroke("black").
+        weapon.graphics.setStrokeStyle(4, "round").beginStroke("black").
         moveTo(center.x, center.y).
         lineTo(weaponPoint.x, weaponPoint.y);
         return weapon
