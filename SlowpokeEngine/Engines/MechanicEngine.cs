@@ -48,6 +48,8 @@ namespace SlowpokeEngine.Engines
             ActionQueue.Enqueue(command);
 		}
 
+
+	    private Task _eventLoopTask;
 		private void EventLoop()
 		{
 			while (!_cancelationTokenSource.Token.IsCancellationRequested)
@@ -73,9 +75,9 @@ namespace SlowpokeEngine.Engines
 		{
             BuildWorld();
 
-
 			_cancelationTokenSource = new CancellationTokenSource();
-			new Task(EventLoop, _cancelationTokenSource.Token, TaskCreationOptions.LongRunning).Start();
+			_eventLoopTask = new Task(EventLoop, _cancelationTokenSource.Token, TaskCreationOptions.LongRunning);
+		    _eventLoopTask.Start();
 		}
 
 
