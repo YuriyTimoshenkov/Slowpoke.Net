@@ -31,8 +31,8 @@ namespace SlowpokeEngine.Bodies
                 100, 100, "Bob");
 
 
-            player.AddWeapon(new WeaponSimpleBullet(10, 2, 100, 10, new TimeSpan(0,0,1), mechanicEngine));
-            player.AddWeapon(new WeaponSimpleBullet(10, 2, 200, 30, new TimeSpan(0, 0, 5), mechanicEngine));
+            player.AddWeapon(new WeaponSimpleBullet(10, 2, 100, 10, new TimeSpan(0,0,1), mechanicEngine, "Weapon"));
+            player.AddWeapon(new WeaponSimpleBullet(10, 2, 200, 30, new TimeSpan(0, 0, 5), mechanicEngine, "Weapon"));
 
             return player;
 		}

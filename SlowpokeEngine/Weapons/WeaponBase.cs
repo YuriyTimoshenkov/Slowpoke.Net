@@ -13,11 +13,14 @@ namespace SlowpokeEngine.Weapons
         protected int _shootingDistance;
         protected IMechanicEngine _mechanicEngine;
 
-        public WeaponBase(int damage, int shootingDistance, IMechanicEngine mechanicEngine)
+        public string Name { get; private set; }
+
+        public WeaponBase(int damage, int shootingDistance, IMechanicEngine mechanicEngine, string name)
         {
             _damage = damage;
             _shootingDistance = shootingDistance;
             _mechanicEngine = mechanicEngine;
+            Name = name;
         }
 
         public abstract void Shoot(Point startPosition, Vector direction);

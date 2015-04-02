@@ -47,14 +47,19 @@ namespace SlowpokeEngine
                 100, 100,
                 string.Empty
                 ));
-            unityContainer.RegisterType<WeaponSimpleBullet>("Revolver",new InjectionConstructor(
-                5, 2, 200, 4, new TimeSpan(0, 0, 0, 0, 300), typeof(IMechanicEngine)
+
+            //Weapons
+            string revoler = "Revolver";
+            unityContainer.RegisterType<WeaponSimpleBullet>(revoler, new InjectionConstructor(
+                5, 2, 200, 4, new TimeSpan(0, 0, 0, 0, 300), typeof(IMechanicEngine), revoler
                 ));
-            unityContainer.RegisterType<WeaponSimpleBullet>("Gun", new InjectionConstructor(
-               7, 2, 600, 6, new TimeSpan(0, 0, 1), typeof(IMechanicEngine)
+            string gun = "Gun";
+            unityContainer.RegisterType<WeaponSimpleBullet>(gun, new InjectionConstructor(
+               7, 2, 600, 6, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), gun
                ));
-            unityContainer.RegisterType<WeaponMultipleShotgunBullet>("Shotgun", new InjectionConstructor(
-               15, 1, 170, 3, new TimeSpan(0, 0, 1), typeof(IMechanicEngine)
+            string shotGun = "Shotgun";
+            unityContainer.RegisterType<WeaponMultipleShotgunBullet>(shotGun, new InjectionConstructor(
+               15, 1, 170, 3, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), shotGun
                ));
 
             var mechanicEngine = unityContainer.Resolve<IMechanicEngine>();
