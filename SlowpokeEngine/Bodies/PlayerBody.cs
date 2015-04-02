@@ -12,6 +12,8 @@ namespace SlowpokeEngine.Bodies
 	{
         public Guid SessionId { get; set; }
 
+        public string Name { get; private set; }
+
         private IGameSessionRepository _sessionRepository;
 
         public PlayerBody(
@@ -19,10 +21,12 @@ namespace SlowpokeEngine.Bodies
 			Vector direction,
 			IMechanicEngine mechanicEngine,
             IGameSessionRepository sessionRepository,
-            int life, int lifeMax
+            int life, int lifeMax,
+            string name
             ):base(shape, direction,  mechanicEngine, life, lifeMax)
         {
             _sessionRepository = sessionRepository;
+            Name = name;
         }
 
 		private void ProcessAction (GameCommand bodyAction)

@@ -42,8 +42,8 @@ namespace SlowpokeEngine.Bodies
 		{
 			//TODO: load config from DB, get some data from depended services and as a result - load player object
             var character = _characterRepository.Find(characterId).FirstOrDefault();
-            
-            var player = _unityContainer.Resolve<PlayerBody>();
+
+            var player = _unityContainer.Resolve<PlayerBody>(new ParameterOverride("name", character.Name));
             player.AddWeapon(_unityContainer.Resolve<WeaponSimpleBullet>("Revolver"));
             player.AddWeapon(_unityContainer.Resolve<WeaponSimpleBullet>("Gun"));
             player.AddWeapon(_unityContainer.Resolve<WeaponMultipleShotgunBullet>("Shotgun"));

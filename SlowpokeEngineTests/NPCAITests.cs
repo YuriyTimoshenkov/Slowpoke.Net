@@ -21,7 +21,7 @@ namespace SlowpokeEngineTests
         public void ShootInPlayer_InViewScope_Success()
         {
             //Arrange
-            var player = new PlayerBody(new ShapeCircle(2, new Point(10, 10)), new Vector(0, 0), null, null, 0, 0);
+            var player = new PlayerBody(new ShapeCircle(2, new Point(10, 10)), new Vector(0, 0), null, null, 0, 0, "Bob");
 
             var viewPort = Substitute.For<IViewPort>();
             viewPort.GetActiveBodies(Arg.Any<Guid>()).Returns(v =>

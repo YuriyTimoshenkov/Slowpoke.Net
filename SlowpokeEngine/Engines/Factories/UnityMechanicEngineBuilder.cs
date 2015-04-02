@@ -44,7 +44,8 @@ namespace SlowpokeEngine
                 new Vector(1, 3),
                 typeof(IMechanicEngine),
                 typeof(IGameSessionRepository),
-                100, 100
+                100, 100,
+                string.Empty
                 ));
             unityContainer.RegisterType<WeaponSimpleBullet>("Revolver",new InjectionConstructor(
                 5, 2, 200, 4, new TimeSpan(0, 0, 0, 0, 300), typeof(IMechanicEngine)
