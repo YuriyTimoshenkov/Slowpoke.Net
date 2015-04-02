@@ -22,8 +22,9 @@ namespace SlowpokeEngine.Weapons
             int shootingDistance,
             int bulletSpeed,
             TimeSpan shootFrequency,
-            IMechanicEngine mechanicEngine
-            ):base(damage, shootingDistance, mechanicEngine)
+            IMechanicEngine mechanicEngine,
+            string name
+            ):base(damage, shootingDistance, mechanicEngine, name)
         {
             _bulletSpeed = bulletSpeed;
             _bulletSize = bulletSize;

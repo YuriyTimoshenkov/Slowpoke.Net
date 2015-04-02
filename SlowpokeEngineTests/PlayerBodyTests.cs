@@ -16,10 +16,10 @@ namespace SlowpokeEngineTests
         [TestMethod]
         public void AddWeapon_Successful()
         {
-            var player = new PlayerBody(null, new Vector(0,0), null, null, 0, 0);
+            var player = new PlayerBody(null, new Vector(0,0), null, null, 0, 0, "Bob");
             int weaponsCount = player.WeaponsCount;
 
-            player.AddWeapon(new WeaponSimpleBullet(0,0,0,0,new TimeSpan(),null));
+            player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null, "Weapon"));
 
             Assert.AreEqual(weaponsCount, player.WeaponsCount - 1);
         }
@@ -27,11 +27,11 @@ namespace SlowpokeEngineTests
         [TestMethod]
         public void ThrowCurrentWeapon_WithChange_Successful()
         {
-            var player = new PlayerBody(null, new Vector(0, 0), null, null, 0, 0);
+            var player = new PlayerBody(null, new Vector(0, 0), null, null, 0, 0, "Bob");
             int weaponsCount = player.WeaponsCount;
 
-            player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null));
-            player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null));
+            player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null, "Weapon"));
+            player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null, "Weapon"));
 
             player.ChangeWeapon();
 
@@ -44,7 +44,7 @@ namespace SlowpokeEngineTests
         [TestMethod]
         public void Shoot_Successful()
         {
-            var player = new PlayerBody(new ShapeCircle(0, new Point(0,0)), new Vector(0, 0), null, null, 0, 0);
+            var player = new PlayerBody(new ShapeCircle(0, new Point(0, 0)), new Vector(0, 0), null, null, 0, 0, "Bob");
 
             var weapon = Substitute.For<WeaponBase>(0, 0, null);
 
@@ -61,7 +61,7 @@ namespace SlowpokeEngineTests
 
             var mechanigEngine = Substitute.For<IMechanicEngine>();
 
-            var player = new PlayerBody(new ShapeCircle(0, new Point(0, 0)), new Vector(0, 0), mechanigEngine, null, 0, 0);
+            var player = new PlayerBody(new ShapeCircle(0, new Point(0, 0)), new Vector(0, 0), mechanigEngine, null, 0, 0, "Bob");
 
             player.Move(direction);
 
