@@ -62,16 +62,23 @@
         // TODO: To remove\add only those objects, which were changed
         self.stage.removeAllChildren();
 
+        // Add cells
         frame.cells.forEach(function (row, index, array) {
             row.forEach(function (cell, index, array) {
                 self.stage.addChild(cell.image);
             })
         })
 
+        // Add game objects
         frame.objects.forEach(function (element, index, array) {
             self.stage.addChild(element.image);
         });
 
+        // Add non-game objects
+
+
+
+        // Render
         self.stage.update();
     }
 }
