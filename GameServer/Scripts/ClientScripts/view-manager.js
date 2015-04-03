@@ -1,9 +1,13 @@
-﻿function viewManager(canvas, canvasSize){
+﻿function viewManager(canvas, canvasSize, menu){
     var self = this;
 
     canvas.width = canvasSize.width;
     canvas.height = canvasSize.height;
 
+    this.weaponPoint = new Point(5, canvas.height - 50);
+    this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - 30);
+
+    this.menu = menu;
     this.stage = new createjs.Stage(canvas);
 
 
@@ -12,12 +16,13 @@
     }
 
     this.render = function (frame) {
-        this.updateCanvasXY(frame)
-        this.draw(frame)
+        this.updateCanvasXY(frame);
+        this.updateMenu();
+        this.draw(frame);
     }
 
     this.setTarget = function (target) {
-        this.target = target
+        this.target = target;
     }
 
     this.calculatePlayerDirectionVector = function (mousePoint) {
@@ -49,12 +54,22 @@
                 var dy = self.target.gameRect.centery - cell.gameRect.centery;
 
                 // Cells are rects, and rects do not have center property
-                cell.image.x = self.target.image.x - dx - cell.size / 2;
-                cell.image.y = self.target.image.y - dy - cell.size / 2;
+                cell.image.x = self.target.image.x - dx - cell.width / 2;
+                cell.image.y = self.target.image.y - dy - cell.height / 2;
             })
         })
     }
 
+    this.updateMenu = function () {
+        if (!this.menu.weapon || this.menu.weapon["Name"] !== this.target.currentWeapon["Name"]) {
+            this.menu.updateWeapon(this.target.currentWeapon, this.weaponPoint);
+        }
+
+        if (this.menu.life !== this.target.life) {
+            this.menu.updateLife(this.target.life, this.lifePoint);
+        }
+    }
+      
     this.draw = function (frame) {
         var self = this;
         
@@ -74,9 +89,8 @@
             self.stage.addChild(element.image);
         });
 
-        // Add non-game objects
-
-
+        // Add menu objects
+        self.stage.addChild(this.menu.weaponText, this.menu.lifeText);
 
         // Render
         self.stage.update();
