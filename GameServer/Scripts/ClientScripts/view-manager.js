@@ -1,9 +1,10 @@
-﻿function viewManager(canvas, canvasSize){
+﻿function viewManager(canvas, canvasSize, menu){
     var self = this;
 
     canvas.width = canvasSize.width;
     canvas.height = canvasSize.height;
 
+    this.menu = menu;
     this.stage = new createjs.Stage(canvas);
 
 
@@ -12,12 +13,13 @@
     }
 
     this.render = function (frame) {
-        this.updateCanvasXY(frame)
-        this.draw(frame)
+        this.updateCanvasXY(frame);
+        this.updateMenu();
+        this.draw(frame);
     }
 
     this.setTarget = function (target) {
-        this.target = target
+        this.target = target;
     }
 
     this.calculatePlayerDirectionVector = function (mousePoint) {
@@ -49,12 +51,23 @@
                 var dy = self.target.gameRect.centery - cell.gameRect.centery;
 
                 // Cells are rects, and rects do not have center property
-                cell.image.x = self.target.image.x - dx - cell.size / 2;
-                cell.image.y = self.target.image.y - dy - cell.size / 2;
+                cell.image.x = self.target.image.x - dx;
+                cell.image.y = self.target.image.y - dy;
             })
         })
     }
 
+    this.updateMenu = function () {
+        if (!this.menu.currentWeapon || this.menu.currentWeapon["Name"] !== this.target.currentWeapon["Name"]) {
+            this.menu.setCurrentWeapon(this.target.currentWeapon);
+            this.menu.createCurrentWeaponText();
+            var x = 5;
+            var y = canvas.height - 50;
+            this.menu.currentWeaponText.x = x;
+            this.menu.currentWeaponText.y = y;
+        }
+    }
+      
     this.draw = function (frame) {
         var self = this;
         
@@ -74,9 +87,8 @@
             self.stage.addChild(element.image);
         });
 
-        // Add non-game objects
-
-
+        // Add menu objects
+        self.stage.addChild(this.menu.currentWeaponText);
 
         // Render
         self.stage.update();

@@ -3,7 +3,7 @@
  */
 
 
-function GameObject(id, objectType, position, direction, shapeRadius, life, maxLife, canvasXY) {
+function GameObject(id, objectType, position, direction, shapeRadius, life, maxLife, currentWeapon, canvasXY) {
     var self = this;
 
     this.id = id;
@@ -16,6 +16,7 @@ function GameObject(id, objectType, position, direction, shapeRadius, life, maxL
     this.maxLife = maxLife || 0;
     this.lifeText = null;
     this.weaponImage = null;
+    this.currentWeapon = currentWeapon;
     this.assignImage(canvasXY, shapeRadius);
     // Special for player character
     if (canvasXY) {

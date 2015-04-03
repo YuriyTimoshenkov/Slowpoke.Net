@@ -20,10 +20,11 @@ World.prototype = {
         var life = data["Life"];
         var lifeMax = data["LifeMax"];
         var direction = data["Direction"];
+        var currentWeapon = data["CurrentWeapon"];
         var obj;
 
         if (objectType == "NPC" || objectType == "NPCAI") {
-            obj = new GameObject(id, objectType, position, direction, shapeRadius, life, lifeMax)
+            obj = new GameObject(id, objectType, position, direction, shapeRadius, life, lifeMax, currentWeapon)
         }
 
         else if (objectType == "PlayerBody") {
@@ -31,11 +32,11 @@ World.prototype = {
             var canvasXY = new Point($(window).width() / 2,
                                      $(window).height() / 2);
             console.log("PlayerBody Canvas Point: (" + canvasXY.x + ", " + canvasXY.y + ")");
-            obj = new GameObject(id, objectType, position, direction, shapeRadius, life, lifeMax, canvasXY)
+            obj = new GameObject(id, objectType, position, direction, shapeRadius, life, lifeMax, currentWeapon, canvasXY)
         }
 
         else if (objectType == "Bullet") {
-            obj = new GameObject(id, objectType, position, direction, shapeRadius, life, lifeMax)
+            obj = new GameObject(id, objectType, position, direction, shapeRadius, life, lifeMax, null)
         }
 
         else throw "World: invalid gameObject type: " + objectType;

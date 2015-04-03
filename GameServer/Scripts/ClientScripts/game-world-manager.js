@@ -56,6 +56,12 @@
             obj.updateWeapon();
         }
 
+        // Update weapon
+        var currentWeapon = objData["CurrentWeapon"];
+        if (obj.currentWeapon !== currentWeapon) {
+            obj.currentWeapon = currentWeapon;
+        }
+
         // Update life
         var newLife = objData["Life"];
         if (obj.life !== newLife && obj.lifeText){

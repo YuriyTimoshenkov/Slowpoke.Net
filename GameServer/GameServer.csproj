@@ -115,6 +115,7 @@
     <Content Include="Scripts\ClientScripts\controls-manager.js" />
     <Content Include="Scripts\ClientScripts\factories.js" />
     <Content Include="Scripts\ClientScripts\game-world-manager.js" />
+    <Content Include="Scripts\ClientScripts\menu.js" />
     <Content Include="Scripts\ClientScripts\qunit-tests.js" />
     <Content Include="Scripts\ClientScripts\server-proxy.js" />
     <Content Include="Scripts\ClientScripts\utils.js" />

@@ -26,8 +26,8 @@ function viewManagerFactory() {
     this.createViewManager = function () {
         var canvas = document.getElementById("canvas");
         var canvasSize = { width: $(document).width(), height: $(document).height() }
-
-        return new viewManager(canvas, canvasSize);
+        var menu = new Menu();
+        return new viewManager(canvas, canvasSize, menu);
     }
 }
 
