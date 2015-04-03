@@ -73,9 +73,10 @@
         this.world.createGameObject(objData);
     }
 
-    this.init = function (playerId, queue) {
+    this.init = function (player, queue) {
         this.serverFramesQueue = queue;
         //Game.getFrameFromServer();
-        this.player = this.world.createGameObject({ "Id": playerId, "ActiveBodyType": "PlayerBody", "LifeMax": 123, "Life": 123, "Direction": { X: 0, Y: 0 }, "Shape": { "Position": { X: 0, Y: 0 }, "Radius": 20 } })
+        //this.player = this.world.createGameObject({ "Id": playerId, "ActiveBodyType": "PlayerBody", "LifeMax": 123, "Life": 123, "Direction": { X: 0, Y: 0 }, "Shape": { "Position": { X: 0, Y: 0 }, "Radius": 20 } })
+        this.player = this.world.createGameObject(player)
     }
 }

@@ -73,7 +73,7 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     this.handleLoadMap = function (serverMap) {
         self.gameWorldManager = new gameWorldManagerFactory().createGameWorldManager(serverMap)
 
-        self.gameWorldManager.init(self.player.Id, self.serverFramesQueue)
+        self.gameWorldManager.init(self.player, self.serverFramesQueue)
         viewManager.setTarget(self.gameWorldManager.player)
 
         controlsManager.addMoveUpHandler(self.moveUp)
