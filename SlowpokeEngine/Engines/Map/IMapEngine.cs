@@ -13,6 +13,7 @@ namespace SlowpokeEngine.Engines.Map
         ConcurrentDictionary<Guid, ActiveBody> Bodies { get; }
         void AddActiveBody(ActiveBody body);
         void UpdateActiveBody(ActiveBody body);
+        void LoadMap(IGameLevel gameLevel);
 	}
 }
 

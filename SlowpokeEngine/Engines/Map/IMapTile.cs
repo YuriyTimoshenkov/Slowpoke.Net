@@ -10,9 +10,9 @@ namespace SlowpokeEngine.Engines.Map
 {
     public interface IMapTile
     {
-        string TerrainType { get; }
+        string Color { get; }
         IList<ActiveBody> Bodies { get; }
-        bool Solid { get; }
+        TileSolidityType Solid { get; }
         Point Position { get; }
         Shape Shape { get; }
     }

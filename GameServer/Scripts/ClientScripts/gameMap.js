@@ -2,7 +2,7 @@
  * Created by dimapct on 17.02.2015.
  */
 
-function Cell(xy, size, terrain) {
+function Cell(xy, size, color) {
     this.X = xy[0];
     this.Y = xy[1];
     this.size = size;
@@ -11,13 +11,11 @@ function Cell(xy, size, terrain) {
 
     this.width = size;
     this.height = size;
-    this.terrain = terrain || "meadow";
+    this.color = color;
 
     this.assignImage = function () {
-        var terrainID = terrainClass[this.terrain];
-        var color = terrainClass.props[terrainID].color;
         var image = new createjs.Shape();
-        image.graphics.beginFill(color).drawRect(0, 0, this.size, this.size);
+        image.graphics.beginFill(this.color).drawRect(0, 0, this.size, this.size);
         this.image = image;
     }
 
@@ -27,8 +25,7 @@ function Cell(xy, size, terrain) {
 Cell.prototype = {
     draw: function(context) {
         context.clearRect(this.canvasX, this.canvasY, this.width, this.height);
-        var terrainID = terrainClass[this.terrain];
-        context.fillStyle = terrainClass.props[terrainID].color;
+        context.fillStyle = this.color
         context.fillRect(this.canvasX, this.canvasY, this.width, this.height);
     }
 };
@@ -49,7 +46,7 @@ function GameMap(serverMap) {
             for (var x = 0; x < self.width; x++) {
                 var gameX = x * self.cellSize;
                 var gameY = y * self.cellSize;
-                var cell = new Cell([gameX, gameY], self.cellSize, self.tiles[y][x].TerrainType);
+                var cell = new Cell([gameX, gameY], self.cellSize, self.tiles[y][x].Color);
                 currentRow.push(cell)
             }
         }
