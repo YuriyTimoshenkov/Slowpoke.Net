@@ -40,7 +40,7 @@ namespace SlowpokeEngine
                 new ShapeCircle(20, new Point(200, 200)), typeof(IMechanicEngine), 100, 100
                 ));
             unityContainer.RegisterType<PlayerBody>(new InjectionConstructor(
-                new ShapeCircle(20, new Point(300, 150)),
+                new ShapeCircle(20, new Point(300, 500)),
                 new Vector(1, 3),
                 typeof(IMechanicEngine),
                 typeof(IGameSessionRepository),

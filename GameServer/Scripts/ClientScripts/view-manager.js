@@ -4,6 +4,9 @@
     canvas.width = canvasSize.width;
     canvas.height = canvasSize.height;
 
+    this.weaponPoint = new Point(5, canvas.height - 50);
+    this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - 30);
+
     this.menu = menu;
     this.stage = new createjs.Stage(canvas);
 
@@ -58,13 +61,12 @@
     }
 
     this.updateMenu = function () {
-        if (!this.menu.currentWeapon || this.menu.currentWeapon["Name"] !== this.target.currentWeapon["Name"]) {
-            this.menu.setCurrentWeapon(this.target.currentWeapon);
-            this.menu.createCurrentWeaponText();
-            var x = 5;
-            var y = canvas.height - 50;
-            this.menu.currentWeaponText.x = x;
-            this.menu.currentWeaponText.y = y;
+        if (!this.menu.weapon || this.menu.weapon["Name"] !== this.target.currentWeapon["Name"]) {
+            this.menu.updateWeapon(this.target.currentWeapon, this.weaponPoint);
+        }
+
+        if (this.menu.life !== this.target.life) {
+            this.menu.updateLife(this.target.life, this.lifePoint);
         }
     }
       
@@ -88,7 +90,7 @@
         });
 
         // Add menu objects
-        self.stage.addChild(this.menu.currentWeaponText);
+        self.stage.addChild(this.menu.weaponText, this.menu.lifeText);
 
         // Render
         self.stage.update();

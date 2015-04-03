@@ -1,12 +1,38 @@
 ﻿function Menu() {
-    this.currentWeapon = null;
-    this.currentWeaponText = null;
+    this.weapon = null;
+    this.weaponText = null;
+    this.weaponTextsize = 20;
+    this.weaponTextColor = "red";
 
-    this.setCurrentWeapon = function(currentWeapon) {this.currentWeapon = currentWeapon}
+    this.life = null;
+    this.lifeText = null;
+    this.lifeTextsize = this.weaponTextsize;
+    this.lifeTextColor = this.weaponTextColor;
 
-    this.createCurrentWeaponText = function () {
-        var weaponName = this.currentWeapon["Name"];
-        var textSize = 20;
-        this.currentWeaponText = new createjs.Text(weaponName, textSize + "px Arial", "red");
+    this.setLife = function (newLife) { this.life = newLife }
+    this.setWeapon = function(newWeapon) {this.weapon = newWeapon}
+
+    this.createLifeText = function (point) {
+        this.lifeText = new createjs.Text(this.life, this.weaponTextsize + "px Arial", this.lifeTextColor);
+        this.lifeText.x = point.x;
+        this.lifeText.y = point.y;
     }
+
+    this.updateLife = function (newLife, point) {
+        this.setLife(newLife);
+        this.createLifeText(point)
+    }
+
+    this.createWeaponText = function (point) {
+        var weaponName = this.weapon["Name"];
+        this.weaponText = new createjs.Text(weaponName, this.weaponTextsize + "px Arial", this.lifeTextColor);
+        this.weaponText.x = point.x;
+        this.weaponText.y = point.y;
+    }
+
+    this.updateWeapon = function (newWeapon, point) {
+        this.setWeapon(newWeapon);
+        this.createWeaponText(point);
+    }
+
 }

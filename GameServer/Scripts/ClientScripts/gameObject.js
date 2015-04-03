@@ -3,9 +3,10 @@
  */
 
 
-function GameObject(id, objectType, position, direction, shapeRadius, life, maxLife, currentWeapon, canvasXY) {
+function GameObject(name, id, objectType, position, direction, shapeRadius, life, maxLife, currentWeapon, canvasXY) {
     var self = this;
 
+    this.name = name;
     this.id = id;
     this.objectType = objectType;
     this.gameRect = new Rect(0, 0, shapeRadius * 2, shapeRadius * 2);
@@ -33,7 +34,7 @@ GameObject.prototype = {
                 var teamColor = "orange";
                 this.addWeaponImage();
                 this.createHat(shapeRadius, teamColor);
-                this.addLifeText();
+                this.addNameText();
                 break
             case "NPC":
                 var teamColor = "blue";
@@ -121,6 +122,21 @@ GameObject.prototype = {
             drawCircle(0, 0, bulletRadius)
         
         return image;
+    },
+
+    createNameText: function () {
+        var textSize = 10;
+        return new createjs.Text(this.name, textSize + "px Arial", "purple");
+    },
+
+    addNameText: function () {
+        this.nameText = this.createNameText();
+        this.nameText.x = -this.gameRect.width / 1.5;
+        this.nameText.y = -this.gameRect.height / 1.5;
+        this.image.addChild(this.nameText);
+    },
+    removeNameText: function () {
+        this.image.removeChild(this.nameText);
     },
 
     createLifeText: function () {

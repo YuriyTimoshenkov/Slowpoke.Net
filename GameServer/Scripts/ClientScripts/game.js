@@ -34,6 +34,22 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         serverProxy.moveBody(1, 0);
     }
 
+    this.moveUpRight = function () {
+        serverProxy.moveBody(0.707, -0.707);
+    }
+
+    this.moveUpLeft = function () {
+        serverProxy.moveBody(-0.707, -0.707);
+    }
+
+    this.moveDownRight = function () {
+        serverProxy.moveBody(0.707, 0.707);
+    }
+
+    this.moveDownLeft = function () {
+        serverProxy.moveBody(-0.707, 0.707);
+    }
+    
     this.shoot = function () {
         serverProxy.shoot()
     }
