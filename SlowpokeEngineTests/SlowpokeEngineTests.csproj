@@ -54,6 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="HardcodedLevelRepoTests.cs" />
     <Compile Include="NPCAITests.cs" />
     <Compile Include="PlayerBodyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

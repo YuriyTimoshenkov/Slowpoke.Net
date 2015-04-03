@@ -5,6 +5,8 @@ using System.Collections.Concurrent;
 using System;
 using SlowpokeEngine.Engines.Map;
 using System.Linq;
+using SlowpokeEngine.Engines.Levels;
+using SlowpokeEngine.Entities;
 
 namespace SlowpokeEngine.Engines.Map
 {
@@ -53,7 +55,7 @@ namespace SlowpokeEngine.Engines.Map
                         }
 
                         //add tile if solid
-                        if (tile.Solid)
+                        if (tile.Solid != TileSolidityType.NotSolid)
                         {
                             result.Add(new PassiveBody(tile.Shape));
                         }
@@ -95,6 +97,35 @@ namespace SlowpokeEngine.Engines.Map
             var y = (int)body.Shape.Position.Y / Map.CellSize;
 
             return Map.Tiles[y][x];
+        }
+        public void LoadMap(IGameLevel gameLevel)
+        {
+            Map.Tiles.Clear();
+
+            
+
+            foreach (var levelTilesRow in gameLevel.Tiles)
+            {
+                var mapTileRow = new List<IMapTile>();
+
+                foreach (var levelTile in levelTilesRow)
+                {
+                    int positionX = (int)levelTile.Position.X;
+                    int positionY = (int)levelTile.Position.Y;
+                    var levelTileType = gameLevel.TileTypes[levelTile.TileTypeName];
+
+                    mapTileRow.Add(new MapTile(
+                        levelTileType.Color,
+                        levelTileType.Solidity,
+                        new Point(positionX, positionY),
+                        new ShapeRectangle(
+                            Map.CellSize, Map.CellSize,
+                            new Point(positionX * Map.CellSize + Map.CellSize / 2, positionY * Map.CellSize + Map.CellSize / 2)
+                            )));
+                }
+
+                Map.Tiles.Add(mapTileRow);
+            }
         }
     }
 }

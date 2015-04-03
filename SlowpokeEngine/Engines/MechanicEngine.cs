@@ -9,6 +9,8 @@ using System.Linq;
 using SlowpokeEngine.Extensions;
 using SlowpokeEngine.Weapons;
 using SlowpokeEngine.Engines.Map;
+using SlowpokeEngine.Engines.Levels;
+using SlowpokeEngine.Entities;
 
 namespace SlowpokeEngine.Engines
 {
@@ -20,6 +22,7 @@ namespace SlowpokeEngine.Engines
 		private readonly IPhysicalEngine _physicalEngine;
 		private readonly IMapEngine _mapEngine;
 		private readonly IBodyBuilder _bodyBuilder;
+        private IGameLevelRepository _gameLevelRepository;
 
         
         private readonly ActionHandlersManager<Func<GameCommand, PhysicsProcessingResult,bool>, Action<GameCommand, PhysicsProcessingResult>> _actionHandlers
@@ -31,12 +34,14 @@ namespace SlowpokeEngine.Engines
 			IPhysicalEngine physicalEngine, 
 			IMapEngine mapEngine, 
 			IBodyBuilder bodyBuilder,
-			IViewPort viewPort
+			IViewPort viewPort,
+            IGameLevelRepository gameLevelRepository
 		)
 		{
 			_physicalEngine = physicalEngine;
 			_mapEngine = mapEngine;
 			_bodyBuilder = bodyBuilder;
+            _gameLevelRepository = gameLevelRepository;
 
 			ViewPort = viewPort;
 
@@ -73,11 +78,9 @@ namespace SlowpokeEngine.Engines
 		{
             BuildWorld();
 
-
 			_cancelationTokenSource = new CancellationTokenSource();
 			new Task(EventLoop, _cancelationTokenSource.Token).Start();
 		}
-
 
 		public void StopEngine()
 		{
@@ -158,8 +161,30 @@ namespace SlowpokeEngine.Engines
 
         private void BuildWorld()
         {
-            AddActiveBody(_bodyBuilder.BuildNPC(this));
-            AddActiveBody(_bodyBuilder.BuildNPCAI(this));
+            var gameLevel = _gameLevelRepository.LoadLevel();
+
+            _mapEngine.LoadMap(gameLevel);
+
+            //Fill bodies from level repo data
+            foreach(var tilesLevel in gameLevel.Tiles)
+                foreach(var levelTile in tilesLevel)
+                {
+                    //TODO: implement dynamic instantiaton
+                    if(levelTile.NPCTypes.Count > 0)
+                    {
+                        int positionX = (int)levelTile.Position.X;
+                        int positionY = (int)levelTile.Position.Y;
+
+                        var NPCBody = _bodyBuilder.BuildNPCAI(this);
+
+                        //TODO fix injection parameters in Unity mapping config
+                        NPCBody.Shape = new ShapeCircle(20, new Point(
+                            _mapEngine.Map.Tiles[positionY][positionX].Shape.Position.X,
+                            _mapEngine.Map.Tiles[positionY][positionX].Shape.Position.Y));
+
+                        AddActiveBody(NPCBody);
+                    }
+                }
         }
 
         private void UpdateBodies()

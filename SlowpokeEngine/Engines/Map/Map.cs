@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SlowpokeEngine.Engines.Levels;
+using SlowpokeEngine.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,10 +25,10 @@ namespace SlowpokeEngine.Engines.Map
         public int CellSize { get; private set; }
 
 
-        public Map(List<List<IMapTile>> tiles, int cellSize)
+        public Map(int cellSize)
         {
-            Tiles = tiles;
             CellSize = cellSize;
+            Tiles = new List<List<IMapTile>>();
         }
     }
 }
