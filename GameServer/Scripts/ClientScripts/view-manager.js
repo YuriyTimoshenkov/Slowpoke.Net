@@ -51,8 +51,8 @@
                 var dy = self.target.gameRect.centery - cell.gameRect.centery;
 
                 // Cells are rects, and rects do not have center property
-                cell.image.x = self.target.image.x - dx;
-                cell.image.y = self.target.image.y - dy;
+                cell.image.x = self.target.image.x - dx - cell.width / 2;
+                cell.image.y = self.target.image.y - dy - cell.height / 2;
             })
         })
     }

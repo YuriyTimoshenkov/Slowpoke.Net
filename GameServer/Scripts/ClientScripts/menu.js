@@ -9,8 +9,4 @@
         var textSize = 20;
         this.currentWeaponText = new createjs.Text(weaponName, textSize + "px Arial", "red");
     }
-
-
-
-
 }
