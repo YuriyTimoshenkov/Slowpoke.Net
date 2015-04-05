@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNet.SignalR;
+using Microsoft.Owin;
 using Owin;
 using SlowpokeHubs;
 
@@ -24,8 +25,8 @@ namespace GameServer
             });
 
             ConfigureAuth(app);
+            GlobalHost.Configuration.MaxIncomingWebSocketMessageSize = int.MaxValue;
             app.MapSignalR();
-
 
             SlowpokeHub.Run();
         }

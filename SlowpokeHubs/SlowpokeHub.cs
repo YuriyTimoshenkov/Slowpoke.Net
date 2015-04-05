@@ -98,7 +98,7 @@ namespace SlowpokeHubs
 
 		public override Task OnConnected ()
 		{
-            Guid userId = Guid.Parse(((ClaimsIdentity)Context.User.Identity).FindFirst(v => v.Type == ClaimTypes.NameIdentifier).Value);
+             Guid userId = Guid.Parse(((ClaimsIdentity)Context.User.Identity).FindFirst(v => v.Type == ClaimTypes.NameIdentifier).Value);
 
            var player = MechanicEngine.LoadPlayerBody(userId);
 

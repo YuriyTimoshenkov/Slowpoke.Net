@@ -14,8 +14,8 @@ namespace SlowpokeEngine.Weapons
     {
         public Point StartPosition { get; private set; }
         public int ShootingDistance { get; private set; }
-        private int _speed;
-        private volatile Timer _timer;
+        private TimeSpan _speed;
+        private DateTime _lastMove = DateTime.Now;
         public int Damage { get; private set;}
 
         public Bullet(
@@ -27,7 +27,7 @@ namespace SlowpokeEngine.Weapons
 			IMechanicEngine mechanicEngine):base(shape, direction, mechanicEngine,1,1)
         {
             ShootingDistance = shootingDistance;
-            _speed = speed;
+            _speed = new TimeSpan(0, 0, 0, 0, speed);
             Damage = damage;
             
             //calculate position
@@ -35,19 +35,15 @@ namespace SlowpokeEngine.Weapons
             StartPosition = Shape.Position;
         }
 
-        public override void Run()
+        public override void UpdateState()
         {
-            _timer = new Timer(Move, null, 0, _speed);
-        }
+            if (DateTime.Now - _lastMove > _speed)
+            {
+                _mechanicEngine.AddCommand(new GameCommandMove(this.Direction, _mechanicEngine, this));
+                _lastMove = DateTime.Now;
+            }
 
-        private void Move(object state)
-        {
-            _mechanicEngine.AddCommand(new GameCommandMove(this.Direction, _mechanicEngine, this));
-        }
-
-        public override void ReleaseGame()
-        {
-            _timer.Change(Timeout.Infinite, Timeout.Infinite);
+            base.UpdateState();
         }
     }
 }
