@@ -63,14 +63,10 @@ namespace SlowpokeEngine.Engines
 				{
                     //Execute command
                     nextCommand.Execute();
+				}
 
-                    //Update all bodies
-                    UpdateBodies();
-				}
-				else
-				{
-					Thread.Sleep(10);
-				}
+                //Update all bodies
+                UpdateBodies();
 			}
 		}
 
