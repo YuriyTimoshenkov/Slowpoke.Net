@@ -23,6 +23,7 @@ namespace SlowpokeEngine.Engines
 		private readonly IMapEngine _mapEngine;
 		private readonly IBodyBuilder _bodyBuilder;
         private IGameLevelRepository _gameLevelRepository;
+        private Action<IPlayerBodyFacade> _playerStateHandler;
 
         
         private readonly ActionHandlersManager<Func<GameCommand, PhysicsProcessingResult,bool>, Action<GameCommand, PhysicsProcessingResult>> _actionHandlers
@@ -70,10 +71,11 @@ namespace SlowpokeEngine.Engines
 			}
 		}
 
-		public void StartEngine()
+        public void StartEngine(Action<IPlayerBodyFacade> playerStateHandler)
 		{
             BuildWorld();
 
+            _playerStateHandler = playerStateHandler;
 			_cancelationTokenSource = new CancellationTokenSource();
 			new Task(EventLoop, _cancelationTokenSource.Token).Start();
 		}
@@ -93,8 +95,6 @@ namespace SlowpokeEngine.Engines
 		{
             var player = _bodyBuilder.LoadPlayerBody(characterId, this);
 
-            AddActiveBody(player);
-
 			return player;
 		}
 
@@ -102,11 +102,27 @@ namespace SlowpokeEngine.Engines
 		{
 			ActiveBody body;
 
-            if (_mapEngine.Bodies.TryRemove(bodyId, out body))
+            if (_mapEngine.Bodies.TryGetValue(bodyId, out body))
             {
-                body.ReleaseGame();
-			}
+                if (_mapEngine.RemoveBody(bodyId))
+                {
+                    body.ReleaseGame();
+
+                    if (body is PlayerBody)
+                    {
+                        _playerStateHandler(body as IPlayerBodyFacade);
+                    }
+                }
+            }
 		}
+        public void StartGame(IPlayerBodyFacade player)
+        {
+            var playerBody = player as PlayerBody;
+            playerBody.Shape = new ShapeCircle(20, new Point(275, 575));
+            playerBody.Heal(playerBody.LifeMax);
+
+            AddActiveBody(playerBody);
+        }
 
 		public IPlayerBodyFacade GetPlayerBody(Guid playerId)
 		{

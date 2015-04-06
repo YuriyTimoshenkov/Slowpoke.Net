@@ -2,6 +2,7 @@
 using Microsoft.Owin;
 using Owin;
 using SlowpokeHubs;
+using System;
 
 [assembly: OwinStartupAttribute(typeof(GameServer.Startup))]
 namespace GameServer
@@ -26,7 +27,14 @@ namespace GameServer
 
             ConfigureAuth(app);
             GlobalHost.Configuration.MaxIncomingWebSocketMessageSize = int.MaxValue;
-            app.MapSignalR();
+            
+            GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(18);
+            GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(5);
+            GlobalHost.Configuration.DefaultMessageBufferSize = int.MaxValue;
+            var hubConfiguration = new HubConfiguration();
+            hubConfiguration.EnableDetailedErrors = true;
+            
+            app.MapSignalR(hubConfiguration);
 
             SlowpokeHub.Run();
         }

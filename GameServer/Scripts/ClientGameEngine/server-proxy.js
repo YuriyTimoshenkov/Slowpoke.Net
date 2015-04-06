@@ -16,6 +16,8 @@
 
     this.changeBodyDirection = function (dx, dy) {
     }
+
+    this.stop = function () {}
 }
 
 function serverProxySignalR(url) {
@@ -23,7 +25,12 @@ function serverProxySignalR(url) {
 
     gameProxy.client.SomeMethod = function () { }
 
-    this.run = function (doneHandler, failHandler) {
+    this.run = function (doneHandler, failHandler, disconnectedHandler, playerStateChangedHandler) {
+        gameProxy.client.playerStateChanged = playerStateChangedHandler
+
+        $.connection.hub.disconnected(disconnectedHandler);
+
+
         $.connection.hub.start().done(doneHandler)
         .fail(failHandler)
     }
@@ -48,5 +55,8 @@ function serverProxySignalR(url) {
     }
     this.shoot = function (weaponNumber) {
         gameProxy.server.shoot()
+    }
+    this.stop = function () {
+        $.connection.hub.stop()
     }
 }

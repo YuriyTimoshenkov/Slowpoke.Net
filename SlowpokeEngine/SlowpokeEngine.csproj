@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bodies\Body.cs" />
+    <Compile Include="Bodies\BodyState.cs" />
     <Compile Include="Bodies\Factories\UnityBodyBuilder.cs" />
     <Compile Include="Bodies\NPCAI.cs" />
     <Compile Include="Bodies\PassiveBody.cs" />

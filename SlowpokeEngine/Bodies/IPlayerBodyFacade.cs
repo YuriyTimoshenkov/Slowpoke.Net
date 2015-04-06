@@ -8,6 +8,8 @@ namespace SlowpokeEngine.Bodies
 	{
 		Guid Id { get;}
 
+        BodyState State { get; }
+
         void Move(Vector direction);
         void ChangeDirection(Vector direction);
         void Shoot();

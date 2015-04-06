@@ -10,12 +10,13 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     this.serverFramesQueue = []
     this.controlsManager = controlsManager
     this.viewManager = viewManager
+    this.gameState = 'initial'
     
     
     this.run = function () {
         serverProxy.run(function () {
             serverProxy.loadPlayer(self.handleLoadPlayer, self.errorHandler)
-        }, self.errorHandler)
+        }, self.errorHandler, self.disconnectedHandler, self.gameOverHandler)
     }
 
     this.moveUp = function () {
@@ -85,14 +86,44 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         controlsManager.addChangeWeaponHandler(self.changeWeapon)
 
         // Start listening server
-        setInterval(function () { self.getFrameFromServer() }, serverRequestFPS)
+        self.serverLoop = setInterval(function () { self.getFrameFromServer() }, serverRequestFPS)
 
         // Start game loop
-        setInterval(function () { self.loop() }, updateFPS)
+        self.clientLoop = setInterval(function () { self.loop() }, updateFPS)
+
+        self.gameState = 'playing'
     }
 
     this.errorHandler = function (error) {
         console.log(error)
+    }
+
+    this.reconnectionDialogHandler = function () {
+        console.log(error)
+    }
+
+    this.gameOverDialogHandler = function () {
+        console.log(error)
+    }
+
+    this.disconnectedHandler = function () {
+        if (self.gameState === 'playing') {
+            self.stopGame()
+            self.gameState = 'stopped'
+            self.reconnectionDialogHandler()
+        }
+    }
+
+    this.stopGame = function () {
+        clearInterval(self.serverLoop)
+        clearInterval(self.clientLoop)
+        self.serverProxy.stop()
+    }
+
+    this.gameOverHandler = function (state) {
+        self.gameState = 'stopped'
+        self.stopGame()
+        self.gameOverDialogHandler()
     }
 }
 

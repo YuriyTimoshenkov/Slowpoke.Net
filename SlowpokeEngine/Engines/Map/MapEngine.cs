@@ -127,5 +127,23 @@ namespace SlowpokeEngine.Engines.Map
                 Map.Tiles.Add(mapTileRow);
             }
         }
+        public bool RemoveBody(Guid bodyId)
+        {
+            ActiveBody body;
+
+            if (Bodies.TryRemove(bodyId, out body))
+            { 
+                IMapTile mapTile;
+               
+                if(_bodiesToTilesCollection.TryRemove(bodyId, out mapTile))
+                {
+                    mapTile.Bodies.Remove(body);
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
