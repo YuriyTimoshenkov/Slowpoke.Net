@@ -61,7 +61,7 @@ namespace SlowpokeHubs
             return MechanicEngine.ViewPort.GetActiveBodies(_connectionsPlayerMapping[Context.ConnectionId].Id).ToList();
 		}
 
-		public void MoveBody(int x, int y)
+		public void MoveBody(double x, double y)
 		{
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Id);
 

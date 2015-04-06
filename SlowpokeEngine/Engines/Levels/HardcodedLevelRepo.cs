@@ -71,12 +71,12 @@ namespace SlowpokeEngine.Engines.Levels
         {"[water]", "[meadow]", "[water]", "[meadow]", "[meadow]", "[road]", "[road]", "[road]", "[road]", "[water]"},
         {"[water]", "[meadow]", "[water]", "[meadow]", "[meadow][NPCAI]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
         {"[water]", "[meadow]", "[water]", "[meadow]", "[meadow]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
-        {"[water]", "[meadow]", "[water]", "[rock]", "[rock]", "[road]", "[rock]", "[rock]", "[rock]", "[water]"},
-        {"[water]", "[meadow]", "[water]", "[rock]", "[rock]", "[road]", "[rock]", "[rock]", "[rock]", "[water]"},
-        {"[water]", "[meadow]", "[water]", "[rock]", "[rock]", "[road]", "[rock]", "[rock]", "[rock]", "[water]"},
-        {"[water]", "[meadow]", "[water]", "[rock]", "[rock]", "[road]", "[rock]", "[rock]", "[rock]", "[water]"},
-        {"[water]", "[meadow]", "[water]", "[rock]", "[rock]", "[road]", "[rock]", "[rock]", "[rock]", "[water]"},
-        {"[water]", "[meadow]", "[water]", "[rock]", "[rock]", "[road]", "[rock]", "[rock]", "[rock]", "[water]"},
+        {"[water]", "[meadow]", "[water]", "[meadow]", "[rock]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
+        {"[water]", "[meadow]", "[water]", "[meadow]", "[rock]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
+        {"[water]", "[meadow]", "[water]", "[meadow]", "[meadow]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
+        {"[water]", "[meadow]", "[water]", "[meadow]", "[meadow]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
+        {"[water]", "[meadow]", "[water]", "[meadow]", "[meadow]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
+        {"[water]", "[meadow]", "[water]", "[meadow]", "[meadow]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
         {"[water]", "[water]", "[water]", "[water]", "[water]", "[water]", "[water]", "[water]", "[water]", "[water]"}
         };
     }

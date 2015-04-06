@@ -72,6 +72,7 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     }
 
     this.handleLoadMap = function (serverMap) {
+        console.log("handleLoadMap START")
         self.gameWorldManager = new gameWorldManagerFactory().createGameWorldManager(serverMap)
 
         self.gameWorldManager.init(self.player, self.serverFramesQueue)
@@ -81,6 +82,10 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         controlsManager.addMoveDownHandler(self.moveDown)
         controlsManager.addMoveRightHandler(self.moveRight)
         controlsManager.addMoveLeftHandler(self.moveLeft)
+        controlsManager.addMoveUpLeftHandler(self.moveUpLeft)
+        controlsManager.addMoveUpRightHandler(self.moveUpRight)
+        controlsManager.addMoveDownLeftHandler(self.moveDownLeft)
+        controlsManager.addMoveDownRightHandler(self.moveDownRight)
         controlsManager.addShootHandler(self.shoot)
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
         controlsManager.addChangeWeaponHandler(self.changeWeapon)
@@ -129,8 +134,9 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
 
 Game.prototype = {
     loop: function () {
-        this.gameWorldManager.updateWorld()
-        this.viewManager.render(this.gameWorldManager.getCurrentFrame())
+        this.gameWorldManager.updateWorld();
+        this.controlsManager.handleControls();
+        this.viewManager.render(this.gameWorldManager.getCurrentFrame());
         console.log("--------------------------------------");
     },
 
