@@ -10,8 +10,8 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     this.serverFramesQueue = []
     this.controlsManager = controlsManager
     this.viewManager = viewManager
-    
-    
+
+
     this.run = function () {
         serverProxy.run(function () {
             serverProxy.loadPlayer(self.handleLoadPlayer, self.errorHandler)
@@ -49,7 +49,7 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     this.moveDownLeft = function () {
         serverProxy.moveBody(-0.707, 0.707);
     }
-    
+
     this.shoot = function () {
         serverProxy.shoot()
     }
@@ -67,10 +67,11 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         self.player = player
 
         //Load map
-        serverProxy.getMap(self.handleLoadMap, self.errorHandler)   
+        serverProxy.getMap(self.handleLoadMap, self.errorHandler)
     }
 
     this.handleLoadMap = function (serverMap) {
+        console.log("handleLoadMap START")
         self.gameWorldManager = new gameWorldManagerFactory().createGameWorldManager(serverMap)
 
         self.gameWorldManager.init(self.player, self.serverFramesQueue)
@@ -80,6 +81,10 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         controlsManager.addMoveDownHandler(self.moveDown)
         controlsManager.addMoveRightHandler(self.moveRight)
         controlsManager.addMoveLeftHandler(self.moveLeft)
+        controlsManager.addMoveUpLeftHandler(self.moveUpLeft)
+        controlsManager.addMoveUpRightHandler(self.moveUpRight)
+        controlsManager.addMoveDownLeftHandler(self.moveDownLeft)
+        controlsManager.addMoveDownRightHandler(self.moveDownRight)
         controlsManager.addShootHandler(self.shoot)
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
         controlsManager.addChangeWeaponHandler(self.changeWeapon)
@@ -89,6 +94,7 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
 
         // Start game loop
         setInterval(function () { self.loop() }, updateFPS)
+        console.log("handleLoadMap END")
     }
 
     this.errorHandler = function (error) {
@@ -98,8 +104,9 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
 
 Game.prototype = {
     loop: function () {
-        this.gameWorldManager.updateWorld()
-        this.viewManager.render(this.gameWorldManager.getCurrentFrame())
+        this.gameWorldManager.updateWorld();
+        this.controlsManager.handleControls();
+        this.viewManager.render(this.gameWorldManager.getCurrentFrame());
         console.log("--------------------------------------");
     },
 
