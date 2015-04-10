@@ -14,9 +14,11 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     
     
     this.run = function () {
+        console.log("Game STARTED")
         serverProxy.run(function () {
             serverProxy.loadPlayer(self.handleLoadPlayer, self.errorHandler)
         }, self.errorHandler, self.disconnectedHandler, self.gameOverHandler)
+        
     }
 
     this.moveUp = function () {
@@ -72,7 +74,6 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     }
 
     this.handleLoadMap = function (serverMap) {
-        console.log("handleLoadMap START")
         self.gameWorldManager = new gameWorldManagerFactory().createGameWorldManager(serverMap)
 
         self.gameWorldManager.init(self.player, self.serverFramesQueue)
@@ -123,6 +124,7 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         clearInterval(self.serverLoop)
         clearInterval(self.clientLoop)
         self.serverProxy.stop()
+        console.log("Game STOPPED")
     }
 
     this.gameOverHandler = function (state) {
@@ -137,7 +139,7 @@ Game.prototype = {
         this.gameWorldManager.updateWorld();
         this.controlsManager.handleControls();
         this.viewManager.render(this.gameWorldManager.getCurrentFrame());
-        console.log("--------------------------------------");
+        //console.log("--------------------------------------");
     },
 
     getFrameFromServer: function () {

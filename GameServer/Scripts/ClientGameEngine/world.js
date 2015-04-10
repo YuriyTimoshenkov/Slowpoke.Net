@@ -29,10 +29,9 @@ World.prototype = {
         }
 
         else if (objectType == "PlayerBody") {
-            // ТУТ БАГ!! !! !((;;! (;(;(
             var name = data["Name"];
-            var canvasXY = new Point($(window).width() / 2,
-                                     $(window).height() / 2);
+            var canvasXY = new Point($(document).width() / 2,
+                                     $(document).height() / 2);
             console.log("PlayerBody Canvas Point: (" + canvasXY.x + ", " + canvasXY.y + ")");
             obj = new GameObject(name, id, objectType, position, direction, shapeRadius, life, lifeMax, currentWeapon, canvasXY)
         }
