@@ -21,6 +21,8 @@ namespace SlowpokeEngine.Bodies
         
         public int LifeMax { get; private set; }
 
+        public BodyState State { get; private set; }
+
         protected List<WeaponBase> _weapons { get; private set; }
 
         private int _currentWeaponIndex = 0;
@@ -52,12 +54,16 @@ namespace SlowpokeEngine.Bodies
             Life = life;
             LifeMax = lifeMax;
             _weapons = new List<WeaponBase>();
+            State = BodyState.Alive;
 		}
 
         public virtual void Run() { }
 
         public virtual void UpdateState() { }
-        public virtual void ReleaseGame() { }
+        public virtual void ReleaseGame() 
+        {
+            State = BodyState.Dead;
+        }
         public virtual void Harm(int damage)
         {
             Life -= damage;
@@ -96,6 +102,16 @@ namespace SlowpokeEngine.Bodies
                     Shape.Position, Shape.MaxDimension * 1.5);
 
                 CurrentWeapon.Shoot(startPosition, Direction);
+            }
+        }
+
+        public void Heal(int healingPoints)
+        {
+            Life = Life + healingPoints <= LifeMax ? Life + healingPoints : LifeMax;
+
+            if(Life > 0)
+            {
+                State = BodyState.Alive;
             }
         }
 	}

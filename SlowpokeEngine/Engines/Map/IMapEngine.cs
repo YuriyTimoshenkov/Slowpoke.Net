@@ -14,6 +14,7 @@ namespace SlowpokeEngine.Engines.Map
         void AddActiveBody(ActiveBody body);
         void UpdateActiveBody(ActiveBody body);
         void LoadMap(IGameLevel gameLevel);
+        bool RemoveBody(Guid bodyId);
 	}
 }
 

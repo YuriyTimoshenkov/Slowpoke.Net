@@ -29,8 +29,11 @@
         });
 
         deleteIDs.forEach(function (obj) {
+            // KOSTIL for the game restart
+            if (!(obj.objectType === "PlayerBody")) {
             var i = self.world.allGameObjects.indexOf(obj);
             var deletedItems = self.world.allGameObjects.splice(i, 1);
+            }
         });
 
         // Create and update
@@ -39,7 +42,7 @@
             var filtered = this.world.allGameObjects.filter(function (obj) { return objId == obj.id });
             if (filtered.length > 0) this.updateObject(objData);
             else this.createObject(objData)
-        }
+            }
     }
 
     this.updateObject = function (objData) {

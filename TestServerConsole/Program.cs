@@ -20,7 +20,7 @@ namespace TestServerConsole
             var meb = new UnityMechanicEngineBuilder();
             var mechanicEngine = meb.Build();
 
-            mechanicEngine.StartEngine();
+            mechanicEngine.StartEngine(null);
 
             var player = mechanicEngine.LoadPlayerBody(Guid.NewGuid());
             player.Shoot();

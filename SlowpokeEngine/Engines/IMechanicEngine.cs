@@ -9,7 +9,7 @@ namespace SlowpokeEngine
 	{
 		IViewPort ViewPort { get; }
 
-		void StartEngine();
+        void StartEngine(Action<IPlayerBodyFacade> playerStateHandler);
 		void StopEngine();
 		IPlayerBodyFacade LoadPlayerBody(Guid characterId);
 		void ReleaseActiveBody(Guid playerId);
@@ -17,6 +17,7 @@ namespace SlowpokeEngine
         void ProcessGameCommand(GameCommand command);
         void AddActiveBody(ActiveBody body);
         void AddCommand(GameCommand command);
+        void StartGame(IPlayerBodyFacade player);
 	}
 }
 

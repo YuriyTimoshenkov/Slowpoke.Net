@@ -4,9 +4,9 @@
     }
 }
 
-function gameBuilder() {
+function gameBuilder(canvasTagId) {
     var serverProxy = new serverProxyFactory().createServerProxy('/')
-    var viewM = new viewManagerFactory().createViewManager()
+    var viewM = new viewManagerFactory().createViewManager(canvasTagId)
     //var gameWorldM = new gameWorldManagerFactory().createGameWorldManager()
     var controlsM = new controlsManagerFactory().createControlsManager()
 
@@ -23,8 +23,8 @@ function controlsManagerFactory() {
 }
 
 function viewManagerFactory() {
-    this.createViewManager = function () {
-        var canvas = document.getElementById("canvas");
+    this.createViewManager = function (canvasTagId) {
+        var canvas = document.getElementById(canvasTagId);
         var canvasSize = { width: $(document).width(), height: $(document).height() }
         var menu = new Menu();
         return new viewManager(canvas, canvasSize, menu);

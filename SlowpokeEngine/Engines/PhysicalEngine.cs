@@ -65,7 +65,7 @@ namespace SlowpokeEngine.Engines
                     var moveCommand = (GameCommandMove)command;
 
                     var previousPosition = body.Shape.Position;
-                    body.Shape.Position = moveCommand.Direction.MovePoint(body.Shape.Position,1);
+                    body.Shape.Position = moveCommand.Direction.MovePoint(body.Shape.Position, 5);
 
 
                     //get all bodies for collision checking

@@ -44,3 +44,10 @@ Rect.prototype = {
         this.centery = value.Y;    
     }
 }
+
+function inArray(what, where) {
+    for (var i = 0; i < where.length; i++)
+        if (what == where[i])
+            return true;
+    return false;
+}

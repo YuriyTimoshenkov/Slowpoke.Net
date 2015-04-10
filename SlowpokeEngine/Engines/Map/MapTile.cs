@@ -1,4 +1,5 @@
-﻿using SlowpokeEngine.Bodies;
+﻿using Newtonsoft.Json;
+using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Entities;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace SlowpokeEngine.Engines.Map
             private set;
         }
         public TileSolidityType Solid { get; private set; }
+
+        [JsonIgnore]
         public IList<ActiveBody> Bodies { get; private set; }
         public Point Position { get; private set; }
         public Shape Shape { get; private set; }

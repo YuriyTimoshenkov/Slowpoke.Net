@@ -110,16 +110,24 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\ng-dialog-default.css" />
+    <Content Include="Content\ng-dialog.css" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\angular.min.js.map" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Content\qunit-1.17.1.css" />
-    <Content Include="Scripts\ClientScripts\controls-manager.js" />
-    <Content Include="Scripts\ClientScripts\factories.js" />
-    <Content Include="Scripts\ClientScripts\game-world-manager.js" />
-    <Content Include="Scripts\ClientScripts\menu.js" />
-    <Content Include="Scripts\ClientScripts\qunit-tests.js" />
-    <Content Include="Scripts\ClientScripts\server-proxy.js" />
-    <Content Include="Scripts\ClientScripts\utils.js" />
-    <Content Include="Scripts\ClientScripts\view-manager.js" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\ClientApplication\client_application.js" />
+    <Content Include="Scripts\ClientGameEngine\controls-manager.js" />
+    <Content Include="Scripts\ClientGameEngine\factories.js" />
+    <Content Include="Scripts\ClientGameEngine\game-world-manager.js" />
+    <Content Include="Scripts\ClientGameEngine\menu.js" />
+    <Content Include="Scripts\ClientGameEngine\qunit-tests.js" />
+    <Content Include="Scripts\ClientGameEngine\server-proxy.js" />
+    <Content Include="Scripts\ClientGameEngine\utils.js" />
+    <Content Include="Scripts\ClientGameEngine\view-manager.js" />
+    <Content Include="Scripts\easeljs-0.8.0.min.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
     <Content Include="Scripts\jquery-2.1.3.min.js" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
@@ -134,17 +142,19 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Scripts\ClientScripts\config.js" />
-    <Content Include="Scripts\ClientScripts\game.js" />
-    <Content Include="Scripts\ClientScripts\gameMap.js" />
-    <Content Include="Scripts\ClientScripts\gameObject.js" />
-    <Content Include="Scripts\ClientScripts\main.js" />
-    <Content Include="Scripts\ClientScripts\world.js" />
+    <Content Include="Scripts\ClientGameEngine\config.js" />
+    <Content Include="Scripts\ClientGameEngine\game.js" />
+    <Content Include="Scripts\ClientGameEngine\gameMap.js" />
+    <Content Include="Scripts\ClientGameEngine\gameObject.js" />
+    <Content Include="Scripts\ClientGameEngine\main.js" />
+    <Content Include="Scripts\ClientGameEngine\world.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
     <Content Include="Scripts\menu.js" />
+    <Content Include="Scripts\ng-dialog.js" />
     <Content Include="Scripts\qunit-1.17.1.js" />
     <Content Include="Static\QUnitTests.html" />
+    <Content Include="Static\TestMain.html" />
     <Content Include="Static\Slowpoke.html" />
     <Content Include="Web.config" />
     <Content Include="Static\Web.config" />
@@ -163,6 +173,7 @@
       <Name>SlowpokeHubs</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

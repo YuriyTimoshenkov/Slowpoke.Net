@@ -10,12 +10,15 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     this.serverFramesQueue = []
     this.controlsManager = controlsManager
     this.viewManager = viewManager
+    this.gameState = 'initial'
     
     
     this.run = function () {
+        console.log("Game STARTED")
         serverProxy.run(function () {
             serverProxy.loadPlayer(self.handleLoadPlayer, self.errorHandler)
-        }, self.errorHandler)
+        }, self.errorHandler, self.disconnectedHandler, self.gameOverHandler)
+        
     }
 
     this.moveUp = function () {
@@ -80,27 +83,63 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         controlsManager.addMoveDownHandler(self.moveDown)
         controlsManager.addMoveRightHandler(self.moveRight)
         controlsManager.addMoveLeftHandler(self.moveLeft)
+        controlsManager.addMoveUpLeftHandler(self.moveUpLeft)
+        controlsManager.addMoveUpRightHandler(self.moveUpRight)
+        controlsManager.addMoveDownLeftHandler(self.moveDownLeft)
+        controlsManager.addMoveDownRightHandler(self.moveDownRight)
         controlsManager.addShootHandler(self.shoot)
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
         controlsManager.addChangeWeaponHandler(self.changeWeapon)
 
         // Start listening server
-        setInterval(function () { self.getFrameFromServer() }, serverRequestFPS)
+        self.serverLoop = setInterval(function () { self.getFrameFromServer() }, serverRequestFPS)
 
         // Start game loop
-        setInterval(function () { self.loop() }, updateFPS)
+        self.clientLoop = setInterval(function () { self.loop() }, updateFPS)
+
+        self.gameState = 'playing'
     }
 
     this.errorHandler = function (error) {
         console.log(error)
     }
+
+    this.reconnectionDialogHandler = function () {
+        console.log(error)
+    }
+
+    this.gameOverDialogHandler = function () {
+        console.log(error)
+    }
+
+    this.disconnectedHandler = function () {
+        if (self.gameState === 'playing') {
+            self.stopGame()
+            self.gameState = 'stopped'
+            self.reconnectionDialogHandler()
+        }
+    }
+
+    this.stopGame = function () {
+        clearInterval(self.serverLoop)
+        clearInterval(self.clientLoop)
+        self.serverProxy.stop()
+        console.log("Game STOPPED")
+    }
+
+    this.gameOverHandler = function (state) {
+        self.gameState = 'stopped'
+        self.stopGame()
+        self.gameOverDialogHandler()
+    }
 }
 
 Game.prototype = {
     loop: function () {
-        this.gameWorldManager.updateWorld()
-        this.viewManager.render(this.gameWorldManager.getCurrentFrame())
-        console.log("--------------------------------------");
+        this.gameWorldManager.updateWorld();
+        this.controlsManager.handleControls();
+        this.viewManager.render(this.gameWorldManager.getCurrentFrame());
+        //console.log("--------------------------------------");
     },
 
     getFrameFromServer: function () {
