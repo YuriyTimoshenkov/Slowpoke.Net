@@ -52,6 +52,11 @@ GameObject.prototype = {
                 var color = "yellow";
                 this.image = this.createBullet(shapeRadius, color);
                 break
+            case "BulletDynamite":
+                var color = "brown";
+                this.image = this.createBullet(shapeRadius, color);
+                break
+
             default:
                 throw "gameObject: invalid gameObject type";
         };
