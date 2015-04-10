@@ -3,12 +3,13 @@ using System.Collections;
 using SlowpokeEngine.Bodies;
 using System.Collections.Generic;
 using SlowpokeEngine.Engines.Map;
+using SlowpokeEngine.Engines.View;
 
 namespace SlowpokeEngine.Engines
 {
-	public interface IViewPort
+	public interface IActiveBodyEyesight
 	{
-		IEnumerable<ActiveBody> GetActiveBodies (Guid playerId);
+        IViewFrame GetFrame(Guid playerId);
         IMap Map { get; }
 	}
 }

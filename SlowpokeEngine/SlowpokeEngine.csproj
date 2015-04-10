@@ -82,6 +82,8 @@
     <Compile Include="Engines\Map\MapTerrain.cs" />
     <Compile Include="Engines\Map\MapTile.cs" />
     <Compile Include="Engines\Map\TileSolidityType.cs" />
+    <Compile Include="Engines\View\IViewFrame.cs" />
+    <Compile Include="Engines\View\ViewFrame.cs" />
     <Compile Include="Entities\Factories\ICharacterFactory.cs" />
     <Compile Include="Entities\Factories\SimpleCharacterFactory.cs" />
     <Compile Include="Entities\GameCharacter.cs" />
@@ -116,8 +118,8 @@
     <Compile Include="Bodies\PlayerBody.cs" />
     <Compile Include="Bodies\IPlayerBodyFacade.cs" />
     <Compile Include="Commands\GameCommandMove.cs" />
-    <Compile Include="Engines\IViewPort.cs" />
-    <Compile Include="Engines\ViewPort.cs" />
+    <Compile Include="Engines\View\IActiveBodyEyesight.cs" />
+    <Compile Include="Engines\View\ActiveBodyEyesight.cs" />
     <Compile Include="Commands\BodyActionChangeDirection.cs" />
     <Compile Include="Weapons\Bullet.cs" />
     <Compile Include="Weapons\BulletDynamite.cs" />

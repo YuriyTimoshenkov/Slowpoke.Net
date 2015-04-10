@@ -144,8 +144,8 @@ Game.prototype = {
 
     getFrameFromServer: function () {
         var self = this
-        this.serverProxy.getActiveBodies(function (obj) {
-            self.serverFramesQueue.push(obj);
+        this.serverProxy.getFrame(function (obj) {
+            self.serverFramesQueue.push(obj.Bodies);
         }, function (error) { console.log("Oppa" + error) });
     }
 };

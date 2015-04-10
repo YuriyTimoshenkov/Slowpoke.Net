@@ -21,14 +21,14 @@ namespace SlowpokeEngine.Bodies
 
         public override void UpdateState()
         {
-            var frame = _mechanicEngine.ViewPort.GetActiveBodies(this.Id);
+            var frame = _mechanicEngine.ViewPort.GetFrame(this.Id);
 
             ActiveBody enemy = null;
             double minDistance = -1;
 
             var newDirection = new Vector();
 
-            foreach (var body in frame)
+            foreach (var body in frame.Bodies)
             {
                 // Only PlayerBodies can be enemies
                 if (isEnemy(body))

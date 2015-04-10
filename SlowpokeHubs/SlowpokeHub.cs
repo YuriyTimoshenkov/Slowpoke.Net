@@ -10,6 +10,7 @@ using System.Collections.Concurrent;
 using SlowpokeEngine.Entities;
 using System.Security.Claims;
 using SlowpokeEngine.Engines.Map;
+using SlowpokeEngine.Engines.View;
 
 namespace SlowpokeHubs
 {
@@ -56,9 +57,9 @@ namespace SlowpokeHubs
             return player;
 		}
 
-		public List<ActiveBody> GetActiveBodies()
+		public IViewFrame GetFrame()
 		{
-            return MechanicEngine.ViewPort.GetActiveBodies(_connectionsPlayerMapping[Context.ConnectionId].Id).ToList();
+            return MechanicEngine.ViewPort.GetFrame(_connectionsPlayerMapping[Context.ConnectionId].Id);
 		}
 
 		public void MoveBody(double x, double y)

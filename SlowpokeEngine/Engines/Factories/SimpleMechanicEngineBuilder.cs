@@ -11,7 +11,7 @@ namespace SlowpokeEngine
 			var mapEngine = new MapEngine (new Map(50));
 			var physicalEngine = new PhysicalEngine (new ShapeCollisionManager(), mapEngine);
 			var simpleBodyBuilder = new SimpleBodyBuilder ();
-			var viewPort = new ViewPort (mapEngine);
+            var viewPort = new ActiveBodyEyesight(mapEngine);
 
 			var mechanicEngine = new MechanicEngine (physicalEngine, mapEngine, simpleBodyBuilder, viewPort, null);
 

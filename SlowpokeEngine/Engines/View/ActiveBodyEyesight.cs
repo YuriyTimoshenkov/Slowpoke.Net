@@ -3,22 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Engines.Map;
+using SlowpokeEngine.Engines.View;
 
 namespace SlowpokeEngine.Engines
 {
-	public class ViewPort : IViewPort
+	public class ActiveBodyEyesight : IActiveBodyEyesight
 	{
 		private readonly IMapEngine _mapEngine;
 
-		public ViewPort(IMapEngine mapEngine)
+        public ActiveBodyEyesight(IMapEngine mapEngine)
 		{
 			_mapEngine = mapEngine;
 		}
 
 		#region IViewPort implementation
-		public IEnumerable<ActiveBody> GetActiveBodies (Guid playerId)
+		public IViewFrame GetFrame (Guid playerId)
 		{
-			return _mapEngine.Bodies.Values;
+            return new ViewFrame() {  Bodies = new List<ActiveBody>(_mapEngine.Bodies.Values) };
 		}
 		#endregion
 

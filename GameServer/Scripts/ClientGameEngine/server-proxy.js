@@ -38,8 +38,8 @@ function serverProxySignalR(url) {
     this.loadPlayer = function (doneHandler, failHandler) {
         gameProxy.server.loadPlayer().done(doneHandler).fail(failHandler);
     }
-    this.getActiveBodies = function (doneHandler, failHandler) {
-        gameProxy.server.getActiveBodies().done(doneHandler).fail(failHandler);
+    this.getFrame = function (doneHandler, failHandler) {
+        gameProxy.server.getFrame().done(doneHandler).fail(failHandler);
     };
     this.getMap = function (doneHandler, failHandler) {
         gameProxy.server.getMap().done(doneHandler).fail(failHandler);

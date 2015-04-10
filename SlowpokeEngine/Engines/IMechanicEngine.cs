@@ -7,7 +7,7 @@ namespace SlowpokeEngine
 {
 	public interface IMechanicEngine
 	{
-		IViewPort ViewPort { get; }
+		IActiveBodyEyesight ViewPort { get; }
 
         void StartEngine(Action<IPlayerBodyFacade> playerStateHandler);
 		void StopEngine();

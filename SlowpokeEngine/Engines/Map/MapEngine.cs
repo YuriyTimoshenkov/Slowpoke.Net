@@ -27,43 +27,24 @@ namespace SlowpokeEngine.Engines.Map
 
         public IEnumerable<Body> GetBodiesForCollision(ActiveBody body)
         {
-            List<Body> result = new List<Body>();
-
-            IMapTile mapTile;
-
-            if (_bodiesToTilesCollection.TryGetValue(body.Id, out mapTile))
-            {
-                var tileX = (int)mapTile.Position.X;
-                var tileY = (int)mapTile.Position.Y;
-
-                //get all surround tiles
-                foreach (var x in Enumerable.Range(
-                    tileX > 0 ? tileX - 1 : 0,
-                    1 + (tileX < Map.Width ? 1 : 0) + (tileX > 0 ? 1 : 0)))
+            return GetSurrounBodies(body, 1, (tile) =>
                 {
-                    foreach (var y in Enumerable.Range(
-                        tileY > 0 ? tileY - 1 : 0,
-                        1 + (tileY < Map.Height ? 1 : 0) + (tileY > 0 ? 1 : 0)))
+                    List<Body> resultBodies = new List<Body>();
+                    //Add active bodies
+                    foreach (var tileBody in tile.Bodies.Where(v => v != body).Select(v => v).ToList())
                     {
-                        IMapTile tile = Map.Tiles[y][x];
-
-
-                        //Add active bodies
-                        foreach (var tileBody in tile.Bodies.Where(v => v != body).Select(v => v).ToList())
-                        {
-                            result.Add(tileBody);
-                        }
-
-                        //add tile if solid
-                        if (tile.Solid != TileSolidityType.NotSolid)
-                        {
-                            result.Add(new PassiveBody(tile.Shape));
-                        }
+                        resultBodies.Add(tileBody);
                     }
-                }
-            }
 
-            return result;
+                    //add tile if solid
+                    if (tile.Solid != TileSolidityType.NotSolid)
+                    {
+                        resultBodies.Add(new PassiveBody(tile.Shape));
+                    }
+
+                    return resultBodies;
+                });
+
         }
         public void AddActiveBody(ActiveBody body)
         {
@@ -145,5 +126,56 @@ namespace SlowpokeEngine.Engines.Map
 
             return false;
         }
+
+        public IList<IMapTile> GetSurroundTiles(IMapTile tile, int deviation)
+        {
+            var tileX = (int)tile.Position.X;
+            var tileY = (int)tile.Position.Y;
+
+            int leftX = tileX - deviation;
+            leftX = leftX >= 0 ? leftX : 0;
+
+            int rightX = tileX + deviation;
+            rightX = rightX >= Map.Width ? Map.Width : rightX;
+
+            int bottomY = tileY - deviation;
+            bottomY = bottomY >= 0 ? bottomY : 0;
+
+            int topY = tileY + deviation;
+            topY = topY <= Map.Width ? Map.Width : topY;
+
+            List<IMapTile> result = new List<IMapTile>();
+
+            //get all surround tiles
+            foreach (var x in Enumerable.Range(leftX, rightX-leftX + 1))
+            {
+                foreach (var y in Enumerable.Range(bottomY, topY - bottomY + 1))
+                {
+                    result.Add(Map.Tiles[y][x]);
+                }
+            }
+
+            return result;
+        }
+
+        public IEnumerable<Body> GetSurrounBodies(ActiveBody body, int deviation, Func<IMapTile, IList<Body>> bodySelector)
+        {
+            List<Body> result = new List<Body>();
+
+            IMapTile mapTile;
+
+            if (_bodiesToTilesCollection.TryGetValue(body.Id, out mapTile))
+            {
+                var surroundTiles = GetSurroundTiles(mapTile, 1);
+
+                foreach (var tile in surroundTiles)
+                {
+                    result.AddRange(bodySelector(tile));
+                }
+            }
+
+            return result;
+        }
+
     }
 }

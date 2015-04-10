@@ -29,13 +29,13 @@ namespace SlowpokeEngine.Engines
         private readonly ActionHandlersManager<Func<GameCommand, PhysicsProcessingResult,bool>, Action<GameCommand, PhysicsProcessingResult>> _actionHandlers
             = new ActionHandlersManager<Func<GameCommand, PhysicsProcessingResult, bool>, Action<GameCommand, PhysicsProcessingResult>>();
 
-		public IViewPort ViewPort { get; private set; }
+		public IActiveBodyEyesight ViewPort { get; private set; }
 
 		public MechanicEngine(
 			IPhysicalEngine physicalEngine, 
 			IMapEngine mapEngine, 
 			IBodyBuilder bodyBuilder,
-			IViewPort viewPort,
+            IActiveBodyEyesight viewPort,
             IGameLevelRepository gameLevelRepository
 		)
 		{
