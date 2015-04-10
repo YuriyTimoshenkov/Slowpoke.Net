@@ -37,9 +37,10 @@ World.prototype = {
             obj = new GameObject(name, id, objectType, position, direction, shapeRadius, life, lifeMax, currentWeapon, canvasXY)
         }
 
-        else if (objectType == "Bullet") {
+        else if (objectType == "Bullet" || objectType == "BulletDinamite") {
             obj = new GameObject("Bullet", id, objectType, position, direction, shapeRadius, life, lifeMax, null)
         }
+
 
         else throw "World: invalid gameObject type: " + objectType;
 

@@ -119,7 +119,9 @@
     <Compile Include="Engines\ViewPort.cs" />
     <Compile Include="Commands\BodyActionChangeDirection.cs" />
     <Compile Include="Weapons\Bullet.cs" />
+    <Compile Include="Weapons\BulletDynamite.cs" />
     <Compile Include="Weapons\WeaponBase.cs" />
+    <Compile Include="Weapons\WeaponDynamite.cs" />
     <Compile Include="Weapons\WeaponMultipleShotgunBullet.cs" />
     <Compile Include="Weapons\WeaponSimpleBullet.cs" />
   </ItemGroup>

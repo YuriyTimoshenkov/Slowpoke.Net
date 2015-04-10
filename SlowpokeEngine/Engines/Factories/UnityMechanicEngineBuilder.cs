@@ -64,6 +64,10 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<WeaponMultipleShotgunBullet>(shotGun, new InjectionConstructor(
                15, 1, 170, 3, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), shotGun
                ));
+            string dynamite = "Dynamite";
+            unityContainer.RegisterType<WeaponDynamite>(dynamite, new InjectionConstructor(
+                2000, 20, 300, 4, 100, 5, new TimeSpan(0, 0, 0, 300), typeof(IMechanicEngine), dynamite
+                ));
 
             var mechanicEngine = unityContainer.Resolve<IMechanicEngine>();
 
