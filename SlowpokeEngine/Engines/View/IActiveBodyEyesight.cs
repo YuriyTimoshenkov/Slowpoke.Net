@@ -9,8 +9,9 @@ namespace SlowpokeEngine.Engines
 {
 	public interface IActiveBodyEyesight
 	{
-        IViewFrame GetFrame(Guid playerId);
+        IViewFrame GetFrame(Guid playerId, IMapTile previousTile);
         IMap Map { get; }
+        IMapTile GetPlayerCurrentTile(Guid playerId);
 	}
 }
 

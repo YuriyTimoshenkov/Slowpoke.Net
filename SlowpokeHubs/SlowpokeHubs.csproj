@@ -80,6 +80,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPlayerContainer.cs" />
+    <Compile Include="PlayerContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SlowpokeHub.cs" />
   </ItemGroup>

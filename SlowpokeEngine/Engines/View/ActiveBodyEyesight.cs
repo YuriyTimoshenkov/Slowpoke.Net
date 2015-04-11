@@ -17,15 +17,31 @@ namespace SlowpokeEngine.Engines
 		}
 
 		#region IViewPort implementation
-		public IViewFrame GetFrame (Guid playerId)
+        public IViewFrame GetFrame(Guid playerId, IMapTile previousTile)
 		{
-            return new ViewFrame() {  Bodies = new List<ActiveBody>(_mapEngine.Bodies.Values) };
+            var frame = new ViewFrame() {  Bodies = new List<ActiveBody>(_mapEngine.Bodies.Values) };
+            var currentTile = _mapEngine.GetBodyTile(playerId);
+
+            if(previousTile == null  || currentTile.Position != previousTile.Position)
+            {
+                var player = _mapEngine.Bodies[playerId];
+                frame.Map = _mapEngine.GetSurroundTiles(currentTile, player.ViewZone);
+
+                return frame;
+            }
+
+            return frame;
 		}
 		#endregion
 
         public IMap Map
         {
             get { return _mapEngine.Map; }
+        }
+
+        public IMapTile GetPlayerCurrentTile(Guid playerId)
+        {
+            return _mapEngine.GetBodyTile(playerId);
         }
     }
 }

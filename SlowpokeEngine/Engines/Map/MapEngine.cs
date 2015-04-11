@@ -136,20 +136,20 @@ namespace SlowpokeEngine.Engines.Map
             leftX = leftX >= 0 ? leftX : 0;
 
             int rightX = tileX + deviation;
-            rightX = rightX >= Map.Width ? Map.Width : rightX;
+            rightX = rightX >= Map.Width ? Map.Width : rightX + 1;
 
             int bottomY = tileY - deviation;
             bottomY = bottomY >= 0 ? bottomY : 0;
 
             int topY = tileY + deviation;
-            topY = topY <= Map.Width ? Map.Width : topY;
+            topY = topY >= Map.Height ? Map.Height : topY + 1;
 
             List<IMapTile> result = new List<IMapTile>();
 
             //get all surround tiles
-            foreach (var x in Enumerable.Range(leftX, rightX-leftX + 1))
+            foreach (var x in Enumerable.Range(leftX, rightX-leftX))
             {
-                foreach (var y in Enumerable.Range(bottomY, topY - bottomY + 1))
+                foreach (var y in Enumerable.Range(bottomY, topY - bottomY))
                 {
                     result.Add(Map.Tiles[y][x]);
                 }
@@ -158,7 +158,7 @@ namespace SlowpokeEngine.Engines.Map
             return result;
         }
 
-        public IEnumerable<Body> GetSurrounBodies(ActiveBody body, int deviation, Func<IMapTile, IList<Body>> bodySelector)
+        private IEnumerable<Body> GetSurrounBodies(ActiveBody body, int deviation, Func<IMapTile, IList<Body>> bodySelector)
         {
             List<Body> result = new List<Body>();
 
@@ -177,5 +177,13 @@ namespace SlowpokeEngine.Engines.Map
             return result;
         }
 
+        IMapTile IMapEngine.GetBodyTile(Guid bodyId)
+        {
+            IMapTile tile = null;
+
+            _bodiesToTilesCollection.TryGetValue(bodyId, out tile);
+
+            return tile;
+        }
     }
 }

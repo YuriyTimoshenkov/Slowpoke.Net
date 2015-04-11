@@ -24,7 +24,7 @@ namespace SlowpokeEngine.Weapons
             int damage,
             Shape shape, 
 			Vector direction,
-			IMechanicEngine mechanicEngine):base(shape, direction, mechanicEngine,1,1)
+			IMechanicEngine mechanicEngine):base(shape, direction, mechanicEngine,1,1,0)
         {
             ShootingDistance = shootingDistance;
             _speed = new TimeSpan(0, 0, 0, 0, speed);

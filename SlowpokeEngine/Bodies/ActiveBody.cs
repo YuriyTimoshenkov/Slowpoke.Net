@@ -23,6 +23,8 @@ namespace SlowpokeEngine.Bodies
 
         public BodyState State { get; private set; }
 
+        public int ViewZone { get; private set; }
+
         protected List<WeaponBase> _weapons { get; private set; }
 
         private int _currentWeaponIndex = 0;
@@ -45,7 +47,8 @@ namespace SlowpokeEngine.Bodies
 			Shape shape, 
 			Vector direction,
 			IMechanicEngine mechanicEngine,
-            int life, int lifeMax)
+            int life, int lifeMax,
+            int viewZone)
 		{
 			Id = Guid.NewGuid();
 			_mechanicEngine = mechanicEngine;
@@ -55,6 +58,7 @@ namespace SlowpokeEngine.Bodies
             LifeMax = lifeMax;
             _weapons = new List<WeaponBase>();
             State = BodyState.Alive;
+            ViewZone = viewZone;
 		}
 
         public virtual void Run() { }

@@ -22,8 +22,10 @@ namespace SlowpokeEngine.Bodies
 			IMechanicEngine mechanicEngine,
             IGameSessionRepository sessionRepository,
             int life, int lifeMax,
-            string name
-            ):base(shape, direction,  mechanicEngine, life, lifeMax)
+            string name,
+            int viewZone
+            )
+            : base(shape, direction, mechanicEngine, life, lifeMax, viewZone)
         {
             _sessionRepository = sessionRepository;
             Name = name;

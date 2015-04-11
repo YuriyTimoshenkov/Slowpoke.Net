@@ -17,8 +17,8 @@ namespace SlowpokeHubs
     //[Authorize]
 	public class SlowpokeHub : Hub
 	{
-		private static ConcurrentDictionary<string, IPlayerBodyFacade> _connectionsPlayerMapping =
-            new ConcurrentDictionary<string, IPlayerBodyFacade>();
+        private static ConcurrentDictionary<string, IPlayerContainer> _connectionsPlayerMapping =
+            new ConcurrentDictionary<string, IPlayerContainer>();
         public static readonly string TokenCookieName = "SlowpokeToken";
         public static readonly TimeSpan TokentDuration = new TimeSpan(0,5,0);
 
@@ -39,7 +39,7 @@ namespace SlowpokeHubs
 
         public static void UpdatePlayerState(IPlayerBodyFacade playerBodyFacade)
         {
-            var playerMapping = _connectionsPlayerMapping.FirstOrDefault(v => v.Value.Id == playerBodyFacade.Id);
+            var playerMapping = _connectionsPlayerMapping.FirstOrDefault(v => v.Value.Player.Id == playerBodyFacade.Id);
             
             //Find connectionId
             if (playerMapping.Value != null)
@@ -51,20 +51,32 @@ namespace SlowpokeHubs
 
 		public IPlayerBodyFacade LoadPlayer()
 		{
-            var player = _connectionsPlayerMapping[Context.ConnectionId];
-            MechanicEngine.StartGame(player);
+            var playerContainer = _connectionsPlayerMapping[Context.ConnectionId];
+            MechanicEngine.StartGame(playerContainer.Player);
 
-            return player;
+            return playerContainer.Player;
 		}
 
 		public IViewFrame GetFrame()
 		{
-            return MechanicEngine.ViewPort.GetFrame(_connectionsPlayerMapping[Context.ConnectionId].Id);
+            //Get new frame
+            var playerContainer = _connectionsPlayerMapping[Context.ConnectionId];
+            var newframe = MechanicEngine.ViewPort.GetFrame(playerContainer.Player.Id, playerContainer.PreviousTile);
+
+            //Update currrent tile
+            var currentTile = MechanicEngine.ViewPort.GetPlayerCurrentTile(playerContainer.Player.Id);
+
+            if (playerContainer.PreviousTile == null || playerContainer.PreviousTile.Position != currentTile.Position)
+            {
+                playerContainer.PreviousTile = currentTile;
+            }
+
+            return newframe;
 		}
 
 		public void MoveBody(double x, double y)
 		{
-            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Id);
+            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
             if (player != null)
                 player.Move(new Vector(x,y));
@@ -72,7 +84,7 @@ namespace SlowpokeHubs
 
 		public void ChangeBodyDirection(int x, int y)
 		{
-            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Id);
+            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
             if(player != null)
                 player.ChangeDirection(new Vector(x, y));
@@ -80,7 +92,7 @@ namespace SlowpokeHubs
 
         public void Shoot()
         {
-            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Id);
+            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
             if (player != null)
                 player.Shoot();
@@ -88,7 +100,7 @@ namespace SlowpokeHubs
 
         public void ChangeWeapon()
         {
-            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Id);
+            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
             if (player != null)
                 player.ChangeWeapon();
@@ -101,10 +113,11 @@ namespace SlowpokeHubs
 
 		public override Task OnDisconnected (bool stopCalled)
 		{
-			IPlayerBodyFacade  player;
+			IPlayerContainer  playerContainer;
 
-			if (_connectionsPlayerMapping.TryRemove (Context.ConnectionId, out player)) {
-				MechanicEngine.ReleaseActiveBody(player.Id);
+            if (_connectionsPlayerMapping.TryRemove(Context.ConnectionId, out playerContainer))
+            {
+                MechanicEngine.ReleaseActiveBody(playerContainer.Player.Id);
 			}
 
 			return base.OnDisconnected(stopCalled);
@@ -115,8 +128,11 @@ namespace SlowpokeHubs
             Guid userId = Guid.Parse("4b084299-ed14-4975-a4f1-ecf93ee01e7c");//((ClaimsIdentity)Context.User.Identity).FindFirst(v => v.Type == ClaimTypes.NameIdentifier).Value);
 
            var player = MechanicEngine.LoadPlayerBody(userId);
+           var playerContainer = new PlayerContainer(
+               player,
+               null);
 
-           _connectionsPlayerMapping.TryAdd(Context.ConnectionId, player);
+           _connectionsPlayerMapping.TryAdd(Context.ConnectionId, playerContainer);
 
 			return base.OnConnected ();
 		}

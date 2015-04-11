@@ -54,12 +54,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ActiveBodyEyesightTests.cs" />
     <Compile Include="HardcodedLevelRepoTests.cs" />
     <Compile Include="NPCAITests.cs" />
     <Compile Include="PlayerBodyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MapEngineTests.cs" />
     <Compile Include="ShapeCollisionManagerTests.cs" />
+    <Compile Include="TestMapEngineFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

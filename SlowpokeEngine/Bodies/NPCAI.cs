@@ -9,19 +9,20 @@ namespace SlowpokeEngine.Bodies
 {
 	public class NPCAI : ActiveBody
 	{
-        public NPCAI(Shape shape, IMechanicEngine mechanicEngine, int life, int lifeMax)
+        public NPCAI(Shape shape, IMechanicEngine mechanicEngine, int life, int lifeMax, int viewZone)
             : base(
 			shape,
 			new Vector(1,1),
 			mechanicEngine,
-            life, lifeMax)
+            life, lifeMax,
+            viewZone)
 		{
 			
 		}
 
         public override void UpdateState()
         {
-            var frame = _mechanicEngine.ViewPort.GetFrame(this.Id);
+            var frame = _mechanicEngine.ViewPort.GetFrame(this.Id, null);
 
             ActiveBody enemy = null;
             double minDistance = -1;

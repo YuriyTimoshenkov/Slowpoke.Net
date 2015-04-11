@@ -1,17 +1,17 @@
 ﻿using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Engines.Map;
+using SlowpokeEngine.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SlowpokeEngine.Engines.View
+namespace SlowpokeHubs
 {
-    public class ViewFrame : IViewFrame
+    public interface IPlayerContainer
     {
-        public IList<ActiveBody> Bodies { get;  set; }
-
-        public IList<IMapTile> Map { get; set; }
+        IPlayerBodyFacade Player { get; set; }
+        IMapTile PreviousTile { get; set; }
     }
 }

@@ -11,6 +11,6 @@ namespace SlowpokeEngine.Engines.View
     public interface IViewFrame
     {
         IList<ActiveBody> Bodies { get; }
-        IList<MapTile> Map { get; }
+        IList<IMapTile> Map { get; }
     }
 }
