@@ -35,33 +35,19 @@ function GameMap(serverMap) {
     this.width = serverMap.Width;
     this.height = serverMap.Height;
     this.cellSize = serverMap.CellSize;
-    this.tiles = serverMap.Tiles;
+    this.cells = [];
     var self = this
 
-    this.cells = (function() {
-        var cells = [];
-        for (var y = 0; y < self.height; y++) {
-            cells.push([]);
-            var currentRow = cells[y];
-            for (var x = 0; x < self.width; x++) {
-                var gameX = x * self.cellSize;
-                var gameY = y * self.cellSize;
-                var cell = new Cell([gameX, gameY], self.cellSize, self.tiles[y][x].Color);
-                currentRow.push(cell)
-            }
-        }
-        return cells})();
-    this.create_terrain(self.tiles);
-}
+    this.update = function(tiles) {
+        self.cells = [];
 
-GameMap.prototype = {
-    create_terrain: function(inputMap) {
-        for (var y = 0; y < this.cells.length; y++) {
-            var row = this.cells[y];
-            for (var x = 0; x < row.length; x++) {
-                var cell = row[x];
-                cell.terrain = inputMap[y][x];
-            }
-        }
+        tiles.forEach(function (tile) {
+            var gameX = tile.Position.X * self.cellSize;
+            var gameY = tile.Position.Y * self.cellSize;
+
+            var cell = new Cell([gameX, gameY], self.cellSize, tile.Color);
+            
+            self.cells.push(cell)
+        })
     }
-};
+}

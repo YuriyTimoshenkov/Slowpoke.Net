@@ -37,10 +37,10 @@ namespace SlowpokeEngine
 
             unityContainer.RegisterType<IBodyBuilder, UnityBodyBuilder>();
             unityContainer.RegisterType<NPC>(new InjectionConstructor(
-                new ShapeCircle(20, new Point(300, 100)), typeof(IMechanicEngine), 100, 100, 100
+                new ShapeCircle(20, new Point(300, 100)), typeof(IMechanicEngine), 100, 100, 2
                 ));
             unityContainer.RegisterType<NPCAI>(new InjectionConstructor(
-                new ShapeCircle(20, new Point(200, 200)), typeof(IMechanicEngine), 100, 100, 100
+                new ShapeCircle(20, new Point(200, 200)), typeof(IMechanicEngine), 100, 100, 2
                 ));
             unityContainer.RegisterType<PlayerBody>(new InjectionConstructor(
                 new ShapeCircle(20, new Point(275, 575)),
@@ -49,7 +49,7 @@ namespace SlowpokeEngine
                 typeof(IGameSessionRepository),
                 100, 100,
                 string.Empty,
-                100
+                5
                 ));
 
             //Weapons

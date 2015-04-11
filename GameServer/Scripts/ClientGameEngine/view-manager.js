@@ -48,8 +48,7 @@
         })
 
         // Update cells
-        frame.cells.forEach(function (row) {
-            row.forEach(function (cell) {
+        frame.cells.forEach(function (cell) {
                 var dx = self.target.gameRect.centerx - cell.gameRect.centerx;
                 var dy = self.target.gameRect.centery - cell.gameRect.centery;
 
@@ -57,7 +56,6 @@
                 cell.image.x = self.target.image.x - dx - cell.width / 2;
                 cell.image.y = self.target.image.y - dy - cell.height / 2;
             })
-        })
     }
 
     this.updateMenu = function () {
@@ -78,11 +76,9 @@
         self.stage.removeAllChildren();
 
         // Add cells
-        frame.cells.forEach(function (row, index, array) {
-            row.forEach(function (cell, index, array) {
+        frame.cells.forEach(function (cell) {
                 self.stage.addChild(cell.image);
             })
-        })
 
         // Add game objects
         frame.objects.forEach(function (element, index, array) {

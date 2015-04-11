@@ -46,6 +46,7 @@ namespace SlowpokeEngine.Engines.Map
                 });
 
         }
+
         public void AddActiveBody(ActiveBody body)
         {
             var bodyTile = GetBodyTile(body);
@@ -126,7 +127,6 @@ namespace SlowpokeEngine.Engines.Map
 
             return false;
         }
-
         public IList<IMapTile> GetSurroundTiles(IMapTile tile, int deviation)
         {
             var tileX = (int)tile.Position.X;
@@ -158,7 +158,7 @@ namespace SlowpokeEngine.Engines.Map
             return result;
         }
 
-        private IEnumerable<Body> GetSurrounBodies(ActiveBody body, int deviation, Func<IMapTile, IList<Body>> bodySelector)
+        public IEnumerable<Body> GetSurrounBodies(ActiveBody body, int deviation, Func<IMapTile, IList<Body>> bodySelector)
         {
             List<Body> result = new List<Body>();
 

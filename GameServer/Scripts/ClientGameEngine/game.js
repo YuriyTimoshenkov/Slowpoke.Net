@@ -139,13 +139,12 @@ Game.prototype = {
         this.gameWorldManager.updateWorld();
         this.controlsManager.handleControls();
         this.viewManager.render(this.gameWorldManager.getCurrentFrame());
-        //console.log("--------------------------------------");
     },
 
     getFrameFromServer: function () {
         var self = this
         this.serverProxy.getFrame(function (obj) {
-            self.serverFramesQueue.push(obj.Bodies);
+            self.serverFramesQueue.push(obj);
         }, function (error) { console.log("Oppa" + error) });
     }
 };

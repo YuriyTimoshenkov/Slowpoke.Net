@@ -1,22 +1,20 @@
 ﻿function gameWorldManager(world) {
     this.world = world
+    var self = this;
 
     this.getCurrentFrame = function(){
         return { cells: this.world.gameMap.cells, objects: this.world.allGameObjects }
     }
 
-    this.updateWorld = function () {
-        var frame = this.serverFramesQueue.shift()
+    this.updateMap = function (tiles) {
+        self.world.gameMap.update(tiles)
+    }
 
-        if (!frame)
-            return
-
-        var self = this;
-
+    this.updateActiveBodies = function (bodyList) {
         // Convert frame data to dict {obj_id: obj} and round Position coordinates
         var frameObjectsDict = (function () {
             var idsDict = {};
-            frame.forEach(function (obj) {
+            bodyList.forEach(function (obj) {
                 idsDict[obj.Id] = obj;
             });
             return idsDict;
@@ -31,8 +29,8 @@
         deleteIDs.forEach(function (obj) {
             // KOSTIL for the game restart
             if (!(obj.objectType === "PlayerBody")) {
-            var i = self.world.allGameObjects.indexOf(obj);
-            var deletedItems = self.world.allGameObjects.splice(i, 1);
+                var i = self.world.allGameObjects.indexOf(obj);
+                var deletedItems = self.world.allGameObjects.splice(i, 1);
             }
         });
 
@@ -42,7 +40,20 @@
             var filtered = this.world.allGameObjects.filter(function (obj) { return objId == obj.id });
             if (filtered.length > 0) this.updateObject(objData);
             else this.createObject(objData)
-            }
+        }
+    }
+
+    this.updateWorld = function () {
+        var frame = this.serverFramesQueue.shift()
+        var self = this;
+
+        if (!frame)
+            return
+
+        self.updateActiveBodies(frame.Bodies);
+
+        if (frame.Map)
+            self.updateMap(frame.Map)
     }
 
     this.updateObject = function (objData) {

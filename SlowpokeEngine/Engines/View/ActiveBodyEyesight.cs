@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Engines.Map;
 using SlowpokeEngine.Engines.View;
+using System.Linq;
 
 namespace SlowpokeEngine.Engines
 {
@@ -19,15 +20,21 @@ namespace SlowpokeEngine.Engines
 		#region IViewPort implementation
         public IViewFrame GetFrame(Guid playerId, IMapTile previousTile)
 		{
-            var frame = new ViewFrame() {  Bodies = new List<ActiveBody>(_mapEngine.Bodies.Values) };
-            var currentTile = _mapEngine.GetBodyTile(playerId);
-
-            if(previousTile == null  || currentTile.Position != previousTile.Position)
+            var frame = new ViewFrame();
+            ActiveBody player;
+            
+            if(_mapEngine.Bodies.TryGetValue(playerId, out player))
             {
-                var player = _mapEngine.Bodies[playerId];
-                frame.Map = _mapEngine.GetSurroundTiles(currentTile, player.ViewZone);
+                var currentTile = _mapEngine.GetBodyTile(playerId);
+                var map = _mapEngine.GetSurroundTiles(currentTile, player.ViewZone);
 
-                return frame;
+                //Get bodies
+                frame.Bodies = map.SelectMany(tile => tile.Bodies).ToList();
+
+                if (previousTile == null || (currentTile != null && currentTile.Position != previousTile.Position))
+                {
+                    frame.Map = map;
+                }
             }
 
             return frame;
