@@ -2,6 +2,13 @@
     this.world = world
     var self = this;
 
+
+    this.init = function (player, queue) {
+        this.serverFramesQueue = queue;
+
+        this.player = this.world.createGameObject(player)
+    }
+
     this.getCurrentFrame = function(){
         return { cells: this.world.gameMap.cells, objects: this.world.allGameObjects }
     }
@@ -78,19 +85,12 @@
 
         // Update life
         var newLife = objData["Life"];
-        if (obj.life !== newLife && obj.lifeText){
+        if (obj.life !== newLife){
             obj.updateLife(newLife);
         }
     }
 
     this.createObject = function (objData) {
         this.world.createGameObject(objData);
-    }
-
-    this.init = function (player, queue) {
-        this.serverFramesQueue = queue;
-        //Game.getFrameFromServer();
-        //this.player = this.world.createGameObject({ "Id": playerId, "ActiveBodyType": "PlayerBody", "LifeMax": 123, "Life": 123, "Direction": { X: 0, Y: 0 }, "Shape": { "Position": { X: 0, Y: 0 }, "Radius": 20 } })
-        this.player = this.world.createGameObject(player)
     }
 }

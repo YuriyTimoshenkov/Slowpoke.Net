@@ -7,12 +7,7 @@ function World(serverMap) {
     this.allGameObjects = [];
     this.gameMap = new GameMap(serverMap);
 
-}
-
-
-World.prototype = {
-    createGameObject: function (data) {
-        //console.log("World is creating object");
+    this.createGameObject = function (data) {
         var objectType = data["ActiveBodyType"];
         
         var id = data["Id"];
@@ -47,4 +42,5 @@ World.prototype = {
 
         return obj
     }
-};
+}
+

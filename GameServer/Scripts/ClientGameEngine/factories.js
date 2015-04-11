@@ -7,7 +7,6 @@
 function gameBuilder(canvasTagId) {
     var serverProxy = new serverProxyFactory().createServerProxy('/')
     var viewM = new viewManagerFactory().createViewManager(canvasTagId)
-    //var gameWorldM = new gameWorldManagerFactory().createGameWorldManager()
     var controlsM = new controlsManagerFactory().createControlsManager()
 
     this.buildGame = function () {

@@ -1,25 +1,4 @@
-﻿function serverProxyPrototype(url) {
-    this.run = function (doneHandler, failHandler) {
-    }
-
-    this.loadPlayer = function (doneHandler, failHandler) {
-    }
-
-    this.getActiveBodies = function (doneHandler, failHandler) {
-    };
-
-    this.shoot = function (weaponNumber) {
-    }
-
-    this.moveBody = function (x, y) {
-    }
-
-    this.changeBodyDirection = function (dx, dy) {
-    }
-
-    this.stop = function () {}
-}
-
+﻿
 function serverProxySignalR(url) {
     var gameProxy = $.connection.slowpokeHub;
 

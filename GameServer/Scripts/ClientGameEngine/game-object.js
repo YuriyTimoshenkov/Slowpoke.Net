@@ -15,55 +15,52 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
     this.image = new createjs.Container();
     this.life = life || 0;
     this.maxLife = maxLife || 0;
-    this.lifeText = null;
+    
     this.weaponImage = null;
     this.currentWeapon = currentWeapon;
-    this.assignImage(canvasXY, shapeRadius);
+    //tassignImage();
+
     // Special for player character
     if (canvasXY) {
         this.image.x = canvasXY.x;
         this.image.y = canvasXY.y;
     }
-    
-}
 
-GameObject.prototype = {
-    assignImage: function (canvasXY, shapeRadius) {
-        switch (this.objectType) {
+    this.assignImage = function (canvasXY, shapeRadius) {
+        switch (self.objectType) {
             case "PlayerBody":
                 var teamColor = "orange";
-                this.addWeaponImage();
-                this.createHat(shapeRadius, teamColor);
-                this.addNameText();
+                self.addWeaponImage();
+                self.createHat(shapeRadius, teamColor);
+                self.addNameText();
                 break
             case "NPC":
                 var teamColor = "blue";
-                this.addWeaponImage();
-                this.createHat(shapeRadius, teamColor);
-                this.addLifeText();
+                self.addWeaponImage();
+                self.createHat(shapeRadius, teamColor);
+                self.addLifeText();
                 break
             case "NPCAI":
                 var teamColor = "blue";
-                this.addWeaponImage();
-                this.createHat(shapeRadius, teamColor);
-                this.addLifeText();
+                self.addWeaponImage();
+                self.createHat(shapeRadius, teamColor);
+                self.addLifeText();
                 break
             case "Bullet":
                 var color = "yellow";
-                this.image = this.createBullet(shapeRadius, color);
+                self.image = this.createBullet(shapeRadius, color);
                 break
             case "BulletDynamite":
                 var color = "brown";
-                this.image = this.createBullet(shapeRadius, color);
+                self.image = this.createBullet(shapeRadius, color);
                 break
 
             default:
                 throw "gameObject: invalid gameObject type";
         };
-    },
+    }
 
-
-    createHat: function (hatRadius, teamColor) {
+    this.createHat = function (hatRadius, teamColor) {
         // SHAPE XY DIFFERS FROM CONTAINER XY ?? 
         var lineColor = "black";
         var circleBigColor;
@@ -114,10 +111,10 @@ GameObject.prototype = {
         moveTo(circleSmall.x + circleSmallRadius, circleSmall.y).
         lineTo(circleSmall.x + circleSmallRadius * 1.25, circleSmall.y + circleSmallRadius);
 
-        this.image.addChild(circleBig, circleSmall, lineLeft, lineRight);
-    },
+        self.image.addChild(circleBig, circleSmall, lineLeft, lineRight);
+    }
 
-    createBullet: function (bulletRadius, color) {
+    this.createBullet = function (bulletRadius, color) {
         // SHAPE XY DIFFERS FROM CONTAINER XY ?? 
         var image = new createjs.Shape();
 
@@ -127,74 +124,82 @@ GameObject.prototype = {
             drawCircle(0, 0, bulletRadius)
         
         return image;
-    },
+    }
 
-    createNameText: function () {
+    this.createNameText = function () {
         var textSize = 10;
-        return new createjs.Text(this.name, textSize + "px Arial", "purple");
-    },
+        return new createjs.Text(self.name, textSize + "px Arial", "purple");
+    }
 
-    addNameText: function () {
-        this.nameText = this.createNameText();
-        this.nameText.x = -this.gameRect.width / 1.5;
-        this.nameText.y = -this.gameRect.height / 1.5;
-        this.image.addChild(this.nameText);
-    },
-    removeNameText: function () {
-        this.image.removeChild(this.nameText);
-    },
+    this.addNameText = function () {
+        self.nameText = self.createNameText();
+        self.nameText.x = -self.gameRect.width / 1.5;
+        self.nameText.y = -self.gameRect.height / 1.5;
+        self.image.addChild(self.nameText);
+    }
 
-    createLifeText: function () {
+    this.removeNameText = function () {
+        self.image.removeChild(self.nameText);
+    }
+
+    this.createLifeText = function () {
         var textSize = 10;
-        return new createjs.Text(this.life, textSize + "px Arial", "purple");
-    },
-    addLifeText: function () {
-        this.lifeText = this.createLifeText();
-        this.lifeText.x = - this.gameRect.width / 1.5;
-        this.lifeText.y = - this.gameRect.height / 1.5;
-        this.image.addChild(this.lifeText);
-    },
-    removeLifeText: function () {
-        this.image.removeChild(this.lifeText);
-    },
+        return new createjs.Text(self.life, textSize + "px Arial", "purple");
+    }
 
-    updateLife: function (life) {
-        this.life = life;
-        this.updateLifeText();
-    },
+    this.addLifeText = function () {
+        self.lifeText = self.createLifeText();
+        self.lifeText.x = -self.gameRect.width / 1.5;
+        self.lifeText.y = -self.gameRect.height / 1.5;
+        self.image.addChild(self.lifeText);
+    }
 
-    updateLifeText: function () {
-        this.removeLifeText();
-        this.addLifeText();
-    },
+    this.removeLifeText =  function () {
+        self.image.removeChild(self.lifeText);
+    }
 
-    addWeaponImage: function () {
-        this.weaponImage = this.createWeaponImage();
-        this.image.addChildAt(this.weaponImage, 0);
-    },
+    this.updateLife = function (life) {
+        self.life = life;
 
-    createWeaponImage: function () {
+        if (self.lifeText)
+            self.updateLifeText();
+    }
+
+    this.updateLifeText = function () {
+        self.removeLifeText();
+        self.addLifeText();
+    }
+
+    this.addWeaponImage = function () {
+        self.weaponImage = self.createWeaponImage();
+        self.image.addChildAt(self.weaponImage, 0);
+    }
+
+    this.createWeaponImage = function () {
         var weapon = new createjs.Shape();
         var weaponLength = 30;
 
         //var center = new Point(this.image.x, this.image.y);
         var center = new Point(0, 0);
-        var weaponPoint = new Point(center.x + this.direction.X * weaponLength, center.y + this.direction.Y * weaponLength);
+        var weaponPoint = new Point(center.x + self.direction.X * weaponLength, center.y + self.direction.Y * weaponLength);
 
         weapon.graphics.setStrokeStyle(4, "round").beginStroke("black").
         moveTo(center.x, center.y).
         lineTo(weaponPoint.x, weaponPoint.y);
         return weapon
-    },
-
-    removeWeaponImage: function() {
-        this.image.removeChild(this.weaponImage);
-    },
-
-    updateWeapon: function () {
-        this.removeWeaponImage();
-        this.addWeaponImage();
     }
-};
+
+    this.removeWeaponImage = function() {
+        self.image.removeChild(self.weaponImage);
+    }
+
+    this.updateWeapon = function () {
+        self.removeWeaponImage();
+        self.addWeaponImage();
+    }
+
+    this.assignImage(canvasXY, shapeRadius)
+}
+
 
 

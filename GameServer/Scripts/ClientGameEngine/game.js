@@ -132,20 +132,18 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         self.stopGame()
         self.gameOverDialogHandler()
     }
-}
 
-Game.prototype = {
-    loop: function () {
+    this.loop = function () {
         this.gameWorldManager.updateWorld();
         this.controlsManager.handleControls();
         this.viewManager.render(this.gameWorldManager.getCurrentFrame());
-    },
+    }
 
-    getFrameFromServer: function () {
+    this.getFrameFromServer = function () {
         var self = this
         this.serverProxy.getFrame(function (obj) {
             self.serverFramesQueue.push(obj);
         }, function (error) { console.log("Oppa" + error) });
     }
-};
+}
 
