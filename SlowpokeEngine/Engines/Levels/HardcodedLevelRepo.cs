@@ -76,7 +76,7 @@ namespace SlowpokeEngine.Engines.Levels
         {"[water]", "[meadow]", "[water]", "[meadow]", "[meadow]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
         {"[water]", "[meadow]", "[water]", "[meadow]", "[meadow]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
         {"[water]", "[meadow]", "[water]", "[meadow]", "[meadow]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
-        {"[water]", "[meadow]", "[water]", "[meadow]", "[meadow]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
+        {"[water]", "[meadow]", "[water]", "[meadow][NPCAI]", "[meadow]", "[road]", "[meadow]", "[meadow]", "[meadow]", "[water]"},
         {"[water]", "[water]", "[water]", "[water]", "[water]", "[water]", "[water]", "[water]", "[water]", "[water]"}
         };
     }
