@@ -13,10 +13,13 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     this.gameState = 'initial'
     
     
-    this.run = function () {
+    this.run = function (doneCallback) {
+        self.gameLoadDoneCallback = doneCallback
+
         console.log("Game STARTED")
+
         serverProxy.run(function () {
-            serverProxy.loadPlayer(self.handleLoadPlayer, self.errorHandler)
+            serverProxy.loadPlayer(self.handleLoadPlayer, self.errorHandler, doneCallback)
         }, self.errorHandler, self.disconnectedHandler, self.gameOverHandler)
         
     }
@@ -98,6 +101,7 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         self.clientLoop = setInterval(function () { self.loop() }, updateFPS)
 
         self.gameState = 'playing'
+        self.gameLoadDoneCallback()
     }
 
     this.errorHandler = function (error) {

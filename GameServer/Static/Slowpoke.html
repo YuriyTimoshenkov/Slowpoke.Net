@@ -2,6 +2,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/Content/ng-dialog.css">
     <link rel="stylesheet" type="text/css" href="/Content/ng-dialog-default.css">
+    <link rel="stylesheet" type="text/css" href="/Content/bootstrap.css">
 
     <script src="/Scripts/easeljs-0.8.0.min.js"></script>
     <script src="/Scripts/ClientGameEngine/menu.js"></script>
@@ -38,6 +39,7 @@
     <title></title>
 </head>
 <body ng-controller="MainCtrl">
+    <div class="text-center center-block" ng-if="loader.gameLoading"><span>Slowpoking...</span><img src="../Content/loading.gif"></div>
         <canvas id="canvas"></canvas>
 </body>
 </html>

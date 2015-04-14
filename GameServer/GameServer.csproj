@@ -110,14 +110,29 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\loading.gif" />
     <Content Include="Content\ng-dialog-default.css" />
     <Content Include="Content\ng-dialog.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Icon.png" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Content\qunit-1.17.1.css" />
     <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\ClientApplication\client_application.js" />
     <Content Include="Scripts\ClientGameEngine\controls-manager.js" />
     <Content Include="Scripts\ClientGameEngine\factories.js" />
@@ -152,6 +167,7 @@
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\ng-dialog.js" />
+    <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\qunit-1.17.1.js" />
     <Content Include="Static\QUnitTests.html" />
     <Content Include="Static\TestMain.html" />

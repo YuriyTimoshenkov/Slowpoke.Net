@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace SlowpokeEngine.Engines.Map
     {
         int Height { get; }
         int Width { get; }
+        [JsonIgnore]
         List<List<IMapTile>> Tiles { get; }
         int CellSize { get; }
     }

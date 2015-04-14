@@ -5,6 +5,8 @@ app.service('slowpokeClient', function () {
 })
     .controller('MainCtrl', function ($scope, ngDialog, slowpokeClient) {
         $scope.activeDialog = false;
+        $scope.loader = { gameLoading: true };
+
         //Loosed connection handler
         slowpokeClient.game.reconnectionDialogHandler =
             function () {
@@ -20,6 +22,7 @@ app.service('slowpokeClient', function () {
                 })
             };
 
+        //Gameover handler handler
         slowpokeClient.game.gameOverDialogHandler =
            function () {
                if (slowpokeClient.activeDialog === true)
@@ -35,7 +38,10 @@ app.service('slowpokeClient', function () {
                })
            };
 
-        slowpokeClient.game.run();
+        slowpokeClient.game.run(function () {
+            $scope.loader.gameLoading = false
+            $scope.$apply()
+        });
     })
     .controller('DisconnectedCtrl', function ($scope, ngDialog, slowpokeClient, $window) {
         $scope.WindowName = 'Connection lost.'
