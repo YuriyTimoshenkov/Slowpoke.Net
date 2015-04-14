@@ -11,7 +11,8 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     this.controlsManager = controlsManager
     this.viewManager = viewManager
     this.gameState = 'initial'
-    
+    this.lastUpdateTime = 0;
+    this.clock = new Date();
     
     this.run = function () {
         console.log("Game STARTED")
@@ -134,9 +135,13 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     }
 
     this.loop = function () {
+        var newTime = new Date();
+        var deltaTime = newTime - this.lastUpdateTime;
+        this.lastUpdateTime = newTime;
+        var fps = Math.round(1000 / deltaTime);
         this.gameWorldManager.updateWorld();
         this.controlsManager.handleControls();
-        this.viewManager.render(this.gameWorldManager.getCurrentFrame());
+        this.viewManager.render(this.gameWorldManager.getCurrentFrame(), fps);
     }
 
     this.getFrameFromServer = function () {
