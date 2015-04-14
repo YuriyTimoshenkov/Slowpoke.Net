@@ -6,6 +6,7 @@
 
     this.weaponPoint = new Point(5, canvas.height - 50);
     this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - 30);
+    this.fpsPoint = new Point(canvas.width - 80, this.weaponPoint.y - 10);
 
     this.menu = menu;
     this.stage = new createjs.Stage(canvas);
@@ -15,9 +16,9 @@
         this.framesQueue = framesQueue
     }
 
-    this.render = function (frame) {
+    this.render = function (frame, fps) {
         this.updateCanvasXY(frame);
-        this.updateMenu();
+        this.updateMenu(fps);
         this.draw(frame);
     }
 
@@ -58,7 +59,7 @@
             })
     }
 
-    this.updateMenu = function () {
+    this.updateMenu = function (fps) {
         if (!this.menu.weapon || this.menu.weapon["Name"] !== this.target.currentWeapon["Name"]) {
             this.menu.updateWeapon(this.target.currentWeapon, this.weaponPoint);
         }
@@ -66,6 +67,12 @@
         if (this.menu.life !== this.target.life) {
             this.menu.updateLife(this.target.life, this.lifePoint);
         }
+
+        if (this.menu.fps !== fps) {
+            this.menu.updateFPS(fps, this.fpsPoint)
+        }
+        
+
     }
       
     this.draw = function (frame) {
@@ -86,7 +93,7 @@
         });
 
         // Add menu objects
-        self.stage.addChild(this.menu.weaponText, this.menu.lifeText);
+        self.stage.addChild(this.menu.weaponText, this.menu.lifeText, this.menu.fpsText);
 
         // Render
         self.stage.update();
