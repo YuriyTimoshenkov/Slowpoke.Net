@@ -14,15 +14,18 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     this.lastUpdateTime = 0;
     this.clock = new Date();
     
-    this.run = function (doneCallback) {
-        self.gameLoadDoneCallback = doneCallback
+    this.run = function () {
+        return new Promise(function(resolve, reject) {
+            
+            console.log("Game STARTED")
 
-        console.log("Game STARTED")
-
-        serverProxy.run(function () {
-            serverProxy.loadPlayer(self.handleLoadPlayer, self.errorHandler, doneCallback)
-        }, self.errorHandler, self.disconnectedHandler, self.gameOverHandler)
-        
+            serverProxy.run(self.disconnectedHandler, self.gameOverHandler).then(function () {
+                    serverProxy.loadPlayer().then(function(player){
+                        self.handleLoadPlayer(player).then(resolve()
+                        , reject)
+                }, reject)
+            },reject)
+        })
     }
 
     this.moveUp = function () {
@@ -71,10 +74,16 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     }
 
     this.handleLoadPlayer = function (player) {
-        self.player = player
+        return new Promise(function(resolve, reject) {
+            self.player = player
 
-        //Load map
-        serverProxy.getMap(self.handleLoadMap, self.errorHandler)   
+            //Load map
+            serverProxy.getMap()
+                .then(function (map) {
+                self.handleLoadMap(map)
+                resolve()
+                }, reject)
+        })
     }
 
     this.handleLoadMap = function (serverMap) {
@@ -102,7 +111,6 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         self.clientLoop = setInterval(function () { self.loop() }, updateFPS)
 
         self.gameState = 'playing'
-        self.gameLoadDoneCallback()
     }
 
     this.errorHandler = function (error) {

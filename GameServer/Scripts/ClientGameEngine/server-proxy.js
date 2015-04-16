@@ -4,24 +4,30 @@ function serverProxySignalR(url) {
 
     gameProxy.client.SomeMethod = function () { }
 
-    this.run = function (doneHandler, failHandler, disconnectedHandler, playerStateChangedHandler) {
-        gameProxy.client.playerStateChanged = playerStateChangedHandler
+    this.run = function (disconnectedHandler, playerStateChangedHandler) {
+        return new Promise(function(resolve, reject) {
+            gameProxy.client.playerStateChanged = playerStateChangedHandler
 
-        $.connection.hub.disconnected(disconnectedHandler);
+            $.connection.hub.disconnected(disconnectedHandler);
 
 
-        $.connection.hub.start().done(doneHandler)
-        .fail(failHandler)
+            $.connection.hub.start().done(resolve)
+            .fail(reject)
+        })
     }
 
-    this.loadPlayer = function (doneHandler, failHandler) {
-        gameProxy.server.loadPlayer().done(doneHandler).fail(failHandler);
+    this.loadPlayer = function () {
+        return new Promise(function(resolve, reject) {
+            gameProxy.server.loadPlayer().done(resolve).fail(reject);
+        })
     }
     this.getFrame = function (doneHandler, failHandler) {
         gameProxy.server.getFrame().done(doneHandler).fail(failHandler);
     };
-    this.getMap = function (doneHandler, failHandler) {
-        gameProxy.server.getMap().done(doneHandler).fail(failHandler);
+    this.getMap = function () {
+        return new Promise(function(resolve, reject) {
+            gameProxy.server.getMap().done(resolve).fail(reject)
+        })
     };
     this.changeWeapon = function () {
         gameProxy.server.changeWeapon()

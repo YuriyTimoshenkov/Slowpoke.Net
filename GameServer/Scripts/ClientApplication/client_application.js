@@ -38,7 +38,8 @@ app.service('slowpokeClient', function () {
                })
            };
 
-        slowpokeClient.game.run(function () {
+        //TODO: process errors
+        slowpokeClient.game.run().then(function() {
             $scope.loader.gameLoading = false
             $scope.$apply()
         });
