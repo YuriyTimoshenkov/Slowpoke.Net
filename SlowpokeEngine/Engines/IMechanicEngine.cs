@@ -2,13 +2,18 @@
 using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Engines;
 using SlowpokeEngine.Actions;
+using System.Collections.Generic;
+using SlowpokeEngine.Engines.Services;
+using SlowpokeEngine.Engines.Map;
 
 namespace SlowpokeEngine
 {
 	public interface IMechanicEngine
 	{
 		IActiveBodyEyesight ViewPort { get; }
-
+        IList<IMechanicService> Services { get; }
+        ICollection<ActiveBody> ActiveBodies { get; }
+        IMap Map { get; }
         void StartEngine(Action<IPlayerBodyFacade> playerStateHandler);
 		void StopEngine();
 		IPlayerBodyFacade LoadPlayerBody(Guid characterId);

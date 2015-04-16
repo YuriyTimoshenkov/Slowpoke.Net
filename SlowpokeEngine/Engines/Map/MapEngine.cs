@@ -61,7 +61,9 @@ namespace SlowpokeEngine.Engines.Map
 
             if(_bodiesToTilesCollection.TryGetValue(body.Id, out mapTile))
             {
-                mapTile.Bodies.Remove(body);
+                var bodyToRemove = body;
+
+                mapTile.Bodies.TryTake(out bodyToRemove);
 
                 var bodyTile = GetBodyTile(body);
 
@@ -119,7 +121,7 @@ namespace SlowpokeEngine.Engines.Map
                
                 if(_bodiesToTilesCollection.TryRemove(bodyId, out mapTile))
                 {
-                    mapTile.Bodies.Remove(body);
+                    mapTile.Bodies.TryTake(out body);
 
                     return true;
                 }

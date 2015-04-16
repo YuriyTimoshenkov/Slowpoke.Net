@@ -82,6 +82,8 @@
     <Compile Include="Engines\Map\MapTerrain.cs" />
     <Compile Include="Engines\Map\MapTile.cs" />
     <Compile Include="Engines\Map\TileSolidityType.cs" />
+    <Compile Include="Engines\Services\IMechanicService.cs" />
+    <Compile Include="Engines\Services\NPCGenerationService.cs" />
     <Compile Include="Engines\View\IViewFrame.cs" />
     <Compile Include="Engines\View\ViewFrame.cs" />
     <Compile Include="Entities\Factories\ICharacterFactory.cs" />
@@ -132,5 +134,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

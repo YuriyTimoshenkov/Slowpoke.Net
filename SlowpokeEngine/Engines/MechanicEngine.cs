@@ -11,6 +11,7 @@ using SlowpokeEngine.Weapons;
 using SlowpokeEngine.Engines.Map;
 using SlowpokeEngine.Engines.Levels;
 using SlowpokeEngine.Entities;
+using SlowpokeEngine.Engines.Services;
 
 namespace SlowpokeEngine.Engines
 {
@@ -30,6 +31,9 @@ namespace SlowpokeEngine.Engines
             = new ActionHandlersManager<Func<GameCommand, PhysicsProcessingResult, bool>, Action<GameCommand, PhysicsProcessingResult>>();
 
 		public IActiveBodyEyesight ViewPort { get; private set; }
+        public IList<IMechanicService> Services { get; private set; }
+        public ICollection<ActiveBody> ActiveBodies { get { return _mapEngine.Bodies.Values;  } }
+        public IMap Map { get { return _mapEngine.Map; } }
 
 		public MechanicEngine(
 			IPhysicalEngine physicalEngine, 
@@ -43,8 +47,8 @@ namespace SlowpokeEngine.Engines
 			_mapEngine = mapEngine;
 			_bodyBuilder = bodyBuilder;
             _gameLevelRepository = gameLevelRepository;
-
 			ViewPort = viewPort;
+            Services = new List<IMechanicService>();
 
             BuildPhysicsResultHandlers();
 		}
@@ -66,8 +70,9 @@ namespace SlowpokeEngine.Engines
                     nextCommand.Execute();
 				}
 
-                //Update all bodies
                 UpdateBodies();
+
+                UpdateServices();
 			}
 		}
 
@@ -204,6 +209,14 @@ namespace SlowpokeEngine.Engines
             foreach(var body in _mapEngine.Bodies.Values)
             {
                 body.UpdateState();
+            }
+        }
+
+        private void UpdateServices()
+        {
+            foreach(var service in Services)
+            {
+                service.Update();
             }
         }
     }

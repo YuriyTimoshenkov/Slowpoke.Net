@@ -9,6 +9,7 @@ using SlowpokeEngine.Engines.Map;
 using System.Collections.Generic;
 using System.Linq;
 using SlowpokeEngine.Engines.Levels;
+using SlowpokeEngine.Engines.Services;
 
 namespace SlowpokeEngine
 {
@@ -22,6 +23,7 @@ namespace SlowpokeEngine
 
             unityContainer.RegisterInstance<UnityContainer>(unityContainer);
             unityContainer.RegisterType<ICharacterRepository, CharacterRepositoryEF>();
+            unityContainer.RegisterType<IMechanicService, NPCGenerationService>("NPCGenerationService");
             unityContainer.RegisterType<IMap, Map>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(_mapCellSize));
@@ -52,7 +54,21 @@ namespace SlowpokeEngine
                 15
                 ));
 
-            //Weapons
+            BuildWeapons(unityContainer);
+
+            var mechanicEngine = unityContainer.Resolve<IMechanicEngine>();
+
+            //Build services
+            var npcGenerationService = unityContainer.Resolve<IMechanicService>(
+                "NPCGenerationService", new ParameterOverride("npcCount", 20));
+            mechanicEngine.Services.Add(npcGenerationService);
+
+			return mechanicEngine;
+		}
+
+
+        private static void BuildWeapons(UnityContainer unityContainer)
+        {
             string revoler = "Revolver";
             unityContainer.RegisterType<WeaponSimpleBullet>(revoler, new InjectionConstructor(
                 5, 2, 200, 4, new TimeSpan(0, 0, 0, 0, 300), typeof(IMechanicEngine), revoler
@@ -69,10 +85,6 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<WeaponDynamite>(dynamite, new InjectionConstructor(
                 2000, 20, 300, 4, 100, 5, new TimeSpan(0, 0, 0, 300), typeof(IMechanicEngine), dynamite
                 ));
-
-            var mechanicEngine = unityContainer.Resolve<IMechanicEngine>();
-
-			return mechanicEngine;
-		}
+        }
 	}
 }

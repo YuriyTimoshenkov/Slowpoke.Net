@@ -1,6 +1,7 @@
 ﻿using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Entities;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace SlowpokeEngine.Engines.Map
     public interface IMapTile
     {
         string Color { get; }
-        IList<ActiveBody> Bodies { get; }
+        ConcurrentBag<ActiveBody> Bodies { get; }
         TileSolidityType Solid { get; }
         Point Position { get; }
         Shape Shape { get; }
