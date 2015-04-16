@@ -28,7 +28,7 @@ namespace SlowpokeEngine.Bodies
                 new Vector(1, 3),
                 mechanicEngine,
                 null,
-                100, 100, "Bob", 100);
+                100, 100, "Bob", 300);
 
 
             player.AddWeapon(new WeaponSimpleBullet(10, 2, 100, 10, new TimeSpan(0,0,1), mechanicEngine, "Weapon"));

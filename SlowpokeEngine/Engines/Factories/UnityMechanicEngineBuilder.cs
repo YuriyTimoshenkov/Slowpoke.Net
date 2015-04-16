@@ -49,7 +49,7 @@ namespace SlowpokeEngine
                 typeof(IGameSessionRepository),
                 100, 100,
                 string.Empty,
-                5
+                15
                 ));
 
             //Weapons

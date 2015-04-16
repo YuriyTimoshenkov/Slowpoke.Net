@@ -39,7 +39,7 @@
 
         // Update objects
         frame.objects.forEach(function (obj) {
-            if (obj.objectType !== "PlayerBody") {
+            if (obj.id !== self.target.id) {
                 var dx = self.target.gameRect.centerx - obj.gameRect.centerx;
                 var dy = self.target.gameRect.centery - obj.gameRect.centery;
 

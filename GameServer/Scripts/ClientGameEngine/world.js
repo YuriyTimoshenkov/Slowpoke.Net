@@ -23,7 +23,14 @@ function World(serverMap) {
             obj = new GameObject("NPC", id, objectType, position, direction, shapeRadius, life, lifeMax, currentWeapon)
         }
 
-        else if (objectType == "PlayerBody") {
+        // To check if it is other player
+        else if (objectType == "PlayerBody" && this.allGameObjects.length > 0) {
+            var name = data["Name"];
+            obj = new GameObject(name, id, objectType, position, direction, shapeRadius, life, lifeMax, currentWeapon)
+        }
+            
+        // To check if it is self-player
+        else if (objectType == "PlayerBody" && this.allGameObjects.length == 0) {
             var name = data["Name"];
             var canvasXY = new Point($(document).width() / 2,
                                      $(document).height() / 2);

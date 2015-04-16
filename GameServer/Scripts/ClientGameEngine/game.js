@@ -138,6 +138,10 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         self.gameOverDialogHandler()
     }
 
+
+    //d4a84fad-6329-4760-8248-a7431f100c5d
+    //c055a991-5301-47d6-8192-1b0d2908418f
+
     this.loop = function () {
         var newTime = new Date();
         var deltaTime = newTime - this.lastUpdateTime;
