@@ -8,7 +8,7 @@ function World(serverMap) {
     this.gameMap = new GameMap(serverMap);
 
     this.createGameObject = function (data) {
-        var objectType = data["ActiveBodyType"];
+        var objectType = data["BodyType"];
         
         var id = data["Id"];
         var position = data["Shape"]["Position"];
@@ -39,6 +39,9 @@ function World(serverMap) {
         }
 
         else if (objectType == "Bullet" || objectType == "BulletDynamite") {
+            obj = new GameObject("Bullet", id, objectType, position, direction, shapeRadius, life, lifeMax, null)
+        }
+        else if (objectType == "LifeContainer") {
             obj = new GameObject("Bullet", id, objectType, position, direction, shapeRadius, life, lifeMax, null)
         }
 

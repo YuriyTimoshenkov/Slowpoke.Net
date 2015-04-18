@@ -21,10 +21,11 @@ namespace SlowpokeEngine.Engines
         public IViewFrame GetFrame(Guid playerId, IMapTile previousTile)
 		{
             var frame = new ViewFrame();
-            ActiveBody player;
-            
-            if(_mapEngine.Bodies.TryGetValue(playerId, out player))
+            Body body;
+
+            if (_mapEngine.Bodies.TryGetValue(playerId, out body))
             {
+                var player = body as ActiveBody;
                 var currentTile = _mapEngine.GetBodyTile(playerId);
                 var map = _mapEngine.GetSurroundTiles(currentTile, player.ViewZone);
 

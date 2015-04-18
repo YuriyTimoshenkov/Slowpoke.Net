@@ -38,6 +38,13 @@ namespace SlowpokeEngine.Bodies
             return npcai;
         }
 
+        public LifeContainer BuildLifeContainer(IMechanicEngine mechanicEngine)
+        {
+            var lifeContainer = _unityContainer.Resolve<LifeContainer>();
+
+            return lifeContainer;
+        }
+
         public PlayerBody LoadPlayerBody(Guid characterId, IMechanicEngine mechanicEngine)
 		{
 			//TODO: load config from DB, get some data from depended services and as a result - load player object
@@ -63,6 +70,6 @@ namespace SlowpokeEngine.Bodies
 
             return player;
 		}
-	}
+    }
 }
 

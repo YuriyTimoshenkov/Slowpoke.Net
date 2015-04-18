@@ -29,16 +29,16 @@ namespace SlowpokeEngine.Bodies
 
             var newDirection = new Vector();
 
-            foreach (var body in frame.Bodies)
+            foreach (var body in frame.Bodies.Where(v => v is ActiveBody))
             {
                 // Only PlayerBodies can be enemies
-                if (isEnemy(body))
+                if (isEnemy(body as ActiveBody))
                 {
                     var _newDirection = Vector.Subtract(body.Shape.Position, this.Shape.Position);
                     double distance = calculateDistance(_newDirection);
                     if (distance < minDistance || minDistance == -1)
                     {
-                        enemy = body;
+                        enemy = body as ActiveBody;
                         minDistance = distance;
                         newDirection = _newDirection;
                     }

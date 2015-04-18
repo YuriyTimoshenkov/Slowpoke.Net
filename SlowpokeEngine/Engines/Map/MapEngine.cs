@@ -14,7 +14,7 @@ namespace SlowpokeEngine.Engines.Map
     {
         public IMap Map { get; private set; }
 
-        public ConcurrentDictionary<Guid, ActiveBody> Bodies { get; private set; }
+        public ConcurrentDictionary<Guid, Body> Bodies { get; private set; }
 
         private ConcurrentDictionary<Guid, IMapTile> _bodiesToTilesCollection =
             new ConcurrentDictionary<Guid, IMapTile>();
@@ -22,7 +22,7 @@ namespace SlowpokeEngine.Engines.Map
         public MapEngine(IMap map)
         {
             Map = map;
-            Bodies = new ConcurrentDictionary<Guid, ActiveBody>();
+            Bodies = new ConcurrentDictionary<Guid, Body>();
         }
 
         public IEnumerable<Body> GetBodiesForCollision(ActiveBody body)
@@ -47,7 +47,7 @@ namespace SlowpokeEngine.Engines.Map
 
         }
 
-        public void AddActiveBody(ActiveBody body)
+        public void AddBody(Body body)
         {
             var bodyTile = GetBodyTile(body);
 
@@ -61,7 +61,7 @@ namespace SlowpokeEngine.Engines.Map
 
             if(_bodiesToTilesCollection.TryGetValue(body.Id, out mapTile))
             {
-                var bodyToRemove = body;
+                var bodyToRemove = body as Body;
 
                 mapTile.Bodies.TryTake(out bodyToRemove);
 
@@ -75,7 +75,7 @@ namespace SlowpokeEngine.Engines.Map
                 });
             }
         }
-        private IMapTile GetBodyTile(ActiveBody body)
+        private IMapTile GetBodyTile(Body body)
         {
             var x = (int)body.Shape.Position.X / Map.CellSize;
             var y = (int)body.Shape.Position.Y / Map.CellSize;
@@ -113,7 +113,7 @@ namespace SlowpokeEngine.Engines.Map
         }
         public bool RemoveBody(Guid bodyId)
         {
-            ActiveBody body;
+            Body body;
 
             if (Bodies.TryRemove(bodyId, out body))
             { 

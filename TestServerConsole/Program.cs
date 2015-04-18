@@ -35,7 +35,7 @@ namespace TestServerConsole
                         Console.WriteLine("New Era");
                         foreach (var body in mechanicEngine.ViewPort.GetFrame(player.Id, null).Bodies)
                         {
-                            Console.WriteLine("Body Id: {0}, new position: {1}", body.Id, body.Shape.Position.ToString());
+                            Console.WriteLine("Body Id: {0}, new position: {1}", ((ActiveBody)body).Id, body.Shape.Position.ToString());
                         }
 
                         Thread.Sleep(1000);

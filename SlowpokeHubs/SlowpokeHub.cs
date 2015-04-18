@@ -98,6 +98,14 @@ namespace SlowpokeHubs
                 player.Shoot();
         }
 
+        public void Use()
+        {
+            var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
+
+            if (player != null)
+                player.Use();
+        }
+
         public void ChangeWeapon()
         {
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
@@ -117,7 +125,7 @@ namespace SlowpokeHubs
 
             if (_connectionsPlayerMapping.TryRemove(Context.ConnectionId, out playerContainer))
             {
-                MechanicEngine.ReleaseActiveBody(playerContainer.Player.Id);
+                MechanicEngine.ReleaseBody(playerContainer.Player.Id);
 			}
 
 			return base.OnDisconnected(stopCalled);

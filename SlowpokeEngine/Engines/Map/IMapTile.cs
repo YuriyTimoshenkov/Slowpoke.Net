@@ -12,7 +12,7 @@ namespace SlowpokeEngine.Engines.Map
     public interface IMapTile
     {
         string Color { get; }
-        ConcurrentBag<ActiveBody> Bodies { get; }
+        ConcurrentBag<Body> Bodies { get; }
         TileSolidityType Solid { get; }
         Point Position { get; }
         Shape Shape { get; }

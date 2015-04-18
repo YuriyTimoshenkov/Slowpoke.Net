@@ -70,23 +70,27 @@
         // Update position
         obj.gameRect.center = objData["Shape"]["Position"];
 
-        // Update direction
-        var newDirection = objData["Direction"];
-        if (obj.direction.X !== newDirection.X || obj.direction.Y !== newDirection.Y) {
-            obj.direction = newDirection;
-            obj.updateWeapon();
-        }
+        if (obj.objectType === 'NPCAI' || obj.objectType === 'PlayerBody') {
+            // Update direction
+            var newDirection = objData["Direction"];
 
-        // Update weapon
-        var currentWeapon = objData["CurrentWeapon"];
-        if (obj.currentWeapon !== currentWeapon) {
-            obj.currentWeapon = currentWeapon;
-        }
+                if (obj.direction.X !== newDirection.X || obj.direction.Y !== newDirection.Y) {
+                    obj.direction = newDirection;
+                    obj.updateWeapon();
+                }
+            
 
-        // Update life
-        var newLife = objData["Life"];
-        if (obj.life !== newLife){
-            obj.updateLife(newLife);
+            // Update weapon
+            var currentWeapon = objData["CurrentWeapon"];
+            if (currentWeapon != 'undefined' && obj.currentWeapon !== currentWeapon) {
+                obj.currentWeapon = currentWeapon;
+            }
+
+            // Update life
+            var newLife = objData["Life"];
+            if (obj.life !== newLife) {
+                obj.updateLife(newLife);
+            }
         }
     }
 

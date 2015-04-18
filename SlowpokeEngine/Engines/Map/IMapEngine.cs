@@ -10,8 +10,8 @@ namespace SlowpokeEngine.Engines.Map
 	{
         IMap Map { get; }
         IEnumerable<Body> GetBodiesForCollision(ActiveBody body);
-        ConcurrentDictionary<Guid, ActiveBody> Bodies { get; }
-        void AddActiveBody(ActiveBody body);
+        ConcurrentDictionary<Guid, Body> Bodies { get; }
+        void AddBody(Body body);
         void UpdateActiveBody(ActiveBody body);
         void LoadMap(IGameLevel gameLevel);
         bool RemoveBody(Guid bodyId);

@@ -70,5 +70,44 @@ namespace SlowpokeEngineTests
             mechanigEngine.Received().AddCommand(Arg.Is<GameCommandMove>(v =>
                     v.Direction == direction));
         }
+
+        [TestMethod]
+        public void UseLifeContainer_Successful()
+        {
+            //Arrange
+            int playerLife = 80;
+            int containerLifeContent = 30;
+            int playerMaxLife = 100;
+
+            var player = new PlayerBody(new ShapeCircle(10, new Point(1, 1)), new Vector(0, 0), null, null, playerLife, playerMaxLife, "Bob", 0);
+            var lifeContainer = new LifeContainer(null, containerLifeContent);
+            player.UsableBodyInScope = lifeContainer;
+
+            //Act
+            player.Use();
+
+            //Assert
+            Assert.AreEqual(player.Life, player.LifeMax);
+        }
+
+        [TestMethod]
+        public void UsableObjectRelease_Successful()
+        {
+            //Arrange
+            int playerLife = 80;
+            int containerLifeContent = 30;
+            int playerMaxLife = 100;
+
+            var player = new PlayerBody(new ShapeCircle(10, new Point(1,1)), new Vector(0, 0), null, null, playerLife, playerMaxLife, "Bob", 0);
+            var lifeContainer = new LifeContainer(null, containerLifeContent);
+            player.UsableBodyInScope = lifeContainer;
+            player.Shape.Position = new Point(player.Shape.Position.X + 10, player.Shape.Position.Y);
+
+            //Act
+            player.UpdateState();
+
+            //Assert
+            Assert.AreEqual(player.UsableBodyInScope, null);
+        }
     }
 }

@@ -44,4 +44,7 @@ function serverProxySignalR(url) {
     this.stop = function () {
         $.connection.hub.stop()
     }
+    this.use = function () {
+        gameProxy.server.use()
+    }
 }

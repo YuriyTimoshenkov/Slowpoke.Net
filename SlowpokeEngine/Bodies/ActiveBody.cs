@@ -11,11 +11,7 @@ namespace SlowpokeEngine.Bodies
 	{
 		protected readonly IMechanicEngine _mechanicEngine;
 
-		public Guid Id { get; set; }
-
 		public Vector Direction { get; set; }
-
-        public string ActiveBodyType { get { return this.GetType().Name; } }
 
         public int Life { get; private set; }
         
@@ -26,7 +22,6 @@ namespace SlowpokeEngine.Bodies
         public int ViewZone { get; private set; }
 
         protected List<WeaponBase> _weapons { get; private set; }
-
         private int _currentWeaponIndex = 0;
         public WeaponBase CurrentWeapon
         {
@@ -42,6 +37,18 @@ namespace SlowpokeEngine.Bodies
         }
         public int WeaponsCount { get { return _weapons.Count; } }
 
+        private IUsableBody _usableBodyInScope;
+        private Point _lastUsableBodyActivePosition;
+        public IUsableBody UsableBodyInScope
+        {
+            get { return _usableBodyInScope; }
+            set
+            {
+                _usableBodyInScope = value;
+                _lastUsableBodyActivePosition = new Point(this.Shape.Position.X, this.Shape.Position.Y);
+            }
+        }
+
 
 		public ActiveBody(
 			Shape shape, 
@@ -49,8 +56,8 @@ namespace SlowpokeEngine.Bodies
 			IMechanicEngine mechanicEngine,
             int life, int lifeMax,
             int viewZone)
+            : base(Guid.NewGuid(), shape)
 		{
-			Id = Guid.NewGuid();
 			_mechanicEngine = mechanicEngine;
 			Shape = shape;
 			Direction = direction;
@@ -62,8 +69,14 @@ namespace SlowpokeEngine.Bodies
 		}
 
         public virtual void Run() { }
-
-        public virtual void UpdateState() { }
+        public virtual void UpdateState() 
+        {
+            //Free usable body if it is no longer available
+            if (UsableBodyInScope != null && _lastUsableBodyActivePosition != this.Shape.Position)
+            {
+                _usableBodyInScope = null;
+            }
+        }
         public virtual void ReleaseGame() 
         {
             State = BodyState.Dead;
@@ -116,6 +129,14 @@ namespace SlowpokeEngine.Bodies
             if(Life > 0)
             {
                 State = BodyState.Alive;
+            }
+        }
+        public void Use()
+        {
+            if (UsableBodyInScope != null)
+            {
+                UsableBodyInScope.Use(this);
+                _mechanicEngine.ReleaseBody(UsableBodyInScope.Id);
             }
         }
 	}

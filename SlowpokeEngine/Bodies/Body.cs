@@ -9,6 +9,14 @@ namespace SlowpokeEngine.Bodies
 {
     public abstract class Body
     {
+        public Guid Id { get; set; }
         public Shape Shape { get; set; }
+        public string BodyType { get { return this.GetType().Name; } }
+
+        public Body(Guid id, Shape shape)
+        {
+            Id = id;
+            Shape = shape;
+        }
     }
 }

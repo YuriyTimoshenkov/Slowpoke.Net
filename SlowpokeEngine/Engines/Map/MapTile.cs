@@ -20,14 +20,14 @@ namespace SlowpokeEngine.Engines.Map
         public TileSolidityType Solid { get; private set; }
 
         [JsonIgnore]
-        public ConcurrentBag<ActiveBody> Bodies { get; private set; }
+        public ConcurrentBag<Body> Bodies { get; private set; }
         public Point Position { get; private set; }
         public Shape Shape { get; private set; }
 
         public MapTile(string color, TileSolidityType solid, Point position, Shape shape)
         {
             Color = color;
-            Bodies = new ConcurrentBag<ActiveBody>();
+            Bodies = new ConcurrentBag<Body>();
             Solid = solid;
             Position = position;
             Shape = shape;

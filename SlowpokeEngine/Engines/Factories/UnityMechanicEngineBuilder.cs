@@ -24,6 +24,7 @@ namespace SlowpokeEngine
             unityContainer.RegisterInstance<UnityContainer>(unityContainer);
             unityContainer.RegisterType<ICharacterRepository, CharacterRepositoryEF>();
             unityContainer.RegisterType<IMechanicService, NPCGenerationService>("NPCGenerationService");
+            unityContainer.RegisterType<IMechanicService, LifeContainersGenerationService>("LifeContainerGenerationService");
             unityContainer.RegisterType<IMap, Map>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(_mapCellSize));
@@ -44,6 +45,9 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<NPCAI>(new InjectionConstructor(
                 new ShapeCircle(20, new Point(200, 200)), typeof(IMechanicEngine), 100, 100, 2
                 ));
+            unityContainer.RegisterType<LifeContainer>(new InjectionConstructor(
+                new ShapeCircle(10, new Point(200, 200)),
+                50));
             unityContainer.RegisterType<PlayerBody>(new InjectionConstructor(
                 new ShapeCircle(20, new Point(275, 575)),
                 new Vector(1, 3),
@@ -62,6 +66,10 @@ namespace SlowpokeEngine
             var npcGenerationService = unityContainer.Resolve<IMechanicService>(
                 "NPCGenerationService", new ParameterOverride("npcCount", 20));
             mechanicEngine.Services.Add(npcGenerationService);
+
+            var lifeContainerGenerationService = unityContainer.Resolve<IMechanicService>(
+                "LifeContainerGenerationService", new ParameterOverride("containersCount", 100));
+            mechanicEngine.Services.Add(lifeContainerGenerationService);
 
 			return mechanicEngine;
 		}

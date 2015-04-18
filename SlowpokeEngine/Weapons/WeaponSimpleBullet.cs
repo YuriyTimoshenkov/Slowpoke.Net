@@ -39,7 +39,7 @@ namespace SlowpokeEngine.Weapons
 
                 foreach (var bullet in bullets)
                 {
-                    _mechanicEngine.AddActiveBody(bullet);
+                    _mechanicEngine.AddBody(bullet);
                 }
 
                 _lastShoot = DateTime.Now;

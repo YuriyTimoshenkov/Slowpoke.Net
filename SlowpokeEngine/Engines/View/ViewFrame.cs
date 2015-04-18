@@ -10,7 +10,7 @@ namespace SlowpokeEngine.Engines.View
 {
     public class ViewFrame : IViewFrame
     {
-        public IList<ActiveBody> Bodies { get;  set; }
+        public IList<Body> Bodies { get;  set; }
 
         public IList<IMapTile> Map { get; set; }
     }

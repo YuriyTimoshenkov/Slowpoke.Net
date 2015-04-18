@@ -14,6 +14,7 @@ namespace SlowpokeEngine.Bodies
         void ChangeDirection(Vector direction);
         void Shoot();
         void ChangeWeapon();
+        void Use();
 	}
 }
 

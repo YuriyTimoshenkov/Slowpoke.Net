@@ -13,7 +13,8 @@
         { key: "ur", handler: [] },
         { key: "ul", handler: [] },
         { key: "dr", handler: [] },
-        { key: "dl", handler: [] }
+        { key: "dl", handler: [] },
+        { key: "e", handler: [] }
     ];
 
     this.keypressed = [];
@@ -38,6 +39,7 @@
         var right = self.keypressed[68];
         var up = self.keypressed[87];
         var down = self.keypressed[83];
+        var use = self.keypressed[69];
 
 
         // Weapon switch
@@ -80,6 +82,9 @@
         else if (right) {
             keypressed.push("r");
         }
+        else if (use) {
+            keypressed.push("e");
+        }
 
         return keypressed;
     }
@@ -108,8 +113,6 @@
             }
         })
     }
-
-
 
     this.addShootHandler = function (handler) {
         this.canvas.onclick = function (e) {
@@ -151,12 +154,13 @@
     this.addMoveDownLeftHandler = function (handler) {
         this.addKeyHandler("dl", handler)
     }
-
-
     this.addMouseMoveHandler = function (handler) {
         this.canvas.onmousemove = function (e) {
             e.stopPropagation();
             handler(e)
         }
+    }
+    this.addUseHandler = function (handler) {
+        this.addKeyHandler("e", handler)
     }
 }

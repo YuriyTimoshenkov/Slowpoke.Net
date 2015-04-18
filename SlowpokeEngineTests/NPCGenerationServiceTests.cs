@@ -21,7 +21,7 @@ namespace SlowpokeEngineTests
             //Arrange
             IMapEngine mapEngine = TestMapEngineFactory.InitMapEngine();
             var mechanigEngine = Substitute.For<IMechanicEngine>();
-            mechanigEngine.ActiveBodies.Count.Returns(v => 0);
+            mechanigEngine.Bodies.Count.Returns(v => 0);
             mechanigEngine.Map.Tiles.Returns(v => mapEngine.Map.Tiles);
 
             var bodyBuilder = Substitute.For<IBodyBuilder>();
@@ -33,7 +33,7 @@ namespace SlowpokeEngineTests
             npcGenerator.Update();
 
             //Assert
-            mechanigEngine.Received().AddActiveBody(Arg.Any<ActiveBody>());
+            mechanigEngine.Received().AddBody(Arg.Any<ActiveBody>());
         }
     }
 }

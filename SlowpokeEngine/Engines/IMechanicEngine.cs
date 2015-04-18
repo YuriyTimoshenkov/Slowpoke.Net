@@ -12,15 +12,15 @@ namespace SlowpokeEngine
 	{
 		IActiveBodyEyesight ViewPort { get; }
         IList<IMechanicService> Services { get; }
-        ICollection<ActiveBody> ActiveBodies { get; }
+        ICollection<Body> Bodies { get; }
         IMap Map { get; }
         void StartEngine(Action<IPlayerBodyFacade> playerStateHandler);
 		void StopEngine();
 		IPlayerBodyFacade LoadPlayerBody(Guid characterId);
-		void ReleaseActiveBody(Guid playerId);
+		void ReleaseBody(Guid playerId);
 		IPlayerBodyFacade GetPlayerBody(Guid playerId);
         void ProcessGameCommand(GameCommand command);
-        void AddActiveBody(ActiveBody body);
+        void AddBody(Body body);
         void AddCommand(GameCommand command);
         void StartGame(IPlayerBodyFacade player);
 	}

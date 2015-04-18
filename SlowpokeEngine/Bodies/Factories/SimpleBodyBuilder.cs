@@ -36,6 +36,12 @@ namespace SlowpokeEngine.Bodies
 
             return player;
 		}
-	}
+
+
+        public LifeContainer BuildLifeContainer(IMechanicEngine mechanicEngine)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
 

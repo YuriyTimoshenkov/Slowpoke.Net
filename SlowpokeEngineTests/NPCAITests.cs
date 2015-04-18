@@ -28,7 +28,7 @@ namespace SlowpokeEngineTests
 
             var viewPort = Substitute.For<IActiveBodyEyesight>();
             viewPort.GetFrame(Arg.Any<Guid>(), Arg.Any<IMapTile>()).Returns(v =>
-                    new ViewFrame() { Bodies = new List<ActiveBody> { player } });
+                    new ViewFrame() { Bodies = new List<Body> { player } });
 
             var mechanicEngine = Substitute.For<IMechanicEngine>();
             mechanicEngine.ViewPort.Returns(v => viewPort);

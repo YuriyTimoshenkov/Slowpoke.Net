@@ -9,7 +9,7 @@ namespace SlowpokeEngine.Bodies
 {
     public class PassiveBody : Body
     {
-        public PassiveBody(Shape shape)
+        public PassiveBody(Shape shape):base(Guid.NewGuid(), shape)
         {
             Shape = shape;
         }

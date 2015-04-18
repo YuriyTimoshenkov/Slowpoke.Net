@@ -33,7 +33,7 @@ namespace SlowpokeEngine.Weapons
 
             foreach (var dynamite in bullets)
             {
-                _mechanicEngine.AddActiveBody(dynamite);
+                _mechanicEngine.AddBody(dynamite);
                 
 
             }

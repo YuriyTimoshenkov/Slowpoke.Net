@@ -61,6 +61,8 @@
     <Compile Include="Bodies\Body.cs" />
     <Compile Include="Bodies\BodyState.cs" />
     <Compile Include="Bodies\Factories\UnityBodyBuilder.cs" />
+    <Compile Include="Bodies\IUsableBody.cs" />
+    <Compile Include="Bodies\LifeContainer.cs" />
     <Compile Include="Bodies\NPCAI.cs" />
     <Compile Include="Bodies\PassiveBody.cs" />
     <Compile Include="Commands\PhysicsProcessingResult.cs" />
@@ -83,6 +85,8 @@
     <Compile Include="Engines\Map\MapTile.cs" />
     <Compile Include="Engines\Map\TileSolidityType.cs" />
     <Compile Include="Engines\Services\IMechanicService.cs" />
+    <Compile Include="Engines\Services\LifeContainersGenerationService.cs" />
+    <Compile Include="Engines\Services\BaseGenerationService.cs" />
     <Compile Include="Engines\Services\NPCGenerationService.cs" />
     <Compile Include="Engines\View\IViewFrame.cs" />
     <Compile Include="Engines\View\ViewFrame.cs" />

@@ -32,7 +32,7 @@ namespace SlowpokeEngine.Engines
 
 		public IActiveBodyEyesight ViewPort { get; private set; }
         public IList<IMechanicService> Services { get; private set; }
-        public ICollection<ActiveBody> ActiveBodies { get { return _mapEngine.Bodies.Values;  } }
+        public ICollection<Body> Bodies { get { return _mapEngine.Bodies.Values;  } }
         public IMap Map { get { return _mapEngine.Map; } }
 
 		public MechanicEngine(
@@ -90,10 +90,14 @@ namespace SlowpokeEngine.Engines
 			_cancelationTokenSource.Cancel();
 		}
 
-		public void AddActiveBody(ActiveBody body)
+		public void AddBody(Body body)
 		{
-            _mapEngine.AddActiveBody(body);
-            body.Run();
+            _mapEngine.AddBody(body);
+
+            if (body is ActiveBody)
+            {
+                ((ActiveBody)body).Run();
+            }
 		}
 
 		public IPlayerBodyFacade LoadPlayerBody(Guid characterId)
@@ -103,15 +107,18 @@ namespace SlowpokeEngine.Engines
 			return player;
 		}
 
-		public void ReleaseActiveBody(Guid bodyId)
+		public void ReleaseBody(Guid bodyId)
 		{
-			ActiveBody body;
+			Body body;
 
             if (_mapEngine.Bodies.TryGetValue(bodyId, out body))
             {
                 if (_mapEngine.RemoveBody(bodyId))
                 {
-                    body.ReleaseGame();
+                    if (body is ActiveBody)
+                    {
+                        ((ActiveBody)body).ReleaseGame();
+                    }
 
                     if (body is PlayerBody)
                     {
@@ -120,18 +127,19 @@ namespace SlowpokeEngine.Engines
                 }
             }
 		}
+
         public void StartGame(IPlayerBodyFacade player)
         {
             var playerBody = player as PlayerBody;
             playerBody.Shape = new ShapeCircle(20, new Point(275, 575));
             playerBody.Heal(playerBody.LifeMax);
 
-            AddActiveBody(playerBody);
+            AddBody(playerBody);
         }
 
 		public IPlayerBodyFacade GetPlayerBody(Guid playerId)
 		{
-			ActiveBody playerBody;
+			Body playerBody;
 
 			_mapEngine.Bodies.TryGetValue (playerId, out playerBody);
 
@@ -151,6 +159,7 @@ namespace SlowpokeEngine.Engines
 
         protected virtual void BuildPhysicsResultHandlers()
         {
+            //Bullets collision
             _actionHandlers.AddHandler((gameCommand, result) =>
                     {
                         return result is PhysicsProcessingResultCollision
@@ -160,7 +169,7 @@ namespace SlowpokeEngine.Engines
                     {
                         var resultCollision = (PhysicsProcessingResultCollision)result;
                         var bullet = (Bullet)gameCommand.ActiveBody;
-                        ReleaseActiveBody(gameCommand.ActiveBody.Id);
+                        ReleaseBody(gameCommand.ActiveBody.Id);
 
                         foreach(var body in resultCollision.Bodies)
                         {
@@ -170,9 +179,25 @@ namespace SlowpokeEngine.Engines
                                 activeBody.Harm(bullet.Damage);
 
                                 if (activeBody.Life <= 0)
-                                    ReleaseActiveBody(activeBody.Id);
+                                    ReleaseBody(activeBody.Id);
                             }
                         }
+                    });
+
+            //Usable containers collision
+            _actionHandlers.AddHandler((gameCommand, result) =>
+            {
+                return result is PhysicsProcessingResultCollision
+                    && gameCommand.ActiveBody is PlayerBody 
+                    && ((PhysicsProcessingResultCollision)result).Bodies[0] is IUsableBody;
+            },
+                    (gameCommand, result) =>
+                    {
+                        var resultCollision = (PhysicsProcessingResultCollision)result;
+                        var player = (PlayerBody)gameCommand.ActiveBody;
+                        
+                        //Set usable container
+                        player.UsableBodyInScope = (IUsableBody)resultCollision.Bodies[0];
                     });
         }
 
@@ -199,16 +224,16 @@ namespace SlowpokeEngine.Engines
                             _mapEngine.Map.Tiles[positionY][positionX].Shape.Position.X,
                             _mapEngine.Map.Tiles[positionY][positionX].Shape.Position.Y));
 
-                        AddActiveBody(NPCBody);
+                        AddBody(NPCBody);
                     }
                 }
         }
 
         private void UpdateBodies()
         {
-            foreach(var body in _mapEngine.Bodies.Values)
+            foreach(var body in _mapEngine.Bodies.Where(v => v.Value is ActiveBody))
             {
-                body.UpdateState();
+                ((ActiveBody)body.Value).UpdateState();
             }
         }
 

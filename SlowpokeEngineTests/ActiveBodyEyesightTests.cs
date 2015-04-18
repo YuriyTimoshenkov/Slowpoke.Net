@@ -23,7 +23,7 @@ namespace SlowpokeEngineTests
              var player = new PlayerBody(new ShapeCircle(3, new Point(2, 1)),
                 new Vector(1, 1), null, null, 0, 0, "Bob", 100);
 
-            mapEngine.AddActiveBody(player);
+            mapEngine.AddBody(player);
 
             var frame = eyeSight.GetFrame(player.Id, null);
 
@@ -40,7 +40,7 @@ namespace SlowpokeEngineTests
             var player = new PlayerBody(new ShapeCircle(3, new Point(2, 1)),
                new Vector(1, 1), null, null, 0, 0, "Bob", 100);
 
-            mapEngine.AddActiveBody(player);
+            mapEngine.AddBody(player);
 
             var currentTile = eyeSight.GetPlayerCurrentTile(player.Id);
             var frame = eyeSight.GetFrame(player.Id, currentTile);

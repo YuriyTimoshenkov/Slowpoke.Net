@@ -54,7 +54,10 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
                 var color = "brown";
                 self.image = this.createBullet(shapeRadius, color);
                 break
-
+            case "LifeContainer":
+                var color = "red";
+                self.image = this.createLifeContainer(shapeRadius, color);
+                break
             default:
                 throw "gameObject: invalid gameObject type";
         };
@@ -123,6 +126,18 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
             beginFill(color).
             drawCircle(0, 0, bulletRadius)
         
+        return image;
+    }
+
+    this.createLifeContainer = function (bulletRadius, color) {
+        // SHAPE XY DIFFERS FROM CONTAINER XY ?? 
+        var image = new createjs.Shape();
+
+        image.graphics.setStrokeStyle(1).
+            beginStroke("black").
+            beginFill(color).
+            drawCircle(0, 0, bulletRadius)
+
         return image;
     }
 

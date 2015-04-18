@@ -7,6 +7,7 @@ namespace SlowpokeEngine.Bodies
 	{
 		ActiveBody BuildNPC(IMechanicEngine mechanicEngine);
         ActiveBody BuildNPCAI(IMechanicEngine mechanicEngine);
+        LifeContainer BuildLifeContainer(IMechanicEngine mechanicEngine);
         PlayerBody LoadPlayerBody(Guid characterId, IMechanicEngine mechanicEngine);
 	}
 }

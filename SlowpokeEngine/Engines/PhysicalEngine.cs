@@ -82,7 +82,15 @@ namespace SlowpokeEngine.Engines
 
                     if (collisionBodies.Count > 0)
                     {
-                        body.Shape.Position = previousPosition;
+                        if (collisionBodies.Count == 1 && collisionBodies[0] is IUsableBody)
+                        {
+                            _mapEngine.UpdateActiveBody(body);
+                        }
+                        else
+                        {
+                            body.Shape.Position = previousPosition;
+                        }
+
                         return new PhysicsProcessingResultCollision(collisionBodies);
                     }
                     else
