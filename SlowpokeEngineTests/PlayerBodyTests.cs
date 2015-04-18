@@ -79,7 +79,8 @@ namespace SlowpokeEngineTests
             int containerLifeContent = 30;
             int playerMaxLife = 100;
 
-            var player = new PlayerBody(new ShapeCircle(10, new Point(1, 1)), new Vector(0, 0), null, null, playerLife, playerMaxLife, "Bob", 0);
+            var mechnicEngine = Substitute.For<IMechanicEngine>();
+            var player = new PlayerBody(new ShapeCircle(10, new Point(1, 1)), new Vector(0, 0), mechnicEngine, null, playerLife, playerMaxLife, "Bob", 0);
             var lifeContainer = new LifeContainer(null, containerLifeContent);
             player.UsableBodyInScope = lifeContainer;
 
