@@ -52,7 +52,7 @@ namespace SlowpokeEngineTests
             player.AddWeapon(weapon);
             player.Shoot();
 
-            weapon.Received().Shoot(Arg.Any<Point>(), Arg.Any<Vector>());
+            weapon.Received().Shoot(Arg.Any<Point>(), Arg.Any<Vector>(), player.Id);
         }
 
         [TestMethod]

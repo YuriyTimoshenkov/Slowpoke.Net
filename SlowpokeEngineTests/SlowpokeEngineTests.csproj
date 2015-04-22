@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="ActiveBodyEyesightTests.cs" />
     <Compile Include="HardcodedLevelRepoTests.cs" />
+    <Compile Include="MechanicEngineHandlersTests.cs" />
     <Compile Include="NPCAITests.cs" />
     <Compile Include="NPCGenerationServiceTests.cs" />
     <Compile Include="PlayerBodyTests.cs" />

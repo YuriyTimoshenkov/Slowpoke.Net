@@ -42,7 +42,7 @@ namespace SlowpokeEngineTests
             npc.UpdateState();
 
             //Assert
-            weapon.Received().Shoot(Arg.Any<Point>(), Arg.Any<Vector>());
+            weapon.Received().Shoot(Arg.Any<Point>(), Arg.Any<Vector>(), npc.Id);
         }
     }
 }

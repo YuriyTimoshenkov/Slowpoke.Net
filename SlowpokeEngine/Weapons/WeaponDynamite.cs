@@ -27,9 +27,9 @@ namespace SlowpokeEngine.Weapons
             _bangRadius = bangRadius;
         }
 
-        public override void Shoot(Entities.Point startPosition, Entities.Vector direction)
+        public override void Shoot(Entities.Point startPosition, Entities.Vector direction, Guid ownerId)
         {
-            var bullets = CreateBullet(startPosition, direction);
+            var bullets = CreateBullet(startPosition, direction, ownerId);
 
             foreach (var dynamite in bullets)
             {
@@ -39,11 +39,11 @@ namespace SlowpokeEngine.Weapons
             }
         }
 
-        protected override List<Bullet> CreateBullet(Entities.Point startPosition, Entities.Vector direction)
+        protected override List<Bullet> CreateBullet(Entities.Point startPosition, Entities.Vector direction, Guid ownerId)
         {
             return new List<Bullet>
             {
-                new BulletDynamite(_bangRadius,_shootingDistance, _bulletSpeed, _damage, new Entities.ShapeCircle(_bulletSize, startPosition), direction, _mechanicEngine)
+                new BulletDynamite(_bangRadius,_shootingDistance, _bulletSpeed, _damage, new Entities.ShapeCircle(_bulletSize, startPosition), direction, ownerId, _mechanicEngine)
             };
         }
     }

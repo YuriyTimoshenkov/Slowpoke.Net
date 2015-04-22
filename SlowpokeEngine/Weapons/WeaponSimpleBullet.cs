@@ -31,11 +31,11 @@ namespace SlowpokeEngine.Weapons
             _shootFrequency = shootFrequency;
         }
 
-        public override void Shoot(Point startPosition, Vector direction)
+        public override void Shoot(Point startPosition, Vector direction, Guid ownerId)
         {
             if (DateTime.Now - _lastShoot > _shootFrequency)
             {
-                var bullets = CreateBullet(startPosition, direction);
+                var bullets = CreateBullet(startPosition, direction, ownerId);
 
                 foreach (var bullet in bullets)
                 {
@@ -46,11 +46,11 @@ namespace SlowpokeEngine.Weapons
             }
         }
 
-        protected virtual List<Bullet> CreateBullet(Point startPosition, Vector direction)
+        protected virtual List<Bullet> CreateBullet(Point startPosition, Vector direction, Guid ownerId)
         {
             return new List<Bullet>
             {
-                new Bullet(_shootingDistance, _bulletSpeed, _damage, new ShapeCircle(_bulletSize, startPosition), direction, _mechanicEngine)
+                new Bullet(_shootingDistance, _bulletSpeed, _damage, new ShapeCircle(_bulletSize, startPosition), direction, ownerId, _mechanicEngine)
             };
         }
     }

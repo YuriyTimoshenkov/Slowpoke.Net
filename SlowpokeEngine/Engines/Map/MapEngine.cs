@@ -187,5 +187,17 @@ namespace SlowpokeEngine.Engines.Map
 
             return tile;
         }
+
+        public ActiveBody FindBody(Guid bodyId)
+        {
+            Body body;
+            
+            if (Bodies.TryGetValue(bodyId, out body) && body is ActiveBody)
+            {
+                return body as ActiveBody;
+            }
+
+            return null;
+        }
     }
 }

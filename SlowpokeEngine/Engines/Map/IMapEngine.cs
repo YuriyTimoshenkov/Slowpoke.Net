@@ -17,6 +17,7 @@ namespace SlowpokeEngine.Engines.Map
         bool RemoveBody(Guid bodyId);
         IMapTile GetBodyTile(Guid bodyId);
         IList<IMapTile> GetSurroundTiles(IMapTile tile, int deviation);
+        ActiveBody FindBody(Guid bodyId);
 	}
 }
 

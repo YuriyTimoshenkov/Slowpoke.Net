@@ -133,7 +133,7 @@ namespace SlowpokeHubs
 
 		public override Task OnConnected ()
 		{
-            Guid userId = Guid.Parse(((ClaimsIdentity)Context.User.Identity).FindFirst(v => v.Type == ClaimTypes.NameIdentifier).Value);//Guid.Parse("4b084299-ed14-4975-a4f1-ecf93ee01e7c");
+            Guid userId = Guid.Parse("c7b14b02-e47b-483a-a82f-7660faebc842");//Guid.Parse(((ClaimsIdentity)Context.User.Identity).FindFirst(v => v.Type == ClaimTypes.NameIdentifier).Value);
 
            var player = MechanicEngine.LoadPlayerBody(userId);
            var playerContainer = new PlayerContainer(

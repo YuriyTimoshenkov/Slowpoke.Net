@@ -19,6 +19,15 @@ namespace SlowpokeEngine.Bodies
 
         public BodyState State { get; private set; }
 
+        private int _score;
+        public int Score
+        {
+            get
+            {
+                return _score;
+            }
+        }
+
         public int ViewZone { get; private set; }
 
         protected List<WeaponBase> _weapons { get; private set; }
@@ -66,6 +75,7 @@ namespace SlowpokeEngine.Bodies
             _weapons = new List<WeaponBase>();
             State = BodyState.Alive;
             ViewZone = viewZone;
+            _score = 0;
 		}
 
         public virtual void Run() { }
@@ -118,7 +128,7 @@ namespace SlowpokeEngine.Bodies
                 var startPosition = Direction.MovePoint(
                     Shape.Position, Shape.MaxDimension * 1.5);
 
-                CurrentWeapon.Shoot(startPosition, Direction);
+                CurrentWeapon.Shoot(startPosition, Direction, this.Id);
             }
         }
 
@@ -138,6 +148,10 @@ namespace SlowpokeEngine.Bodies
                 UsableBodyInScope.Use(this);
                 _mechanicEngine.ReleaseBody(UsableBodyInScope.Id);
             }
+        }
+        public void UpdateScore(int value)
+        {
+            _score += value;
         }
 	}
 }

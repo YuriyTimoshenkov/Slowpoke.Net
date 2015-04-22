@@ -23,6 +23,6 @@ namespace SlowpokeEngine.Weapons
             Name = name;
         }
 
-        public abstract void Shoot(Point startPosition, Vector direction);
+        public abstract void Shoot(Point startPosition, Vector direction, Guid ownerId);
     }
 }

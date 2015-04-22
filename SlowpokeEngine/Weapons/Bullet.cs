@@ -12,10 +12,12 @@ namespace SlowpokeEngine.Weapons
 {
     public class Bullet : ActiveBody
     {
-        public Point StartPosition { get; private set; }
-        public int ShootingDistance { get; private set; }
         private TimeSpan _speed;
         private DateTime _lastMove = DateTime.Now;
+        public  Guid OwnerId { get; private set; }
+
+        public Point StartPosition { get; private set; }
+        public int ShootingDistance { get; private set; }
         public int Damage { get; private set;}
 
         public Bullet(
@@ -24,11 +26,13 @@ namespace SlowpokeEngine.Weapons
             int damage,
             Shape shape, 
 			Vector direction,
+            Guid ownerId,
 			IMechanicEngine mechanicEngine):base(shape, direction, mechanicEngine,1,1,0)
         {
             ShootingDistance = shootingDistance;
             _speed = new TimeSpan(0, 0, 0, 0, speed);
             Damage = damage;
+            OwnerId = ownerId;
             
             //calculate position
             Shape.Position = Direction.MovePoint(Shape.Position, Shape.MaxDimension);
