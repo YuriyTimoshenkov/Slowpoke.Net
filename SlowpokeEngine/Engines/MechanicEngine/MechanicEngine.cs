@@ -63,12 +63,16 @@ namespace SlowpokeEngine.Engines
 			while (!_cancelationTokenSource.Token.IsCancellationRequested)
 			{
 				GameCommand nextCommand;
-                
+
                 if (ActionQueue.TryDequeue(out nextCommand))
-				{
+                {
                     //Execute command
                     nextCommand.Execute();
-				}
+                }
+                else
+                {
+                    Thread.Sleep(100);
+                }
 
                 UpdateBodies();
 
