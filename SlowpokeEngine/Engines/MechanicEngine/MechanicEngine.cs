@@ -71,7 +71,7 @@ namespace SlowpokeEngine.Engines
                 }
                 else
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(10);
                 }
 
                 UpdateBodies();
