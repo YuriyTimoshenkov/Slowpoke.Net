@@ -7,6 +7,7 @@
     this.weaponPoint = new Point(5, canvas.height - 50);
     this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - 30);
     this.fpsPoint = new Point(canvas.width - 80, this.weaponPoint.y - 10);
+    this.scorePoint = new Point(this.weaponPoint.x, 10)
 
     this.menu = menu;
     this.stage = new createjs.Stage(canvas);
@@ -71,8 +72,10 @@
         if (this.menu.fps !== fps) {
             this.menu.updateFPS(fps, this.fpsPoint)
         }
-        
 
+        if (this.menu.score !== this.target.score) {
+            this.menu.updateScore(this.target.score, this.scorePoint)
+        }
     }
       
     this.draw = function (frame) {
@@ -93,7 +96,7 @@
         });
 
         // Add menu objects
-        self.stage.addChild(this.menu.weaponText, this.menu.lifeText, this.menu.fpsText);
+        self.stage.addChild(this.menu.weaponText, this.menu.lifeText, this.menu.fpsText, this.menu.scoreText);
 
         // Render
         self.stage.update();

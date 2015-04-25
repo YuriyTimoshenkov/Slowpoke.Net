@@ -15,6 +15,7 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
     this.image = new createjs.Container();
     this.life = life || 0;
     this.maxLife = maxLife || 0;
+    this.score = 0;
     
     this.weaponImage = null;
     this.currentWeapon = currentWeapon;

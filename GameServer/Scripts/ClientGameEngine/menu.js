@@ -11,8 +11,25 @@
     this.fpsTextSize = 10;
     this.fpsTextColor = "red";
 
+    this.score = null;
+    this.scoreText = null;
+    this.scoreTextSize = 10;
+    this.scoreTextColor = "red";
+
     this.setLife = function (newLife) { this.life = newLife }
     this.setWeapon = function (newWeapon) { this.weapon = newWeapon }
+    this.setScore = function (newScore) { this.score = newScore }
+
+    this.createScoreText = function (point) {
+        this.scoreText = new createjs.Text(this.score, this.scoreTextSize + "px Arial", this.scoreTextColor);
+        this.scoreText.x = point.x;
+        this.scoreText.y = point.y;
+    }
+
+    this.updateScore = function (score, point) {
+        this.setScore(score);
+        this.createScoreText(point);
+    }
 
     this.createLifeText = function (point) {
         this.lifeText = new createjs.Text(this.life, this.lifeTextSize + "px Arial", this.lifeTextColor);

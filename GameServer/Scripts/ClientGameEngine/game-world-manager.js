@@ -70,7 +70,7 @@
         // Update position
         obj.gameRect.center = objData["Shape"]["Position"];
 
-        if (obj.objectType === 'NPCAI' || obj.objectType === 'PlayerBody') {
+        if (obj.objectType === "NPCAI" || obj.objectType === "PlayerBody") {
             // Update direction
             var newDirection = objData["Direction"];
 
@@ -90,6 +90,12 @@
             var newLife = objData["Life"];
             if (obj.life !== newLife) {
                 obj.updateLife(newLife);
+            }
+
+            // Update score
+            var newScore = objData["Score"];
+            if (newScore) {
+                obj.score = newScore;
             }
         }
     }
