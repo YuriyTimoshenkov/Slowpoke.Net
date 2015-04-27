@@ -13,7 +13,7 @@
 
     this.score = null;
     this.scoreText = null;
-    this.scoreTextSize = 10;
+    this.scoreTextSize = this.weaponTextSize;
     this.scoreTextColor = "red";
 
     this.setLife = function (newLife) { this.life = newLife }
@@ -21,7 +21,8 @@
     this.setScore = function (newScore) { this.score = newScore }
 
     this.createScoreText = function (point) {
-        this.scoreText = new createjs.Text(this.score, this.scoreTextSize + "px Arial", this.scoreTextColor);
+        var text = "Score: " + this.score;
+        this.scoreText = new createjs.Text(text, this.scoreTextSize + "px Arial", this.scoreTextColor);
         this.scoreText.x = point.x;
         this.scoreText.y = point.y;
     }
@@ -32,7 +33,8 @@
     }
 
     this.createLifeText = function (point) {
-        this.lifeText = new createjs.Text(this.life, this.lifeTextSize + "px Arial", this.lifeTextColor);
+        var text = "HP: " + this.life;
+        this.lifeText = new createjs.Text(text, this.lifeTextSize + "px Arial", this.lifeTextColor);
         this.lifeText.x = point.x;
         this.lifeText.y = point.y;
     }

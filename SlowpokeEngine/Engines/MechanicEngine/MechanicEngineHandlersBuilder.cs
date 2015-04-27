@@ -29,7 +29,11 @@ namespace SlowpokeEngine.Engines
 
                         foreach (var body in resultCollision.Bodies)
                         {
-                            if (body is ActiveBody)
+                            var bulletOwnerBody = mechanicEngine.FindBody(bullet.OwnerId);
+
+
+                            if (body is ActiveBody && bulletOwnerBody != null
+                                && ((ActiveBody)body).SocialGroups.Intersect(bulletOwnerBody.SocialGroups).Count() == 0)
                             {
                                 //Set damage to collided active body
                                 var collidedActiveBody = ((ActiveBody)body);
@@ -41,7 +45,6 @@ namespace SlowpokeEngine.Engines
                                     mechanicEngine.ReleaseBody(collidedActiveBody.Id);
 
                                     //Increase score of bullet owner
-                                    var bulletOwnerBody = mechanicEngine.FindBody(bullet.OwnerId);
                                     if (bulletOwnerBody != null)
                                     {
                                         bulletOwnerBody.UpdateScore(collidedActiveBody.LifeMax);

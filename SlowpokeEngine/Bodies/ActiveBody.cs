@@ -30,7 +30,7 @@ namespace SlowpokeEngine.Bodies
 
         public int ViewZone { get; private set; }
 
-        protected List<WeaponBase> _weapons { get; private set; }
+        protected IList<WeaponBase> _weapons { get; private set; }
         private int _currentWeaponIndex = 0;
         public WeaponBase CurrentWeapon
         {
@@ -58,6 +58,7 @@ namespace SlowpokeEngine.Bodies
             }
         }
 
+        public IList<string> SocialGroups { get; set; }
 
 		public ActiveBody(
 			Shape shape, 
@@ -73,6 +74,7 @@ namespace SlowpokeEngine.Bodies
             Life = life;
             LifeMax = lifeMax;
             _weapons = new List<WeaponBase>();
+            SocialGroups = new List<string>();
             State = BodyState.Alive;
             ViewZone = viewZone;
             _score = 0;
