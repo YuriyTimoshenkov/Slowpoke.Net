@@ -1,6 +1,4 @@
-﻿console.log("Hi MENU")
-
-function Menu() {
+﻿function Menu() {
     this.weapon = null;
     this.weaponText = null;
     this.weaponTextSize = 20;

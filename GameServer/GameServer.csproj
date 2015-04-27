@@ -140,8 +140,6 @@
     <Content Include="Scripts\ClientGameEngine\game-world-manager.js" />
     <Content Include="Scripts\ClientGameEngine\map-cell.js" />
     <Content Include="Scripts\ClientGameEngine\menu.js" />
-    <Content Include="Scripts\ClientGameEngine\policeman_1.js" />
-    <Content Include="Scripts\ClientGameEngine\policeman_2.js" />
     <Content Include="Scripts\ClientGameEngine\qunit-tests.js" />
     <Content Include="Scripts\ClientGameEngine\server-proxy.js" />
     <Content Include="Scripts\ClientGameEngine\utils.js" />

@@ -8,7 +8,6 @@ function World(serverMap) {
     this.gameMap = new GameMap(serverMap);
 
     this.createGameObject = function (data) {
-
         var objectType = data["BodyType"];
         
         var id = data["Id"];
