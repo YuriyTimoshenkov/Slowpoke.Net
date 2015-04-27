@@ -34,6 +34,7 @@ namespace SlowpokeEngine.Bodies
         {
             var npcai = _unityContainer.Resolve<NPCAI>();
             npcai.AddWeapon(_unityContainer.Resolve<WeaponSimpleBullet>("Revolver"));
+            npcai.SocialGroups.Add("Police");
             //TODO: load config from DB, get some data from depended services and as a result - build NPC
             return npcai;
         }
@@ -57,7 +58,9 @@ namespace SlowpokeEngine.Bodies
             player.AddWeapon(_unityContainer.Resolve<WeaponSimpleBullet>("Gun"));
             player.AddWeapon(_unityContainer.Resolve<WeaponMultipleShotgunBullet>("Shotgun"));
             player.AddWeapon(_unityContainer.Resolve<WeaponDynamite>("Dynamite"));
-            
+
+            player.SocialGroups.Add("Bandit");
+
             //Fill playerBody with character data
             player.Id = character.Id;
 
