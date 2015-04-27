@@ -1,6 +1,4 @@
-﻿console.log("Hi MENU")
-
-function Menu() {
+﻿function Menu() {
     this.weapon = null;
     this.weaponText = null;
     this.weaponTextSize = 20;
@@ -15,7 +13,7 @@ function Menu() {
 
     this.score = null;
     this.scoreText = null;
-    this.scoreTextSize = this.weaponTextSize;
+    this.scoreTextSize = 10;
     this.scoreTextColor = "red";
 
     this.setLife = function (newLife) { this.life = newLife }
@@ -23,8 +21,7 @@ function Menu() {
     this.setScore = function (newScore) { this.score = newScore }
 
     this.createScoreText = function (point) {
-        var text = "Score: " + this.score;
-        this.scoreText = new createjs.Text(text, this.scoreTextSize + "px Arial", this.scoreTextColor);
+        this.scoreText = new createjs.Text(this.score, this.scoreTextSize + "px Arial", this.scoreTextColor);
         this.scoreText.x = point.x;
         this.scoreText.y = point.y;
     }
@@ -35,8 +32,7 @@ function Menu() {
     }
 
     this.createLifeText = function (point) {
-        var text = "HP: " + this.life;
-        this.lifeText = new createjs.Text(text, this.lifeTextSize + "px Arial", this.lifeTextColor);
+        this.lifeText = new createjs.Text(this.life, this.lifeTextSize + "px Arial", this.lifeTextColor);
         this.lifeText.x = point.x;
         this.lifeText.y = point.y;
     }
