@@ -31,7 +31,8 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
             case "PlayerBody":
                 var teamColor = "orange";
                 self.addWeaponImage();
-                self.createHat(shapeRadius, teamColor);
+                self.createPoliceman();
+                //self.createHat(shapeRadius, teamColor);
                 self.addNameText();
                 break
             case "NPC":
@@ -43,9 +44,9 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
             case "NPCAI":
                 var teamColor = "blue";
                 self.addWeaponImage();
-                //self.createHat(shapeRadius, teamColor);
                 console.log("Start creating policeman NPCAI")
                 self.createPoliceman();
+                self.createHat(shapeRadius, teamColor);
                 self.addLifeText();
                 break
             case "Bullet":
@@ -65,17 +66,39 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
         };
     }
 
+    this.updateDirection = function (newDirection) {
+        // Calc rotation for object rendering
+        //var a = this.direction;
+        var a = {X: 0, Y: -1}
+        var b = newDirection;
+        
+        var value1 = a.X * b.X + a.Y * b.Y;
+        var value21 = Math.sqrt(Math.pow(a.X, 2) + Math.pow(a.Y, 2));
+        var value22 = Math.sqrt(Math.pow(b.X, 2) + Math.pow(b.Y, 2));
+        var value2 = value21 * value22;
+        var value = value1 / value2;
+        var rotationDeltaRad = Math.acos(value);
+
+        var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
+        this.image.rotation = rotationDeltaDegree;
+
+        this.direction = newDirection;
+        this.updateWeapon();
+    }
+
     this.createPoliceman = function () {
-        // via lib
-        var obj = new lib.policeman_1();
-        this.image = obj;
-        console.log(this.image);
+        // via PolicemanContainer
+        var obj = new PolicemanContainer();
+        this.image.addChild(obj.image);
 
-        //// via PolicemanContainer
-        //var obj = new PolicemanContainer();
-        //this.image = obj.image;
-        //console.log(this.image);
 
+        // TEMP
+        this.image.regX = 500;
+        this.image.regY = 500;
+
+        this.image.scaleX = 0.1;
+        this.image.scaleY = 0.1;
+       
     }
 
     this.createHat = function (hatRadius, teamColor) {

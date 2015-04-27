@@ -74,9 +74,8 @@
             // Update direction
             var newDirection = objData["Direction"];
 
-                if (obj.direction.X !== newDirection.X || obj.direction.Y !== newDirection.Y) {
-                    obj.direction = newDirection;
-                    obj.updateWeapon();
+            if (obj.direction.X !== newDirection.X || obj.direction.Y !== newDirection.Y) {
+                obj.updateDirection(newDirection);
                 }
             
 
