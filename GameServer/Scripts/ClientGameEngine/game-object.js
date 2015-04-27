@@ -2,7 +2,6 @@
  * Created by dimapct on 15.02.2015.
  */
 
-
 function GameObject(name, id, objectType, position, direction, shapeRadius, life, maxLife, currentWeapon, canvasXY) {
     var self = this;
 
@@ -44,7 +43,9 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
             case "NPCAI":
                 var teamColor = "blue";
                 self.addWeaponImage();
-                self.createHat(shapeRadius, teamColor);
+                //self.createHat(shapeRadius, teamColor);
+                console.log("Start creating policeman NPCAI")
+                self.createPoliceman();
                 self.addLifeText();
                 break
             case "Bullet":
@@ -62,6 +63,19 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
             default:
                 throw "gameObject: invalid gameObject type";
         };
+    }
+
+    this.createPoliceman = function () {
+        // via lib
+        var obj = new lib.policeman_1();
+        this.image = obj;
+        console.log(this.image);
+
+        //// via PolicemanContainer
+        //var obj = new PolicemanContainer();
+        //this.image = obj.image;
+        //console.log(this.image);
+
     }
 
     this.createHat = function (hatRadius, teamColor) {
