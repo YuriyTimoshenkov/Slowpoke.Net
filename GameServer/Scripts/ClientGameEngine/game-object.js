@@ -68,7 +68,7 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
 
     this.updateDirection = function (newDirection) {
         // Calc rotation for object rendering
-        //var a = this.direction;
+
         var a = {X: 0, Y: -1}
         var b = newDirection;
         
@@ -80,8 +80,34 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
         var rotationDeltaRad = Math.acos(value);
 
         var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
-        this.image.rotation = rotationDeltaDegree;
 
+        // To check rotation direction
+        var centerX = this.image.x;
+        var centerY = this.image.y;
+        var mouseX = centerX + newDirection.X;
+        var mouseY = centerY + newDirection.Y;
+
+        // Clockwise
+        if (mouseX > centerX) {
+            this.image.rotation = rotationDeltaDegree;
+        }
+        // Counter-clockwise
+        else if (mouseX < centerX) {
+            this.image.rotation = 360 - rotationDeltaDegree;
+        }
+        // if mousex = centerx
+        else {
+            // if up
+            if (mouseY < centerY) {
+                this.image.rotation = 0;
+            }
+            // if down
+            else if (mouseY > centerY) {
+                this.image.rotation = 180;
+            }
+        }
+        
+        // Update direction and weapon
         this.direction = newDirection;
         this.updateWeapon();
     }
@@ -92,12 +118,6 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
         var obj = new PolicemanContainer();
         this.image.addChild(obj.image);
 
-
-        //// via lib
-        //var obj = new lib.policeman_small();
-        //this.image.addChild(obj);
-
-        // TEMP
         this.image.regX = imageSize / 2;
         this.image.regY = imageSize / 2;
 
@@ -105,7 +125,6 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
         this.image.scaleY = 0.4;
 
         this.image.cache(0, 0, imageSize, imageSize);
-       
     }
 
     this.createHat = function (hatRadius, teamColor) {

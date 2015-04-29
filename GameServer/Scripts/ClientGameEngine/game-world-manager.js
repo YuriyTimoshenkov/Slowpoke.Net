@@ -57,6 +57,14 @@
         if (!frame)
             return
 
+        // TEMP for debugging ///////////////
+        if (frame.Bodies == null) {
+            console.log("frame.Bodies is null");
+            console.log(frame);
+        }
+        //////////////////////
+
+
         self.updateActiveBodies(frame.Bodies);
 
         if (frame.Map)
