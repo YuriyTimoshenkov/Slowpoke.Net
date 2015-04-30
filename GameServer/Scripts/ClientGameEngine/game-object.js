@@ -31,9 +31,9 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
             case "PlayerBody":
                 var teamColor = "orange";
                 self.addWeaponImage();
-                self.createPoliceman();
+                self.createCowboy();
                 //self.createHat(shapeRadius, teamColor);
-                //self.addNameText();
+                self.addNameText();
                 break
             case "NPC":
                 var teamColor = "blue";
@@ -110,6 +110,21 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
         // Update direction and weapon
         this.direction = newDirection;
         this.updateWeapon();
+    }
+
+    this.createCowboy = function () {
+        var imageSize = 280;
+        // via CowboyContainer
+        var obj = new CowboyContainer();
+        this.image.addChild(obj.image);
+
+        this.image.regX = imageSize / 2;
+        this.image.regY = imageSize / 2;
+
+        this.image.scaleX = 0.4;
+        this.image.scaleY = 0.4;
+
+        this.image.cache(0, 0, imageSize, imageSize);
     }
 
     this.createPoliceman = function () {
