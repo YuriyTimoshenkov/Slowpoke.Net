@@ -68,9 +68,13 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         serverProxy.changeWeapon()
     }
 
-    this.handleMouseMove = function (e) {
+    this.handleMouseMove2 = function (e) {
         var newPlayerDirectionVector = self.viewManager.calculatePlayerDirectionVector(new Point(e.clientX, e.clientY))
         self.serverProxy.changeBodyDirection(newPlayerDirectionVector.x, newPlayerDirectionVector.y)
+    }
+
+    this.handleMouseMove = function (e) {
+        return self.viewManager.calculatePlayerDirectionVector(new Point(e.clientX, e.clientY))
     }
 
     this.useHandler = function () {
@@ -151,18 +155,29 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         self.gameOverDialogHandler()
     }
 
-
-    //d4a84fad-6329-4760-8248-a7431f100c5d
-    //c055a991-5301-47d6-8192-1b0d2908418f
-
     this.loop = function () {
+        var fps = self.calcFPS();
+        this.gameWorldManager.updateWorld();
+        this.handleControls();
+        this.viewManager.render(this.gameWorldManager.getCurrentFrame(), fps);
+    }
+
+    this.calcFPS = function () {
         var newTime = new Date();
         var deltaTime = newTime - this.lastUpdateTime;
         this.lastUpdateTime = newTime;
-        var fps = Math.round(1000 / deltaTime);
-        this.gameWorldManager.updateWorld();
+        return Math.round(1000 / deltaTime);
+    }
+
+    this.handleControls = function () {
+        // Handle keyboard
         this.controlsManager.handleControls();
-        this.viewManager.render(this.gameWorldManager.getCurrentFrame(), fps);
+        // Handle mouse move
+        var newDirection = self.controlsManager.lastMouseMove;
+        if (newDirection != null) {
+            self.serverProxy.changeBodyDirection(newDirection.x, newDirection.y)
+            self.controlsManager.nullifyLastMouseMove();
+        }
     }
 
     this.getFrameFromServer = function () {

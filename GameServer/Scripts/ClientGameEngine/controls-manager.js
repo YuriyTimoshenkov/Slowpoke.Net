@@ -18,6 +18,7 @@
     ];
 
     this.keypressed = [];
+    this.lastMouseMove = null;
 
     window.onkeydown = function (e) {
         if (e.preventDefault) e.preventDefault();
@@ -41,12 +42,15 @@
         var down = self.keypressed[83];
         var use = self.keypressed[69];
 
-
         // Weapon switch
         if (weaponSwitch) {
             keypressed.push("weaponSwitch");
             // we need to invoke weaponSwitch worker only once at the first keydown event, hence switching off manually
             self.keypressed[this.weaponSwitchCode] = false;
+        }
+
+        if (use) {
+            keypressed.push("e");
         }
 
         // Movement
@@ -82,13 +86,10 @@
         else if (right) {
             keypressed.push("r");
         }
-        else if (use) {
-            keypressed.push("e");
-        }
 
         return keypressed;
     }
-
+    
     this.handleControls = function () {
         var keypressed = self.getKeyPressed();
 
@@ -157,10 +158,13 @@
     this.addMouseMoveHandler = function (handler) {
         this.canvas.onmousemove = function (e) {
             e.stopPropagation();
-            handler(e)
+            self.lastMouseMove = handler(e);
         }
     }
     this.addUseHandler = function (handler) {
         this.addKeyHandler("e", handler)
+    }
+    this.nullifyLastMouseMove = function () {
+        self.lastMouseMove = null;
     }
 }
