@@ -39,11 +39,8 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<IMechanicEngine, MechanicEngine>(new ContainerControlledLifetimeManager());
 
             unityContainer.RegisterType<IBodyBuilder, UnityBodyBuilder>();
-            unityContainer.RegisterType<NPC>(new InjectionConstructor(
-                new ShapeCircle(20, new Point(300, 100)), typeof(IMechanicEngine), 100, 100, 2
-                ));
             unityContainer.RegisterType<NPCAI>(new InjectionConstructor(
-                new ShapeCircle(20, new Point(200, 200)), typeof(IMechanicEngine), 100, 100, 2
+                new ShapeCircle(20, new Point(200, 200)), typeof(IMechanicEngine), 100, 100, 4, 70
                 ));
             unityContainer.RegisterType<LifeContainer>(new InjectionConstructor(
                 new ShapeCircle(10, new Point(200, 200)),
@@ -55,7 +52,8 @@ namespace SlowpokeEngine
                 typeof(IGameSessionRepository),
                 100, 100,
                 string.Empty,
-                15
+                15,
+                100
                 ));
 
             BuildWeapons(unityContainer);
@@ -64,11 +62,11 @@ namespace SlowpokeEngine
 
             //Build services
             var npcGenerationService = unityContainer.Resolve<IMechanicService>(
-                "NPCGenerationService", new ParameterOverride("npcCount", 20));
+                "NPCGenerationService", new ParameterOverride("npcCount", 2));
             mechanicEngine.Services.Add(npcGenerationService);
 
             var lifeContainerGenerationService = unityContainer.Resolve<IMechanicService>(
-                "LifeContainerGenerationService", new ParameterOverride("containersCount", 100));
+                "LifeContainerGenerationService", new ParameterOverride("containersCount", 10));
             mechanicEngine.Services.Add(lifeContainerGenerationService);
 
 			return mechanicEngine;
@@ -79,15 +77,15 @@ namespace SlowpokeEngine
         {
             string revoler = "Revolver";
             unityContainer.RegisterType<WeaponSimpleBullet>(revoler, new InjectionConstructor(
-                5, 2, 200, 4, new TimeSpan(0, 0, 0, 0, 300), typeof(IMechanicEngine), revoler
+                5, 2, 200, 100, new TimeSpan(0, 0, 0, 0, 300), typeof(IMechanicEngine), revoler
                 ));
             string gun = "Gun";
             unityContainer.RegisterType<WeaponSimpleBullet>(gun, new InjectionConstructor(
-               7, 2, 600, 6, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), gun
+               7, 2, 600, 70, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), gun
                ));
             string shotGun = "Shotgun";
             unityContainer.RegisterType<WeaponMultipleShotgunBullet>(shotGun, new InjectionConstructor(
-               15, 1, 170, 3, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), shotGun
+               15, 1, 170, 50, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), shotGun
                ));
             string dynamite = "Dynamite";
             unityContainer.RegisterType<WeaponDynamite>(dynamite, new InjectionConstructor(

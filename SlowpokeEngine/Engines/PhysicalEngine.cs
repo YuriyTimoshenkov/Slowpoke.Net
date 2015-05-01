@@ -39,6 +39,7 @@ namespace SlowpokeEngine.Engines
 
         private void BuildHandlers()
         {
+            //Bullet and ground collision
             _commandHandlers.AddHandler((command) =>
                 {
                     if (!(command.ActiveBody is Bullet && command is GameCommandMove))
@@ -55,6 +56,7 @@ namespace SlowpokeEngine.Engines
                     return new PhysicsProcessingResultCollision(new List<Body>() {new PassiveBody(null)});
                 });
 
+            //Body move
             _commandHandlers.AddHandler((command) =>
                 {
                     return command is GameCommandMove;
@@ -65,7 +67,7 @@ namespace SlowpokeEngine.Engines
                     var moveCommand = (GameCommandMove)command;
 
                     var previousPosition = body.Shape.Position;
-                    body.Shape.Position = moveCommand.Direction.MovePoint(body.Shape.Position, 5);
+                    body.Shape.Position = moveCommand.Direction.MovePoint(body.Shape.Position, body.Speed * moveCommand.Duration.TotalMilliseconds / 1000.0);
 
 
                     //get all bodies for collision checking

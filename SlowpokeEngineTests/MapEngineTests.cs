@@ -30,7 +30,7 @@ namespace SlowpokeEngineTests
             IMapEngine mapEngine = TestMapEngineFactory.InitMapEngine();
 
             var player = new PlayerBody(new ShapeCircle(3, new Point(2, 1)),
-                new Vector(1, 1), null, null, 0, 0, "Bob", 100);
+                new Vector(1, 1), null, null, 0, 0, "Bob", 100, 1);
             
             mapEngine.AddBody(player);
             Assert.IsTrue(mapEngine.Map.Tiles[0][0].Bodies.ElementAt(0) == player);
@@ -49,9 +49,9 @@ namespace SlowpokeEngineTests
             IMapEngine mapEngine = TestMapEngineFactory.InitMapEngine();
 
             var player1 = new PlayerBody(new ShapeCircle(3, new Point(2, 1)),
-                new Vector(1, 1), null, null, 0, 0, "Bob", 100);
+                new Vector(1, 1), null, null, 0, 0, "Bob", 100, 1);
             var player2 = new PlayerBody(new ShapeCircle(3, new Point(22, 12)),
-                new Vector(1, 1), null, null, 0, 0, "Bob", 100);
+                new Vector(1, 1), null, null, 0, 0, "Bob", 100, 1);
 
             mapEngine.AddBody(player1);
             mapEngine.AddBody(player2);

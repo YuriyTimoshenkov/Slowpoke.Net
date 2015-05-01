@@ -25,7 +25,7 @@ namespace SlowpokeEngineTests
             mechanigEngine.Map.Tiles.Returns(v => mapEngine.Map.Tiles);
 
             var bodyBuilder = Substitute.For<IBodyBuilder>();
-            bodyBuilder.BuildNPCAI(Arg.Any<IMechanicEngine>()).Returns(v => new NPCAI(null, null, 1, 1, 1));
+            bodyBuilder.BuildNPCAI(Arg.Any<IMechanicEngine>()).Returns(v => new NPCAI(null, null, 1, 1, 1, 1));
 
             var npcGenerator = new NPCGenerationService(mechanigEngine, bodyBuilder, 1);
 

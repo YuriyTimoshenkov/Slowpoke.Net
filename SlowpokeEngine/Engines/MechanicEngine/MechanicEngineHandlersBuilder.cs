@@ -19,7 +19,9 @@ namespace SlowpokeEngine.Engines
             (gameCommand, result) =>
             {
                 return result is PhysicsProcessingResultCollision
-                    && gameCommand.ActiveBody is Bullet;
+                    && gameCommand.ActiveBody is Bullet
+                    //Execute only when collided with not IUsableBody
+                    && ((PhysicsProcessingResultCollision)result).Bodies.Where(v => !(v is IUsableBody)).Count() > 0;
             },
                     (gameCommand, result) =>
                     {

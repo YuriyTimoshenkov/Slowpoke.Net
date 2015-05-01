@@ -23,9 +23,10 @@ namespace SlowpokeEngine.Bodies
             IGameSessionRepository sessionRepository,
             int life, int lifeMax,
             string name,
-            int viewZone
+            int viewZone,
+            int speed
             )
-            : base(shape, direction, mechanicEngine, life, lifeMax, viewZone)
+            : base(shape, direction, mechanicEngine, life, lifeMax, viewZone, speed)
         {
             _sessionRepository = sessionRepository;
             Name = name;
@@ -38,7 +39,7 @@ namespace SlowpokeEngine.Bodies
 
         public void Move(Vector direction)
         {
-            ProcessAction(new GameCommandMove(direction, _mechanicEngine, this));
+            ProcessAction(new GameCommandMove(direction, _mechanicEngine, this, new TimeSpan(0,0,0,0,70)));
         }
 
         public void ChangeDirection(Vector direction)

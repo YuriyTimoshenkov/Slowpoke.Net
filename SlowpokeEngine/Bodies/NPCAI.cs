@@ -9,13 +9,16 @@ namespace SlowpokeEngine.Bodies
 {
 	public class NPCAI : ActiveBody
 	{
-        public NPCAI(Shape shape, IMechanicEngine mechanicEngine, int life, int lifeMax, int viewZone)
+        private DateTime _startMove = DateTime.MinValue;
+
+        public NPCAI(Shape shape, IMechanicEngine mechanicEngine, int life, int lifeMax, int viewZone, int speed)
             : base(
 			shape,
 			new Vector(1,1),
 			mechanicEngine,
             life, lifeMax,
-            viewZone)
+            viewZone,
+            speed)
 		{
 			
 		}
@@ -29,6 +32,7 @@ namespace SlowpokeEngine.Bodies
 
             var newDirection = new Vector();
 
+            //Find enemy
             foreach (var body in frame.Bodies.Where(v => v is ActiveBody))
             {
                 // Only PlayerBodies can be enemies
@@ -44,6 +48,7 @@ namespace SlowpokeEngine.Bodies
                     }
                 }
             }
+
             if (enemy != null)
             {
                 if (Direction != newDirection)
@@ -54,9 +59,28 @@ namespace SlowpokeEngine.Bodies
                             _mechanicEngine, this
                             ));
                 }
-                    
+
                 Shoot();
+
+                //Run to enemy
+                if (_startMove == DateTime.MinValue)
+                {
+                    _startMove = DateTime.Now;
+                }
+                else
+                {
+                    var duration = DateTime.Now - _startMove;
+
+                    if (duration.TotalMilliseconds > 10)
+                    {
+                        _mechanicEngine.AddCommand(new GameCommandMove(newDirection, _mechanicEngine, this, duration));
+
+                        _startMove = DateTime.Now;
+                    }
+                }
             }
+            else
+                _startMove = DateTime.MinValue;
         }
 
         private bool isEnemy(ActiveBody body)
@@ -72,13 +96,7 @@ namespace SlowpokeEngine.Bodies
         private double calculateDistance(Vector newVector)
         {
             return Math.Sqrt(Math.Pow(newVector.X, 2) + Math.Pow(newVector.Y, 2));
-        }
-            
-            //_mechanicEngine.ProcessGameCommand(
-            //    new GameCommandMove(new Vector(1,1), _mechanicEngine,
-            //        new Bullet(10,10,10,new ShapeCircle(2, this.Shape.Position),new Vector(1,1), _mechanicEngine))
-            //    );
-        
+        }        
 	}
 }
 

@@ -67,9 +67,9 @@
     <Compile Include="Bodies\PassiveBody.cs" />
     <Compile Include="Commands\PhysicsProcessingResult.cs" />
     <Compile Include="Commands\PhysicsProcessingResultCollision.cs" />
-    <Compile Include="DAL\EntityFrameworkImpl\CharacterRepositoryEF.cs" />
-    <Compile Include="DAL\EntityFrameworkImpl\GameSessionRepositoryEF.cs" />
-    <Compile Include="DAL\EntityFrameworkImpl\GameStorage.cs" />
+    <Compile Include="Engines\DAL\EntityFrameworkImpl\CharacterRepositoryEF.cs" />
+    <Compile Include="Engines\DAL\EntityFrameworkImpl\GameSessionRepositoryEF.cs" />
+    <Compile Include="Engines\DAL\EntityFrameworkImpl\GameStorage.cs" />
     <Compile Include="Engines\Levels\HardcodedLevelRepo.cs" />
     <Compile Include="Engines\Levels\IGameLevel.cs" />
     <Compile Include="Engines\Levels\IGameLevelRepository.cs" />
@@ -95,8 +95,8 @@
     <Compile Include="Entities\Factories\SimpleCharacterFactory.cs" />
     <Compile Include="Entities\GameCharacter.cs" />
     <Compile Include="Entities\GameSession.cs" />
-    <Compile Include="DAL\ICharacterRepository.cs" />
-    <Compile Include="DAL\IGameSessionRepository.cs" />
+    <Compile Include="Engines\DAL\ICharacterRepository.cs" />
+    <Compile Include="Engines\DAL\IGameSessionRepository.cs" />
     <Compile Include="Engines\Factories\UnityMechanicEngineBuilder.cs" />
     <Compile Include="Engines\IShapeCollisionManager.cs" />
     <Compile Include="Engines\ShapeCollisionManager.cs" />
@@ -106,7 +106,6 @@
     <Compile Include="Weapons\Extensions\ActionHandlersManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bodies\ActiveBody.cs" />
-    <Compile Include="Bodies\NPC.cs" />
     <Compile Include="Engines\MechanicEngine\MechanicEngine.cs" />
     <Compile Include="Engines\PhysicalEngine.cs" />
     <Compile Include="Weapons\Extensions\EventArgExtensions.cs" />
@@ -117,9 +116,7 @@
     <Compile Include="Engines\MechanicEngine\IMechanicEngine.cs" />
     <Compile Include="Commands\GameCommand.cs" />
     <Compile Include="Bodies\IBodyBuilder.cs" />
-    <Compile Include="Bodies\Factories\SimpleBodyBuilder.cs" />
     <Compile Include="Engines\MechanicEngine\IMechanicEngineBuilder.cs" />
-    <Compile Include="Engines\Factories\SimpleMechanicEngineBuilder.cs" />
     <Compile Include="Entities\Point.cs" />
     <Compile Include="Entities\Vector.cs" />
     <Compile Include="Bodies\PlayerBody.cs" />

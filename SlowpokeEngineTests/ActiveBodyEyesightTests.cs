@@ -21,7 +21,7 @@ namespace SlowpokeEngineTests
             var eyeSight = new ActiveBodyEyesight(mapEngine);
 
              var player = new PlayerBody(new ShapeCircle(3, new Point(2, 1)),
-                new Vector(1, 1), null, null, 0, 0, "Bob", 100);
+                new Vector(1, 1), null, null, 0, 0, "Bob", 100, 1);
 
             mapEngine.AddBody(player);
 
@@ -38,7 +38,7 @@ namespace SlowpokeEngineTests
             var eyeSight = new ActiveBodyEyesight(mapEngine);
 
             var player = new PlayerBody(new ShapeCircle(3, new Point(2, 1)),
-               new Vector(1, 1), null, null, 0, 0, "Bob", 100);
+               new Vector(1, 1), null, null, 0, 0, "Bob", 100, 1);
 
             mapEngine.AddBody(player);
 

@@ -59,6 +59,7 @@
     <Compile Include="MechanicEngineHandlersTests.cs" />
     <Compile Include="NPCAITests.cs" />
     <Compile Include="NPCGenerationServiceTests.cs" />
+    <Compile Include="PhysicalEngineTests.cs" />
     <Compile Include="PlayerBodyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MapEngineTests.cs" />

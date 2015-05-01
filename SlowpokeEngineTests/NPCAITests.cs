@@ -24,7 +24,7 @@ namespace SlowpokeEngineTests
         {
             //Arrange
             var player = new PlayerBody(new ShapeCircle(2, new Point(10, 10)),
-                new Vector(0, 0), null, null, 0, 0, "Bob", 100);
+                new Vector(0, 0), null, null, 0, 0, "Bob", 100, 1);
 
             var viewPort = Substitute.For<IActiveBodyEyesight>();
             viewPort.GetFrame(Arg.Any<Guid>(), Arg.Any<IMapTile>()).Returns(v =>
@@ -35,7 +35,7 @@ namespace SlowpokeEngineTests
 
             var weapon = Substitute.For<WeaponBase>(10,100, mechanicEngine, "Gun");
 
-            var npc = new NPCAI(new ShapeCircle(2, new Point(20, 20)), mechanicEngine, 10, 10, 100);
+            var npc = new NPCAI(new ShapeCircle(2, new Point(20, 20)), mechanicEngine, 10, 10, 100, 1);
             npc.AddWeapon(weapon);
 
             //Act

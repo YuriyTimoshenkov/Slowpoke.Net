@@ -12,8 +12,7 @@ namespace SlowpokeEngine.Weapons
 {
     public class Bullet : ActiveBody
     {
-        private TimeSpan _speed;
-        private DateTime _lastMove = DateTime.Now;
+        private DateTime _startMove = DateTime.MinValue;
         public  Guid OwnerId { get; private set; }
 
         public Point StartPosition { get; private set; }
@@ -27,10 +26,9 @@ namespace SlowpokeEngine.Weapons
             Shape shape, 
 			Vector direction,
             Guid ownerId,
-			IMechanicEngine mechanicEngine):base(shape, direction, mechanicEngine,1,1,0)
+			IMechanicEngine mechanicEngine):base(shape, direction, mechanicEngine,1,1,0, speed)
         {
             ShootingDistance = shootingDistance;
-            _speed = new TimeSpan(0, 0, 0, 0, speed);
             Damage = damage;
             OwnerId = ownerId;
             
@@ -41,10 +39,20 @@ namespace SlowpokeEngine.Weapons
 
         public override void UpdateState()
         {
-            if (DateTime.Now - _lastMove > _speed)
+            if(_startMove == DateTime.MinValue)
             {
-                _mechanicEngine.AddCommand(new GameCommandMove(this.Direction, _mechanicEngine, this));
-                _lastMove = DateTime.Now;
+                _startMove = DateTime.Now;
+            }
+            else
+            {
+                var duration = DateTime.Now - _startMove;
+
+                if (duration.TotalMilliseconds > 10)
+                {
+                    _mechanicEngine.AddCommand(new GameCommandMove(this.Direction, _mechanicEngine, this, duration));
+
+                    _startMove = DateTime.Now;
+                }
             }
 
             base.UpdateState();

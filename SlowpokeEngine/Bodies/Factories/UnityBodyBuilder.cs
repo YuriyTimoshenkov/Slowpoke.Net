@@ -24,12 +24,6 @@ namespace SlowpokeEngine.Bodies
             _characterRepository = characterRepository;
         }
 
-		public ActiveBody BuildNPC(IMechanicEngine mechanicEngine)
-		{
-			//TODO: load config from DB, get some data from depended services and as a result - build NPC
-            return _unityContainer.Resolve<NPC>();
-		}
-
         public ActiveBody BuildNPCAI(IMechanicEngine mechanicEngine)
         {
             var npcai = _unityContainer.Resolve<NPCAI>();

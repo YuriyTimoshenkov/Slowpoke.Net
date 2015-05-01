@@ -24,14 +24,14 @@ namespace SlowpokeEngineTests
             Guid ownerId = Guid.NewGuid();
             var handlers = new MechanicEngineHandlersBuilder();
             var mechanicEngine = Substitute.For<IMechanicEngine>();
-            var player = Substitute.For<ActiveBody>(null, new Vector(1, 1), mechanicEngine, 100, 100, 100);
+            var player = Substitute.For<ActiveBody>(null, new Vector(1, 1), mechanicEngine, 100, 100, 100, 1);
             mechanicEngine.FindBody(ownerId).Returns(player);
 
             var bulletCollisionHandler = handlers.BuildBulletCollisionHandler(mechanicEngine);
             var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0,0)), new Vector(1, 1), ownerId, mechanicEngine);
 
-            var gameCommand = new GameCommandMove(new Vector(1,1), mechanicEngine, bullet);
-            var npc = Substitute.For<NPCAI>(null, mechanicEngine, 0, 100, 100);
+            var gameCommand = new GameCommandMove(new Vector(1,1), mechanicEngine, bullet, new TimeSpan());
+            var npc = Substitute.For<NPCAI>(null, mechanicEngine, 0, 100, 100, 1);
             
             var physicsResult = new PhysicsProcessingResultCollision(new List<Body>() {npc});
 
@@ -49,8 +49,8 @@ namespace SlowpokeEngineTests
             Guid ownerId = Guid.NewGuid();
             var handlers = new MechanicEngineHandlersBuilder();
             var mechanicEngine = Substitute.For<IMechanicEngine>();
-            var player1 = new PlayerBody(null, new Vector(1, 1), mechanicEngine, null, 100, 100, "Bob", 100);
-            var player2 = new PlayerBody(null, new Vector(1, 1), mechanicEngine, null, 100, 100, "Bob", 100);
+            var player1 = new PlayerBody(null, new Vector(1, 1), mechanicEngine, null, 100, 100, "Bob", 100, 1);
+            var player2 = new PlayerBody(null, new Vector(1, 1), mechanicEngine, null, 100, 100, "Bob", 100, 1);
             player1.SocialGroups.Add("1");
             player2.SocialGroups.Add("1");
             mechanicEngine.FindBody(ownerId).Returns(player1);
@@ -58,8 +58,8 @@ namespace SlowpokeEngineTests
             var bulletCollisionHandler = handlers.BuildBulletCollisionHandler(mechanicEngine);
             var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0, 0)), new Vector(1, 1), ownerId, mechanicEngine);
 
-            var gameCommand = new GameCommandMove(new Vector(1, 1), mechanicEngine, bullet);
-            var npc = Substitute.For<NPCAI>(null, mechanicEngine, 0, 100, 100);
+            var gameCommand = new GameCommandMove(new Vector(1, 1), mechanicEngine, bullet, new TimeSpan());
+            var npc = Substitute.For<NPCAI>(null, mechanicEngine, 0, 100, 100, 1);
 
             var physicsResult = new PhysicsProcessingResultCollision(new List<Body>() { player2 });
 
@@ -68,6 +68,26 @@ namespace SlowpokeEngineTests
             bulletCollisionHandler.Item2(gameCommand, physicsResult);
 
             Assert.IsTrue(player1.Life == 100 && player2.Life == 100);
+        }
+
+        [TestMethod]
+        public void BulletShouldNotBeDestroyedWhenCollidedWithIUsableBody()
+        {
+            //Arrange
+            var usableBody = Substitute.For<PassiveBody, IUsableBody>(new ShapeCircle(1, new Point(1,1)));
+
+            var handlers = new MechanicEngineHandlersBuilder();
+            var mechanicEngine = Substitute.For<IMechanicEngine>();
+            var bulletCollisionHandler = handlers.BuildBulletCollisionHandler(mechanicEngine);
+            var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0, 0)), new Vector(1, 1), Guid.NewGuid(), mechanicEngine);
+
+            var gameCommand = new GameCommandMove(new Vector(1, 1), mechanicEngine, bullet, new TimeSpan());
+            var npc = Substitute.For<NPCAI>(null, mechanicEngine, 0, 100, 100, 1);
+
+            var physicsResult = new PhysicsProcessingResultCollision(new List<Body>() { usableBody });
+
+            //Act & Assert
+            Assert.IsFalse(bulletCollisionHandler.Item1(gameCommand, physicsResult));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace SlowpokeEngineTests
         [TestMethod]
         public void AddWeapon_Successful()
         {
-            var player = new PlayerBody(null, new Vector(0,0), null, null, 0, 0, "Bob", 100);
+            var player = new PlayerBody(null, new Vector(0,0), null, null, 0, 0, "Bob", 100, 1);
             int weaponsCount = player.WeaponsCount;
 
             player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null, "Weapon"));
@@ -27,7 +27,7 @@ namespace SlowpokeEngineTests
         [TestMethod]
         public void ThrowCurrentWeapon_WithChange_Successful()
         {
-            var player = new PlayerBody(null, new Vector(0, 0), null, null, 0, 0, "Bob", 100);
+            var player = new PlayerBody(null, new Vector(0, 0), null, null, 0, 0, "Bob", 100, 1);
             int weaponsCount = player.WeaponsCount;
 
             player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null, "Weapon"));
@@ -45,7 +45,7 @@ namespace SlowpokeEngineTests
         public void Shoot_Successful()
         {
             var player = new PlayerBody(new ShapeCircle(0, new Point(0, 0)),
-                new Vector(0, 0), null, null, 0, 0, "Bob", 100);
+                new Vector(0, 0), null, null, 0, 0, "Bob", 100, 1);
 
             var weapon = Substitute.For<WeaponBase>(0, 0, null, "Gun");
 
@@ -63,7 +63,7 @@ namespace SlowpokeEngineTests
             var mechanigEngine = Substitute.For<IMechanicEngine>();
 
             var player = new PlayerBody(new ShapeCircle(0, new Point(0, 0)),
-                new Vector(0, 0), mechanigEngine, null, 0, 0, "Bob", 100);
+                new Vector(0, 0), mechanigEngine, null, 0, 0, "Bob", 100, 1);
 
             player.Move(direction);
 
@@ -80,7 +80,7 @@ namespace SlowpokeEngineTests
             int playerMaxLife = 100;
 
             var mechnicEngine = Substitute.For<IMechanicEngine>();
-            var player = new PlayerBody(new ShapeCircle(10, new Point(1, 1)), new Vector(0, 0), mechnicEngine, null, playerLife, playerMaxLife, "Bob", 0);
+            var player = new PlayerBody(new ShapeCircle(10, new Point(1, 1)), new Vector(0, 0), mechnicEngine, null, playerLife, playerMaxLife, "Bob", 0, 1);
             var lifeContainer = new LifeContainer(null, containerLifeContent);
             player.UsableBodyInScope = lifeContainer;
 
@@ -99,7 +99,7 @@ namespace SlowpokeEngineTests
             int containerLifeContent = 30;
             int playerMaxLife = 100;
 
-            var player = new PlayerBody(new ShapeCircle(10, new Point(1,1)), new Vector(0, 0), null, null, playerLife, playerMaxLife, "Bob", 0);
+            var player = new PlayerBody(new ShapeCircle(10, new Point(1,1)), new Vector(0, 0), null, null, playerLife, playerMaxLife, "Bob", 0, 1);
             var lifeContainer = new LifeContainer(null, containerLifeContent);
             player.UsableBodyInScope = lifeContainer;
             player.Shape.Position = new Point(player.Shape.Position.X + 10, player.Shape.Position.Y);

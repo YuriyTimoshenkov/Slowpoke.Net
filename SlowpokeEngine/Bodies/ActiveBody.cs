@@ -60,12 +60,16 @@ namespace SlowpokeEngine.Bodies
 
         public IList<string> SocialGroups { get; set; }
 
+        //Points per second
+        public int Speed { get; private set; }
+
 		public ActiveBody(
 			Shape shape, 
 			Vector direction,
 			IMechanicEngine mechanicEngine,
             int life, int lifeMax,
-            int viewZone)
+            int viewZone,
+            int speed)
             : base(Guid.NewGuid(), shape)
 		{
 			_mechanicEngine = mechanicEngine;
@@ -78,6 +82,7 @@ namespace SlowpokeEngine.Bodies
             State = BodyState.Alive;
             ViewZone = viewZone;
             _score = 0;
+            Speed = speed;
 		}
 
         public virtual void Run() { }
