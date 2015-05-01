@@ -10,18 +10,22 @@
     this.down = 83;
 
     this.keysHandlers = [
-        { key: "weaponSwitch", handler: [], duration: null },
-        { key: "l", handler: [], duration: 0 },
-        { key: "r", handler: [], duration: 0 },
-        { key: "u", handler: [], duration: 0 },
-        { key: "d", handler: [], duration: 0 },
-        { key: "ur", handler: [], duration: 0 },
-        { key: "ul", handler: [], duration: 0 },
-        { key: "dr", handler: [], duration: 0 },
-        { key: "dl", handler: [], duration: 0 },
-        { key: "e", handler: [], duration: null }
+        { key: "weaponSwitch", handler: [], },
+        { key: "l", handler: [] },
+        { key: "r", handler: [] },
+        { key: "u", handler: [] },
+        { key: "d", handler: [] },
+        { key: "ur", handler: [] },
+        { key: "ul", handler: [] },
+        { key: "dr", handler: [] },
+        { key: "dl", handler: [] },
+        { key: "e", handler: [] }
     ];
 
+    this.mouseHandlers = [
+        { key: "changeDirection", handler: [] }
+
+    ]
 
 
     this.moveKeysRegistrator = {
@@ -188,7 +192,7 @@
     this.handleControls = function () {
         var keypressed = self.processKeyPressed();
 
-        // Invoke controls handlers
+        // Invoke keyboard controls handlers
         if (keypressed.length > 0) {
             self.keysHandlers.forEach(function (element, index, array) {
                 if (inArray(element.key, keypressed)) {
@@ -198,12 +202,27 @@
                 }
             });
         }
+        //Invoke mouse controls handlers
+        if (this.lastMouseMove) {
+            self.mouseHandlers.forEach(function (element, index, array) {
+                element.handler.forEach(function (el, index, array) {
+                    el(self.lastMouseMove);
+                });
+            
+            });
+            this.nullifyLastMouseMove();
+        }
     }
 
-    this.addKeyHandler = function (key, handler) {
-        this.keysHandlers.forEach(function (element, index, array) {
+    this.addKeyHandler = function (key, handler, mouse) {
+        if (mouse) {
+            var handlersArray = this.mouseHandlers;
+        }
+        else {
+            var handlersArray = this.keysHandlers;
+        }
+        handlersArray.forEach(function (element, index, array) {
             if (element.key === key) {
-
                 element.handler.push(handler)
                 return
             }
@@ -212,10 +231,15 @@
 
     this.addShootHandler = function (handler) {
         this.canvas.onclick = function (e) {
+            e.preventDefault();
             if (e.button === 0) {
                 handler()
             }
         }
+    }
+
+    this.addChangeDirectionHandler = function (handler) {
+        this.addKeyHandler("changeDirection", handler, true)
     }
 
     this.addMoveUpHandler = function (handler) {
@@ -252,10 +276,11 @@
     }
     this.addMouseMoveHandler = function (handler) {
         this.canvas.onmousemove = function (e) {
-            e.stopPropagation();
+            //e.stopPropagation();
             self.lastMouseMove = handler(e);
         }
     }
+
     this.addUseHandler = function (handler) {
         this.addKeyHandler("e", handler)
     }

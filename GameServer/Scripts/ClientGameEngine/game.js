@@ -76,6 +76,10 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         serverProxy.use()
     }
 
+    this.changeDirHandler = function (newDirection) {
+        self.serverProxy.changeBodyDirection(newDirection.x, newDirection.y)
+    }
+
     this.handleLoadPlayer = function (player) {
         return new Promise(function(resolve, reject) {
             self.player = player
@@ -107,6 +111,7 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
         controlsManager.addChangeWeaponHandler(self.changeWeapon)
         controlsManager.addUseHandler(self.useHandler)
+        controlsManager.addChangeDirectionHandler(self.changeDirHandler)
 
         // Start listening server
         self.serverLoop = setInterval(function () { self.getFrameFromServer() }, serverRequestFPS)
@@ -153,7 +158,7 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     this.loop = function () {
         var fps = self.calcFPS();
         this.gameWorldManager.updateWorld();
-        this.handleControls();
+        this.controlsManager.handleControls();
         this.viewManager.render(this.gameWorldManager.getCurrentFrame(), fps);
     }
 
