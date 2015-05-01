@@ -65,7 +65,7 @@ namespace SlowpokeEngineTests
             var player = new PlayerBody(new ShapeCircle(0, new Point(0, 0)),
                 new Vector(0, 0), mechanigEngine, null, 0, 0, "Bob", 100, 1);
 
-            player.Move(direction);
+            player.Move(direction, new TimeSpan(0,0,0,0,70));
 
             mechanigEngine.Received().AddCommand(Arg.Is<GameCommandMove>(v =>
                     v.Direction == direction));

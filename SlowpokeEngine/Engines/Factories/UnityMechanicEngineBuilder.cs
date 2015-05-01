@@ -77,15 +77,15 @@ namespace SlowpokeEngine
         {
             string revoler = "Revolver";
             unityContainer.RegisterType<WeaponSimpleBullet>(revoler, new InjectionConstructor(
-                5, 2, 200, 100, new TimeSpan(0, 0, 0, 0, 300), typeof(IMechanicEngine), revoler
+                5, 2, 200, 350, new TimeSpan(0, 0, 0, 0, 300), typeof(IMechanicEngine), revoler
                 ));
             string gun = "Gun";
             unityContainer.RegisterType<WeaponSimpleBullet>(gun, new InjectionConstructor(
-               7, 2, 600, 70, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), gun
+               7, 2, 600, 400, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), gun
                ));
             string shotGun = "Shotgun";
             unityContainer.RegisterType<WeaponMultipleShotgunBullet>(shotGun, new InjectionConstructor(
-               15, 1, 170, 50, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), shotGun
+               15, 1, 170, 300, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), shotGun
                ));
             string dynamite = "Dynamite";
             unityContainer.RegisterType<WeaponDynamite>(dynamite, new InjectionConstructor(

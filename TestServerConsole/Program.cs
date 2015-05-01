@@ -30,7 +30,7 @@ namespace TestServerConsole
                 {
                     while(true)
                     {
-                        player.Move(new Vector(1,1));
+                        player.Move(new Vector(1, 1), new TimeSpan(0, 0, 0, 0, 70));
                         player.ChangeDirection(new Vector(1, 1));
                         Console.WriteLine("New Era");
                         foreach (var body in mechanicEngine.ViewPort.GetFrame(player.Id, null).Bodies)
