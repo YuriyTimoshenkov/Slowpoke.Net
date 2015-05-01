@@ -28,36 +28,36 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         })
     }
 
-    this.moveUp = function () {
-        serverProxy.moveBody(0, -1);
+    this.moveUp = function (t) {
+        serverProxy.moveBody(0, -1, t);
     }
 
-    this.moveDown = function () {
-        serverProxy.moveBody(0, 1);
+    this.moveDown = function (t) {
+        serverProxy.moveBody(0, 1, t);
     }
 
-    this.moveLeft = function () {
-        serverProxy.moveBody(-1, 0);
+    this.moveLeft = function (t) {
+        serverProxy.moveBody(-1, 0, t);
     }
 
-    this.moveRight = function () {
-        serverProxy.moveBody(1, 0);
+    this.moveRight = function (t) {
+        serverProxy.moveBody(1, 0, t);
     }
 
-    this.moveUpRight = function () {
-        serverProxy.moveBody(0.707, -0.707);
+    this.moveUpRight = function (t) {
+        serverProxy.moveBody(0.707, -0.707, t);
     }
 
-    this.moveUpLeft = function () {
-        serverProxy.moveBody(-0.707, -0.707);
+    this.moveUpLeft = function (t) {
+        serverProxy.moveBody(-0.707, -0.707, t);
     }
 
-    this.moveDownRight = function () {
-        serverProxy.moveBody(0.707, 0.707);
+    this.moveDownRight = function (t) {
+        serverProxy.moveBody(0.707, 0.707, t);
     }
 
-    this.moveDownLeft = function () {
-        serverProxy.moveBody(-0.707, 0.707);
+    this.moveDownLeft = function (t) {
+        serverProxy.moveBody(-0.707, 0.707, t);
     }
     
     this.shoot = function () {
@@ -66,11 +66,6 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
 
     this.changeWeapon = function () {
         serverProxy.changeWeapon()
-    }
-
-    this.handleMouseMove2 = function (e) {
-        var newPlayerDirectionVector = self.viewManager.calculatePlayerDirectionVector(new Point(e.clientX, e.clientY))
-        self.serverProxy.changeBodyDirection(newPlayerDirectionVector.x, newPlayerDirectionVector.y)
     }
 
     this.handleMouseMove = function (e) {
