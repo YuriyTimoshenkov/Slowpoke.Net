@@ -42,7 +42,7 @@ function World(serverMap) {
             obj = new GameObject("Bullet", id, objectType, position, direction, shapeRadius, life, lifeMax, null)
         }
         else if (objectType == "LifeContainer") {
-            obj = new GameObject("Bullet", id, objectType, position, direction, shapeRadius, life, lifeMax, null)
+            obj = new GameObject("LifeContainer", id, objectType, position, direction, shapeRadius, life, lifeMax, null)
         }
 
 

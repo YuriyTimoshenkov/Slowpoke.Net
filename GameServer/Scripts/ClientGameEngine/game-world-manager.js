@@ -78,7 +78,7 @@
         // Update position
         obj.gameRect.center = objData["Shape"]["Position"];
 
-        if (obj.objectType === "NPCAI" || obj.objectType === "PlayerBody") {
+        if (obj.objectType === "NPCAI" || obj.objectType === "PlayerBody" || obj.objectType === "Bullet") {
             // Update direction
             var newDirection = objData["Direction"];
 

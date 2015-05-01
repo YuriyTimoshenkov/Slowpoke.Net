@@ -50,12 +50,11 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
                 self.addLifeText();
                 break
             case "Bullet":
-                var color = "yellow";
-                self.image = this.createBullet(shapeRadius, color);
+                this.createBullet(shapeRadius);
                 break
             case "BulletDynamite":
                 var color = "brown";
-                self.image = this.createBullet(shapeRadius, color);
+                this.createBullet(shapeRadius, color);
                 break
             case "LifeContainer":
                 var color = "red";
@@ -109,7 +108,11 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
         
         // Update direction and weapon
         this.direction = newDirection;
-        this.updateWeapon();
+
+        if (this.objectType != "Bullet") {
+            this.updateWeapon();
+        }
+        
     }
 
     this.createCowboy = function () {
@@ -196,16 +199,17 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
         self.image.addChild(circleBig, circleSmall, lineLeft, lineRight);
     }
 
-    this.createBullet = function (bulletRadius, color) {
+    this.createBullet = function (bulletRadius) {
         // SHAPE XY DIFFERS FROM CONTAINER XY ?? 
-        var image = new createjs.Shape();
+        var bullet = new createjs.Shape();
 
-        image.graphics.setStrokeStyle(1).
-            beginStroke("black").
-            beginFill(color).
-            drawCircle(0, 0, bulletRadius)
-        
-        return image;
+        bullet.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#F08200").dc(2, 2, 2);
+
+
+        // KOSTIL 
+        // trigger direction update
+        this.updateDirection(this.direction);
+        this.image.addChild(bullet);
     }
 
     this.createLifeContainer = function (bulletRadius, color) {
