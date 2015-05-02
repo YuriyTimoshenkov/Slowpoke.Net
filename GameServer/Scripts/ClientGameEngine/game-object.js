@@ -12,18 +12,20 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
     this.gameRect.center = position;
     this.direction = direction || {X: 0, Y: 0};
     this.image = new createjs.Container();
+    this.objectMenu = new createjs.Container();
     this.life = life || 0;
     this.maxLife = maxLife || 0;
     this.score = 0;
     
     this.weaponImage = null;
     this.currentWeapon = currentWeapon;
-    //tassignImage();
 
     // Special for player character
     if (canvasXY) {
         this.image.x = canvasXY.x;
         this.image.y = canvasXY.y;
+        this.objectMenu.x = canvasXY.x;
+        this.objectMenu.y = canvasXY.y;
     }
 
     this.assignImage = function (canvasXY, shapeRadius) {
@@ -219,13 +221,15 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
     }
 
     this.createNameText = function () {
-        var textSize = 30;
+        var textSize = 20;
         return new createjs.Text(self.name, textSize + "px Arial", "purple");
     }
 
     this.addNameText = function () {
         self.nameText = self.createNameText();
-        self.image.addChild(self.nameText);
+        self.nameText.x = -self.gameRect.width * 1.5;
+        self.nameText.y = -self.gameRect.height * 1.5;
+        self.objectMenu.addChild(self.nameText);
     }
 
     this.removeNameText = function () {
@@ -233,13 +237,15 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
     }
 
     this.createLifeText = function () {
-        var textSize = 40;
+        var textSize = 20;
         return new createjs.Text(self.life, textSize + "px Arial", "purple");
     }
 
     this.addLifeText = function () {
         self.lifeText = self.createLifeText();
-        self.image.addChild(self.lifeText);
+        self.lifeText.x = -self.gameRect.width * 1.5;
+        self.lifeText.y = -self.gameRect.height * 1.5;
+        self.objectMenu.addChild(self.lifeText);
     }
 
     this.removeLifeText =  function () {

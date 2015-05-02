@@ -47,6 +47,8 @@
 
                 obj.image.x = self.target.image.x - dx;
                 obj.image.y = self.target.image.y - dy;
+                obj.objectMenu.x = self.target.image.x - dx;
+                obj.objectMenu.y = self.target.image.y - dy;
             }
         })
 
@@ -94,6 +96,7 @@
         // Add game objects
         frame.objects.forEach(function (element, index, array) {
             self.stage.addChild(element.image);
+            self.stage.addChild(element.objectMenu);
         });
 
         // Add menu objects
