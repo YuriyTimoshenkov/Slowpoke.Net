@@ -29,11 +29,14 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
     this.assignImage = function (canvasXY, shapeRadius) {
         switch (self.objectType) {
             case "PlayerBody":
-                var teamColor = "orange";
-                self.addWeaponImage();
-                self.createCowboy();
-                //self.createHat(shapeRadius, teamColor);
+                var imageSize = 280;
+                self.createCowboy(imageSize);
                 self.addNameText();
+                this.image.regX = imageSize / 2;
+                this.image.regY = imageSize / 2;
+                this.image.scaleX = 0.4;
+                this.image.scaleY = 0.4;
+                this.image.cache(0, 0, imageSize, imageSize);
                 break
             case "NPC":
                 var teamColor = "blue";
@@ -42,12 +45,14 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
                 self.addLifeText();
                 break
             case "NPCAI":
-                var teamColor = "blue";
-                self.addWeaponImage();
-                console.log("Start creating policeman NPCAI")
-                self.createPoliceman();
-                self.createHat(shapeRadius, teamColor);
+                var imageSize = 280;
+                self.createPoliceman(imageSize);
                 self.addLifeText();
+                this.image.regX = imageSize / 2;
+                this.image.regY = imageSize / 2;
+                this.image.scaleX = 0.4;
+                this.image.scaleY = 0.4;
+                this.image.cache(0, 0, imageSize, imageSize);
                 break
             case "Bullet":
                 this.createBullet(shapeRadius);
@@ -115,34 +120,23 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
         
     }
 
-    this.createCowboy = function () {
-        var imageSize = 280;
+    this.createCowboy = function (imageSize) {
         // via CowboyContainer
         var obj = new CowboyContainer();
         this.image.addChild(obj.image);
 
-        this.image.regX = imageSize / 2;
-        this.image.regY = imageSize / 2;
+        //this.image.regX = imageSize / 2;
+        //this.image.regY = imageSize / 2;
 
-        this.image.scaleX = 0.4;
-        this.image.scaleY = 0.4;
-
-        this.image.cache(0, 0, imageSize, imageSize);
+        //this.image.scaleX = 0.4;
+        //this.image.scaleY = 0.4;
     }
 
-    this.createPoliceman = function () {
-        var imageSize = 280;
+    this.createPoliceman = function (imageSize) {
         // via PolicemanContainer
         var obj = new PolicemanContainer();
         this.image.addChild(obj.image);
 
-        this.image.regX = imageSize / 2;
-        this.image.regY = imageSize / 2;
-
-        this.image.scaleX = 0.4;
-        this.image.scaleY = 0.4;
-
-        this.image.cache(0, 0, imageSize, imageSize);
     }
 
     this.createHat = function (hatRadius, teamColor) {
@@ -225,14 +219,12 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
     }
 
     this.createNameText = function () {
-        var textSize = 10;
+        var textSize = 30;
         return new createjs.Text(self.name, textSize + "px Arial", "purple");
     }
 
     this.addNameText = function () {
         self.nameText = self.createNameText();
-        self.nameText.x = -self.gameRect.width / 1.5;
-        self.nameText.y = -self.gameRect.height / 1.5;
         self.image.addChild(self.nameText);
     }
 
@@ -241,14 +233,12 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
     }
 
     this.createLifeText = function () {
-        var textSize = 10;
+        var textSize = 40;
         return new createjs.Text(self.life, textSize + "px Arial", "purple");
     }
 
     this.addLifeText = function () {
         self.lifeText = self.createLifeText();
-        self.lifeText.x = -self.gameRect.width / 1.5;
-        self.lifeText.y = -self.gameRect.height / 1.5;
         self.image.addChild(self.lifeText);
     }
 
