@@ -32,8 +32,10 @@ function serverProxySignalR(url) {
     this.changeWeapon = function () {
         gameProxy.server.changeWeapon()
     }
-    this.moveBody = function (x, y) {
-        gameProxy.server.moveBody(x, y)
+    this.moveBody = function (x, y, duration) {
+        if (duration > 0) {
+            gameProxy.server.moveBody(x, y, duration)
+        }
     }
     this.changeBodyDirection = function (dx, dy) {
         gameProxy.server.changeBodyDirection(dx, dy)

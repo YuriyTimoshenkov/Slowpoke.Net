@@ -74,11 +74,6 @@ namespace SlowpokeHubs
             return newframe;
 		}
 
-        public void MoveBody(double x, double y)
-        {
-            MoveBody(x,y, 70);
-        }
-
 		public void MoveBody(double x, double y, int duration)
 		{
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
