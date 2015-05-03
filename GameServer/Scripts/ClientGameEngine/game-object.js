@@ -30,20 +30,20 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
         switch (self.objectType) {
             case "PlayerBody":
                 var teamColor = "orange";
-                self.addWeaponImage();
+                //self.addWeaponImage();
                 self.createCowboy();
                 //self.createHat(shapeRadius, teamColor);
                 self.addNameText();
                 break
             case "NPC":
                 var teamColor = "blue";
-                self.addWeaponImage();
+                //self.addWeaponImage();
                 self.createHat(shapeRadius, teamColor);
                 self.addLifeText();
                 break
             case "NPCAI":
                 var teamColor = "blue";
-                self.addWeaponImage();
+                //self.addWeaponImage();
                 console.log("Start creating policeman NPCAI")
                 self.createPoliceman();
                 self.createHat(shapeRadius, teamColor);

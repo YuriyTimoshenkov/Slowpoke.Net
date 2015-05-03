@@ -5,12 +5,13 @@
 }
 
 function gameBuilder(canvasTagId) {
+    var gameContext = new GameContext('initial', 1000/30, 1000/30)
     var serverProxy = new serverProxyFactory().createServerProxy('/')
-    var viewM = new viewManagerFactory().createViewManager(canvasTagId)
+    var viewM = new viewManagerFactory().createViewManager(canvasTagId, gameContext)
     var controlsM = new controlsManagerFactory().createControlsManager()
 
     this.buildGame = function () {
-        return new Game(updateFPS, serverProxy, controlsM, viewM)
+        return new Game(gameContext, serverProxy, controlsM, viewM)
     }
 }
 
@@ -22,11 +23,11 @@ function controlsManagerFactory() {
 }
 
 function viewManagerFactory() {
-    this.createViewManager = function (canvasTagId) {
+    this.createViewManager = function (canvasTagId, gameContext) {
         var canvas = document.getElementById(canvasTagId);
         var canvasSize = { width: $(document).width(), height: $(document).height() }
         var menu = new Menu();
-        return new viewManager(canvas, canvasSize, menu);
+        return new viewManager(canvas, canvasSize, menu, gameContext);
     }
 }
 

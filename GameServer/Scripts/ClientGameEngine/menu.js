@@ -10,6 +10,10 @@
     this.fpsText = null;
     this.fpsTextSize = 10;
     this.fpsTextColor = "red";
+    this.pingText = null;
+    this.pingTextSize = 10;
+    this.pingTextColor = "red";
+
 
     this.score = null;
     this.scoreText = null;
@@ -62,7 +66,17 @@
         this.fpsText.y = point.y;
     }
 
+    this.createPingText = function (ping, point) {
+        this.pingText = new createjs.Text("PPS: " + ping, this.fpsTextSize + "px Arial", this.fpsTextColor);
+        this.pingText.x = point.x;
+        this.pingText.y = point.y;
+    }
+
     this.updateFPS = function (fps, point) {
         this.createFPSText(fps, point)
+    }
+
+    this.updatePing = function (ping, point) {
+        this.createPingText(ping, point)
     }
 }

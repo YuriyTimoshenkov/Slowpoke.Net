@@ -2,17 +2,17 @@
  * Created by dimapct on 12.02.2015.
  */
 
-function Game(fps, serverProxy, controlsManager, viewManager) {
+function Game(gameContext, serverProxy, controlsManager, viewManager) {
     var self = this
 
     this.serverProxy = serverProxy
-    this.fps = fps;
+    this.gameContext = gameContext
     this.serverFramesQueue = []
     this.controlsManager = controlsManager
     this.viewManager = viewManager
-    this.gameState = 'initial'
     this.lastUpdateTime = 0;
     this.clock = new Date();
+    this.lastServerSync = new Date()
     
     this.run = function () {
         return new Promise(function(resolve, reject) {
@@ -108,13 +108,13 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
         controlsManager.addChangeWeaponHandler(self.changeWeapon)
         controlsManager.addUseHandler(self.useHandler)
 
-        // Start listening server
-        self.serverLoop = setInterval(function () { self.getFrameFromServer() }, serverRequestFPS)
-
         // Start game loop
-        self.clientLoop = setInterval(function () { self.loop() }, updateFPS)
+        self.clientLoop = setInterval(function () { self.loop() }, self.gameContext.renderLoopTimeout)
 
-        self.gameState = 'playing'
+        self.gameContext.state = 'playing'
+
+        // Start listening server
+        self.getFrameFromServer()
     }
 
     this.errorHandler = function (error) {
@@ -130,9 +130,9 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     }
 
     this.disconnectedHandler = function () {
-        if (self.gameState === 'playing') {
+        if (self.gameContext.state === 'playing') {
             self.stopGame()
-            self.gameState = 'stopped'
+            self.gameContext.state = 'stopped'
             self.reconnectionDialogHandler()
         }
     }
@@ -145,22 +145,22 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     }
 
     this.gameOverHandler = function (state) {
-        self.gameState = 'stopped'
+        self.gameContext.state = 'stopped'
         self.stopGame()
         self.gameOverDialogHandler()
     }
 
     this.loop = function () {
-        var fps = self.calcFPS();
+        self.gameContext.fps = self.calcFPS();
         this.gameWorldManager.updateWorld();
         this.handleControls();
-        this.viewManager.render(this.gameWorldManager.getCurrentFrame(), fps);
+        this.viewManager.render(this.gameWorldManager.getCurrentFrame());
     }
 
     this.calcFPS = function () {
         var newTime = new Date();
-        var deltaTime = newTime - this.lastUpdateTime;
-        this.lastUpdateTime = newTime;
+        var deltaTime = newTime - self.lastUpdateTime;
+        self.lastUpdateTime = newTime;
         return Math.round(1000 / deltaTime);
     }
 
@@ -176,10 +176,25 @@ function Game(fps, serverProxy, controlsManager, viewManager) {
     }
 
     this.getFrameFromServer = function () {
-        var self = this
-        this.serverProxy.getFrame(function (obj) {
-            self.serverFramesQueue.push(obj);
-        }, function (error) { console.log("Oppa" + error) });
+        var currentTime = new Date()
+        var timeDiff = currentTime - self.lastServerSync
+
+        ///Update ping
+        self.gameContext.ping = Math.round(1000 / timeDiff)
+        
+        if (timeDiff <= self.gameContext.serverLoopTimeout) {
+            setTimeout(function () {
+                self.getFrameFromServer()
+            }, self.gameContext.serverLoopTimeout - timeDiff)
+        }
+        else {
+            self.lastServerSync = new Date()
+
+            this.serverProxy.getFrame(function (obj) {
+                self.serverFramesQueue.push(obj)
+                self.getFrameFromServer()
+            }, function (error) { console.log("Oppa" + error) });
+        }
     }
 }
 
