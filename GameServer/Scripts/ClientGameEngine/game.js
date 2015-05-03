@@ -76,6 +76,10 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         serverProxy.use()
     }
 
+    this.changeDirHandler = function (newDirection) {
+        self.serverProxy.changeBodyDirection(newDirection.x, newDirection.y)
+    }
+
     this.handleLoadPlayer = function (player) {
         return new Promise(function(resolve, reject) {
             self.player = player
@@ -107,6 +111,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
         controlsManager.addChangeWeaponHandler(self.changeWeapon)
         controlsManager.addUseHandler(self.useHandler)
+        controlsManager.addChangeDirectionHandler(self.changeDirHandler)
 
         // Start game loop
         self.clientLoop = setInterval(function () { self.loop() }, self.gameContext.renderLoopTimeout)
@@ -190,11 +195,11 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         else {
             self.lastServerSync = new Date()
 
-            this.serverProxy.getFrame(function (obj) {
+        this.serverProxy.getFrame(function (obj) {
                 self.serverFramesQueue.push(obj)
                 self.getFrameFromServer()
-            }, function (error) { console.log("Oppa" + error) });
-        }
+        }, function (error) { console.log("Oppa" + error) });
     }
+}
 }
 
