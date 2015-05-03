@@ -221,8 +221,8 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
     }
 
     this.createNameText = function () {
-        var textSize = 20;
-        return new createjs.Text(self.name, textSize + "px Arial", "purple");
+        var textSize = 15;
+        return new createjs.Text(self.name, textSize + "px Arial", "#AAA9AB");
     }
 
     this.addNameText = function () {
@@ -237,8 +237,8 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
     }
 
     this.createLifeText = function () {
-        var textSize = 20;
-        return new createjs.Text(self.life, textSize + "px Arial", "purple");
+        var textSize = 15;
+        return new createjs.Text(self.life, textSize + "px Arial", "#AAA9AB");
     }
 
     this.addLifeText = function () {
@@ -248,21 +248,14 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
         self.objectMenu.addChild(self.lifeText);
     }
 
-    this.removeLifeText =  function () {
-        self.image.removeChild(self.lifeText);
-    }
-
     this.updateLife = function (life) {
         self.life = life;
 
-        if (self.lifeText)
-            self.updateLifeText();
+        if (self.lifeText) {
+            self.lifeText.text = life
+        }
     }
 
-    this.updateLifeText = function () {
-        self.removeLifeText();
-        self.addLifeText();
-    }
 
     this.addWeaponImage = function () {
         self.weaponImage = self.createWeaponImage();
