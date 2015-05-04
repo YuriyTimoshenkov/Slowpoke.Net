@@ -92,13 +92,13 @@
         var weaponSwitch = self.nonmoveKeysPressed[self.weaponSwitchCode];
         var use = self.nonmoveKeysPressed[69];
 
-        // Weapon switch
+            // Weapon switch
         if (weaponSwitch) {
             keypressed.push("weaponSwitch");
             // we need to invoke weaponSwitch worker only once at the first keydown event, hence switching off manually
             self.nonmoveKeysPressed[this.weaponSwitchCode] = false;
         }
-
+            // Use
         if (use) {
             keypressed.push("e");
         }
@@ -184,7 +184,7 @@
             keypressed.push("d");
         }
 
-        self.nullifyMoveKeysDuration();
+        self.nullifyMoveKeysRegistratorDuration();
 
         return keypressed;
     }
@@ -288,13 +288,16 @@
         self.lastMouseMove = null;
     }
 
-    this.nullifyMoveKeysDuration = function () {
+    this.nullifyMoveKeysRegistratorDuration = function () {
         for (var item in self.moveKeysRegistrator) {
             self.moveKeysRegistrator[item].duration = 0;
         }
+
+    }
+
+    this.nullifyMoveKeysHighLevelDuration = function () {
         for (var item in self.moveKeysHighLevelDuration) {
             self.moveKeysHighLevelDuration[item] = 0;
         }
-
     }
 }
