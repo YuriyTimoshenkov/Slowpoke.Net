@@ -56,7 +56,7 @@
         
         // If moving button
         if (e.keyCode in self.moveKeysRegistrator) {
-            if (self.moveKeysRegistrator["keyDownTimeStamp"] == null) {
+            if (self.moveKeysRegistrator[e.keyCode]["keyDownTimeStamp"] == null) {
                 var button = self.moveKeysRegistrator[e.keyCode];
                 button["keyDownTimeStamp"] = new Date();
                 button["keyUpTimeStamp"] = null;
@@ -76,7 +76,7 @@
         if (e.keyCode in self.moveKeysRegistrator) {
             var button = self.moveKeysRegistrator[e.keyCode];
             button["keyUpTimeStamp"] = new Date();
-            button["duration"] += button["keyUpTimeStamp"] - button["keyDownTimeStamp"]
+            button["duration"] += button["keyUpTimeStamp"].getTime() - button["keyDownTimeStamp"].getTime()
             button["keyDownTimeStamp"] = null;
         }
         // If non-moving button
@@ -91,6 +91,8 @@
         // Process non-movement keys
         var weaponSwitch = self.nonmoveKeysPressed[self.weaponSwitchCode];
         var use = self.nonmoveKeysPressed[69];
+        var left, right, up, down;
+        var now = new Date();
 
             // Weapon switch
         if (weaponSwitch) {
@@ -106,40 +108,36 @@
         // Process Movement Keys
             // left
         if (self.moveKeysRegistrator[self.left]["keyDownTimeStamp"] == null) {
-            var left = self.moveKeysRegistrator[self.left]["duration"];
+            left = self.moveKeysRegistrator[self.left]["duration"];
         }
         else {
-            var now = new Date();
-            var left = now - self.moveKeysRegistrator[self.left]["keyDownTimeStamp"];
+            left = now - self.moveKeysRegistrator[self.left]["keyDownTimeStamp"];
             self.moveKeysRegistrator[self.left]["keyDownTimeStamp"] = now;
         }
             // right
         if (self.moveKeysRegistrator[self.right]["keyDownTimeStamp"] == null) {
-            var right = self.moveKeysRegistrator[self.right]["duration"];
+            right = self.moveKeysRegistrator[self.right]["duration"];
         }
         else {
-            var now = new Date();
-            var right = now - self.moveKeysRegistrator[self.right]["keyDownTimeStamp"];
+            right = now - self.moveKeysRegistrator[self.right]["keyDownTimeStamp"];
             self.moveKeysRegistrator[self.right]["keyDownTimeStamp"] = now;
         }
         
         // up
         if (self.moveKeysRegistrator[self.up]["keyDownTimeStamp"] == null) {
-            var up = self.moveKeysRegistrator[self.up]["duration"];
+            up = self.moveKeysRegistrator[self.up]["duration"];
         }
         else {
-            var now = new Date();
-            var up = now - self.moveKeysRegistrator[self.up]["keyDownTimeStamp"];
+            up = now.getTime() - self.moveKeysRegistrator[self.up]["keyDownTimeStamp"].getTime();
             self.moveKeysRegistrator[self.up]["keyDownTimeStamp"] = now;
         }
 
         // down
         if (self.moveKeysRegistrator[self.down]["keyDownTimeStamp"] == null) {
-            var down = self.moveKeysRegistrator[self.down]["duration"];
+            down = self.moveKeysRegistrator[self.down]["duration"];
         }
         else {
-            var now = new Date();
-            var down = now - self.moveKeysRegistrator[self.down]["keyDownTimeStamp"];
+            down = now - self.moveKeysRegistrator[self.down]["keyDownTimeStamp"];
             self.moveKeysRegistrator[self.down]["keyDownTimeStamp"] = now;
         }
 

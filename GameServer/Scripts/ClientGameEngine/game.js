@@ -158,7 +158,6 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
     this.loop = function () {
         self.gameContext.fps = self.calcFPS();
         this.gameWorldManager.updateWorld();
-        this.handleControls();
         this.viewManager.render(this.gameWorldManager.getCurrentFrame());
     }
 
@@ -195,10 +194,11 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         else {
             self.lastServerSync = new Date()
 
-        this.serverProxy.getFrame(function (obj) {
+            this.handleControls();
+            this.serverProxy.getFrame(function (obj) {
                 self.serverFramesQueue.push(obj)
                 self.getFrameFromServer()
-        }, function (error) { console.log("Oppa" + error) });
+            }, function (error) { console.log("Oppa" + error) });
     }
 }
 }

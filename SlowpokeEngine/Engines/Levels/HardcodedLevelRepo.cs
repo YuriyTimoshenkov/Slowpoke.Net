@@ -27,7 +27,7 @@ namespace SlowpokeEngine.Engines.Levels
             {"rock", new SimpleLevelTileType("rock", "#6E6E6E", TileSolidityType.Full)},
             {"road", new SimpleLevelTileType("road", "#EDC791", TileSolidityType.NotSolid)},
             {"ford", new SimpleLevelTileType("ford", "#5FA3A7", TileSolidityType.NotSolid)}, // брод
-            {"tree", new SimpleLevelTileType("tree", "#5EAB00", TileSolidityType.NotSolid)} 
+            {"tree", new SimpleLevelTileType("tree", "#5EAB00", TileSolidityType.Full)} 
             };
         }
 
