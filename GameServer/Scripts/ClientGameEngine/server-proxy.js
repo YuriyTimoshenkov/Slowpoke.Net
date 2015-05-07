@@ -37,6 +37,11 @@ function serverProxySignalR(url) {
             gameProxy.server.moveBody(x, y, duration)
         }
     }
+    this.processInputEvents = function (obj) {
+        gameProxy.server.processInputEvents(obj);
+    }
+
+
     this.changeBodyDirection = function (dx, dy) {
         gameProxy.server.changeBodyDirection(dx, dy)
     }

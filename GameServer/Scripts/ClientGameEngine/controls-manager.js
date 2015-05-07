@@ -4,29 +4,47 @@
     this.canvas = canvas;
 
     this.weaponSwitchCode = 9;
-    this.left = 65;
-    this.right = 68;
-    this.up = 87;
-    this.down = 83;
+    this.useCode = 69;
+    this.leftCode = 65;
+    this.rightCode = 68;
+    this.upCode = 87;
+    this.downCode = 83;
 
-    this.keysHandlers = [
-        { key: "weaponSwitch", handler: [], },
-        { key: "l", handler: [] },
-        { key: "r", handler: [] },
-        { key: "u", handler: [] },
-        { key: "d", handler: [] },
-        { key: "ur", handler: [] },
-        { key: "ul", handler: [] },
-        { key: "dr", handler: [] },
-        { key: "dl", handler: [] },
-        { key: "e", handler: [] }
-    ];
+    this.focus = true;
 
-    this.mouseHandlers = [
-        { key: "changeDirection", handler: [] }
+    //this.keysHandlers = [
+    //    { key: "weaponSwitch", handler: [], },
+    //    { key: "l", handler: [] },
+    //    { key: "r", handler: [] },
+    //    { key: "u", handler: [] },
+    //    { key: "d", handler: [] },
+    //    { key: "ur", handler: [] },
+    //    { key: "ul", handler: [] },
+    //    { key: "dr", handler: [] },
+    //    { key: "dl", handler: [] },
+    //    { key: "e", handler: [] }
+    //];
 
-    ]
+    //this.mouseHandlers = [
+    //    { key: "changeDirection", handler: [] }
+    //]
 
+    this.controlsToReport = {
+        "use": false,
+        "weaponSwitch": false,
+        "shoot": false,
+        "changeDirection": null,
+        "move": {
+            "l": { "direction": [-1, 0], "duration": 0 },
+            "r": { "direction": [1, 0], "duration": 0 },
+            "u": { "direction": [0, -1], "duration": 0 },
+            "d": { "direction": [0, 1], "duration": 0 },
+            "ul": { "direction": [-0.707, -0.707], "duration": 0 },
+            "ur": { "direction": [0.707, -0.707], "duration": 0 },
+            "dl": { "direction": [-0.707, 0.707], "duration": 0 },
+            "dr": { "direction": [0.707, 0.707], "duration": 0 }
+        }
+    }
 
     this.moveKeysRegistrator = {
         65: { keyDownTimeStamp: null, keyUpTimeStamp: null, duration: 0 }, // left
@@ -35,53 +53,197 @@
         83: { keyDownTimeStamp: null, keyUpTimeStamp: null, duration: 0 } // down
     }
 
-    this.moveKeysHighLevelDuration = {
-        "l": 0,
-        "r": 0,
-        "u": 0,
-        "d": 0,
-        "ul": 0,
-        "ur": 0,
-        "dl": 0,
-        "dr": 0,
-    };
+    //this.moveKeysHighLevelDuration = {
+    //    "l": 0,
+    //    "r": 0,
+    //    "u": 0,
+    //    "d": 0,
+    //    "ul": 0,
+    //    "ur": 0,
+    //    "dl": 0,
+    //    "dr": 0,
+    //};
 
-
-    this.nonmoveKeysPressed = [];
-    this.lastMouseMove = null;
+    //this.nonmoveKeysPressed = [];
+    //this.lastMouseMove = null;
+    this.canvas.onclick = function (e) {
+        e.preventDefault();
+        if (e.button === 0) {
+            self.controlsToReport["shoot"] = true;
+        }
+    }
 
     window.onkeydown = function (e) {
         if (e.preventDefault) e.preventDefault();
-        else console.log("Controls-manager: onkeydown: Prevent default is not working")
+        else console.log("Controls-manager: onkeydown: Prevent default is not working");
         
-        // If moving button
-        if (e.keyCode in self.moveKeysRegistrator) {
-            if (self.moveKeysRegistrator[e.keyCode]["keyDownTimeStamp"] == null) {
-                var button = self.moveKeysRegistrator[e.keyCode];
-                button["keyDownTimeStamp"] = new Date();
-                button["keyUpTimeStamp"] = null;
+        if (self.focus) {
+            // If moving button
+            if (e.keyCode in self.moveKeysRegistrator) {
+                if (self.moveKeysRegistrator[e.keyCode]["keyDownTimeStamp"] == null) {
+                    var button = self.moveKeysRegistrator[e.keyCode];
+                    button["keyDownTimeStamp"] = new Date();
+                    button["keyUpTimeStamp"] = null;
+                }
             }
-        }
-        // If non-moving button
-        else {
-            self.nonmoveKeysPressed[e.keyCode] = true;
+            // If non-moving button
+            else if (e.keyCode == self.useCode) {
+                self.controlsToReport["use"] = true;
+            }
+            else if (e.keyCode == self.weaponSwitchCode) {
+                self.controlsToReport["weaponSwitch"] = true;
+            }
         }
     }
 
     window.onkeyup = function (e) {
         if (e.preventDefault) e.preventDefault();
-        else console.log("Controls-manager: onkeyup : Prevent default is not working")
+        else console.log("Controls-manager: onkeyup : Prevent default is not working");
 
-        // If moving button
-        if (e.keyCode in self.moveKeysRegistrator) {
-            var button = self.moveKeysRegistrator[e.keyCode];
-            button["keyUpTimeStamp"] = new Date();
-            button["duration"] += button["keyUpTimeStamp"].getTime() - button["keyDownTimeStamp"].getTime()
-            button["keyDownTimeStamp"] = null;
+        if (self.focus) {
+            // If moving buttons only
+            if (e.keyCode in self.moveKeysRegistrator) {
+                var button = self.moveKeysRegistrator[e.keyCode];
+                button["keyUpTimeStamp"] = new Date();
+                button["duration"] += button["keyUpTimeStamp"].getTime() - button["keyDownTimeStamp"].getTime()
+                button["keyDownTimeStamp"] = null;
+            }
         }
-        // If non-moving button
+    }
+
+    this.handleControls2 = function () {
+        var keypressed = self.processKeyPressed();
+
+        // Invoke keyboard controls handlers
+        if (keypressed.length > 0) {
+            self.keysHandlers.forEach(function (element, index, array) {
+                if (inArray(element.key, keypressed)) {
+                    element.handler.forEach(function (el, index, array) {
+                        el(self.moveKeysHighLevelDuration[element.key]);
+                    });
+                }
+            });
+            self.nullifyMoveKeysHighLevelDuration();
+        }
+        //Invoke mouse controls handlers
+        if (this.lastMouseMove) {
+            self.mouseHandlers.forEach(function (element, index, array) {
+                element.handler.forEach(function (el, index, array) {
+                    el(self.lastMouseMove);
+                });
+
+            });
+            this.nullifyLastMouseMove();
+        }
+    }
+
+    this.handleControls = function () {
+        self.processMoveKeysRegistrator();
+        self.nullifyMoveKeysRegistratorDuration();
+
+        var controlsToReport = {};
+        for (var userAction in self.controlsToReport) {
+            switch (userAction) {
+                case "use":
+                    if (self.controlsToReport[userAction]){
+                        controlsToReport["use"] = null;
+                    }
+                    break;
+                case "weaponSwitch":
+                    if (self.controlsToReport[userAction]) {
+                        controlsToReport["weaponSwitch"] = null;
+                    }
+                    break;
+                case "shoot":
+                    if (self.controlsToReport[userAction]) {
+                        controlsToReport["shoot"] = null;
+                    }
+                    break;
+                case "changeDirection":
+                    if (self.controlsToReport[userAction] != null) {
+                        controlsToReport["changeDirection"] = self.controlsToReport["changeDirection"];
+                    }
+                    break;
+                case "move":
+                    // we presume that player could go only 1 direction per report
+                    var moves = self.controlsToReport[userAction];
+                    for (var dir in moves) {
+                        if (moves[dir]["duration"] > 0) {
+                            controlsToReport["move"] = {
+                                "direction": moves[dir]["direction"],
+                                "duration": moves[dir]["duration"]
+                            };
+                        }
+                    }
+                    break;
+            }
+        }
+        self.nullifyControlsToReport();
+        return controlsToReport
+    }
+
+    this.processMoveKeysRegistrator = function () {
+        var left, right, up, down;
+        var now = new Date();
+
+        // Process Movement Keys
+            // left
+        if (self.moveKeysRegistrator[self.leftCode]["keyDownTimeStamp"] == null) {
+            left = self.moveKeysRegistrator[self.leftCode]["duration"];
+        }
         else {
-            self.nonmoveKeysPressed[e.keyCode] = false;
+            left = now - self.moveKeysRegistrator[self.leftCode]["keyDownTimeStamp"];
+            self.moveKeysRegistrator[self.leftCode]["keyDownTimeStamp"] = now;
+        }
+            // right
+        if (self.moveKeysRegistrator[self.rightCode]["keyDownTimeStamp"] == null) {
+            right = self.moveKeysRegistrator[self.rightCode]["duration"];
+        }
+        else {
+            right = now - self.moveKeysRegistrator[self.rightCode]["keyDownTimeStamp"];
+            self.moveKeysRegistrator[self.rightCode]["keyDownTimeStamp"] = now;
+        }
+            // up
+        if (self.moveKeysRegistrator[self.upCode]["keyDownTimeStamp"] == null) {
+            up = self.moveKeysRegistrator[self.upCode]["duration"];
+        }
+        else {
+            up = now.getTime() - self.moveKeysRegistrator[self.upCode]["keyDownTimeStamp"].getTime();
+            self.moveKeysRegistrator[self.upCode]["keyDownTimeStamp"] = now;
+        }
+            // down
+        if (self.moveKeysRegistrator[self.downCode]["keyDownTimeStamp"] == null) {
+            down = self.moveKeysRegistrator[self.downCode]["duration"];
+        }
+        else {
+            down = now - self.moveKeysRegistrator[self.downCode]["keyDownTimeStamp"];
+            self.moveKeysRegistrator[self.downCode]["keyDownTimeStamp"] = now;
+        }
+
+        // Process diagonal movement first
+        if (up > 0 && left > 0) {
+            self.controlsToReport["move"]["ul"]["duration"] = Math.min(up, left);
+        }
+        else if (up > 0 && right > 0) {
+            self.controlsToReport["move"]["ur"]["duration"] = Math.min(up, right);
+        }
+        else if (down > 0 && left > 0) {
+            self.controlsToReport["move"]["dl"]["duration"] = Math.min(down, left);
+        }
+        else if (down > 0 && right > 0) {
+            self.controlsToReport["move"]["dr"]["duration"] = Math.min(down, right);
+        }
+        else if (left > 0) {
+            self.controlsToReport["move"]["l"]["duration"] = left;
+        }
+        else if (right > 0) {
+            self.controlsToReport["move"]["r"]["duration"] = right;
+        }
+        else if (up > 0) {
+            self.controlsToReport["move"]["u"]["duration"] = up;
+        }
+        else if (down > 0) {
+            self.controlsToReport["move"]["d"]["duration"] = down;
         }
     }
 
@@ -107,39 +269,38 @@
 
         // Process Movement Keys
             // left
-        if (self.moveKeysRegistrator[self.left]["keyDownTimeStamp"] == null) {
-            left = self.moveKeysRegistrator[self.left]["duration"];
+        if (self.moveKeysRegistrator[self.leftCode]["keyDownTimeStamp"] == null) {
+            left = self.moveKeysRegistrator[self.leftCode]["duration"];
         }
         else {
-            left = now - self.moveKeysRegistrator[self.left]["keyDownTimeStamp"];
-            self.moveKeysRegistrator[self.left]["keyDownTimeStamp"] = now;
+            left = now - self.moveKeysRegistrator[self.leftCode]["keyDownTimeStamp"];
+            self.moveKeysRegistrator[self.leftCode]["keyDownTimeStamp"] = now;
         }
             // right
-        if (self.moveKeysRegistrator[self.right]["keyDownTimeStamp"] == null) {
-            right = self.moveKeysRegistrator[self.right]["duration"];
+        if (self.moveKeysRegistrator[self.rightCode]["keyDownTimeStamp"] == null) {
+            right = self.moveKeysRegistrator[self.rightCode]["duration"];
         }
         else {
-            right = now - self.moveKeysRegistrator[self.right]["keyDownTimeStamp"];
-            self.moveKeysRegistrator[self.right]["keyDownTimeStamp"] = now;
+            right = now - self.moveKeysRegistrator[self.rightCode]["keyDownTimeStamp"];
+            self.moveKeysRegistrator[self.rightCode]["keyDownTimeStamp"] = now;
         }
-        
         // up
-        if (self.moveKeysRegistrator[self.up]["keyDownTimeStamp"] == null) {
-            up = self.moveKeysRegistrator[self.up]["duration"];
+        if (self.moveKeysRegistrator[self.upCode]["keyDownTimeStamp"] == null) {
+            up = self.moveKeysRegistrator[self.upCode]["duration"];
         }
         else {
-            up = now.getTime() - self.moveKeysRegistrator[self.up]["keyDownTimeStamp"].getTime();
-            self.moveKeysRegistrator[self.up]["keyDownTimeStamp"] = now;
+            up = now.getTime() - self.moveKeysRegistrator[self.upCode]["keyDownTimeStamp"].getTime();
+            self.moveKeysRegistrator[self.upCode]["keyDownTimeStamp"] = now;
+        }
+        // down
+        if (self.moveKeysRegistrator[self.downCode]["keyDownTimeStamp"] == null) {
+            down = self.moveKeysRegistrator[self.downCode]["duration"];
+        }
+        else {
+            down = now - self.moveKeysRegistrator[self.downCode]["keyDownTimeStamp"];
+            self.moveKeysRegistrator[self.downCode]["keyDownTimeStamp"] = now;
         }
 
-        // down
-        if (self.moveKeysRegistrator[self.down]["keyDownTimeStamp"] == null) {
-            down = self.moveKeysRegistrator[self.down]["duration"];
-        }
-        else {
-            down = now - self.moveKeysRegistrator[self.down]["keyDownTimeStamp"];
-            self.moveKeysRegistrator[self.down]["keyDownTimeStamp"] = now;
-        }
 
             // Process diagonal movement first
         if (up > 0 && left > 0) {
@@ -186,32 +347,6 @@
 
         return keypressed;
     }
-    
-    this.handleControls = function () {
-        var keypressed = self.processKeyPressed();
-
-        // Invoke keyboard controls handlers
-        if (keypressed.length > 0) {
-            self.keysHandlers.forEach(function (element, index, array) {
-                if (inArray(element.key, keypressed)) {
-                    element.handler.forEach(function (el, index, array) {
-                        el(self.moveKeysHighLevelDuration[element.key]);
-                    });
-                }
-            });
-        }
-        //Invoke mouse controls handlers
-        if (this.lastMouseMove) {
-            self.mouseHandlers.forEach(function (element, index, array) {
-                element.handler.forEach(function (el, index, array) {
-                    el(self.lastMouseMove);
-                });
-            
-            });
-            this.nullifyLastMouseMove();
-        }
-    }
-
     this.addKeyHandler = function (key, handler, mouse) {
         if (mouse) {
             var handlersArray = this.mouseHandlers;
@@ -226,7 +361,6 @@
             }
         })
     }
-
     this.addShootHandler = function (handler) {
         this.canvas.onclick = function (e) {
             e.preventDefault();
@@ -235,31 +369,24 @@
             }
         }
     }
-
     this.addChangeDirectionHandler = function (handler) {
         this.addKeyHandler("changeDirection", handler, true)
     }
-
     this.addMoveUpHandler = function (handler) {
         this.addKeyHandler("u", handler)
     }
-
     this.addMoveRightHandler = function (handler) {
         this.addKeyHandler("r", handler)
     }
-
     this.addMoveDownHandler = function (handler) {
         this.addKeyHandler("d", handler)
     }
-
     this.addMoveLeftHandler = function (handler) {
         this.addKeyHandler("l", handler)
     }
-
     this.addChangeWeaponHandler = function (handler) {
         this.addKeyHandler("weaponSwitch", handler) // TAB
     }
-
     this.addMoveUpRightHandler = function (handler) {
         this.addKeyHandler("ur", handler)
     }
@@ -274,28 +401,32 @@
     }
     this.addMouseMoveHandler = function (handler) {
         this.canvas.onmousemove = function (e) {
-            //e.stopPropagation();
-            self.lastMouseMove = handler(e);
+            self.controlsToReport["changeDirection"] = handler(e);
         }
     }
-
     this.addUseHandler = function (handler) {
         this.addKeyHandler("e", handler)
     }
-    this.nullifyLastMouseMove = function () {
-        self.lastMouseMove = null;
-    }
-
+    //this.nullifyLastMouseMove = function () {
+    //    self.lastMouseMove = null;
+    //}
     this.nullifyMoveKeysRegistratorDuration = function () {
         for (var item in self.moveKeysRegistrator) {
             self.moveKeysRegistrator[item].duration = 0;
         }
-
     }
-
-    this.nullifyMoveKeysHighLevelDuration = function () {
-        for (var item in self.moveKeysHighLevelDuration) {
-            self.moveKeysHighLevelDuration[item] = 0;
+    //this.nullifyMoveKeysHighLevelDuration = function () {
+    //    for (var item in self.moveKeysHighLevelDuration) {
+    //        self.moveKeysHighLevelDuration[item] = 0;
+    //    }
+    //}
+    this.nullifyControlsToReport = function () {
+        self.controlsToReport["use"] = false;
+        self.controlsToReport["weaponSwitch"] = false;
+        self.controlsToReport["shoot"] = false;
+        self.controlsToReport["changeDirection"] = null;
+        for (var dir in self.controlsToReport["move"]) {
+            self.controlsToReport["move"][dir]["duration"] = 0;
         }
     }
 }

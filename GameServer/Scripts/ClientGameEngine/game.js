@@ -99,19 +99,19 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         self.gameWorldManager.init(self.player, self.serverFramesQueue)
         viewManager.setTarget(self.gameWorldManager.player)
 
-        controlsManager.addMoveUpHandler(self.moveUp)
-        controlsManager.addMoveDownHandler(self.moveDown)
-        controlsManager.addMoveRightHandler(self.moveRight)
-        controlsManager.addMoveLeftHandler(self.moveLeft)
-        controlsManager.addMoveUpLeftHandler(self.moveUpLeft)
-        controlsManager.addMoveUpRightHandler(self.moveUpRight)
-        controlsManager.addMoveDownLeftHandler(self.moveDownLeft)
-        controlsManager.addMoveDownRightHandler(self.moveDownRight)
-        controlsManager.addShootHandler(self.shoot)
+        //controlsManager.addMoveUpHandler(self.moveUp)
+        //controlsManager.addMoveDownHandler(self.moveDown)
+        //controlsManager.addMoveRightHandler(self.moveRight)
+        //controlsManager.addMoveLeftHandler(self.moveLeft)
+        //controlsManager.addMoveUpLeftHandler(self.moveUpLeft)
+        //controlsManager.addMoveUpRightHandler(self.moveUpRight)
+        //controlsManager.addMoveDownLeftHandler(self.moveDownLeft)
+        //controlsManager.addMoveDownRightHandler(self.moveDownRight)
+        //controlsManager.addShootHandler(self.shoot)
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
-        controlsManager.addChangeWeaponHandler(self.changeWeapon)
-        controlsManager.addUseHandler(self.useHandler)
-        controlsManager.addChangeDirectionHandler(self.changeDirHandler)
+        //controlsManager.addChangeWeaponHandler(self.changeWeapon)
+        //controlsManager.addUseHandler(self.useHandler)
+        //controlsManager.addChangeDirectionHandler(self.changeDirHandler)
 
         // Start game loop
         self.clientLoop = setInterval(function () { self.loop() }, self.gameContext.renderLoopTimeout)
@@ -168,15 +168,8 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         return Math.round(1000 / deltaTime);
     }
 
-    this.handleControls = function () {
-        // Handle keyboard
-        this.controlsManager.handleControls();
-        // Handle mouse move
-        var newDirection = self.controlsManager.lastMouseMove;
-        if (newDirection != null) {
-            self.serverProxy.changeBodyDirection(newDirection.x, newDirection.y)
-            self.controlsManager.nullifyLastMouseMove();
-        }
+    this.processInputEvents = function () {
+        self.serverProxy.processInputEvents(self.controlsManager.handleControls());
     }
 
     this.getFrameFromServer = function () {
@@ -194,7 +187,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         else {
             self.lastServerSync = new Date()
 
-            this.handleControls();
+            this.processInputEvents();
             this.serverProxy.getFrame(function (obj) {
                 self.serverFramesQueue.push(obj)
                 self.getFrameFromServer()
