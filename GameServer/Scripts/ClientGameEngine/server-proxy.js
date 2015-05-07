@@ -39,6 +39,7 @@ function serverProxySignalR(url) {
     }
     this.processInputEvents = function (obj) {
         gameProxy.server.processInputEvents(obj);
+        //console.log(JSON.stringify(obj));
     }
 
 

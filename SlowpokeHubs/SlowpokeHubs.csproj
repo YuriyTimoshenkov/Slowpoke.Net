@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InputEvent.cs" />
     <Compile Include="IPlayerContainer.cs" />
     <Compile Include="PlayerContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

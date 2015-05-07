@@ -12,37 +12,20 @@
 
     this.focus = true;
 
-    //this.keysHandlers = [
-    //    { key: "weaponSwitch", handler: [], },
-    //    { key: "l", handler: [] },
-    //    { key: "r", handler: [] },
-    //    { key: "u", handler: [] },
-    //    { key: "d", handler: [] },
-    //    { key: "ur", handler: [] },
-    //    { key: "ul", handler: [] },
-    //    { key: "dr", handler: [] },
-    //    { key: "dl", handler: [] },
-    //    { key: "e", handler: [] }
-    //];
-
-    //this.mouseHandlers = [
-    //    { key: "changeDirection", handler: [] }
-    //]
-
     this.controlsToReport = {
-        "use": false,
-        "weaponSwitch": false,
-        "shoot": false,
-        "changeDirection": null,
-        "move": {
-            "l": { "direction": [-1, 0], "duration": 0 },
-            "r": { "direction": [1, 0], "duration": 0 },
-            "u": { "direction": [0, -1], "duration": 0 },
-            "d": { "direction": [0, 1], "duration": 0 },
-            "ul": { "direction": [-0.707, -0.707], "duration": 0 },
-            "ur": { "direction": [0.707, -0.707], "duration": 0 },
-            "dl": { "direction": [-0.707, 0.707], "duration": 0 },
-            "dr": { "direction": [0.707, 0.707], "duration": 0 }
+        use: false,
+        weaponSwitch: false,
+        shoot: false,
+        changeDirection: null,
+        move: {
+            l: { direction: { x: -1, y: 0 }, duration: 0 },
+            r: { direction: { x: 1, y: 0 }, duration: 0 },
+            u: { direction: { x: 0, y: -1 }, duration: 0 },
+            d: { direction: { x: 0, y: 1 }, duration: 0 },
+            ul: { direction: { x: -0.707, y: -0.707 }, duration: 0 },
+            ur: { direction: { x: 0.707, y: -0.707 }, duration: 0 },
+            dl: { direction: { x: -0.707, y: 0.707 }, duration: 0 },
+            dr: { direction: { x: 0.707, y: 0.707 }, duration: 0 }
         }
     }
 
@@ -142,42 +125,23 @@
         self.nullifyMoveKeysRegistratorDuration();
 
         var controlsToReport = {};
-        for (var userAction in self.controlsToReport) {
-            switch (userAction) {
-                case "use":
-                    if (self.controlsToReport[userAction]){
-                        controlsToReport["use"] = null;
-                    }
-                    break;
-                case "weaponSwitch":
-                    if (self.controlsToReport[userAction]) {
-                        controlsToReport["weaponSwitch"] = null;
-                    }
-                    break;
-                case "shoot":
-                    if (self.controlsToReport[userAction]) {
-                        controlsToReport["shoot"] = null;
-                    }
-                    break;
-                case "changeDirection":
-                    if (self.controlsToReport[userAction] != null) {
-                        controlsToReport["changeDirection"] = self.controlsToReport["changeDirection"];
-                    }
-                    break;
-                case "move":
-                    // we presume that player could go only 1 direction per report
-                    var moves = self.controlsToReport[userAction];
-                    for (var dir in moves) {
-                        if (moves[dir]["duration"] > 0) {
-                            controlsToReport["move"] = {
-                                "direction": moves[dir]["direction"],
-                                "duration": moves[dir]["duration"]
-                            };
-                        }
-                    }
-                    break;
+
+        controlsToReport.use = self.controlsToReport.use;
+        controlsToReport.shoot = self.controlsToReport.shoot;
+        controlsToReport.changeDirection = self.controlsToReport.changeDirection;
+        controlsToReport.weaponSwitch = self.controlsToReport.weaponSwitch;
+
+        // we presume that player could go only 1 direction per report
+        var moves = self.controlsToReport.move
+        for (var dir in moves) {
+            if (moves[dir]["duration"] > 0) {
+                controlsToReport["move"] = {
+                    direction: moves[dir]["direction"],
+                    duration: moves[dir]["duration"]
+                };
             }
         }
+ 
         self.nullifyControlsToReport();
         return controlsToReport
     }

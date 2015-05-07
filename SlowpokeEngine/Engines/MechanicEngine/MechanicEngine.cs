@@ -60,24 +60,31 @@ namespace SlowpokeEngine.Engines
 
 		private void EventLoop()
 		{
-			while (!_cancelationTokenSource.Token.IsCancellationRequested)
-			{
-				GameCommand nextCommand;
-
-                if (ActionQueue.TryDequeue(out nextCommand))
+            while (!_cancelationTokenSource.Token.IsCancellationRequested)
+            {
+                try
                 {
-                    //Execute command
-                    nextCommand.Execute();
+                    GameCommand nextCommand;
+
+                    if (ActionQueue.TryDequeue(out nextCommand))
+                    {
+                        //Execute command
+                        nextCommand.Execute();
+                    }
+                    else
+                    {
+                        Thread.Sleep(10);
+                    }
+
+                    UpdateBodies();
+
+                    UpdateServices();
                 }
-                else
+                catch (Exception exp)
                 {
-                    Thread.Sleep(10);
+                    //TODO log here exception
                 }
-
-                UpdateBodies();
-
-                UpdateServices();
-			}
+            }
 		}
 
         public void StartEngine(Action<IPlayerBodyFacade> playerStateHandler)

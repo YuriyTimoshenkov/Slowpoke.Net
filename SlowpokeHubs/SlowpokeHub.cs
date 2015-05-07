@@ -82,7 +82,7 @@ namespace SlowpokeHubs
                 player.Move(new Vector(x,y), new TimeSpan(0,0,0,0,duration));
 		}
 
-		public void ChangeBodyDirection(int x, int y)
+        public void ChangeBodyDirection(double x, double y)
 		{
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
@@ -117,6 +117,27 @@ namespace SlowpokeHubs
         public IMap GetMap()
         {
             return MechanicEngine.ViewPort.Map;
+        }
+
+        public void ProcessInputEvents(InputEvent inputEvent)
+        {
+            //Process move
+            if(inputEvent.move != null)
+            {
+                MoveBody(inputEvent.move.Direction.X, inputEvent.move.Direction.Y, inputEvent.move.Duration);
+            }
+
+            //Process change direction
+            if(inputEvent.changeDirection != null)
+            {
+                ChangeBodyDirection(inputEvent.changeDirection.X, inputEvent.changeDirection.Y);
+            }
+
+            if (inputEvent.use) { Use(); }
+
+            if (inputEvent.shoot) { Shoot(); }
+
+            if (inputEvent.weaponSwitch) { ChangeWeapon(); }
         }
 
 		public override Task OnDisconnected (bool stopCalled)
