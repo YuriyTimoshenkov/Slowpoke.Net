@@ -36,12 +36,16 @@
         83: { keyDownTimeStamp: null, keyUpTimeStamp: null, duration: 0 } // down
     }
 
-    this.canvas.onclick = function (e) {
+    $(self.canvas).click(function (e) {
         e.preventDefault();
+        e.stopPropagation();
         if (e.button === 0) {
             self.controlsToReport["shoot"] = true;
         }
-    }
+        return false;
+    })
+
+    self.canvas.oncontextmenu = function () {return false}
 
     window.onkeydown = function (e) {
         if (e.preventDefault) e.preventDefault();
@@ -307,51 +311,10 @@
             }
         })
     }
-    this.addShootHandler = function (handler) {
-        this.canvas.onclick = function (e) {
-            e.preventDefault();
-            if (e.button === 0) {
-                handler()
-            }
-        }
-    }
-    this.addChangeDirectionHandler = function (handler) {
-        this.addKeyHandler("changeDirection", handler, true)
-    }
-    this.addMoveUpHandler = function (handler) {
-        this.addKeyHandler("u", handler)
-    }
-    this.addMoveRightHandler = function (handler) {
-        this.addKeyHandler("r", handler)
-    }
-    this.addMoveDownHandler = function (handler) {
-        this.addKeyHandler("d", handler)
-    }
-    this.addMoveLeftHandler = function (handler) {
-        this.addKeyHandler("l", handler)
-    }
-    this.addChangeWeaponHandler = function (handler) {
-        this.addKeyHandler("weaponSwitch", handler) // TAB
-    }
-    this.addMoveUpRightHandler = function (handler) {
-        this.addKeyHandler("ur", handler)
-    }
-    this.addMoveUpLeftHandler = function (handler) {
-        this.addKeyHandler("ul", handler)
-    }
-    this.addMoveDownRightHandler = function (handler) {
-        this.addKeyHandler("dr", handler)
-    }
-    this.addMoveDownLeftHandler = function (handler) {
-        this.addKeyHandler("dl", handler)
-    }
     this.addMouseMoveHandler = function (handler) {
         this.canvas.onmousemove = function (e) {
             self.controlsToReport["changeDirection"] = handler(e);
         }
-    }
-    this.addUseHandler = function (handler) {
-        this.addKeyHandler("e", handler)
     }
     this.nullifyMoveKeysRegistratorDuration = function () {
         for (var item in self.moveKeysRegistrator) {
