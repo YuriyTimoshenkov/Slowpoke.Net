@@ -36,19 +36,6 @@
         83: { keyDownTimeStamp: null, keyUpTimeStamp: null, duration: 0 } // down
     }
 
-    //this.moveKeysHighLevelDuration = {
-    //    "l": 0,
-    //    "r": 0,
-    //    "u": 0,
-    //    "d": 0,
-    //    "ul": 0,
-    //    "ur": 0,
-    //    "dl": 0,
-    //    "dr": 0,
-    //};
-
-    //this.nonmoveKeysPressed = [];
-    //this.lastMouseMove = null;
     this.canvas.onclick = function (e) {
         e.preventDefault();
         if (e.button === 0) {
@@ -85,38 +72,33 @@
 
         if (self.focus) {
             // If moving buttons only
-            if (e.keyCode in self.moveKeysRegistrator) {
-                var button = self.moveKeysRegistrator[e.keyCode];
-                button["keyUpTimeStamp"] = new Date();
-                button["duration"] += button["keyUpTimeStamp"].getTime() - button["keyDownTimeStamp"].getTime()
-                button["keyDownTimeStamp"] = null;
-            }
+            self.processKeyUp(e.keyCode);
         }
     }
 
-    this.handleControls2 = function () {
-        var keypressed = self.processKeyPressed();
-
-        // Invoke keyboard controls handlers
-        if (keypressed.length > 0) {
-            self.keysHandlers.forEach(function (element, index, array) {
-                if (inArray(element.key, keypressed)) {
-                    element.handler.forEach(function (el, index, array) {
-                        el(self.moveKeysHighLevelDuration[element.key]);
-                    });
+    $(window).on("focus blur", function (e) {
+        switch (e.type) {
+            case "blur":
+                self.focus = false;
+                // Force keyUp for all pressed keys
+                for (var button in self.moveKeysRegistrator) {
+                    if (self.moveKeysRegistrator[button]["keyDownTimeStamp"]) {
+                        self.processKeyUp(button);
+                    }
                 }
-            });
-            self.nullifyMoveKeysHighLevelDuration();
+                break;
+            case "focus":
+                self.focus = true;
+                break;
         }
-        //Invoke mouse controls handlers
-        if (this.lastMouseMove) {
-            self.mouseHandlers.forEach(function (element, index, array) {
-                element.handler.forEach(function (el, index, array) {
-                    el(self.lastMouseMove);
-                });
+    })
 
-            });
-            this.nullifyLastMouseMove();
+    this.processKeyUp = function (keyCode) {
+        if (keyCode in self.moveKeysRegistrator) {
+            var button = self.moveKeysRegistrator[keyCode];
+            button["keyUpTimeStamp"] = new Date();
+            button["duration"] += button["keyUpTimeStamp"].getTime() - button["keyDownTimeStamp"].getTime();
+            button["keyDownTimeStamp"] = null;
         }
     }
 
@@ -371,19 +353,11 @@
     this.addUseHandler = function (handler) {
         this.addKeyHandler("e", handler)
     }
-    //this.nullifyLastMouseMove = function () {
-    //    self.lastMouseMove = null;
-    //}
     this.nullifyMoveKeysRegistratorDuration = function () {
         for (var item in self.moveKeysRegistrator) {
             self.moveKeysRegistrator[item].duration = 0;
         }
     }
-    //this.nullifyMoveKeysHighLevelDuration = function () {
-    //    for (var item in self.moveKeysHighLevelDuration) {
-    //        self.moveKeysHighLevelDuration[item] = 0;
-    //    }
-    //}
     this.nullifyControlsToReport = function () {
         self.controlsToReport["use"] = false;
         self.controlsToReport["weaponSwitch"] = false;

@@ -28,58 +28,10 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         })
     }
 
-    this.moveUp = function (t) {
-        serverProxy.moveBody(0, -1, t);
-    }
-
-    this.moveDown = function (t) {
-        serverProxy.moveBody(0, 1, t);
-    }
-
-    this.moveLeft = function (t) {
-        serverProxy.moveBody(-1, 0, t);
-    }
-
-    this.moveRight = function (t) {
-        serverProxy.moveBody(1, 0, t);
-    }
-
-    this.moveUpRight = function (t) {
-        serverProxy.moveBody(0.707, -0.707, t);
-    }
-
-    this.moveUpLeft = function (t) {
-        serverProxy.moveBody(-0.707, -0.707, t);
-    }
-
-    this.moveDownRight = function (t) {
-        serverProxy.moveBody(0.707, 0.707, t);
-    }
-
-    this.moveDownLeft = function (t) {
-        serverProxy.moveBody(-0.707, 0.707, t);
-    }
-    
-    this.shoot = function () {
-        serverProxy.shoot()
-    }
-
-    this.changeWeapon = function () {
-        serverProxy.changeWeapon()
-    }
-
     this.handleMouseMove = function (e) {
         return self.viewManager.calculatePlayerDirectionVector(new Point(e.clientX, e.clientY))
     }
-
-    this.useHandler = function () {
-        serverProxy.use()
-    }
-
-    this.changeDirHandler = function (newDirection) {
-        self.serverProxy.changeBodyDirection(newDirection.x, newDirection.y)
-    }
-
+    
     this.handleLoadPlayer = function (player) {
         return new Promise(function(resolve, reject) {
             self.player = player
@@ -99,19 +51,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         self.gameWorldManager.init(self.player, self.serverFramesQueue)
         viewManager.setTarget(self.gameWorldManager.player)
 
-        //controlsManager.addMoveUpHandler(self.moveUp)
-        //controlsManager.addMoveDownHandler(self.moveDown)
-        //controlsManager.addMoveRightHandler(self.moveRight)
-        //controlsManager.addMoveLeftHandler(self.moveLeft)
-        //controlsManager.addMoveUpLeftHandler(self.moveUpLeft)
-        //controlsManager.addMoveUpRightHandler(self.moveUpRight)
-        //controlsManager.addMoveDownLeftHandler(self.moveDownLeft)
-        //controlsManager.addMoveDownRightHandler(self.moveDownRight)
-        //controlsManager.addShootHandler(self.shoot)
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
-        //controlsManager.addChangeWeaponHandler(self.changeWeapon)
-        //controlsManager.addUseHandler(self.useHandler)
-        //controlsManager.addChangeDirectionHandler(self.changeDirHandler)
 
         // Start game loop
         self.clientLoop = setInterval(function () { self.loop() }, self.gameContext.renderLoopTimeout)
