@@ -11,7 +11,7 @@ namespace SlowpokeHubs
 {
     public interface IPlayerContainer
     {
-        IPlayerBodyFacade Player { get; set; }
+        PlayerBody Player { get; set; }
         IMapTile PreviousTile { get; set; }
     }
 }

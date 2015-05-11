@@ -49,15 +49,15 @@ namespace SlowpokeHubs
             }
         }
 
-		public IPlayerBodyFacade LoadPlayer()
+        public BodyFacade LoadPlayer()
 		{
             var playerContainer = _connectionsPlayerMapping[Context.ConnectionId];
             MechanicEngine.StartGame(playerContainer.Player);
 
-            return playerContainer.Player;
+            return BodyFacade.FromBody(playerContainer.Player);
 		}
 
-		public IViewFrame GetFrame()
+        public ViewFrameFacade GetFrame()
 		{
             //Get new frame
             var playerContainer = _connectionsPlayerMapping[Context.ConnectionId];
@@ -71,7 +71,7 @@ namespace SlowpokeHubs
                 playerContainer.PreviousTile = currentTile;
             }
 
-            return newframe;
+            return ViewFrameFacade.FromViewFrame(newframe);
 		}
 
 		public void MoveBody(double x, double y, int duration)
@@ -154,7 +154,17 @@ namespace SlowpokeHubs
 
 		public override Task OnConnected ()
 		{
-            Guid userId = Guid.Parse(((ClaimsIdentity)Context.User.Identity).FindFirst(v => v.Type == ClaimTypes.NameIdentifier).Value);
+            string userIdStr = Context.Request.Headers["playerId"];
+            Guid userId;
+
+            if (userIdStr != null)
+            {
+                userId = Guid.Parse(userIdStr);
+            }
+            else
+            {
+                userId = Guid.Parse(((ClaimsIdentity)Context.User.Identity).FindFirst(v => v.Type == ClaimTypes.NameIdentifier).Value);
+            }
 
            var player = MechanicEngine.LoadPlayerBody(userId);
            var playerContainer = new PlayerContainer(

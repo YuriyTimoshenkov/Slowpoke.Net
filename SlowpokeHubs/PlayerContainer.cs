@@ -11,12 +11,12 @@ namespace SlowpokeHubs
 {
     public class PlayerContainer : IPlayerContainer
     {
-        public IPlayerBodyFacade Player { get; set; }
+        public PlayerBody Player { get; set; }
 
         public IMapTile PreviousTile { get; set; }
 
 
-        public PlayerContainer(IPlayerBodyFacade player, IMapTile previousTile)
+        public PlayerContainer(PlayerBody player, IMapTile previousTile)
         {
             Player = player;
             PreviousTile = previousTile;

@@ -25,6 +25,7 @@ namespace SlowpokeEngine.Engines
 		private readonly IBodyBuilder _bodyBuilder;
         private IGameLevelRepository _gameLevelRepository;
         private Action<IPlayerBodyFacade> _playerStateHandler;
+        private Random _randomizer = new Random();
 
         
         private readonly ActionHandlersManager<Func<GameCommand, PhysicsProcessingResult,bool>, Action<GameCommand, PhysicsProcessingResult>> _actionHandlers
@@ -93,7 +94,7 @@ namespace SlowpokeEngine.Engines
 
             _playerStateHandler = playerStateHandler;
 			_cancelationTokenSource = new CancellationTokenSource();
-			new Task(EventLoop, _cancelationTokenSource.Token).Start();
+            Task.Factory.StartNew(EventLoop, _cancelationTokenSource.Token);
 		}
 
 		public void StopEngine()
@@ -111,7 +112,7 @@ namespace SlowpokeEngine.Engines
             }
 		}
 
-		public IPlayerBodyFacade LoadPlayerBody(Guid characterId)
+		public PlayerBody LoadPlayerBody(Guid characterId)
 		{
             var player = _bodyBuilder.LoadPlayerBody(characterId, this);
 
@@ -133,7 +134,10 @@ namespace SlowpokeEngine.Engines
 
                     if (body is PlayerBody)
                     {
+                        System.Diagnostics.Debug.WriteLine(string.Format("Player {0} start releasing.", body.Id));
                         _playerStateHandler(body as IPlayerBodyFacade);
+
+                        System.Diagnostics.Debug.WriteLine(string.Format("Player {0} released.", body.Id));
                     }
                 }
             }
@@ -142,10 +146,26 @@ namespace SlowpokeEngine.Engines
         public void StartGame(IPlayerBodyFacade player)
         {
             var playerBody = player as PlayerBody;
-            playerBody.Shape = new ShapeCircle(20, new Point(275, 575));
+
+            //Calculate start position
+            var notSolidTiles = Map.Tiles.SelectMany(v => v).Where(v => v.Solid == TileSolidityType.NotSolid);
+            var tilesCount = notSolidTiles.Count();
+
+            if (tilesCount > 0)
+            {
+                var tileNumber = _randomizer.Next(tilesCount - 1);
+                var tile = notSolidTiles.ElementAt(tileNumber);
+
+                playerBody.Shape = new ShapeCircle(20, new Point(
+                    tile.Shape.Position.X,
+                    tile.Shape.Position.Y));
+            }
+
             playerBody.Heal(playerBody.LifeMax);
 
             AddBody(playerBody);
+
+            System.Diagnostics.Debug.WriteLine(string.Format("Player {0} game started.", player.Id));
         }
 
 		public IPlayerBodyFacade GetPlayerBody(Guid playerId)

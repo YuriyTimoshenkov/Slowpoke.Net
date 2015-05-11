@@ -49,7 +49,7 @@
     }
 
     this.createWeaponText = function (point) {
-        var weaponName = this.weapon["Name"];
+        var weaponName = this.weapon;
         this.weaponText = new createjs.Text(weaponName, this.weaponTextSize + "px Arial", this.lifeTextColor);
         this.weaponText.x = point.x;
         this.weaponText.y = point.y;

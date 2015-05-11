@@ -65,7 +65,7 @@
     }
 
     this.updateMenu = function () {
-        if (!this.menu.weapon || this.menu.weapon["Name"] !== this.target.currentWeapon["Name"]) {
+        if (!this.menu.weapon || this.menu.weapon !== this.target.currentWeapon) {
             this.menu.updateWeapon(this.target.currentWeapon, this.weaponPoint);
         }
 

@@ -16,14 +16,14 @@ namespace SlowpokeEngine
         IMap Map { get; }
         void StartEngine(Action<IPlayerBodyFacade> playerStateHandler);
 		void StopEngine();
-		IPlayerBodyFacade LoadPlayerBody(Guid characterId);
+		PlayerBody LoadPlayerBody(Guid characterId);
 		void ReleaseBody(Guid playerId);
 		IPlayerBodyFacade GetPlayerBody(Guid playerId);
-        void ProcessGameCommand(GameCommand command);
         void AddBody(Body body);
         void AddCommand(GameCommand command);
         void StartGame(IPlayerBodyFacade player);
         ActiveBody FindBody(Guid bodyId);
+        void ProcessGameCommand(GameCommand command);
 	}
 }
 
