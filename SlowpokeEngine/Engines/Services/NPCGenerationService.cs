@@ -31,7 +31,8 @@ namespace SlowpokeEngine.Engines.Services
             {
                 foreach (var i in Enumerable.Range(0, newNPCCount))
                 {
-                    var notSolidTiles = _mechanicEngine.Map.Tiles.SelectMany(v => v).Where(v => v.Solid == Map.TileSolidityType.NotSolid);
+                    var notSolidTiles = _mechanicEngine.Map.Tiles.SelectMany(v => v).Where(v => 
+                        v.Solid == Map.TileSolidityType.NotSolid && v.Bodies.Count == 0);
                     var tilesCount = notSolidTiles.Count();
 
                     if (tilesCount > 0)

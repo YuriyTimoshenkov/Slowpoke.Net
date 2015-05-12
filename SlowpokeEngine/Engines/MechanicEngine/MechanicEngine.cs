@@ -148,7 +148,8 @@ namespace SlowpokeEngine.Engines
             var playerBody = player as PlayerBody;
 
             //Calculate start position
-            var notSolidTiles = Map.Tiles.SelectMany(v => v).Where(v => v.Solid == TileSolidityType.NotSolid);
+            var notSolidTiles = Map.Tiles.SelectMany(v => v).Where(v => 
+                v.Solid == TileSolidityType.NotSolid && v.Bodies.Count == 0);
             var tilesCount = notSolidTiles.Count();
 
             if (tilesCount > 0)
