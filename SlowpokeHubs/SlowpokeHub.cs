@@ -122,9 +122,23 @@ namespace SlowpokeHubs
         public void ProcessInputEvents(InputEvent inputEvent)
         {
             //Process move
-            if(inputEvent.move != null)
+            if(inputEvent.commands != null)
             {
-                MoveBody(inputEvent.move.Direction.X, inputEvent.move.Direction.Y, inputEvent.move.Duration);
+                foreach(InputCommand command in inputEvent.commands)
+                {
+                    switch(command.Name)
+                    {
+                        case "Move":
+                            {
+                                MoveBody(
+                                    double.Parse(command.Data.FirstOrDefault(v => v[0] == "X")[1]),
+                                    double.Parse(command.Data.FirstOrDefault(v => v[0] == "Y")[1]),
+                                    int.Parse(command.Data.FirstOrDefault(v => v[0] == "Duration")[1]));
+                                break;
+                            }
+                        default: break;
+                    }
+                }
             }
 
             //Process change direction

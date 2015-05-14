@@ -47,6 +47,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
     this.handleLoadMap = function (serverMap) {
         self.gameWorldManager = new gameWorldManagerFactory().createGameWorldManager(serverMap)
+        self.mechanicEngine = new mechanicEngineFactory().createMechanicEngine(self.gameWorldManager);
 
         self.gameWorldManager.init(self.player, self.serverFramesQueue)
         viewManager.setTarget(self.gameWorldManager.player)
@@ -97,6 +98,17 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
     this.loop = function () {
         self.gameContext.fps = self.calcFPS();
+
+        var clientEventData = self.controlsManager.handleControlsMove();
+        if (clientEventData.move !== undefined) {
+            self.mechanicEngine.addCommand(new CommandMove(
+                self.gameWorldManager.player.id,
+                clientEventData.move.duration,
+                clientEventData.move.direction
+                ));
+        }
+        self.mechanicEngine.update();
+
         this.gameWorldManager.updateWorld();
         this.viewManager.render(this.gameWorldManager.getCurrentFrame());
     }
@@ -108,8 +120,11 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         return Math.round(1000 / deltaTime);
     }
 
-    this.processInputEvents = function () {
-        self.serverProxy.processInputEvents(self.controlsManager.handleControls());
+    this.processInputEvents = function (frame) {
+        var clientEventData = self.controlsManager.handleControlsCommon();
+        clientEventData.commands = self.mechanicEngine.syncWithServer(frame);
+
+        self.serverProxy.processInputEvents(clientEventData);
     }
 
     this.getFrameFromServer = function () {
@@ -127,11 +142,18 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         else {
             self.lastServerSync = new Date()
 
-            this.processInputEvents();
             this.serverProxy.getFrame(function (obj) {
-                self.serverFramesQueue.push(obj)
+                try{
+                    self.serverFramesQueue.push(obj)
+
+                    self.processInputEvents(obj);
+                }
+                catch(ex)
+                {
+                    console.log("Oppa " + ex)
+                }
                 self.getFrameFromServer()
-            }, function (error) { console.log("Oppa" + error) });
+            }, function (error) { console.log("Oppa " + error) });
     }
 }
 }

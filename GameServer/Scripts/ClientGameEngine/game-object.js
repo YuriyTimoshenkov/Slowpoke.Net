@@ -2,7 +2,7 @@
  * Created by dimapct on 15.02.2015.
  */
 
-function GameObject(name, id, objectType, position, direction, shapeRadius, life, maxLife, currentWeapon, canvasXY) {
+function GameObject(name, id, objectType, position, direction, shapeRadius, life, maxLife, currentWeapon, canvasXY, speed) {
     var self = this;
 
     this.name = name;
@@ -16,6 +16,7 @@ function GameObject(name, id, objectType, position, direction, shapeRadius, life
     this.life = life || 0;
     this.maxLife = maxLife || 0;
     this.score = 0;
+    this.speed = speed;
     
     this.weaponImage = null;
     this.currentWeapon = currentWeapon;
