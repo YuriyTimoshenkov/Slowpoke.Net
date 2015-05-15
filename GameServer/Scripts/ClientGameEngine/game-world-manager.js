@@ -44,9 +44,9 @@
         // Create and update
         for (var objId in frameObjectsDict) {
             var objData = frameObjectsDict[objId];
-            var filtered = this.world.allGameObjects.filter(function (obj) { return objId == obj.id });
-            if (filtered.length > 0) this.updateObject(objData);
-            else this.createObject(objData)
+                var filtered = this.world.allGameObjects.filter(function (obj) { return objId == obj.id });
+                if (filtered.length > 0) this.updateObject(objData);
+                else this.createObject(objData)
         }
     }
 
@@ -76,7 +76,8 @@
         var obj = this.world.allGameObjects.filter(function (obj) { return objId == obj.id })[0];
 
         // Update position
-        obj.gameRect.center = objData["Shape"]["Position"];
+        if (obj.objectType !== "PlayerBody")
+            obj.gameRect.center = objData["Shape"]["Position"];
 
         if (obj.objectType === "NPCAI" || obj.objectType === "PlayerBody" || obj.objectType === "Bullet") {
             // Update direction

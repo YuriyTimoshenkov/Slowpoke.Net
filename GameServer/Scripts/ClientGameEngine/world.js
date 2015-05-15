@@ -35,7 +35,7 @@ function World(serverMap) {
             var canvasXY = new Point($(document).width() / 2,
                                      $(document).height() / 2);
             console.log("PlayerBody Canvas Point: (" + canvasXY.x + ", " + canvasXY.y + ")");
-            obj = new GameObject(name, id, objectType, position, direction, shapeRadius, life, lifeMax, currentWeapon, canvasXY)
+            obj = new GameObject(name, id, objectType, position, direction, shapeRadius, life, lifeMax, currentWeapon, canvasXY, data.Speed)
         }
 
         else if (objectType == "Bullet" || objectType == "BulletDynamite") {

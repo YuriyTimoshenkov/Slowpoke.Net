@@ -37,3 +37,9 @@ function gameWorldManagerFactory() {
         return new gameWorldManager(world)
     }
 }
+
+function mechanicEngineFactory() {
+    this.createMechanicEngine = function (gameWorldManager) {
+        return new MechanicEngine(gameWorldManager)
+    }
+}

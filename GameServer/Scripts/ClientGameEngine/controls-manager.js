@@ -106,7 +106,7 @@
         }
     }
 
-    this.handleControls = function () {
+    this.handleControlsCommon = function () {
         self.processMoveKeysRegistrator();
         self.nullifyMoveKeysRegistratorDuration();
 
@@ -116,6 +116,15 @@
         controlsToReport.shoot = self.controlsToReport.shoot;
         controlsToReport.changeDirection = self.controlsToReport.changeDirection;
         controlsToReport.weaponSwitch = self.controlsToReport.weaponSwitch;
+ 
+        self.nullifyControlsToReport();
+        return controlsToReport
+    }
+
+    this.handleControlsMove = function () {
+        self.processMoveKeysRegistrator();
+        self.nullifyMoveKeysRegistratorDuration();
+        var controlsToReport = {};
 
         // we presume that player could go only 1 direction per report
         var moves = self.controlsToReport.move
@@ -127,8 +136,11 @@
                 };
             }
         }
- 
-        self.nullifyControlsToReport();
+
+        for (var dir in self.controlsToReport["move"]) {
+            self.controlsToReport["move"][dir]["duration"] = 0;
+        }
+
         return controlsToReport
     }
 
@@ -326,8 +338,5 @@
         self.controlsToReport["weaponSwitch"] = false;
         self.controlsToReport["shoot"] = false;
         self.controlsToReport["changeDirection"] = null;
-        for (var dir in self.controlsToReport["move"]) {
-            self.controlsToReport["move"][dir]["duration"] = 0;
-        }
     }
 }

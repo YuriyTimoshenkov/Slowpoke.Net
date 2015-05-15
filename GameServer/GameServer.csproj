@@ -142,11 +142,13 @@
     <Content Include="Scripts\ClientGameEngine\game-types.js" />
     <Content Include="Scripts\ClientGameEngine\game-world-manager.js" />
     <Content Include="Scripts\ClientGameEngine\map-cell.js" />
+    <Content Include="Scripts\ClientGameEngine\mechanic-engine.js" />
     <Content Include="Scripts\ClientGameEngine\menu.js" />
     <Content Include="Scripts\ClientGameEngine\weapon.js" />
     <Content Include="Scripts\Resources\Images\cowboy.js" />
     <Content Include="Scripts\Resources\Images\policeman.js" />
-    <Content Include="Scripts\ClientGameEngine\qunit-tests.js" />
+    <Content Include="Scripts\Tests\mechanicengine-tests.js" />
+    <Content Include="Scripts\Tests\qunit-tests.js" />
     <Content Include="Scripts\ClientGameEngine\server-proxy.js" />
     <Content Include="Scripts\ClientGameEngine\utils.js" />
     <Content Include="Scripts\ClientGameEngine\view-manager.js" />
