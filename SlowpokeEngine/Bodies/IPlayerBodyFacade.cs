@@ -10,7 +10,7 @@ namespace SlowpokeEngine.Bodies
 
         BodyState State { get; }
 
-        void Move(int commandId, Vector direction, TimeSpan duration);
+        void Move(long commandId, Vector direction, TimeSpan duration);
         void ChangeDirection(Vector direction);
         void Shoot();
         void ChangeWeapon();

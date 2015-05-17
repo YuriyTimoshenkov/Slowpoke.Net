@@ -63,7 +63,7 @@ namespace SlowpokeEngine.Bodies
         //Points per second
         public int Speed { get; private set; }
 
-        public int LastProcessedCommandId { get; set; }
+        public long LastProcessedCommandId { get; set; }
 
 		public ActiveBody(
 			Shape shape, 

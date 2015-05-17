@@ -21,8 +21,8 @@ function serverProxySignalR(url) {
             gameProxy.server.loadPlayer().done(resolve).fail(reject);
         })
     }
-    this.getFrame = function (doneHandler, failHandler) {
-        gameProxy.server.getFrame().done(doneHandler).fail(failHandler);
+    this.syncState = function (inputData, doneHandler, failHandler) {
+        gameProxy.server.syncState(inputData).done(doneHandler).fail(failHandler);
     };
     this.getMap = function () {
         return new Promise(function(resolve, reject) {
@@ -37,11 +37,6 @@ function serverProxySignalR(url) {
             gameProxy.server.moveBody(x, y, duration)
         }
     }
-    this.processInputEvents = function (obj) {
-        gameProxy.server.processInputEvents(obj);
-        //console.log(JSON.stringify(obj));
-    }
-
 
     this.changeBodyDirection = function (dx, dy) {
         gameProxy.server.changeBodyDirection(dx, dy)

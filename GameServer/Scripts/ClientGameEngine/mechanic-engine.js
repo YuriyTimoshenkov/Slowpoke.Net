@@ -16,13 +16,7 @@
         if (commandToProcess !== undefined) {
             commandToProcess.process(self);
 
-            if (self.commandQueueProcessed.length > 0) {
-                //set command id
-                commandToProcess.id = self.commandQueueProcessed[self.commandQueueProcessed.length - 1].id + 1;
-            }
-            else {
-                commandToProcess.id = 1;
-            }
+            commandToProcess.id = new Date().getTime();
 
             self.commandQueueProcessed.push(commandToProcess);
         }
@@ -38,14 +32,21 @@
                 return item.id === currentPlayer.LastProcessedCommandId;
             })[0];
 
-            if (firstSyncedCommand !== undefined || currentPlayer.LastProcessedCommandId === 0) {
+            if (self.commandQueueProcessed.length > 0 && self.commandQueueProcessed[0].id < currentPlayer.LastProcessedCommandId) {
+                self.commandQueueProcessed = []
+            }
+            else {
                 //Remove all commands till synced one
                 self.commandQueueProcessed = self.commandQueueProcessed.slice(
-                    self.commandQueueProcessed.indexOf(firstSyncedCommand),
+                    self.commandQueueProcessed.indexOf(firstSyncedCommand) + 1,
                     self.commandQueueProcessed.length
                     );
+            }
 
                 //Update body
+                var xStart = self.gameWorldManager.player.gameRect.centerx;
+                var yStart = self.gameWorldManager.player.gameRect.centery;
+
                 self.gameWorldManager.player.gameRect.centerx = currentPlayer.Shape.Position.X;
                 self.gameWorldManager.player.gameRect.centery = currentPlayer.Shape.Position.Y;
 
@@ -60,10 +61,14 @@
                 self.commandQueueProcessed.forEach(function (item) {
                     item.process(self);
                     item.syncedWithServer = true;
-                    });
+                });
+
+                if ((Math.abs(self.gameWorldManager.player.gameRect.centerx - xStart)) > 10) {
+                    console.log('Player X diff mod: ' + (Math.abs(self.gameWorldManager.player.gameRect.centerx - xStart)));
+                    console.log('Player Y diff mod: ' + (Math.abs(self.gameWorldManager.player.gameRect.centery - yStart)));
+                }
 
                 return result;
-            }
         }
         else
         {

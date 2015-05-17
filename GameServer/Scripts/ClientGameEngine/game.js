@@ -60,7 +60,10 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         self.gameContext.state = 'playing'
 
         // Start listening server
-        self.getFrameFromServer()
+        var clientEventData = self.controlsManager.handleControlsCommon();
+        clientEventData.commands = [];
+
+        self.syncState(clientEventData);
     }
 
     this.errorHandler = function (error) {
@@ -100,6 +103,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         self.gameContext.fps = self.calcFPS();
 
         var clientEventData = self.controlsManager.handleControlsMove();
+
         if (clientEventData.move !== undefined) {
             self.mechanicEngine.addCommand(new CommandMove(
                 self.gameWorldManager.player.id,
@@ -120,14 +124,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         return Math.round(1000 / deltaTime);
     }
 
-    this.processInputEvents = function (frame) {
-        var clientEventData = self.controlsManager.handleControlsCommon();
-        clientEventData.commands = self.mechanicEngine.syncWithServer(frame);
-
-        self.serverProxy.processInputEvents(clientEventData);
-    }
-
-    this.getFrameFromServer = function () {
+    this.syncState = function (clientEvents) {
         var currentTime = new Date()
         var timeDiff = currentTime - self.lastServerSync
 
@@ -136,28 +133,31 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         
         if (timeDiff <= self.gameContext.serverLoopTimeout) {
             setTimeout(function () {
-                self.getFrameFromServer()
+                self.syncState(clientEvents)
             }, self.gameContext.serverLoopTimeout - timeDiff)
         }
         else {
             self.lastServerSync = new Date()
 
-            this.serverProxy.getFrame(function (obj) {
+            this.serverProxy.syncState(clientEvents, function (state) {
                 try {
-                    self.serverFramesQueue.push(obj)
+                    //Process state with old mechanic
+                    self.serverFramesQueue.push(state);
+                    var clientEventData = self.controlsManager.handleControlsCommon();
 
-                    self.processInputEvents(obj);
+                    //Process state with new mechanic
+                    clientEventData.commands = self.mechanicEngine.syncWithServer(state);
+
+                    self.syncState(clientEventData);
                 }
                 catch(ex)
                 {
-                    console.log("Oppa " + ex)
+                    console.log("Error: " + ex)
                 }
-
-                self.getFrameFromServer()
             }, function (error) {
-                console.log("Oppa " + error)
+                console.log("Error: " + error)
 
-                self.getFrameFromServer();
+                self.syncState(clientEvents);
             });
     }
 }
