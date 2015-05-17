@@ -49,7 +49,7 @@ namespace SlowpokeEngine.Weapons
 
                 if (duration.TotalMilliseconds > 10)
                 {
-                    _mechanicEngine.AddCommand(new GameCommandMove(this.Direction, _mechanicEngine, this, duration));
+                    _mechanicEngine.AddCommand(new GameCommandMove(0, this.Direction, _mechanicEngine, this, duration));
 
                     _startMove = DateTime.Now;
                 }

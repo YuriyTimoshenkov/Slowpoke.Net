@@ -6,6 +6,7 @@ namespace SlowpokeEngine.Actions
 {
 	public abstract class GameCommand
 	{
+        public long Id { get; set; }
 		public Dictionary<string, object> Parameters { get; set; }
         private IMechanicEngine _mechanigEngine;
         public ActiveBody ActiveBody {get; private set;}

@@ -73,7 +73,7 @@ namespace SlowpokeEngine.Bodies
 
                     if (duration.TotalMilliseconds > 10)
                     {
-                        _mechanicEngine.AddCommand(new GameCommandMove(newDirection, _mechanicEngine, this, duration));
+                        _mechanicEngine.AddCommand(new GameCommandMove(0, newDirection, _mechanicEngine, this, duration));
 
                         _startMove = DateTime.Now;
                     }

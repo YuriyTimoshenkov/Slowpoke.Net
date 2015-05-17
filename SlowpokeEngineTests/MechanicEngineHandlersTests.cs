@@ -30,7 +30,7 @@ namespace SlowpokeEngineTests
             var bulletCollisionHandler = handlers.BuildBulletCollisionHandler(mechanicEngine);
             var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0,0)), new Vector(1, 1), ownerId, mechanicEngine);
 
-            var gameCommand = new GameCommandMove(new Vector(1,1), mechanicEngine, bullet, new TimeSpan());
+            var gameCommand = new GameCommandMove(0, new Vector(1,1), mechanicEngine, bullet, new TimeSpan());
             var npc = Substitute.For<NPCAI>(null, mechanicEngine, 0, 100, 100, 1);
             
             var physicsResult = new PhysicsProcessingResultCollision(new List<Body>() {npc});
@@ -58,7 +58,7 @@ namespace SlowpokeEngineTests
             var bulletCollisionHandler = handlers.BuildBulletCollisionHandler(mechanicEngine);
             var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0, 0)), new Vector(1, 1), ownerId, mechanicEngine);
 
-            var gameCommand = new GameCommandMove(new Vector(1, 1), mechanicEngine, bullet, new TimeSpan());
+            var gameCommand = new GameCommandMove(0, new Vector(1, 1), mechanicEngine, bullet, new TimeSpan());
             var npc = Substitute.For<NPCAI>(null, mechanicEngine, 0, 100, 100, 1);
 
             var physicsResult = new PhysicsProcessingResultCollision(new List<Body>() { player2 });
@@ -81,7 +81,7 @@ namespace SlowpokeEngineTests
             var bulletCollisionHandler = handlers.BuildBulletCollisionHandler(mechanicEngine);
             var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0, 0)), new Vector(1, 1), Guid.NewGuid(), mechanicEngine);
 
-            var gameCommand = new GameCommandMove(new Vector(1, 1), mechanicEngine, bullet, new TimeSpan());
+            var gameCommand = new GameCommandMove(0, new Vector(1, 1), mechanicEngine, bullet, new TimeSpan());
             var npc = Substitute.For<NPCAI>(null, mechanicEngine, 0, 100, 100, 1);
 
             var physicsResult = new PhysicsProcessingResultCollision(new List<Body>() { usableBody });

@@ -34,7 +34,7 @@ namespace SlowpokeEngineTests
             PlayerBody player = new PlayerBody(new ShapeCircle(10, playerStartPosition), new Vector(1, 1), null, null, 100, 100, "Bob", 10, playerSpeed);
             
             TimeSpan moveDuration = new TimeSpan(0,0,1);
-            GameCommandMove moveCommand = new GameCommandMove(new Vector(0,1), null, player, moveDuration);
+            GameCommandMove moveCommand = new GameCommandMove(0, new Vector(0,1), null, player, moveDuration);
 
             //Act
             pe.ProcessBodyAction(moveCommand);

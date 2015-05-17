@@ -31,9 +31,9 @@ namespace SlowpokeEngine.Engines.Map
                 {
                     List<Body> resultBodies = new List<Body>();
                     //Add active bodies
-                    foreach (var tileBody in tile.Bodies.Where(v => v != body).Select(v => v).ToList())
+                    foreach (var tileBody in tile.Bodies.Where(v => v.Value != body).Select(v => v).ToList())
                     {
-                        resultBodies.Add(tileBody);
+                        resultBodies.Add(tileBody.Value);
                     }
 
                     //add tile if solid
@@ -49,33 +49,40 @@ namespace SlowpokeEngine.Engines.Map
 
         public void AddBody(Body body)
         {
-            var bodyTile = GetBodyTile(body);
+            var bodyTile = CalculateBodyTile(body);
 
             Bodies.TryAdd(body.Id, body);
-            bodyTile.Bodies.Add(body);
+            bodyTile.Bodies.TryAdd(body.Id, body);
             _bodiesToTilesCollection.TryAdd(body.Id, bodyTile);
         }
         public void UpdateActiveBody(ActiveBody body)
         {
             IMapTile mapTile;
+            var bodyToRemove = body as Body;
 
             if(_bodiesToTilesCollection.TryGetValue(body.Id, out mapTile))
             {
-                var bodyToRemove = body as Body;
 
-                mapTile.Bodies.TryTake(out bodyToRemove);
-
-                var bodyTile = GetBodyTile(body);
-
-                bodyTile.Bodies.Add(body);
-                
-                _bodiesToTilesCollection.AddOrUpdate(body.Id, bodyTile, (k, v) =>
+                if (mapTile.Bodies.TryRemove(body.Id, out bodyToRemove))
                 {
-                    return bodyTile;
-                });
+                    var bodyTile = CalculateBodyTile(body);
+
+                    if (bodyTile.Bodies.TryAdd(body.Id, body))
+                    {
+                        if (bodyTile.Bodies.Count(v => v.Key == bodyToRemove.Id) == 0)
+                        {
+                            System.Diagnostics.Debug.WriteLine(string.Format("Players new tile X:{0}, Y: {0} ", bodyTile.Position.X, bodyTile.Position.Y));
+                        }
+
+                        _bodiesToTilesCollection.AddOrUpdate(body.Id, bodyTile, (k, v) =>
+                        {
+                            return bodyTile;
+                        });
+                    }
+                }
             }
         }
-        private IMapTile GetBodyTile(Body body)
+        private IMapTile CalculateBodyTile(Body body)
         {
             var x = (int)body.Shape.Position.X / Map.CellSize;
             var y = (int)body.Shape.Position.Y / Map.CellSize;
@@ -121,9 +128,7 @@ namespace SlowpokeEngine.Engines.Map
                
                 if(_bodiesToTilesCollection.TryRemove(bodyId, out mapTile))
                 {
-                    mapTile.Bodies.TryTake(out body);
-
-                    return true;
+                    return mapTile.Bodies.TryRemove(body.Id, out body);
                 }
             }
 

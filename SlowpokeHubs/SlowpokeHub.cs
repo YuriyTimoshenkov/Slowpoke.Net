@@ -57,29 +57,12 @@ namespace SlowpokeHubs
             return BodyFacade.FromBody(playerContainer.Player);
 		}
 
-        public ViewFrameFacade GetFrame()
-		{
-            //Get new frame
-            var playerContainer = _connectionsPlayerMapping[Context.ConnectionId];
-            var newframe = MechanicEngine.ViewPort.GetFrame(playerContainer.Player.Id, playerContainer.PreviousTile);
-
-            //Update currrent tile
-            var currentTile = MechanicEngine.ViewPort.GetPlayerCurrentTile(playerContainer.Player.Id);
-
-            if (playerContainer.PreviousTile == null || (currentTile != null && playerContainer.PreviousTile.Position != currentTile.Position))
-            {
-                playerContainer.PreviousTile = currentTile;
-            }
-
-            return ViewFrameFacade.FromViewFrame(newframe);
-		}
-
-		public void MoveBody(double x, double y, int duration)
+		public void MoveBody(long commandId, double x, double y, int duration)
 		{
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
             if (player != null)
-                player.Move(new Vector(x,y), new TimeSpan(0,0,0,0,duration));
+                player.Move(commandId, new Vector(x,y), new TimeSpan(0,0,0,0,duration));
 		}
 
         public void ChangeBodyDirection(double x, double y)
@@ -119,8 +102,11 @@ namespace SlowpokeHubs
             return MechanicEngine.ViewPort.Map;
         }
 
-        public void ProcessInputEvents(InputEvent inputEvent)
+        public ViewFrameFacade SyncState(InputEvent inputEvent)
         {
+            var playerContainer = _connectionsPlayerMapping[Context.ConnectionId];
+
+            //TODO: migrate all command to this pattern
             //Process move
             if(inputEvent.commands != null)
             {
@@ -131,6 +117,7 @@ namespace SlowpokeHubs
                         case "Move":
                             {
                                 MoveBody(
+                                    command.Id,
                                     double.Parse(command.Data.FirstOrDefault(v => v[0] == "X")[1]),
                                     double.Parse(command.Data.FirstOrDefault(v => v[0] == "Y")[1]),
                                     int.Parse(command.Data.FirstOrDefault(v => v[0] == "Duration")[1]));
@@ -152,6 +139,8 @@ namespace SlowpokeHubs
             if (inputEvent.shoot) { Shoot(); }
 
             if (inputEvent.weaponSwitch) { ChangeWeapon(); }
+
+            return GetFrame(playerContainer);
         }
 
 		public override Task OnDisconnected (bool stopCalled)
@@ -189,5 +178,21 @@ namespace SlowpokeHubs
 
 			return base.OnConnected ();
 		}
+
+        private ViewFrameFacade GetFrame(IPlayerContainer playerContainer)
+        {
+            //Get new frame
+            var newframe = MechanicEngine.ViewPort.GetFrame(playerContainer.Player.Id, playerContainer.PreviousTile);
+
+            //Update currrent tile
+            var currentTile = MechanicEngine.ViewPort.GetPlayerCurrentTile(playerContainer.Player.Id);
+
+            if (playerContainer.PreviousTile == null || (currentTile != null && playerContainer.PreviousTile.Position != currentTile.Position))
+            {
+                playerContainer.PreviousTile = currentTile;
+            }
+
+            return ViewFrameFacade.FromViewFrame(newframe);
+        }
 	}
 }
