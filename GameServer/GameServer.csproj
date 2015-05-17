@@ -139,12 +139,14 @@
     <Content Include="Scripts\ClientGameEngine\factories.js" />
     <Content Include="Scripts\ClientGameEngine\game-context.js" />
     <Content Include="Scripts\ClientGameEngine\game-object-factory.js" />
+    <Content Include="Scripts\ClientGameEngine\game-object.js" />
     <Content Include="Scripts\ClientGameEngine\game-types.js" />
     <Content Include="Scripts\ClientGameEngine\game-world-manager.js" />
     <Content Include="Scripts\ClientGameEngine\map-cell.js" />
     <Content Include="Scripts\ClientGameEngine\mechanic-engine.js" />
     <Content Include="Scripts\ClientGameEngine\menu.js" />
     <Content Include="Scripts\ClientGameEngine\weapon.js" />
+    <Content Include="Scripts\Resources\Images\bottle.js" />
     <Content Include="Scripts\Resources\Images\cowboy.js" />
     <Content Include="Scripts\Resources\Images\policeman.js" />
     <Content Include="Scripts\Tests\mechanicengine-tests.js" />
@@ -170,7 +172,7 @@
     <Content Include="Scripts\ClientGameEngine\config.js" />
     <Content Include="Scripts\ClientGameEngine\game.js" />
     <Content Include="Scripts\ClientGameEngine\game-map.js" />
-    <Content Include="Scripts\ClientGameEngine\game-object.js" />
+    <Content Include="Scripts\ClientGameEngine\game-object2.js" />
     <Content Include="Scripts\ClientGameEngine\world.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />

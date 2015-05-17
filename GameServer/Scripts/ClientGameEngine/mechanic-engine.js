@@ -28,8 +28,8 @@
             self.gameWorldManager.player.gameRect.centerx = currentPlayer[0].Shape.Position.X;
             self.gameWorldManager.player.gameRect.centery = currentPlayer[0].Shape.Position.Y;
 
-            console.log('Player x changed to:' + currentPlayer[0].Shape.Position.X);
-            console.log('Player y changed to:' + currentPlayer[0].Shape.Position.Y);
+            //console.log('Player x changed to:' + currentPlayer[0].Shape.Position.X);
+            //console.log('Player y changed to:' + currentPlayer[0].Shape.Position.Y);
 
             //Recalculate applied commands
             self.commandQueueProcessed.forEach(function (item) {
