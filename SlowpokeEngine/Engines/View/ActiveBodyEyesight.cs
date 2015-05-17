@@ -30,7 +30,7 @@ namespace SlowpokeEngine.Engines
                 var map = _mapEngine.GetSurroundTiles(currentTile, player.ViewZone);
 
                 //Get bodies
-                frame.Bodies = map.SelectMany(tile => tile.Bodies).ToList();
+                frame.Bodies = map.SelectMany(tile => tile.Bodies.Values).ToList();
 
                 if (previousTile == null || (currentTile != null && currentTile.Position != previousTile.Position))
                 {

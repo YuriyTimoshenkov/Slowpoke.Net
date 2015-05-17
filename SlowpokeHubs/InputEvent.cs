@@ -17,6 +17,7 @@ namespace SlowpokeHubs
 
     public class InputCommand
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public IList<IList<string>> Data { get; set; }
     }

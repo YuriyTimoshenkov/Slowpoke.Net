@@ -143,7 +143,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
             self.lastServerSync = new Date()
 
             this.serverProxy.getFrame(function (obj) {
-                try{
+                try {
                     self.serverFramesQueue.push(obj)
 
                     self.processInputEvents(obj);
@@ -152,8 +152,13 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
                 {
                     console.log("Oppa " + ex)
                 }
+
                 self.getFrameFromServer()
-            }, function (error) { console.log("Oppa " + error) });
+            }, function (error) {
+                console.log("Oppa " + error)
+
+                self.getFrameFromServer();
+            });
     }
 }
 }

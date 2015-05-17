@@ -71,6 +71,10 @@ namespace SlowpokeEngine.Engines
                     {
                         //Execute command
                         nextCommand.Execute();
+
+                        //TODO: when all command would be implemented on client side, remove this shit
+                        if (nextCommand.Id != 0)
+                            nextCommand.ActiveBody.LastProcessedCommandId = nextCommand.Id;
                     }
                     else
                     {
@@ -83,7 +87,7 @@ namespace SlowpokeEngine.Engines
                 }
                 catch (Exception exp)
                 {
-                    //TODO log here exception
+                    System.Diagnostics.Debug.WriteLine(string.Format("Loop error: {0}.", exp.Message));
                 }
             }
 		}

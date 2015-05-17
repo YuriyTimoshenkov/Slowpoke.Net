@@ -25,6 +25,7 @@ namespace SlowpokeHubs
         public ShapeFacade Shape { get; set; }
         //Points per second
         public int Speed { get; set; }
+        public int LastProcessedCommandId { get; set; }
 
         public static BodyFacade FromBody(Body body)
         {
@@ -47,6 +48,7 @@ namespace SlowpokeHubs
                 result.State = aBody.State;
                 result.ViewZone = aBody.ViewZone;
                 result.WeaponsCount = aBody.WeaponsCount;
+                result.LastProcessedCommandId = aBody.LastProcessedCommandId;
             }
 
             if(body is PlayerBody)
