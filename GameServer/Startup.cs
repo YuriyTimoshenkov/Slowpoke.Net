@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Owin;
 using SlowpokeHubs;
 using System;
@@ -31,10 +32,17 @@ namespace GameServer
             GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(18);
             GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(5);
             GlobalHost.Configuration.DefaultMessageBufferSize = int.MaxValue;
-            var hubConfiguration = new HubConfiguration();
-            hubConfiguration.EnableDetailedErrors = true;
-            
-            app.MapSignalR(hubConfiguration);
+
+
+            app.Map("/signalr", map =>
+            {
+                map.UseCors(CorsOptions.AllowAll);
+
+                var hubConfiguration = new HubConfiguration();
+                hubConfiguration.EnableDetailedErrors = true;
+
+                map.RunSignalR(hubConfiguration);
+            });
 
             SlowpokeHub.Run();
         }
