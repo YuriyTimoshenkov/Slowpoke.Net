@@ -39,15 +39,16 @@ namespace NPCClient
         {
             var inputEvent = PlayerEvents[bodyId];
 
-            inputEvent.move = new InputEventMove()
+            inputEvent.commands.Add(new InputCommand()
             {
-                Direction = new InputEventPoint()
+                Name = "Move",
+                Data = new List<IList<string>>()
                 {
-                    X = direction.X,
-                    Y = direction.Y,
-                },
-                Duration = (int)duration.TotalMilliseconds
-            };
+                    new List<string>() { "X", direction.X.ToString() },
+                    new List<string>() { "Y", direction.Y.ToString() },
+                    new List<string>() { "Duration", duration.TotalMilliseconds.ToString() }
+                }
+            });
         }
 
         public void ChangeDirection(Vector direction, Guid bodyId)
