@@ -133,7 +133,7 @@
         if (appliedRule !== undefined) {
             controlsToReport.move = {
                 direction: appliedRule.direction,
-                duration: Math.min(keysduration.map(function (item) { return item.duration; }))
+                duration: Math.min.apply(Math, keysduration.map(function (item) { return item.duration; }))
             };
         }
 
