@@ -17,11 +17,11 @@ function GameMap(serverMap) {
             var gameY = tile.Position.Y * self.cellSize;
 
             var cell = new MapCell([gameX, gameY], self.cellSize, tile.Color);
-            if (tile.Color == "#5EAB00") {
+            if (tile.TileTypeName == "tree") {
                 var data = { "Position": { X: gameX, Y: gameY } }
                 var obj = world.gameObjectFactory.createGameObject(gameTypes.gameObjects.TREE, data);
-                world.allGameObjects.push(obj);
-                //cell.image.addChild(obj.image);
+                //world.allGameObjects.push(obj);
+                cell.image.addChild(obj.image);
             }
             
             self.cells.push(cell)

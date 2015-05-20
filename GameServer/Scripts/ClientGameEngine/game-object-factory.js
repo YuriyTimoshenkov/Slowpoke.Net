@@ -41,8 +41,8 @@
         var imageSize = 280;
         player.image.regX = imageSize / 2;
         player.image.regY = imageSize / 2;
-        player.image.scaleX = 0.4;
-        player.image.scaleY = 0.4;
+        player.image.scaleX = 0.2;
+        player.image.scaleY = 0.2;
         player.image.cache(0, 0, imageSize, imageSize);
 
         return player;
@@ -76,8 +76,8 @@
         var imageSize = 280;
         player.image.regX = imageSize / 2;
         player.image.regY = imageSize / 2;
-        player.image.scaleX = 0.4;
-        player.image.scaleY = 0.4;
+        player.image.scaleX = 0.2;
+        player.image.scaleY = 0.2;
         player.image.cache(0, 0, imageSize, imageSize);
 
         return player;
@@ -107,8 +107,8 @@
         var imageSize = 280;
         npc.image.regX = imageSize / 2;
         npc.image.regY = imageSize / 2;
-        npc.image.scaleX = 0.4;
-        npc.image.scaleY = 0.4;
+        npc.image.scaleX = 0.2;
+        npc.image.scaleY = 0.2;
         npc.image.cache(0, 0, imageSize, imageSize);
 
         return npc;
@@ -130,6 +130,8 @@
         // Assign image
         var bulletImage = new createjs.Shape();
         bulletImage.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#F08200").dc(2, 2, 2);
+        bulletImage.scaleX = 0.5;
+        bulletImage.scaleY = 0.5;
             // KOSTIL 
             // trigger direction update
         bullet.updateDirection(bullet.direction);
@@ -158,8 +160,8 @@
         // Configure image
         var imageWidth = 215.45;
         var imageHeight = 738.3;
-        lifeContainer.image.scaleX = 0.05;
-        lifeContainer.image.scaleY = 0.05;
+        lifeContainer.image.scaleX = 0.03;
+        lifeContainer.image.scaleY = 0.03;
         //lifeContainer.image.cache(0, 0, imageWidth, imageHeight);
 
         return lifeContainer;
@@ -179,8 +181,8 @@
     this.builders[gameTypes.gameObjects.TREE] = function (data) {
         var tree = new GameObject("Tree", -1, "Tree", data["Position"]);
         var obj = new TreeContainer();
-        obj.image.scaleX = 0.2;
-        obj.image.scaleY = 0.2;
+        obj.image.scaleX = 0.06;
+        obj.image.scaleY = 0.06;
         tree.image.addChild(obj.image);
         return tree
     }

@@ -94,9 +94,9 @@
         self.stage.removeAllChildren();
 
         // Add cells
-        //frame.cells.forEach(function (cell) {
-        //        self.stage.addChild(cell.image);
-        //    })
+        frame.cells.forEach(function (cell) {
+                self.stage.addChild(cell.image);
+            })
 
         // Add game objects
         frame.objects.forEach(function (element, index, array) {

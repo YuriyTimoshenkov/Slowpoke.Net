@@ -188,7 +188,6 @@
     <Content Include="Scripts\ClientGameEngine\config.js" />
     <Content Include="Scripts\ClientGameEngine\game.js" />
     <Content Include="Scripts\ClientGameEngine\game-map.js" />
-    <Content Include="Scripts\ClientGameEngine\game-object2.js" />
     <Content Include="Scripts\ClientGameEngine\world.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
