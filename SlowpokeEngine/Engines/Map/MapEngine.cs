@@ -69,11 +69,6 @@ namespace SlowpokeEngine.Engines.Map
 
                     if (bodyTile.Bodies.TryAdd(body.Id, body))
                     {
-                        if (bodyTile.Bodies.Count(v => v.Key == bodyToRemove.Id) == 0)
-                        {
-                            System.Diagnostics.Debug.WriteLine(string.Format("Players new tile X:{0}, Y: {0} ", bodyTile.Position.X, bodyTile.Position.Y));
-                        }
-
                         _bodiesToTilesCollection.AddOrUpdate(body.Id, bodyTile, (k, v) =>
                         {
                             return bodyTile;

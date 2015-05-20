@@ -138,10 +138,7 @@ namespace SlowpokeEngine.Engines
 
                     if (body is PlayerBody)
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Player {0} start releasing.", body.Id));
                         _playerStateHandler(body as IPlayerBodyFacade);
-
-                        System.Diagnostics.Debug.WriteLine(string.Format("Player {0} released.", body.Id));
                     }
                 }
             }
@@ -169,8 +166,6 @@ namespace SlowpokeEngine.Engines
             playerBody.Heal(playerBody.LifeMax);
 
             AddBody(playerBody);
-
-            System.Diagnostics.Debug.WriteLine(string.Format("Player {0} game started.", player.Id));
         }
 
 		public IPlayerBodyFacade GetPlayerBody(Guid playerId)

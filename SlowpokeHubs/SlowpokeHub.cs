@@ -61,8 +61,6 @@ namespace SlowpokeHubs
 		{
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
-            System.Diagnostics.Debug.WriteLine(string.Format(">>>> duration facade {0}", duration.ToString()));
-
             if (player != null)
                 player.Move(commandId, new Vector(x,y), new TimeSpan(0,0,0,0,duration));
 		}

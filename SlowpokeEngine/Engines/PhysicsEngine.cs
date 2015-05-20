@@ -69,11 +69,6 @@ namespace SlowpokeEngine.Engines
                     var previousPosition = body.Shape.Position;
                     body.Shape.Position = moveCommand.Direction.MovePoint(body.Shape.Position, body.Speed * moveCommand.Duration.TotalMilliseconds / 1000.0);
 
-                    System.Diagnostics.Debug.WriteLine(string.Format(">>>> duration {0}", moveCommand.Duration.TotalMilliseconds.ToString()));
-                    System.Diagnostics.Debug.WriteLine(string.Format("Body {0} X to: {1}", body.Id, body.Shape.Position.X));
-                    System.Diagnostics.Debug.WriteLine(string.Format("Body {0} Y to: {1}", body.Id, body.Shape.Position.Y));
-
-
                     //get all bodies for collision checking
                     List<Body> collisionBodies = new List<Body>();
 
