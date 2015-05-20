@@ -41,8 +41,8 @@
         var imageSize = 280;
         player.image.regX = imageSize / 2;
         player.image.regY = imageSize / 2;
-        player.image.scaleX = 0.2;
-        player.image.scaleY = 0.2;
+        player.image.scaleX = 0.4;
+        player.image.scaleY = 0.4;
         player.image.cache(0, 0, imageSize, imageSize);
 
         return player;
@@ -76,8 +76,8 @@
         var imageSize = 280;
         player.image.regX = imageSize / 2;
         player.image.regY = imageSize / 2;
-        player.image.scaleX = 0.2;
-        player.image.scaleY = 0.2;
+        player.image.scaleX = 0.4;
+        player.image.scaleY = 0.4;
         player.image.cache(0, 0, imageSize, imageSize);
 
         return player;
@@ -107,8 +107,8 @@
         var imageSize = 280;
         npc.image.regX = imageSize / 2;
         npc.image.regY = imageSize / 2;
-        npc.image.scaleX = 0.2;
-        npc.image.scaleY = 0.2;
+        npc.image.scaleX = 0.4;
+        npc.image.scaleY = 0.4;
         npc.image.cache(0, 0, imageSize, imageSize);
 
         return npc;
@@ -155,14 +155,17 @@
 
         // Assign image
         var obj = new BottleContainer();
+        obj.image.scaleX = 0.05;
+        obj.image.scaleY = 0.05;
+
         lifeContainer.image.addChild(obj.image);
 
         // Configure image
         var imageWidth = 215.45;
         var imageHeight = 738.3;
-        lifeContainer.image.scaleX = 0.03;
-        lifeContainer.image.scaleY = 0.03;
-        //lifeContainer.image.cache(0, 0, imageWidth, imageHeight);
+        //lifeContainer.image.scaleX = 0.05;
+        //lifeContainer.image.scaleY = 0.05;
+        lifeContainer.image.cache(0, 0, 30, 40);
 
         return lifeContainer;
     }
@@ -184,6 +187,8 @@
         obj.image.scaleX = 0.06;
         obj.image.scaleY = 0.06;
         tree.image.addChild(obj.image);
+        //tree.image.cache(0, 0, imageSize, imageSize);
+        tree.image.cache(0, 0, 60, 60);
         return tree
     }
 
