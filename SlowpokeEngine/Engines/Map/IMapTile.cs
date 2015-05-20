@@ -16,5 +16,6 @@ namespace SlowpokeEngine.Engines.Map
         TileSolidityType Solid { get; }
         Point Position { get; }
         Shape Shape { get; }
+        string TileTypeName { get; }
     }
 }

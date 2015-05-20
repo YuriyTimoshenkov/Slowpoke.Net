@@ -110,6 +110,10 @@ namespace SlowpokeHubs
             //Process move
             if(inputEvent.commands != null)
             {
+                if (inputEvent.commands.Count() > 1)
+                {
+                    Console.WriteLine(">> count {0}", inputEvent.commands.Count());
+                }
                 foreach(InputCommand command in inputEvent.commands)
                 {
                     switch(command.Name)

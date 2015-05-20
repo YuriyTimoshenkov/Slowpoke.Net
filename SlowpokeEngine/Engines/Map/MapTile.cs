@@ -23,14 +23,16 @@ namespace SlowpokeEngine.Engines.Map
         public ConcurrentDictionary<Guid, Body> Bodies { get; private set; }
         public Point Position { get; private set; }
         public Shape Shape { get; private set; }
+        public string TileTypeName { get; private set; }
 
-        public MapTile(string color, TileSolidityType solid, Point position, Shape shape)
+        public MapTile(string color, TileSolidityType solid, Point position, Shape shape, string tileTypeName)
         {
             Color = color;
             Bodies = new ConcurrentDictionary<Guid, Body>();
             Solid = solid;
             Position = position;
             Shape = shape;
+            TileTypeName = tileTypeName;
         }
     }
 }

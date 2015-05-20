@@ -7,7 +7,18 @@
     this.commandQueueProcessed = [];
 
     this.addCommand = function (command) {
-        self.commandQueue.push(command);
+
+        //Try tp merge duplication commands 
+        if (self.commandQueue.length > 0
+            && self.commandQueue[self.commandQueue.length - 1].direction.x === command.direction.x
+            && self.commandQueue[self.commandQueue.length - 1].direction.y === command.direction.y
+            && self.commandQueue[self.commandQueue.length - 1].syncedWithServer === false) {
+
+            self.commandQueue[self.commandQueue.length - 1] += command.duration;
+        }
+        else {
+            self.commandQueue.push(command);
+        }
     }
 
     this.update = function () {
@@ -24,51 +35,52 @@
 
     this.syncWithServer = function (frame) {
         var result = [];
-        var currentPlayer = frame.Bodies.filter(function (item) { return item.Id === self.gameWorldManager.player.id })[0];
+        var playerFromFrame = frame.Bodies.filter(function (item) { return item.Id === self.gameWorldManager.player.id })[0];
 
-        if (currentPlayer !== undefined) {
+        if (playerFromFrame !== undefined) {
             //Find first synced with server command
             var firstSyncedCommand = self.commandQueueProcessed.filter(function (item) {
-                return item.id === currentPlayer.LastProcessedCommandId;
+                return item.id === playerFromFrame.LastProcessedCommandId;
             })[0];
 
-            if (self.commandQueueProcessed.length > 0 && self.commandQueueProcessed[0].id < currentPlayer.LastProcessedCommandId) {
-                self.commandQueueProcessed = []
-            }
-            else {
-                //Remove all commands till synced one
-                self.commandQueueProcessed = self.commandQueueProcessed.slice(
-                    self.commandQueueProcessed.indexOf(firstSyncedCommand) + 1,
-                    self.commandQueueProcessed.length
-                    );
-            }
+            //Remove all commands till synced one
+            self.commandQueueProcessed = self.commandQueueProcessed.slice(
+                self.commandQueueProcessed.indexOf(firstSyncedCommand) + 1,
+                self.commandQueueProcessed.length
+                );
 
-                //Update body
-                var xStart = self.gameWorldManager.player.gameRect.centerx;
-                var yStart = self.gameWorldManager.player.gameRect.centery;
+            //Update body if needed
+            if (firstSyncedCommand !== undefined && !firstSyncedCommand.compareState(playerFromFrame)) {
 
-                self.gameWorldManager.player.gameRect.centerx = currentPlayer.Shape.Position.X;
-                self.gameWorldManager.player.gameRect.centery = currentPlayer.Shape.Position.Y;
-
-                //Prepeare command for server
-                var result = self.commandQueueProcessed.filter(function (item) {
-                    return item.syncedWithServer === false;
-                }).map(function (item) {
-                    return item.toServerCommand();
-                });
+                self.gameWorldManager.player.gameRect.centerx = playerFromFrame.Shape.Position.X;
+                self.gameWorldManager.player.gameRect.centery = playerFromFrame.Shape.Position.Y;
 
                 //Recalculate applied commands
                 self.commandQueueProcessed.forEach(function (item) {
                     item.process(self);
-                    item.syncedWithServer = true;
                 });
 
-                if ((Math.abs(self.gameWorldManager.player.gameRect.centerx - xStart)) > 10) {
-                    console.log('Player X diff mod: ' + (Math.abs(self.gameWorldManager.player.gameRect.centerx - xStart)));
-                    console.log('Player Y diff mod: ' + (Math.abs(self.gameWorldManager.player.gameRect.centery - yStart)));
-                }
+                console.log('[Sync server] Recalculation applied.');
+                console.log('Player X diff mod: ' + (Math.abs(firstSyncedCommand.state.x - playerFromFrame.Shape.Position.X)));
+                console.log('Player Y diff mod: ' + (Math.abs(firstSyncedCommand.state.y - playerFromFrame.Shape.Position.Y)));
+            }
 
-                return result;
+            //Prepeare command for server
+            var resultNotYetsyncedItems = self.commandQueueProcessed.filter(function (item) {
+                return item.syncedWithServer === false;
+            });
+            
+            //Mark as sent
+            resultNotYetsyncedItems.forEach(function (item) {
+                item.syncedWithServer = true;
+            });
+            
+            //Convert to DTO
+            var result = resultNotYetsyncedItems.map(function (item) {
+                return item.toServerCommand();
+            });
+
+            return result;
         }
         else
         {
@@ -83,7 +95,8 @@ function CommandMove(bodyId, duration, direction) {
     var self = this;
     this.duration = duration;
     this.bodyId = bodyId;
-    this.direction = direction;
+    this.direction = new Vector(direction.x, direction.y);
+    this.unitDirection = self.direction.calculateUnitVector();
     this.syncedWithServer = false
 
     this.process = function (mechanicEngine) {
@@ -94,13 +107,19 @@ function CommandMove(bodyId, duration, direction) {
 
         if (bodies !== undefined && bodies.length > 0) {
             var body = bodies[0];
+
             body.gameRect.center = {
-                X: body.gameRect.centerx + body.speed * self.duration * self.direction.x / 1000,
-                Y: body.gameRect.centery + body.speed * self.duration * self.direction.y / 1000
+                X: body.gameRect.centerx + body.speed * self.duration * self.unitDirection.x / 1000,
+                Y: body.gameRect.centery + body.speed * self.duration * self.unitDirection.y / 1000
+            };
+
+            //save state
+            self.state = {
+                x: body.gameRect.centerx,
+                y: body.gameRect.centery,
             };
 
             console.log('Key duration:' + self.duration);
-            //console.log('Player y changed to:' + currentPlayer[0].Shape.Position.Y);
         }
     }
 
@@ -114,4 +133,9 @@ function CommandMove(bodyId, duration, direction) {
                 ["Duration", self.duration ]]
         }
     };
+
+    this.compareState = function (body) {
+        return body.Shape.Position.X === self.state.x
+        && body.Shape.Position.Y === self.state.y
+    }
 }

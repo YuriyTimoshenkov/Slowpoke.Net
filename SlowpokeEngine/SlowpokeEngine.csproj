@@ -107,12 +107,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bodies\ActiveBody.cs" />
     <Compile Include="Engines\MechanicEngine\MechanicEngine.cs" />
-    <Compile Include="Engines\PhysicalEngine.cs" />
+    <Compile Include="Engines\PhysicsEngine.cs" />
     <Compile Include="Weapons\Extensions\EventArgExtensions.cs" />
     <Compile Include="Commands\PhysicsProcessingResultEmpty.cs" />
     <Compile Include="Engines\Map\MapEngine.cs" />
     <Compile Include="Engines\Map\IMapEngine.cs" />
-    <Compile Include="Engines\IPhysicalEngine.cs" />
+    <Compile Include="Engines\IPhysicsEngine.cs" />
     <Compile Include="Engines\MechanicEngine\IMechanicEngine.cs" />
     <Compile Include="Commands\GameCommand.cs" />
     <Compile Include="Bodies\IBodyBuilder.cs" />

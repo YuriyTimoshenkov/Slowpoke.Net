@@ -4,7 +4,7 @@ using SlowpokeEngine.Bodies;
 
 namespace SlowpokeEngine
 {
-	public interface IPhysicalEngine
+	public interface IPhysicsEngine
 	{
 		PhysicsProcessingResult ProcessBodyAction (GameCommand actio);
 	}

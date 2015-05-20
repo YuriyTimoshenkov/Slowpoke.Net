@@ -20,7 +20,7 @@ namespace SlowpokeEngine.Engines
 		private ConcurrentQueue<GameCommand> ActionQueue = new ConcurrentQueue<GameCommand>();
 
 		private CancellationTokenSource _cancelationTokenSource;
-		private readonly IPhysicalEngine _physicalEngine;
+		private readonly IPhysicsEngine _physicalEngine;
 		private readonly IMapEngine _mapEngine;
 		private readonly IBodyBuilder _bodyBuilder;
         private IGameLevelRepository _gameLevelRepository;
@@ -37,7 +37,7 @@ namespace SlowpokeEngine.Engines
         public IMap Map { get { return _mapEngine.Map; } }
 
 		public MechanicEngine(
-			IPhysicalEngine physicalEngine, 
+			IPhysicsEngine physicalEngine, 
 			IMapEngine mapEngine, 
 			IBodyBuilder bodyBuilder,
             IActiveBodyEyesight viewPort,
@@ -69,12 +69,12 @@ namespace SlowpokeEngine.Engines
 
                     if (ActionQueue.TryDequeue(out nextCommand))
                     {
-                        //Execute command
-                        nextCommand.Execute();
-
                         //TODO: when all command would be implemented on client side, remove this shit
                         if (nextCommand.Id != 0)
                             nextCommand.ActiveBody.LastProcessedCommandId = nextCommand.Id;
+
+                        //Execute command
+                        nextCommand.Execute();
                     }
                     else
                     {
@@ -138,10 +138,7 @@ namespace SlowpokeEngine.Engines
 
                     if (body is PlayerBody)
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Player {0} start releasing.", body.Id));
                         _playerStateHandler(body as IPlayerBodyFacade);
-
-                        System.Diagnostics.Debug.WriteLine(string.Format("Player {0} released.", body.Id));
                     }
                 }
             }
@@ -169,8 +166,6 @@ namespace SlowpokeEngine.Engines
             playerBody.Heal(playerBody.LifeMax);
 
             AddBody(playerBody);
-
-            System.Diagnostics.Debug.WriteLine(string.Format("Player {0} game started.", player.Id));
         }
 
 		public IPlayerBodyFacade GetPlayerBody(Guid playerId)

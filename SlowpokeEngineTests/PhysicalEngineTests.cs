@@ -27,7 +27,7 @@ namespace SlowpokeEngineTests
             IMapEngine me = Substitute.For<IMapEngine>();
             me.GetBodiesForCollision(Arg.Any<ActiveBody>()).Returns(new List<Body>());
 
-            IPhysicalEngine pe = new PhysicalEngine(collisionManager, me);
+            IPhysicsEngine pe = new PhysicsEngine(collisionManager, me);
 
             int playerSpeed = 10;
             Point playerStartPosition = new Point(0,0);

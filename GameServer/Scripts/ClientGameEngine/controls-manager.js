@@ -130,7 +130,7 @@
             return itemA.keys.length === keysduration.length
             && keysduration.filter(function (itemB) {
                 return itemA.keys.indexOf(itemB.key) !== -1;
-            }).length > 0;
+            }).length === itemA.keys.length;
         })[0];
 
         if (appliedRule !== undefined) {
