@@ -100,8 +100,11 @@
         var moveKeyContext = self.moveKeysContext.filter(function (item) { return item.Code === keyCode })[0];
         if (moveKeyContext !== undefined) {
             moveKeyContext.keyUpTimeStamp = new Date();
-            moveKeyContext.duration += moveKeyContext.keyUpTimeStamp.getTime() - moveKeyContext.keyDownTimeStamp.getTime();
-            moveKeyContext.keyDownTimeStamp = null;
+            if (moveKeyContext.keyDownTimeStamp) {
+                moveKeyContext.duration += moveKeyContext.keyUpTimeStamp.getTime() - moveKeyContext.keyDownTimeStamp.getTime();
+                moveKeyContext.keyDownTimeStamp = null;
+            }
+            
         }
     }
 

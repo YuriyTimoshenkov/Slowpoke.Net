@@ -14,7 +14,7 @@
     }
 
     this.updateMap = function (tiles) {
-        self.world.gameMap.update(tiles)
+        self.world.gameMap.update(tiles, this.world)
     }
 
     this.updateActiveBodies = function (bodyList) {

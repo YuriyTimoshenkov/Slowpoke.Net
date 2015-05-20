@@ -177,7 +177,12 @@
 
     }
     this.builders[gameTypes.gameObjects.TREE] = function (data) {
-
+        var tree = new GameObject("Tree", -1, "Tree", data["Position"]);
+        var obj = new TreeContainer();
+        obj.image.scaleX = 0.2;
+        obj.image.scaleY = 0.2;
+        tree.image.addChild(obj.image);
+        return tree
     }
 
 
