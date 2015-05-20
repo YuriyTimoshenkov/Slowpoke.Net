@@ -51,3 +51,16 @@ function inArray(what, where) {
             return true;
     return false;
 }
+
+function Vector(x, y) {
+    var self = this;
+    this.x = x;
+    this.y = y;
+
+    this.calculateUnitVector = function()
+    {
+        var magnitude = Math.sqrt((self.x * self.x) + (self.y * self.y));
+
+        return new Vector(self.x / magnitude, self.y / magnitude);
+    }
+}

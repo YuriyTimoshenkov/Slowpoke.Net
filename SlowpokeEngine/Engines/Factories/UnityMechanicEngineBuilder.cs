@@ -34,7 +34,7 @@ namespace SlowpokeEngine
                 new ContainerControlledLifetimeManager());
             unityContainer.RegisterType<IGameSessionRepository, GameSessionRepositoryEF>();
             unityContainer.RegisterType<IShapeCollisionManager, ShapeCollisionManager>();
-            unityContainer.RegisterType<IPhysicalEngine, PhysicalEngine>();
+            unityContainer.RegisterType<IPhysicsEngine, PhysicsEngine>();
             unityContainer.RegisterType<IActiveBodyEyesight, ActiveBodyEyesight>();
             unityContainer.RegisterType<IMechanicEngine, MechanicEngine>(new ContainerControlledLifetimeManager());
 

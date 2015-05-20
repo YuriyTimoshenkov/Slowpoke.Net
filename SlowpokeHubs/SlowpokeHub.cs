@@ -61,6 +61,8 @@ namespace SlowpokeHubs
 		{
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
+            System.Diagnostics.Debug.WriteLine(string.Format(">>>> duration facade {0}", duration.ToString()));
+
             if (player != null)
                 player.Move(commandId, new Vector(x,y), new TimeSpan(0,0,0,0,duration));
 		}
@@ -110,6 +112,10 @@ namespace SlowpokeHubs
             //Process move
             if(inputEvent.commands != null)
             {
+                if (inputEvent.commands.Count() > 1)
+                {
+                    Console.WriteLine(">> count {0}", inputEvent.commands.Count());
+                }
                 foreach(InputCommand command in inputEvent.commands)
                 {
                     switch(command.Name)
