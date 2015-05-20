@@ -107,7 +107,8 @@ namespace SlowpokeEngine.Engines.Map
                         new ShapeRectangle(
                             Map.CellSize, Map.CellSize,
                             new Point(positionX * Map.CellSize + Map.CellSize / 2, positionY * Map.CellSize + Map.CellSize / 2)
-                            )));
+                            ),
+                        levelTile.TileTypeName));
                 }
 
                 Map.Tiles.Add(mapTileRow);
