@@ -157,6 +157,7 @@
     <Content Include="Scripts\ClientGameEngine\game-object.js" />
     <Content Include="Scripts\ClientGameEngine\game-types.js" />
     <Content Include="Scripts\ClientGameEngine\game-world-manager.js" />
+    <Content Include="Scripts\ClientGameEngine\map-cell-factory.js" />
     <Content Include="Scripts\ClientGameEngine\map-cell.js" />
     <Content Include="Scripts\ClientGameEngine\mechanic-engine.js" />
     <Content Include="Scripts\ClientGameEngine\menu.js" />

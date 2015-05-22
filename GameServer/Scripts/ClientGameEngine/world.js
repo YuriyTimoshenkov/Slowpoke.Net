@@ -5,8 +5,10 @@
 
 function World(serverMap) {
     this.allGameObjects = [];
-    this.gameMap = new GameMap(serverMap);
     this.gameObjectFactory = new GameObjectFactory();
+    // KOSTIL
+    this.gameMap = new GameMap(serverMap, this.gameObjectFactory);
+    
 
     this.createGameObject = function (data) {
         var objectType = data["BodyType"];
