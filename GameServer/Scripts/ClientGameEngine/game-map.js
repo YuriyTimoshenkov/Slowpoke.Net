@@ -15,12 +15,12 @@ function GameMap(serverMap, gameObjectFactory) {
         tiles.forEach(function (tile) {
             var mapCellType;
             switch (tile.TileTypeName) {
-                case "meadow": mapCellType = gameTypes.tiles.MEADOW;
-                case "water": mapCellType = gameTypes.tiles.WATER;
-                case "rock": mapCellType = gameTypes.tiles.ROCK;
-                case "road": mapCellType = gameTypes.tiles.ROAD;
-                case "ford": mapCellType = gameTypes.tiles.FORD;
-                case "tree": mapCellType = gameTypes.tiles.TREE;
+                case "meadow": mapCellType = gameTypes.tiles.MEADOW; break;
+                case "water": mapCellType = gameTypes.tiles.WATER; break;
+                case "rock": mapCellType = gameTypes.tiles.ROCK; break;
+                case "road": mapCellType = gameTypes.tiles.ROAD; break;
+                case "ford": mapCellType = gameTypes.tiles.FORD; break;
+                case "tree": mapCellType = gameTypes.tiles.TREE; break;
             }
             tile["CellSize"] = self.cellSize;
             var cell = self.mapCellFactory.createMapCell(mapCellType, tile);

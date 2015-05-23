@@ -100,7 +100,6 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
     }
 
     this.loop = function () {
-        console.log("Loop started")
         self.gameContext.fps = self.calcFPS();
 
         var clientEventData = self.controlsManager.handleControlsMove();
@@ -116,7 +115,6 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
         this.gameWorldManager.updateWorld();
         this.viewManager.render(this.gameWorldManager.getCurrentFrame());
-        console.log("Loop ended")
     }
 
     this.calcFPS = function () {
