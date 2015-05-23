@@ -22,7 +22,6 @@ function GameMap(serverMap, gameObjectFactory) {
                 case "ford": mapCellType = gameTypes.tiles.FORD; break;
                 case "tree": mapCellType = gameTypes.tiles.TREE; break;
             }
-            tile.CellSize = self.cellSize;
             var cell = self.mapCellFactory.createMapCell(mapCellType, tile);
             self.cells.push(cell)
         })
