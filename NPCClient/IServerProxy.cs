@@ -12,9 +12,7 @@ namespace NPCClient
 {
     public interface IServerProxy
     {
-        Task ProcessInputEvents(InputEvent inputEvent);
-
-        Task GetFrames(Action<ViewFrameFacade> resultHandler);
+        Task SyncState(InputEvent inputEvent, Action<ViewFrameFacade> resultHandler);
 
         Task StartGame(Action<BodyFacade> resultHandler);
     }

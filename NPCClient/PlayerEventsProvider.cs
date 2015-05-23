@@ -87,16 +87,16 @@ namespace NPCClient
 
                 if (_mechanicEngine.PlayerEvents.ContainsKey(player.PlayerId))
                 {
-                    playerProxy.ProcessInputEvents(_mechanicEngine.PlayerEvents[player.PlayerId]);
+                    tasks[i] = playerProxy.SyncState(
+                        _mechanicEngine.PlayerEvents[player.PlayerId],
+                        v =>
+                    {
+                        if (v != null)
+                            (_mechanicEngine.ViewPort as ActiveBodyEyesightFacade).PlayersFrames[player.CharacterId] = v;
+
+                        Console.WriteLine(string.Format("NPC {0}, sync iteration finished.", player.CharacterId));
+                    });
                 }
-                tasks[i] = playerProxy.GetFrames(v =>
-                {
-                    if (v != null)
-                        (_mechanicEngine.ViewPort as ActiveBodyEyesightFacade).PlayersFrames[player.CharacterId] = v;
-
-                    Console.WriteLine(string.Format("NPC {0}, sync iteration finished.", player.CharacterId));
-                });
-
                 i++;
             }
 

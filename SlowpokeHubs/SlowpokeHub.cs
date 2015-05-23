@@ -46,6 +46,8 @@ namespace SlowpokeHubs
             {
                 var clientConnection = GlobalHost.ConnectionManager.GetHubContext<SlowpokeHub>().Clients.Client(playerMapping.Key);
                 clientConnection.playerStateChanged(playerBodyFacade.State);
+
+                System.Diagnostics.Debug.WriteLine(string.Format("Player: {0} state changed to {1}", playerBodyFacade.Id, playerBodyFacade.State));
             }
         }
 
@@ -188,15 +190,20 @@ namespace SlowpokeHubs
             //Get new frame
             var newframe = MechanicEngine.ViewPort.GetFrame(playerContainer.Player.Id, playerContainer.PreviousTile);
 
-            //Update currrent tile
-            var currentTile = MechanicEngine.ViewPort.GetPlayerCurrentTile(playerContainer.Player.Id);
-
-            if (playerContainer.PreviousTile == null || (currentTile != null && playerContainer.PreviousTile.Position != currentTile.Position))
+            if (newframe != null)
             {
-                playerContainer.PreviousTile = currentTile;
+                //Update currrent tile
+                var currentTile = MechanicEngine.ViewPort.GetPlayerCurrentTile(playerContainer.Player.Id);
+
+                if (playerContainer.PreviousTile == null || (currentTile != null && playerContainer.PreviousTile.Position != currentTile.Position))
+                {
+                    playerContainer.PreviousTile = currentTile;
+                }
+
+                return ViewFrameFacade.FromViewFrame(newframe);
             }
 
-            return ViewFrameFacade.FromViewFrame(newframe);
+            return new ViewFrameFacade();
         }
 	}
 }
