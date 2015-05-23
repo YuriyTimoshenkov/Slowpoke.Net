@@ -29,7 +29,7 @@
             Y: data.Position.Y * data.CellSize
         }
         var cell = new MapCell(cellPosition, data.CellSize);
-        cell.assignImage(self.tileImages[cellType].clone());
+        cell.assignImage(self.tileImages[cellType].clone(true));
         return cell
     }
 }

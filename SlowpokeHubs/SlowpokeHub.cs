@@ -59,7 +59,7 @@ namespace SlowpokeHubs
             return BodyFacade.FromBody(playerContainer.Player);
 		}
 
-		public void MoveBody(long commandId, double x, double y, int duration)
+		private void MoveBody(long commandId, double x, double y, int duration)
 		{
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
@@ -67,7 +67,7 @@ namespace SlowpokeHubs
                 player.Move(commandId, new Vector(x,y), new TimeSpan(0,0,0,0,duration));
 		}
 
-        public void ChangeBodyDirection(double x, double y)
+        private void ChangeBodyDirection(double x, double y)
 		{
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
@@ -75,7 +75,7 @@ namespace SlowpokeHubs
                 player.ChangeDirection(new Vector(x, y));
 		}
 
-        public void Shoot()
+        private void Shoot()
         {
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
@@ -83,7 +83,7 @@ namespace SlowpokeHubs
                 player.Shoot();
         }
 
-        public void Use()
+        private void Use()
         {
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
@@ -91,34 +91,41 @@ namespace SlowpokeHubs
                 player.Use();
         }
 
-        public void ChangeWeapon()
+        private void ChangeWeapon()
         {
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
             if (player != null)
                 player.ChangeWeapon();
         }
-
-        public IMap GetMap()
+        private ViewFrameFacade GetFrame(IPlayerContainer playerContainer)
         {
-            return MechanicEngine.ViewPort.Map;
+            //Get new frame
+            var newframe = MechanicEngine.ViewPort.GetFrame(playerContainer.Player.Id, playerContainer.PreviousTile);
+
+            if (newframe != null)
+            {
+                //Update currrent tile
+                var currentTile = MechanicEngine.ViewPort.GetPlayerCurrentTile(playerContainer.Player.Id);
+
+                if (playerContainer.PreviousTile == null || (currentTile != null && playerContainer.PreviousTile.Position != currentTile.Position))
+                {
+                    playerContainer.PreviousTile = currentTile;
+                }
+
+                return ViewFrameFacade.FromViewFrame(newframe);
+            }
+
+            return new ViewFrameFacade();
         }
 
-        public ViewFrameFacade SyncState(InputEvent inputEvent)
+        private void ProcessInputCommands(IEnumerable<InputCommand> commands)
         {
-            var playerContainer = _connectionsPlayerMapping[Context.ConnectionId];
-
-            //TODO: migrate all command to this pattern
-            //Process move
-            if(inputEvent.commands != null)
+            if (commands != null)
             {
-                if (inputEvent.commands.Count() > 1)
+                foreach (InputCommand command in commands)
                 {
-                    Console.WriteLine(">> count {0}", inputEvent.commands.Count());
-                }
-                foreach(InputCommand command in inputEvent.commands)
-                {
-                    switch(command.Name)
+                    switch (command.Name)
                     {
                         case "Move":
                             {
@@ -133,20 +140,48 @@ namespace SlowpokeHubs
                     }
                 }
             }
+        }
 
-            //Process change direction
-            if(inputEvent.changeDirection != null)
+        public IMap GetMap()
+        {
+            try
             {
-                ChangeBodyDirection(inputEvent.changeDirection.X, inputEvent.changeDirection.Y);
+                return MechanicEngine.ViewPort.Map;
             }
+            catch(Exception exp)
+            {
+                //TODO: log here
+                return null;
+            }
+        }
 
-            if (inputEvent.use) { Use(); }
+        public ViewFrameFacade SyncState(InputEvent inputEvent)
+        {
+            try
+            {
+                var playerContainer = _connectionsPlayerMapping[Context.ConnectionId];
 
-            if (inputEvent.shoot) { Shoot(); }
+                ProcessInputCommands(inputEvent.commands);
 
-            if (inputEvent.weaponSwitch) { ChangeWeapon(); }
+                //Process change direction
+                if (inputEvent.changeDirection != null)
+                {
+                    ChangeBodyDirection(inputEvent.changeDirection.X, inputEvent.changeDirection.Y);
+                }
 
-            return GetFrame(playerContainer);
+                if (inputEvent.use) { Use(); }
+
+                if (inputEvent.shoot) { Shoot(); }
+
+                if (inputEvent.weaponSwitch) { ChangeWeapon(); }
+
+                return GetFrame(playerContainer);
+            }
+            catch (Exception)
+            {
+                //TODO: log exception
+                return new ViewFrameFacade();
+            }
         }
 
 		public override Task OnDisconnected (bool stopCalled)
@@ -184,26 +219,5 @@ namespace SlowpokeHubs
 
 			return base.OnConnected ();
 		}
-
-        private ViewFrameFacade GetFrame(IPlayerContainer playerContainer)
-        {
-            //Get new frame
-            var newframe = MechanicEngine.ViewPort.GetFrame(playerContainer.Player.Id, playerContainer.PreviousTile);
-
-            if (newframe != null)
-            {
-                //Update currrent tile
-                var currentTile = MechanicEngine.ViewPort.GetPlayerCurrentTile(playerContainer.Player.Id);
-
-                if (playerContainer.PreviousTile == null || (currentTile != null && playerContainer.PreviousTile.Position != currentTile.Position))
-                {
-                    playerContainer.PreviousTile = currentTile;
-                }
-
-                return ViewFrameFacade.FromViewFrame(newframe);
-            }
-
-            return new ViewFrameFacade();
-        }
 	}
 }
