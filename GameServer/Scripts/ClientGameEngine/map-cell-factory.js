@@ -25,11 +25,11 @@
 
     this.createMapCell = function (cellType, data) {
         var cellPosition = {
-            X: data.Position.X * data.CellSize,
-            Y: data.Position.Y * data.CellSize
+            X: data.Position.X * self.size,
+            Y: data.Position.Y * self.size
         }
-        var cell = new MapCell(cellPosition, data.CellSize);
-        cell.assignImage(self.tileImages[cellType].clone());
+        var cell = new MapCell(cellPosition, self.size);
+        cell.assignImage(self.tileImages[cellType].clone(true));
         return cell
     }
 }
