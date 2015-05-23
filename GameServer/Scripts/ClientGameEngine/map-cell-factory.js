@@ -28,8 +28,9 @@
             X: data.Position.X * self.size,
             Y: data.Position.Y * self.size
         }
-        var cell = new MapCell(cellPosition, data.CellSize);
+        var cell = new MapCell(cellPosition, self.size);
         cell.assignImage(self.tileImages[cellType].clone(true));
-        return cell
+        
+        return cell;
     }
 }
