@@ -13,6 +13,11 @@ namespace SlowpokeHubs
         public bool shoot { get; set; }
         public InputEventPoint changeDirection { get; set; }
         public IList<InputCommand> commands { get; set; }
+
+        public InputEvent()
+        {
+            commands = new List<InputCommand>();
+        }
     }
 
     public class InputCommand

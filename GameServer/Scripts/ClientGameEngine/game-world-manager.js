@@ -76,7 +76,7 @@
         var obj = this.world.allGameObjects.filter(function (obj) { return objId == obj.id })[0];
 
         // Update position
-        if (obj.objectType !== "PlayerBody")
+        if (obj.id !== self.player.id)
             obj.gameRect.center = objData["Shape"]["Position"];
 
         if (obj.objectType === "NPCAI" || obj.objectType === "PlayerBody" || obj.objectType === "Bullet") {

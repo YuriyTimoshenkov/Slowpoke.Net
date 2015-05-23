@@ -46,7 +46,7 @@ namespace NPCClient
                 {
                     new List<string>() { "X", direction.X.ToString() },
                     new List<string>() { "Y", direction.Y.ToString() },
-                    new List<string>() { "Duration", duration.TotalMilliseconds.ToString() }
+                    new List<string>() { "Duration", ((int)duration.TotalMilliseconds).ToString() }
                 }
             });
         }
