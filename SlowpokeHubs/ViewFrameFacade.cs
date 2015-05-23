@@ -13,6 +13,11 @@ namespace SlowpokeHubs
         public IList<BodyFacade> Bodies { get; set; }
         public IList<MapTileFacade> Map { get; set; }
 
+        public ViewFrameFacade()
+        {
+            Bodies = new List<BodyFacade>();
+        }
+
         public static ViewFrameFacade FromViewFrame(IViewFrame viewFrame)
         {
             var result = new ViewFrameFacade();
