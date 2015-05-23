@@ -24,12 +24,12 @@
     })();
 
     this.createMapCell = function (cellType, data) {
-        var gameX = data.Position.X * data.CellSize;
-        var gameY = data.Position.Y * data.CellSize;
-        var cell = new MapCell([gameX, gameY], data.CellSize);
-        cell.assignImage(self.tileImages[cellType]);
-        //cell.assignImage(self.tileImages[gameTypes.tiles.TREE]);
-        //console.log("cell created:" + cell.image.x + ";" + cell.image.y + "Type:" + cellType + "image: " + cell.image)
+        var cellPosition = {
+            X: data.Position.X * data.CellSize,
+            Y: data.Position.Y * data.CellSize
+        }
+        var cell = new MapCell(cellPosition, data.CellSize);
+        cell.assignImage(self.tileImages[cellType].clone());
         return cell
     }
 }
