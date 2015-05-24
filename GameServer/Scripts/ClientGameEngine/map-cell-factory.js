@@ -2,6 +2,7 @@
     var self = this;
     this.size = size;
     this.gameObjectFactory = gameObjectFactory;
+    this.tree = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.TREE, { Position: {X: 0, Y: 0} });
 
     this.tileImages = [];
     this.tileImages[gameTypes.tiles.MEADOW] = new createjs.Shape();
@@ -18,8 +19,9 @@
         var image = new createjs.Container();
         var treeShape = new createjs.Shape();
         treeShape.graphics.beginFill("#C0F598").drawRect(0, 0, self.size, self.size);
-        var tree = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.TREE, { "Position": {X: 0, Y: 0} });
-        image.addChild(treeShape, tree.image);
+
+        image.addChild(treeShape, self.tree.image);
+       
         return image
     })();
 
@@ -29,7 +31,9 @@
             Y: data.Position.Y * self.size
         }
         var cell = new MapCell(cellPosition, self.size);
-        cell.assignImage(self.tileImages[cellType].clone(true));
+        var img = self.tileImages[cellType].clone(true);
+       // img.cache(0, 0, self.size, self.size)
+        cell.assignImage(img);
         
         return cell;
     }

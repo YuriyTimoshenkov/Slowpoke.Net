@@ -5,5 +5,8 @@
     this.gameRect = new Rect(this.position.X, this.position.Y, this.width, this.height)
     this.image = null;
 
-    this.assignImage = function (image) { this.image = image }
+    this.assignImage = function (image) {
+        this.image = image;
+        this.image.zIndex = 0;
+    }
 }

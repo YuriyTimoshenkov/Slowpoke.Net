@@ -182,14 +182,25 @@
 
     }
     this.builders[gameTypes.gameObjects.TREE] = function (data) {
-        var tree = new GameObject("Tree", -1, "Tree", data["Position"]);
+        var name = "TreeContainer";
+        var objectType = "PassiveBody";
+        var id = 333;
+        var position = {X:0,Y:0};
+        var shapeRadius = 10;
+        var life = 10;
+        var lifeMax = 10;
+        var direction = { X: 0, Y: 0 };
+        var currentWeapon = "";
+        var speed = 0;
+
+        var treeContainer = new GameObject(name, id, objectType, position, direction, shapeRadius, life, lifeMax, currentWeapon, speed);
+
         var obj = new TreeContainer();
         obj.image.scaleX = 0.06;
         obj.image.scaleY = 0.06;
-        tree.image.addChild(obj.image);
-        //tree.image.cache(0, 0, imageSize, imageSize);
-        tree.image.cache(0, 0, 60, 60);
-        return tree
+        treeContainer.image = obj.image;//.addChild(obj.image);
+        treeContainer.image.cache(0, 0, 50, 50);
+        return treeContainer;
     }
 
 

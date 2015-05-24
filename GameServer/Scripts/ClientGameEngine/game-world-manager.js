@@ -7,6 +7,20 @@
         this.serverFramesQueue = queue;
 
         this.player = this.world.createGameObject(player)
+        self.onObjectStateChanged(this.player, 'add');
+    }
+
+    this.updateWorld = function () {
+        var frame = this.serverFramesQueue.shift()
+        var self = this;
+
+        if (!frame)
+            return
+
+        if (frame.Map)
+            self.updateMap(frame.Map)
+
+        self.updateActiveBodies(frame.Bodies);
     }
 
     this.getCurrentFrame = function(){
@@ -14,7 +28,14 @@
     }
 
     this.updateMap = function (tiles) {
+        self.world.gameMap.cells.forEach(function (cell) {
+            self.onObjectStateChanged(cell, 'remove');
+        });
         self.world.gameMap.update(tiles)
+
+        self.world.gameMap.cells.forEach(function (cell) {
+            self.onObjectStateChanged(cell, 'add');
+        });
     }
 
     this.updateActiveBodies = function (bodyList) {
@@ -38,6 +59,7 @@
             if (!(obj.objectType === "PlayerBody")) {
                 var i = self.world.allGameObjects.indexOf(obj);
                 var deletedItems = self.world.allGameObjects.splice(i, 1);
+                self.onObjectStateChanged(obj, 'remove');
             }
         });
 
@@ -45,30 +67,15 @@
         for (var objId in frameObjectsDict) {
             var objData = frameObjectsDict[objId];
                 var filtered = this.world.allGameObjects.filter(function (obj) { return objId == obj.id });
-                if (filtered.length > 0) this.updateObject(objData);
-                else this.createObject(objData)
+                if (filtered.length > 0) {
+                    this.updateObject(objData);
+                    self.onObjectStateChanged(objData, 'update');
+                }
+                else {
+                    var newObject = this.createObject(objData)
+                    self.onObjectStateChanged(newObject, 'add');
+                }
         }
-    }
-
-    this.updateWorld = function () {
-        var frame = this.serverFramesQueue.shift()
-        var self = this;
-
-        if (!frame)
-            return
-
-        // TEMP for debugging ///////////////
-        if (frame.Bodies == null) {
-            console.log("frame.Bodies is null");
-            console.log(frame);
-        }
-        //////////////////////
-
-
-        self.updateActiveBodies(frame.Bodies);
-
-        if (frame.Map)
-            self.updateMap(frame.Map)
     }
 
     this.updateObject = function (objData) {
@@ -109,6 +116,8 @@
     }
 
     this.createObject = function (objData) {
-        this.world.createGameObject(objData);
+        return this.world.createGameObject(objData);
     }
+
+    this.onObjectStateChanged = function (object, state) { }
 }

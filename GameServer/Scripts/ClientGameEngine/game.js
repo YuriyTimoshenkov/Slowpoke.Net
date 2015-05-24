@@ -47,6 +47,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
     this.handleLoadMap = function (serverMap) {
         self.gameWorldManager = new gameWorldManagerFactory().createGameWorldManager(serverMap)
+        self.viewManager.init(self.gameWorldManager);
         self.mechanicEngine = new mechanicEngineFactory().createMechanicEngine(self.gameWorldManager);
 
         self.gameWorldManager.init(self.player, self.serverFramesQueue)

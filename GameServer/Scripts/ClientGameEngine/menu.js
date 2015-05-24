@@ -1,16 +1,12 @@
 ﻿function Menu() {
-    this.weapon = null;
-    this.weaponText = null;
+    var self = this;
+
     this.weaponTextSize = 20;
     this.weaponTextColor = "blue";
-    this.life = null;
-    this.lifeText = null;
     this.lifeTextSize = this.weaponTextSize;
     this.lifeTextColor = this.weaponTextColor;
-    this.fpsText = null;
     this.fpsTextSize = 10;
     this.fpsTextColor = "red";
-    this.pingText = null;
     this.pingTextSize = 10;
     this.pingTextColor = "red";
 
@@ -51,6 +47,7 @@
     this.createWeaponText = function (point) {
         var weaponName = this.weapon;
         this.weaponText = new createjs.Text(weaponName, this.weaponTextSize + "px Arial", this.lifeTextColor);
+        this.weaponText.zIndex = 3;
         this.weaponText.x = point.x;
         this.weaponText.y = point.y;
     }
@@ -62,12 +59,14 @@
 
     this.createFPSText = function (fps, point) {
         this.fpsText = new createjs.Text("FPS: " + fps, this.fpsTextSize + "px Arial", this.fpsTextColor);
+        this.fpsText.zIndex = 3;
         this.fpsText.x = point.x;
         this.fpsText.y = point.y;
     }
 
     this.createPingText = function (ping, point) {
         this.pingText = new createjs.Text("PPS: " + ping, this.fpsTextSize + "px Arial", this.fpsTextColor);
+        this.pingText.zIndex = 3;
         this.pingText.x = point.x;
         this.pingText.y = point.y;
     }
@@ -77,6 +76,12 @@
     }
 
     this.updatePing = function (ping, point) {
-        this.createPingText(ping, point)
+
+        if (self.pingText === undefined) {
+            this.createPingText(ping, point)
+        }
+        else {
+            self.pingText.text = "PPS: " + ping;
+        }
     }
 }

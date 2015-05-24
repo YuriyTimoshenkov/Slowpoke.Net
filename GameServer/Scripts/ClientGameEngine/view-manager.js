@@ -14,6 +14,8 @@
     this.menu = menu;
     this.stage = new createjs.Stage(canvas);
 
+    // Add menu objects
+    self.stage.addChild(this.menu.weaponText, this.menu.lifeText, this.menu.fpsText, this.menu.scoreText, this.menu.pingText);
 
     this.setFrameQueue = function (framesQueue) {
         this.framesQueue = framesQueue
@@ -91,25 +93,61 @@
         
         // Probably place for optimization. 
         // TODO: To remove\add only those objects, which were changed
-        self.stage.removeAllChildren();
+        //self.stage.removeAllChildren();
 
         // Add cells
-        frame.cells.forEach(function (cell) {
-            self.stage.addChild(cell.image);
-        })
+        //frame.cells.forEach(function (cell) {
+        //    self.stage.addChild(cell.image);
+        //})
 
         // Add game objects
-        frame.objects.forEach(function (element, index, array) {
-            self.stage.addChild(element.image);
-            if (element.objectMenu.children.length > 0) {
-                self.stage.addChild(element.objectMenu);
-            }
-        });
+        //frame.objects.forEach(function (element, index, array) {
+        //    self.stage.addChild(element.image);
+        //    if (element.objectMenu.children.length > 0) {
+        //        self.stage.addChild(element.objectMenu);
+        //    }
+        //});
 
-        // Add menu objects
-        self.stage.addChild(this.menu.weaponText, this.menu.lifeText, this.menu.fpsText, this.menu.scoreText, this.menu.pingText);
+        var sortFunction = function (a, b) {
+            //if (a.zIndex === undefined || b.zIndex === undefined) {
+            //    console.log("In sort function");
+            //}
+            
+            if (a.zIndex < b.zIndex) return -1;
+            if (a.zIndex > b.zIndex) return 1;
+            return -1;
+        }
+        self.stage.sortChildren(sortFunction);
+
 
         // Render
         self.stage.update();
+    }
+
+    this.init = function (gameWorldManager) {
+        gameWorldManager.onObjectStateChanged = function (object, state) {
+            switch (state) {
+                case 'remove': {
+                    self.stage.removeChild(object.image);
+
+                    break;
+                }
+                case 'add': {
+                    if (object.image === undefined || object.image.zIndex === undefined)
+                        console.log('fuck');
+
+                    self.stage.addChild(object.image);
+
+                    if (object.objectMenu !== undefined && object.objectMenu.children.length > 0) {
+                        self.stage.addChild(object.objectMenu);
+                    }
+
+                    break;
+                }
+                case 'update': {
+                    break;
+                }
+            }
+        }
     }
 }

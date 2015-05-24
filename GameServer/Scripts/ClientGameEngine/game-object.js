@@ -8,6 +8,7 @@
     this.gameRect.center = position;
     this.direction = direction || { X: 0, Y: 0 };
     this.image = new createjs.Container();
+    this.image.zIndex = 1;
     this.objectMenu = new createjs.Container();
     this.life = life || 0;
     this.maxLife = maxLife || 0;
