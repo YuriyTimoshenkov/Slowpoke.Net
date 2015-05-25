@@ -21,14 +21,15 @@
         this.framesQueue = framesQueue
     }
 
-    this.render = function (frame) {
-        this.updateCanvasXY(frame);
+    this.render = function (bodies, cells) {
+        this.updateCanvasXY(bodies, cells);
         this.updateMenu();
-        this.draw(frame);
+        this.draw();
     }
 
     this.setTarget = function (target) {
-        this.target = target;
+        self.target = target;
+        self.stage.addChild(target.image);
     }
 
     this.calculatePlayerDirectionVector = function (mousePoint) {
@@ -39,11 +40,11 @@
         return mouseVectorNotNormalized;
     }
 
-    this.updateCanvasXY = function (frame) {
+    this.updateCanvasXY = function (bodies, cells) {
         var self = this;
 
         // Update objects
-        frame.objects.forEach(function (obj) {
+        bodies.forEach(function (obj) {
             if (obj.id !== self.target.id) {
                 var dx = self.target.gameRect.centerx - obj.gameRect.centerx;
                 var dy = self.target.gameRect.centery - obj.gameRect.centery;
@@ -56,7 +57,7 @@
         })
 
         // Update cells
-        frame.cells.forEach(function (cell) {
+        cells.forEach(function (cell) {
                 var dx = self.target.gameRect.centerx - cell.gameRect.centerx;
                 var dy = self.target.gameRect.centery - cell.gameRect.centery;
 
@@ -88,7 +89,7 @@
         }
     }
       
-    this.draw = function (frame) {
+    this.draw = function () {
         var self = this;
         
         // Probably place for optimization. 
@@ -124,8 +125,8 @@
         self.stage.update();
     }
 
-    this.init = function (gameWorldManager) {
-        gameWorldManager.onObjectStateChanged = function (object, state) {
+    this.init = function (mechanicEngine) {
+        mechanicEngine.onObjectStateChanged = function (object, state) {
             switch (state) {
                 case 'remove': {
                     self.stage.removeChild(object.image);

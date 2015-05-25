@@ -86,4 +86,39 @@
         //}
 
     }
+
+    this.updateObject = function (objData, playerBody) {
+        var obj = self;
+
+        if (playerBody.id !== obj.id)
+            obj.gameRect.center = objData["Shape"]["Position"];
+
+        if (obj.objectType === "NPCAI" || obj.objectType === "PlayerBody" || obj.objectType === "Bullet") {
+            // Update direction
+            var newDirection = objData["Direction"];
+
+            if (obj.direction.X !== newDirection.X || obj.direction.Y !== newDirection.Y) {
+                obj.updateDirection(newDirection);
+            }
+
+
+            // Update weapon
+            var currentWeapon = objData["CurrentWeapon"];
+            if (currentWeapon != 'undefined' && obj.currentWeapon !== currentWeapon) {
+                obj.currentWeapon = currentWeapon;
+            }
+
+            // Update life
+            var newLife = objData["Life"];
+            if (obj.life !== newLife) {
+                obj.updateLife(newLife);
+            }
+
+            // Update score
+            var newScore = objData["Score"];
+            if (newScore) {
+                obj.score = newScore;
+            }
+        }
+    }
 }

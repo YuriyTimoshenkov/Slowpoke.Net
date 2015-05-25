@@ -46,12 +46,11 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
     }
 
     this.handleLoadMap = function (serverMap) {
-        self.gameWorldManager = new gameWorldManagerFactory().createGameWorldManager(serverMap)
-        self.viewManager.init(self.gameWorldManager);
-        self.mechanicEngine = new mechanicEngineFactory().createMechanicEngine(self.gameWorldManager);
+        
+        self.mechanicEngine = new mechanicEngineFactory().createMechanicEngine(self.player, serverMap);
+        self.viewManager.init(self.mechanicEngine);
 
-        self.gameWorldManager.init(self.player, self.serverFramesQueue)
-        viewManager.setTarget(self.gameWorldManager.player)
+        viewManager.setTarget(self.mechanicEngine.player)
 
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
 
@@ -107,15 +106,15 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
         if (clientEventData.move !== undefined) {
             self.mechanicEngine.addCommand(new CommandMove(
-                self.gameWorldManager.player.id,
+                self.mechanicEngine.player.id,
                 clientEventData.move.duration,
                 clientEventData.move.direction
                 ));
         }
+
         self.mechanicEngine.update();
 
-        this.gameWorldManager.updateWorld();
-        this.viewManager.render(this.gameWorldManager.getCurrentFrame());
+        this.viewManager.render(this.mechanicEngine.bodies, this.mechanicEngine.mapEngine.cells);
     }
 
     this.calcFPS = function () {
@@ -147,7 +146,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
                     var clientEventData = self.controlsManager.handleControlsCommon();
 
                     //Process state with new mechanic
-                    clientEventData.commands = self.mechanicEngine.syncWithServer(state);
+                    clientEventData.commands = self.mechanicEngine.syncServerFrames(state);
 
                     self.syncState(clientEventData);
                 }

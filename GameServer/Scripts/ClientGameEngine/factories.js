@@ -39,7 +39,7 @@ function gameWorldManagerFactory() {
 }
 
 function mechanicEngineFactory() {
-    this.createMechanicEngine = function (gameWorldManager) {
-        return new MechanicEngine(gameWorldManager)
+    this.createMechanicEngine = function (player, serverMap) {
+        return new MechanicEngine(player, serverMap)
     }
 }

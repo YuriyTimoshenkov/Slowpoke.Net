@@ -1,11 +1,14 @@
-﻿function MechanicEngine(gameWorldManager)
+﻿function MechanicEngine(player, serverMap)
 {
     var self = this;
 
-    this.gameWorldManager = gameWorldManager;
+    this.gameObjectFactory = new GameObjectFactory();
+    this.mapEngine = new GameMap(serverMap, this.gameObjectFactory);
     this.commandQueue = [];
     this.commandQueueProcessed = [];
+    this.bodies = [];
 
+    //Public
     this.addCommand = function (command) {
 
         //Try tp merge duplication commands 
@@ -21,7 +24,18 @@
         }
     }
 
+    this.syncServerFrames = function (frame) {
+
+        self.updateActiveBodies(frame.Bodies);
+
+        if (frame.Map)
+            self.updateMap(frame.Map)
+
+        return self.syncPredictiveBodies(frame);
+    }
+
     this.update = function () {
+        //Process commands
         var commandToProcess = self.commandQueue.shift();
 
         if (commandToProcess !== undefined) {
@@ -31,11 +45,15 @@
 
             self.commandQueueProcessed.push(commandToProcess);
         }
+
+        //Update predictive bodies
     }
 
-    this.syncWithServer = function (frame) {
+
+    //Private
+    this.syncPredictiveBodies = function(frame){
         var result = [];
-        var playerFromFrame = frame.Bodies.filter(function (item) { return item.Id === self.gameWorldManager.player.id })[0];
+        var playerFromFrame = frame.Bodies.filter(function (item) { return item.Id === self.player.id })[0];
 
         if (playerFromFrame !== undefined) {
             //Find first synced with server command
@@ -52,8 +70,8 @@
             //Update body if needed
             if (firstSyncedCommand !== undefined && !firstSyncedCommand.compareState(playerFromFrame)) {
 
-                self.gameWorldManager.player.gameRect.centerx = playerFromFrame.Shape.Position.X;
-                self.gameWorldManager.player.gameRect.centery = playerFromFrame.Shape.Position.Y;
+                self.player.gameRect.centerx = playerFromFrame.Shape.Position.X;
+                self.player.gameRect.centery = playerFromFrame.Shape.Position.Y;
 
                 //Recalculate applied commands
                 self.commandQueueProcessed.forEach(function (item) {
@@ -89,53 +107,64 @@
 
         return result;
     }
-}
 
-function CommandMove(bodyId, duration, direction) {
-    var self = this;
-    this.duration = duration;
-    this.bodyId = bodyId;
-    this.direction = new Vector(direction.x, direction.y);
-    this.unitDirection = self.direction.calculateUnitVector();
-    this.syncedWithServer = false
+    this.updateMap = function (tiles) {
+        self.mapEngine.cells.forEach(function (cell) {
+            self.onObjectStateChanged(cell, 'remove');
+        });
+        self.mapEngine.update(tiles)
 
-    this.process = function (mechanicEngine) {
+        self.mapEngine.cells.forEach(function (cell) {
+            self.onObjectStateChanged(cell, 'add');
+        });
+    }
 
-        var bodies= mechanicEngine.gameWorldManager.world.allGameObjects.filter(function (item) {
-            return item.id === self.bodyId;
+    this.updateActiveBodies = function (bodyList) {
+        // Convert frame data to dict {obj_id: obj} and round Position coordinates
+        var frameObjectsDict = (function () {
+            var idsDict = {};
+            bodyList.forEach(function (obj) {
+                idsDict[obj.Id] = obj;
+            });
+            return idsDict;
+        })();
+
+        // Delete
+        var deleteIDs = [];
+        this.bodies.forEach(function (obj) {
+            if (!(obj.id in frameObjectsDict)) deleteIDs.push(obj)
         });
 
-        if (bodies !== undefined && bodies.length > 0) {
-            var body = bodies[0];
+        deleteIDs.forEach(function (obj) {
+            // KOSTIL for the game restart
+            if (!(obj.objectType === "PlayerBody")) {
+                var i = self.bodies.indexOf(obj);
+                var deletedItems = self.bodies.splice(i, 1);
+                self.onObjectStateChanged(obj, 'remove');
+            }
+        });
 
-            body.gameRect.center = {
-                X: body.gameRect.centerx + body.speed * self.duration * self.unitDirection.x / 1000,
-                Y: body.gameRect.centery + body.speed * self.duration * self.unitDirection.y / 1000
-            };
-
-            //save state
-            self.state = {
-                x: body.gameRect.centerx,
-                y: body.gameRect.centery,
-            };
-
-            console.log('Key duration:' + self.duration);
+        // Create and update
+        for (var objId in frameObjectsDict) {
+            var objData = frameObjectsDict[objId];
+            var filtered = this.bodies.filter(function (obj) { return objId == obj.id });
+            if (filtered.length > 0) {
+                filtered[0].updateObject(objData, self.player);
+                self.onObjectStateChanged(objData, 'update');
+            }
+            else {
+                var newObject = self.gameObjectFactory.createGameObjectbyServerBody(objData)
+                this.bodies.push(newObject);
+                self.onObjectStateChanged(newObject, 'add');
+            }
         }
     }
 
-    this.toServerCommand = function () {
-        return {
-            Name: "Move",
-            Id: self.id,
-            Data: [
-                ["X", self.direction.x],
-                ["Y", self.direction.y ],
-                ["Duration", self.duration ]]
-        }
-    };
+   
 
-    this.compareState = function (body) {
-        return body.Shape.Position.X === self.state.x
-        && body.Shape.Position.Y === self.state.y
-    }
+    this.onObjectStateChanged = function (object, state) { }
+
+    this.player = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.PLAYER, player)
+    this.bodies.push(this.player);
 }
+

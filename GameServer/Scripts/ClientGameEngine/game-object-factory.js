@@ -1,9 +1,15 @@
 ﻿function GameObjectFactory() {
+    var self = this;
+
     this.createGameObject = function (gameType, data) {
-        return this.builders[gameType](data);
+        return self.builders[gameType](data);
     }
 
-    this.builders = []
+    this.createGameObjectbyServerBody = function (body) {
+        return self.createGameObject(self.serverTypeMap[body.BodyType], body);
+    }
+
+    this.builders = [];
     this.builders[gameTypes.gameObjects.PLAYER] = function (data) {
         //name, id, objectType, position, direction, shapeRadius, life, maxLife, currentWeapon, canvasXY, speed
         var name = data["Name"];
@@ -203,6 +209,11 @@
         return treeContainer;
     }
 
-
-
+     
+    this.serverTypeMap = [];
+    this.serverTypeMap["NPCAI"] = gameTypes.gameObjects.NPCAI;
+    this.serverTypeMap["PlayerBody"] = gameTypes.gameObjects.PLAYEROTHER;
+    this.serverTypeMap["Bullet"] = gameTypes.gameObjects.BULLET;
+    this.serverTypeMap["BulletDynamite"] = gameTypes.gameObjects.DYNAMITE;
+    this.serverTypeMap["LifeContainer"] = gameTypes.gameObjects.LIFECONTAINER;
 }

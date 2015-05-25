@@ -2,7 +2,9 @@
     var self = this;
     this.size = size;
     this.gameObjectFactory = gameObjectFactory;
-    this.tree = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.TREE, { Position: {X: 0, Y: 0} });
+    this.tree = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.TREE, { Position: { X: 0, Y: 0 } });
+    this.tree.image.cache(0, 0, self.size, self.size)
+    console.log('tree image created');
 
     this.tileImages = [];
     this.tileImages[gameTypes.tiles.MEADOW] = new createjs.Shape();
@@ -21,6 +23,8 @@
         treeShape.graphics.beginFill("#C0F598").drawRect(0, 0, self.size, self.size);
 
         image.addChild(treeShape, self.tree.image);
+        image.cache(0, 0, self.size, self.size);
+        console.log('tree cell created');
        
         return image
     })();
@@ -32,7 +36,11 @@
         }
         var cell = new MapCell(cellPosition, self.size);
         var img = self.tileImages[cellType].clone(true);
-       // img.cache(0, 0, self.size, self.size)
+
+        if (cellType === gameTypes.tiles.TREE) {
+            console.log('tree cell cloned');
+        }
+
         cell.assignImage(img);
         
         return cell;
