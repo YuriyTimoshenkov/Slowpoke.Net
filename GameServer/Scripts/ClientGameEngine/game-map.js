@@ -13,7 +13,7 @@ function GameMap(serverMap, gameObjectFactory) {
     this.update = function(tiles) {
         self.cells = [];
         tiles.forEach(function (tile) {
-            console.log(' tile id = ' + tile.Id);
+
             var mapCellType;
             switch (tile.TileTypeName) {
                 case "meadow": mapCellType = gameTypes.tiles.MEADOW; break;
