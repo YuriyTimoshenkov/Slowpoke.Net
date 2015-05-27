@@ -9,7 +9,7 @@
     this.process = function (mechanicEngine) {
 
         var bodies = mechanicEngine.bodies.filter(function (item) {
-            return item.id === self.bodyId;
+            return item.Id === self.bodyId;
         });
 
         if (bodies !== undefined && bodies.length > 0) {

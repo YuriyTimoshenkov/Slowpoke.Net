@@ -45,14 +45,19 @@
 
         // Update objects
         bodies.forEach(function (obj) {
-            if (obj.id !== self.target.id) {
+            if (obj.Id !== self.target.Id) {
+
+                if (obj.serverBody.BodyType === 'Bullet') {
+                    console.log('bullet x = ' + obj.gameRect.centerx);
+                }
+
                 var dx = self.target.gameRect.centerx - obj.gameRect.centerx;
                 var dy = self.target.gameRect.centery - obj.gameRect.centery;
 
                 obj.image.x = self.target.image.x - dx;
                 obj.image.y = self.target.image.y - dy;
-                obj.objectMenu.x = self.target.image.x - dx;
-                obj.objectMenu.y = self.target.image.y - dy;
+                //obj.objectMenu.x = self.target.image.x - dx;
+                //obj.objectMenu.y = self.target.image.y - dy;
             }
         })
 

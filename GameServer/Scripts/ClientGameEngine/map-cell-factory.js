@@ -35,7 +35,7 @@
             Y: data.Position.Y * self.size
         }
         var cell = new MapCell(cellPosition, self.size);
-        var img = self.tileImages[cellType].clone(true);
+        var img = self.tileImages[cellType].clone(false);
 
         if (cellType === gameTypes.tiles.TREE) {
             console.log('tree cell cloned');

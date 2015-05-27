@@ -106,7 +106,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
         if (clientEventData.move !== undefined) {
             self.mechanicEngine.addCommand(new CommandMove(
-                self.mechanicEngine.player.id,
+                self.mechanicEngine.player.Id,
                 clientEventData.move.duration,
                 clientEventData.move.direction
                 ));
@@ -141,8 +141,6 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
             this.serverProxy.syncState(clientEvents, function (state) {
                 try {
-                    //Process state with old mechanic
-                    self.serverFramesQueue.push(state);
                     var clientEventData = self.controlsManager.handleControlsCommon();
 
                     //Process state with new mechanic
