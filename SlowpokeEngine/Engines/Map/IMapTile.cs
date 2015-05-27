@@ -11,6 +11,7 @@ namespace SlowpokeEngine.Engines.Map
 {
     public interface IMapTile
     {
+        Guid Id { get; }
         string Color { get; }
         ConcurrentDictionary<Guid, Body> Bodies { get; }
         TileSolidityType Solid { get; }

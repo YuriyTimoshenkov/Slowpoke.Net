@@ -12,14 +12,16 @@ namespace SlowpokeEngine.Engines.Map
 {
     public class MapTileFacade
     {
+        public Guid Id { get; private set; }
         public string Color {get;set;}
         public TileSolidityType Solid {get;set;}
         public Point Position {get;set;}
         public ShapeFacade Shape {get;set;}
         public string TileTypeName { get; set; }
 
-        public MapTileFacade(string color, TileSolidityType solid, Point position, ShapeFacade shape, string tileTypeName)
+        public MapTileFacade(Guid id, string color, TileSolidityType solid, Point position, ShapeFacade shape, string tileTypeName)
         {
+            Id = id;
             Color = color;
             Solid = solid;
             Position = position;
@@ -29,7 +31,7 @@ namespace SlowpokeEngine.Engines.Map
 
         public static MapTileFacade FromMapTile(IMapTile mapTile)
         {
-            return new MapTileFacade(mapTile.Color, mapTile.Solid, mapTile.Position, ShapeFacade.FromShape(mapTile.Shape), mapTile.TileTypeName);
+            return new MapTileFacade(mapTile.Id, mapTile.Color, mapTile.Solid, mapTile.Position, ShapeFacade.FromShape(mapTile.Shape), mapTile.TileTypeName);
         }
     }
 }

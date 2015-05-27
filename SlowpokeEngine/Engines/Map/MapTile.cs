@@ -12,6 +12,7 @@ namespace SlowpokeEngine.Engines.Map
 {
     public class MapTile : IMapTile
     {
+        public Guid Id { get; private set; }
         public string Color
         {
             get;
@@ -27,6 +28,7 @@ namespace SlowpokeEngine.Engines.Map
 
         public MapTile(string color, TileSolidityType solid, Point position, Shape shape, string tileTypeName)
         {
+            Id = Guid.NewGuid();
             Color = color;
             Bodies = new ConcurrentDictionary<Guid, Body>();
             Solid = solid;
