@@ -23,7 +23,6 @@
         treeShape.graphics.beginFill("#C0F598").drawRect(0, 0, self.size, self.size);
 
         image.addChild(treeShape, self.tree.image);
-        image.cache(0, 0, self.size, self.size);
         console.log('tree cell created');
        
         return image
@@ -34,8 +33,9 @@
             X: data.Position.X * self.size,
             Y: data.Position.Y * self.size
         }
-        var cell = new MapCell(cellPosition, self.size);
-        var img = self.tileImages[cellType].clone(false);
+        var Id = data.Id;
+        var cell = new MapCell(Id, cellPosition, self.size);
+        var img = self.tileImages[cellType].clone(true);
 
         if (cellType === gameTypes.tiles.TREE) {
             console.log('tree cell cloned');

@@ -1,4 +1,5 @@
-﻿function MapCell(point, size) {
+﻿function MapCell(Id, point, size) {
+    this.Id = Id;
     this.position = point;
     this.width = size;
     this.height = size;
