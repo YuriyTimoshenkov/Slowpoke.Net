@@ -71,7 +71,7 @@ ObjectsContainersSynchronizer = {
         var objectsToDelete = [];
         oldContainer.forEach(function (oldElement) {
             var Id = oldElement.Id;
-            var objectsFromNewContainer = newContainer.filter(function (newElement) { newElement.Id == Id })
+            var objectsFromNewContainer = newContainer.filter(function (newElement) { return newElement.Id == Id })
             if (objectsFromNewContainer.length == 0) {
                 objectsToDelete.push(oldElement)
             }
@@ -88,9 +88,8 @@ ObjectsContainersSynchronizer = {
 
         // Create missing objects
         newContainer.forEach(function (newElement) {
-            if (oldContainer.filter(function (oldElement) { newElement.Id == oldElement.Id }).length == 0) { createHandler(newElement) }
+            if (oldContainer.filter(function (oldElement) { return newElement.Id == oldElement.Id }).length == 0) { createHandler(newElement) }
         });
-
     }
 }
 
