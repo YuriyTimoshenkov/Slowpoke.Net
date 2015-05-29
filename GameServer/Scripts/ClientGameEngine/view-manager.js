@@ -46,11 +46,6 @@
         // Update objects
         bodies.forEach(function (obj) {
             if (obj.Id !== self.target.Id) {
-
-                if (obj.serverBody.BodyType === 'Bullet') {
-                    console.log('bullet x = ' + obj.gameRect.centerx);
-                }
-
                 var dx = self.target.gameRect.centerx - obj.gameRect.centerx;
                 var dy = self.target.gameRect.centery - obj.gameRect.centery;
 

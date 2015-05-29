@@ -150,6 +150,7 @@ namespace SlowpokeHubs
             }
             catch(Exception exp)
             {
+                System.Diagnostics.Debug.WriteLine(string.Format("Error {0}", exp.StackTrace));
                 //TODO: log here
                 return null;
             }
@@ -177,8 +178,9 @@ namespace SlowpokeHubs
 
                 return GetFrame(playerContainer);
             }
-            catch (Exception)
+            catch (Exception exp)
             {
+                System.Diagnostics.Debug.WriteLine(string.Format("Error {0}", exp.StackTrace));
                 //TODO: log exception
                 return new ViewFrameFacade();
             }

@@ -25,8 +25,6 @@
                 x: body.gameRect.centerx,
                 y: body.gameRect.centery,
             };
-
-            console.log('Key duration:' + self.duration);
         }
     }
 

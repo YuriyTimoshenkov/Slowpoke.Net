@@ -1,34 +1,46 @@
 ﻿QUnit.test("MechanicEngine_ProcessMoveCommand", function (assert) {
-    var body = { id: 123, gameRect: { center: { centerx: 0, centery: 0 } } };
-    var gameWorldManager = {
-        world: {
-            allGameObjects: [body]
+    var player = {
+        Id: 123,
+        Shape: {
+            Position: {
+                X: 10,
+                Y: 10
+            }
         }
     };
-    var me = new MechanicEngine(gameWorldManager);
+
+    var me = new MechanicEngine(player, {});
+    
     var commandMove = new CommandMove(123, 10, {X:1, Y:1});
 
     me.addCommand(commandMove);
     me.update();
 
-    assert.ok(body.gameRect.center.x !== 0 && body.gameRect.center.y !== 0 && me.commandQueueProcessed.length === 1);
+    assert.ok(me.player.gameRect.center.x !== 0 && me.player.gameRect.center.y !== 0 && me.commandQueueProcessed.length === 1);
 });
 
 QUnit.test("MechanicEngine_ServerSync", function (assert) {
-    var body = { id: 123, gameRect: { center: { centerx: 0, centery: 0 } } };
-    var gameWorldManager = {
-        world: {
-            allGameObjects: [body]
+
+    var player = {
+        Id: 123,
+        Shape: {
+            Position: {
+                X: 0,
+                Y: 0
+            },
+            Radius: 10
         },
-        player: body
+        Speed: 10
     };
-    var me = new MechanicEngine(gameWorldManager);
-    var commandMove = new CommandMove(123, 10, {X:1, Y:1});
+
+    var me = new MechanicEngine(player, {});
+
+    var commandMove = new CommandMove(123, 1000, {x:1, y:0});
 
     me.addCommand(commandMove);
     me.update();
 
-    var serverCommands = me.syncWithServer({
+    var serverCommands = me.syncServerFrames({
         Bodies:[
             {
                 Id: 123,
@@ -36,14 +48,19 @@ QUnit.test("MechanicEngine_ServerSync", function (assert) {
                     Position: {
                         X: 10,
                         Y: 10
-                    }
+                    },
+                    Radius: 10
+                },
+                Direction: {
+                    X: 1,
+                    Y: 0
                 }
             }
     ]});
 
-    assert.ok(me.commandQueueProcessed.length === 0
+    assert.ok(me.commandQueueProcessed[0].syncedWithServer === true
         && serverCommands.length === 1
         && serverCommands[0].Name === "Move"
-        && body.gameRect.centerx === 10
-        && body.gameRect.centery === 10);
+        && me.player.gameRect.centerx === 10
+        && me.player.gameRect.centery === 0);
 });

@@ -110,6 +110,8 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
                 clientEventData.move.duration,
                 clientEventData.move.direction
                 ));
+
+            console.log("player body direction updated: " + clientEventData.move.direction.x)
         }
 
         self.mechanicEngine.update();

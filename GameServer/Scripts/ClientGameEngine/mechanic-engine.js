@@ -29,15 +29,16 @@
         var serverCommands = [];
 
         frame.Bodies.forEach(function (serverBody) {
-            switch(self.getBodyProcessingType(serverBody))
+            switch (self.getServerBodyProcessingType(serverBody))
             {
                 case bodyProcessingTypes.ServerSide:
                     {
+
                         self.syncServerSideBody(serverBody, syncSessionId);
 
                         break;
                     };
-                case bodyProcessingTypes.ClientSides:
+                case bodyProcessingTypes.ClientSide:
                     {
                         self.syncClientSideBody(serverBody, syncSessionId);
 
@@ -45,6 +46,7 @@
                     }
                 case bodyProcessingTypes.ClientSidePrediction:
                     {
+                        console.log("player body updated: " + serverBody.Direction.X)
                         serverCommands = serverCommands.concat(self.syncPredictiveBodies(serverBody));
                         self.player.syncSessionId = syncSessionId;
                         self.player.serverSync(serverBody);
@@ -66,11 +68,6 @@
         if (frame.Map)
             self.updateMap(frame.Map)
 
-        if (serverCommands.length > 0)
-        {
-            console.log('commands present');
-        }
-
         return serverCommands;
     }
 
@@ -87,6 +84,8 @@
         }
 
         //Update predictive bodies
+        self.bodies.filter(function (body) { return self.getBodyProcessingType(body) === bodyProcessingTypes.ClientSide })
+            .forEach(function (body) { body.update() });
     }
 
 
@@ -134,7 +133,6 @@
             return item.toServerCommand();
         });
 
-
         return result;
     }
 
@@ -145,9 +143,12 @@
             filtered[0].serverSync(serverBody);
             filtered[0].syncSessionId = syncSessionId;
             self.onObjectStateChanged(serverBody, 'update');
+
+            
         }
         else {
             var newObject = self.gameObjectFactory.createGameObjectbyServerBody(serverBody)
+
             newObject.syncSessionId = syncSessionId;
             this.bodies.push(newObject);
             self.onObjectStateChanged(newObject, 'add');
@@ -179,11 +180,15 @@
 
     this.onObjectStateChanged = function (object, state) { }
 
-    this.getBodyProcessingType = function (serverBody) {
-        //if (serverBody.BodyType === 'Bullett') return bodyProcessingTypes.ClientSide;
+    this.getServerBodyProcessingType = function (serverBody) {
+        if (serverBody.BodyType === 'Bullet') return bodyProcessingTypes.ClientSide;
         if (serverBody.Id === self.player.Id) return bodyProcessingTypes.ClientSidePrediction;
         
         return bodyProcessingTypes.ServerSide;
+    }
+
+    this.getBodyProcessingType = function (body) {
+        return self.getServerBodyProcessingType(body.serverBody);
     }
 
     this.player = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.PLAYER, player)

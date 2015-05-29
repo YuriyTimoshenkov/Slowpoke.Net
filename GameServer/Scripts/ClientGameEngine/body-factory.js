@@ -66,7 +66,7 @@
         return player;
     }
     this.builders[gameTypes.gameObjects.NPCAI] = function (serverBody) {
-        var npc = new CharacterBody();
+        var npc = new CharacterBody(serverBody);
 
         // Assign image
         var obj = new PolicemanContainer();

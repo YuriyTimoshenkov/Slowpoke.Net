@@ -2,8 +2,8 @@
     var self = this;
     this.size = size;
     this.gameObjectFactory = gameObjectFactory;
-    this.tree = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.TREE, { Position: { X: 0, Y: 0 } });
-    this.tree.image.cache(0, 0, self.size, self.size)
+    //this.tree = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.TREE, {Id: 666, Position: { X: 0, Y: 0 } });
+    //this.tree.image.cache(0, 0, self.size, self.size)
     console.log('tree image created');
 
     this.tileImages = [];
@@ -22,7 +22,7 @@
         var treeShape = new createjs.Shape();
         treeShape.graphics.beginFill("#C0F598").drawRect(0, 0, self.size, self.size);
 
-        image.addChild(treeShape, self.tree.image);
+        //image.addChild(treeShape, self.tree.image);
         image.cache(0, 0, self.size, self.size);
         console.log('tree cell created');
        

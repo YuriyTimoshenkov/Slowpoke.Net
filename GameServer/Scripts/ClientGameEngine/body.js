@@ -66,6 +66,8 @@
             //Position
             self.gameRect.center = serverBody.Shape.Position;
         }
+
+        this.update = function () { };
     }
 });
 
@@ -133,6 +135,33 @@ var PlayerBody = CharacterBody.extend({
             if (serverBody.Score) {
                 self.score = serverBody.Score;
             }
+        }
+    }
+});
+
+var BulletBody = BaseBody.extend({
+    init: function (serverBody) {
+        var self = this;
+
+        this._super(serverBody);
+        this.lastUpdateTime = new Date().getTime();
+        this.unitDirection = self.direction.calculateUnitVector();
+
+        this.serverSync = function (serverBody) { }
+
+        this.update = function () {
+            var currentTime = new Date().getTime();
+            var duration = currentTime - self.lastUpdateTime;
+            self.lastUpdateTime = currentTime;
+
+            body.gameRect.center = {
+                X: self.gameRect.centerx + self.speed * duration * self.unitDirection.x / 1000,
+                Y: self.gameRect.centery + self.speed * duration * self.unitDirection.y / 1000
+            };
+
+
+            console.log('bullet x = ' + self.gameRect.centerx);
+            
         }
     }
 });
