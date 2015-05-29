@@ -124,7 +124,8 @@
             return -1;
         }
         self.stage.sortChildren(sortFunction);
-
+        // Add menu objects
+        self.stage.addChild(this.menu.pingText);
 
         // Render
         self.stage.update();
@@ -147,7 +148,6 @@
                     if (object.objectMenu !== undefined && object.objectMenu.children.length > 0) {
                         self.stage.addChild(object.objectMenu);
                     }
-
                     break;
                 }
                 case 'update': {
