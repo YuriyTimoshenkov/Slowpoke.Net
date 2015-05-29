@@ -64,3 +64,32 @@ function Vector(x, y) {
         return new Vector(self.x / magnitude, self.y / magnitude);
     }
 }
+
+ObjectsContainersSynchronizer = {
+    syncObjectsContainers: function (oldContainer, newContainer, createHandler, updateHandler) {
+        // Calculate objects to delete 
+        var objectsToDelete = [];
+        oldContainer.forEach(function (oldElement) {
+            var Id = oldElement.Id;
+            var objectsFromNewContainer = newContainer.filter(function (newElement) { return newElement.Id == Id })
+            if (objectsFromNewContainer.length == 0) {
+                objectsToDelete.push(oldElement)
+            }
+            // Calculate objects to update and update them
+            // we expect maximum 1 element will be presend in newContainer
+            else updateHandler(oldElement, objectsFromNewContainer[0])
+        });
+
+        // Actually deleting items
+        objectsToDelete.forEach(function (obj) {
+            var i = oldContainer.indexOf(obj);
+            oldContainer.splice(i, 1)
+        });
+
+        // Create missing objects
+        newContainer.forEach(function (newElement) {
+            if (oldContainer.filter(function (oldElement) { return newElement.Id == oldElement.Id }).length == 0) { createHandler(newElement) }
+        });
+    }
+}
+

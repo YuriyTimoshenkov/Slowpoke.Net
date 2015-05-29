@@ -136,7 +136,6 @@
         obj.image.scaleX = 0.06;
         obj.image.scaleY = 0.06;
         treeContainer.image = obj.image;//.addChild(obj.image);
-        treeContainer.image.cache(0, 0, 50, 50);
         return treeContainer;
     }
 
