@@ -46,7 +46,6 @@
                     }
                 case bodyProcessingTypes.ClientSidePrediction:
                     {
-                        console.log("player body updated: " + serverBody.Direction.X)
                         serverCommands = serverCommands.concat(self.syncPredictiveBodies(serverBody));
                         self.player.syncSessionId = syncSessionId;
                         self.player.serverSync(serverBody);
@@ -85,7 +84,9 @@
 
         //Update predictive bodies
         self.bodies.filter(function (body) { return self.getBodyProcessingType(body) === bodyProcessingTypes.ClientSide })
-            .forEach(function (body) { body.update() });
+            .forEach(function (body) {
+                body.update()
+            });
     }
 
 
@@ -157,9 +158,9 @@
 
     this.syncClientSideBody = function (serverBody, syncSessionId) {
         // Create and update
-        var filtered = this.bodies.filter(function (obj) { return serverBody.Id == obj.id });
+        var filtered = this.bodies.filter(function (obj) { return serverBody.Id === obj.id });
         
-        if (filtered.length == 0) {
+        if (filtered.length === 0) {
             var newObject = self.gameObjectFactory.createGameObjectbyServerBody(serverBody)
             newObject.syncSessionId = syncSessionId;
             this.bodies.push(newObject);

@@ -145,7 +145,7 @@ var BulletBody = BaseBody.extend({
 
         this._super(serverBody);
         this.lastUpdateTime = new Date().getTime();
-        this.unitDirection = self.direction.calculateUnitVector();
+        this.unitDirection = new Vector(self.direction.X, self.direction.Y).calculateUnitVector();
 
         this.serverSync = function (serverBody) { }
 
@@ -154,7 +154,7 @@ var BulletBody = BaseBody.extend({
             var duration = currentTime - self.lastUpdateTime;
             self.lastUpdateTime = currentTime;
 
-            body.gameRect.center = {
+            self.gameRect.center = {
                 X: self.gameRect.centerx + self.speed * duration * self.unitDirection.x / 1000,
                 Y: self.gameRect.centery + self.speed * duration * self.unitDirection.y / 1000
             };

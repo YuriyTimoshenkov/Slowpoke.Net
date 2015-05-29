@@ -86,7 +86,7 @@
         return npc;
     }
     this.builders[gameTypes.gameObjects.BULLET] = function (serverBody) {
-        var bullet = new BaseBody(serverBody);
+        var bullet = new BulletBody(serverBody);
 
         // Assign image
         var bulletImage = new createjs.Shape();
