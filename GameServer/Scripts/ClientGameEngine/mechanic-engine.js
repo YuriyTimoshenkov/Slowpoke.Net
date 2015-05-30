@@ -154,7 +154,7 @@
             }
             filtered[0].syncSessionId = syncSessionId;
 
-            self.onObjectStateChanged(serverBody, 'update');    
+            self.onObjectStateChanged(filtered[0], 'update');
         }
         else {
             var newObject = self.gameObjectFactory.createGameObjectbyServerBody(serverBody)

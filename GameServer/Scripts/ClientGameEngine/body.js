@@ -10,66 +10,63 @@
         this.image = new createjs.Container();
         this.image.zIndex = 1;
         this.speed = serverBody.Speed;
+    },
+    updateDirection: function (newDirection) {
+        // Calc rotation for object rendering
 
-        this.updateDirection = function (newDirection) {
-            // Calc rotation for object rendering
+        var a = { X: 0, Y: -1 }
+        var b = newDirection;
 
-            var a = { X: 0, Y: -1 }
-            var b = newDirection;
+        var value1 = a.X * b.X + a.Y * b.Y;
+        var value21 = Math.sqrt(Math.pow(a.X, 2) + Math.pow(a.Y, 2));
+        var value22 = Math.sqrt(Math.pow(b.X, 2) + Math.pow(b.Y, 2));
+        var value2 = value21 * value22;
+        var value = value1 / value2;
+        var rotationDeltaRad = Math.acos(value);
 
-            var value1 = a.X * b.X + a.Y * b.Y;
-            var value21 = Math.sqrt(Math.pow(a.X, 2) + Math.pow(a.Y, 2));
-            var value22 = Math.sqrt(Math.pow(b.X, 2) + Math.pow(b.Y, 2));
-            var value2 = value21 * value22;
-            var value = value1 / value2;
-            var rotationDeltaRad = Math.acos(value);
+        var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
 
-            var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
+        // To check rotation direction
+        var centerX = this.image.x;
+        var centerY = this.image.y;
+        var mouseX = centerX + newDirection.X;
+        var mouseY = centerY + newDirection.Y;
 
-            // To check rotation direction
-            var centerX = this.image.x;
-            var centerY = this.image.y;
-            var mouseX = centerX + newDirection.X;
-            var mouseY = centerY + newDirection.Y;
-
-            // Clockwise
-            if (mouseX > centerX) {
-                this.image.rotation = rotationDeltaDegree;
+        // Clockwise
+        if (mouseX > centerX) {
+            this.image.rotation = rotationDeltaDegree;
+        }
+            // Counter-clockwise
+        else if (mouseX < centerX) {
+            this.image.rotation = 360 - rotationDeltaDegree;
+        }
+            // if mousex = centerx
+        else {
+            // if up
+            if (mouseY < centerY) {
+                this.image.rotation = 0;
             }
-                // Counter-clockwise
-            else if (mouseX < centerX) {
-                this.image.rotation = 360 - rotationDeltaDegree;
+                // if down
+            else if (mouseY > centerY) {
+                this.image.rotation = 180;
             }
-                // if mousex = centerx
-            else {
-                // if up
-                if (mouseY < centerY) {
-                    this.image.rotation = 0;
-                }
-                    // if down
-                else if (mouseY > centerY) {
-                    this.image.rotation = 180;
-                }
-            }
-
-            // Update direction and weapon
-            this.direction = newDirection;
         }
 
-        this.serverSync = function (serverBody) {
-            // Update direction
-            var newDirection = serverBody.Direction;
+        // Update direction and weapon
+        this.direction = newDirection;
+    },
+    serverSync: function (serverBody) {
+        // Update direction
+        var newDirection = serverBody.Direction;
 
-            if (self.direction.X !== serverBody.Direction.X || self.direction.Y !== serverBody.Direction.Y) {
-                self.updateDirection(serverBody.Direction);
-            }
-
-            //Position
-            self.gameRect.center = serverBody.Shape.Position;
+        if (this.direction.X !== serverBody.Direction.X || this.direction.Y !== serverBody.Direction.Y) {
+            this.updateDirection(serverBody.Direction);
         }
 
-        this.update = function () { };
-    }
+        //Position
+        this.gameRect.center = serverBody.Shape.Position;
+    },
+    update: function () { }
 });
 
 var CharacterBody = BaseBody.extend({
@@ -85,10 +82,6 @@ var CharacterBody = BaseBody.extend({
 
         this.weaponImage = null;
         this.currentWeapon = serverBody.CurrentWeapon;
-
-        this.serverSync = function (serverBody) {
-            self.updateLife(serverBody.Life)
-        }
 
         this.createLifeText = function () {
             var textSize = 15;
@@ -109,6 +102,11 @@ var CharacterBody = BaseBody.extend({
                 self.lifeText.text = life
             }
         }
+    },
+    serverSync: function (serverBody) {
+        this._super(serverBody);
+
+        this.updateLife(serverBody.Life)
     }
 });
 
@@ -117,30 +115,29 @@ var PlayerBody = CharacterBody.extend({
         var self = this;
 
         this._super(serverBody);
+    },
+    serverSync: function (serverBody) {
+        // Update direction
+        var newDirection = serverBody.Direction;
 
-        this.serverSync = function (serverBody) {
-            // Update direction
-            var newDirection = serverBody.Direction;
+        if (this.direction.X !== serverBody.Direction.X || this.direction.Y !== serverBody.Direction.Y) {
+            this.updateDirection(serverBody.Direction);
+        }
 
-            if (self.direction.X !== serverBody.Direction.X || self.direction.Y !== serverBody.Direction.Y) {
-                self.updateDirection(serverBody.Direction);
-            }
+        // Update weapon
+        if (serverBody.CurrentWeapon != 'undefined' && this.currentWeapon !== serverBody.CurrentWeapon) {
+            this.currentWeapon = serverBody.CurrentWeapon;
+        }
 
-            // Update weapon
-            if (serverBody.CurrentWeapon != 'undefined' && self.currentWeapon !== serverBody.CurrentWeapon) {
-                self.currentWeapon = serverBody.CurrentWeapon;
-            }
-
-            // Update life
-            if (self.life !== serverBody.Life) {
-                self.updateLife(serverBody.Life);
-            }
+        // Update life
+        if (this.life !== serverBody.Life) {
+            this.updateLife(serverBody.Life);
+        }
 
 
-            // Update score
-            if (serverBody.Score) {
-                self.score = serverBody.Score;
-            }
+        // Update score
+        if (serverBody.Score) {
+            this.score = serverBody.Score;
         }
     }
 });
@@ -152,18 +149,18 @@ var BulletBody = BaseBody.extend({
         this._super(serverBody);
         this.lastUpdateTime = new Date().getTime();
         this.unitDirection = new Vector(self.direction.X, self.direction.Y).calculateUnitVector();
+    },
+      serverSync :function (serverBody) { },
 
-        this.serverSync = function (serverBody) { }
-
-        this.update = function () {
+        update : function () {
             var currentTime = new Date().getTime();
-            var duration = currentTime - self.lastUpdateTime;
-            self.lastUpdateTime = currentTime;
+            var duration = currentTime - this.lastUpdateTime;
+            this.lastUpdateTime = currentTime;
 
-            self.gameRect.center = {
-                X: self.gameRect.centerx + self.speed * duration * self.unitDirection.x / 1000,
-                Y: self.gameRect.centery + self.speed * duration * self.unitDirection.y / 1000
+            this.gameRect.center = {
+                X: this.gameRect.centerx + this.speed * duration * this.unitDirection.x / 1000,
+                Y: this.gameRect.centery + this.speed * duration * this.unitDirection.y / 1000
             };
         }
     }
-});
+);
