@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.SignalR;
+﻿using Common;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
 using Owin;
@@ -44,7 +45,7 @@ namespace GameServer
                 map.RunSignalR(hubConfiguration);
             });
 
-            SlowpokeHub.Run();
+            SlowpokeHub.Run(new NLogAdapter("Slowpoke.Log"));
         }
     }
 }

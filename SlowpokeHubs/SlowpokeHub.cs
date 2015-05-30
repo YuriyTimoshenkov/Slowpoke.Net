@@ -11,6 +11,7 @@ using SlowpokeEngine.Entities;
 using System.Security.Claims;
 using SlowpokeEngine.Engines.Map;
 using SlowpokeEngine.Engines.View;
+using Common;
 
 namespace SlowpokeHubs
 {
@@ -19,8 +20,11 @@ namespace SlowpokeHubs
 	{
         private static ConcurrentDictionary<string, IPlayerContainer> _connectionsPlayerMapping =
             new ConcurrentDictionary<string, IPlayerContainer>();
+        private static ILogger _logger;
+
         public static readonly string TokenCookieName = "SlowpokeToken";
         public static readonly TimeSpan TokentDuration = new TimeSpan(1,0,0);
+
 
         public static IMechanicEngine MechanicEngine;
 
@@ -29,37 +33,8 @@ namespace SlowpokeHubs
 
         }
 
-        public static void Run()
-        {
-            var meb = new UnityMechanicEngineBuilder();
-			SlowpokeHub.MechanicEngine = meb.Build();
-
-            SlowpokeHub.MechanicEngine.StartEngine(UpdatePlayerState);
-        }
-
-        public static void UpdatePlayerState(IPlayerBodyFacade playerBodyFacade)
-        {
-            var playerMapping = _connectionsPlayerMapping.FirstOrDefault(v => v.Value.Player.Id == playerBodyFacade.Id);
-            
-            //Find connectionId
-            if (playerMapping.Value != null)
-            {
-                var clientConnection = GlobalHost.ConnectionManager.GetHubContext<SlowpokeHub>().Clients.Client(playerMapping.Key);
-                clientConnection.playerStateChanged(playerBodyFacade.State);
-
-                System.Diagnostics.Debug.WriteLine(string.Format("Player: {0} state changed to {1}", playerBodyFacade.Id, playerBodyFacade.State));
-            }
-        }
-
-        public BodyFacade LoadPlayer()
-		{
-            var playerContainer = _connectionsPlayerMapping[Context.ConnectionId];
-            MechanicEngine.StartGame(playerContainer.Player);
-
-            return BodyFacade.FromBody(playerContainer.Player);
-		}
-
-		private void MoveBody(long commandId, double x, double y, int duration)
+        #region private
+        private void MoveBody(long commandId, double x, double y, int duration)
 		{
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
@@ -141,19 +116,58 @@ namespace SlowpokeHubs
                 }
             }
         }
+        #endregion
 
+        public static void Run(ILogger logger)
+        {
+
+            _logger = logger;
+            var meb = new UnityMechanicEngineBuilder();
+            SlowpokeHub.MechanicEngine = meb.Build();
+
+            SlowpokeHub.MechanicEngine.StartEngine(UpdatePlayerState);
+        }
+
+        public static void UpdatePlayerState(IPlayerBodyFacade playerBodyFacade)
+        {
+            var playerMapping = _connectionsPlayerMapping.FirstOrDefault(v => v.Value.Player.Id == playerBodyFacade.Id);
+
+            //Find connectionId
+            if (playerMapping.Value != null)
+            {
+                var clientConnection = GlobalHost.ConnectionManager.GetHubContext<SlowpokeHub>().Clients.Client(playerMapping.Key);
+                clientConnection.playerStateChanged(playerBodyFacade.State);
+            }
+        }
+
+        public BodyFacade LoadPlayer()
+        {
+            try
+            {
+                var playerContainer = _connectionsPlayerMapping[Context.ConnectionId];
+                MechanicEngine.StartGame(playerContainer.Player);
+
+                return BodyFacade.FromBody(playerContainer.Player);
+            }
+            catch (Exception exp)
+            {
+                _logger.Error(exp);
+            }
+
+            return null;
+        }
         public IMap GetMap()
         {
             try
             {
                 return MechanicEngine.ViewPort.Map;
             }
-            catch(Exception exp)
+            catch (Exception exp)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Error {0}", exp.StackTrace));
-                //TODO: log here
-                return null;
+                _logger.Error(exp);
             }
+
+            return null;
         }
 
         public ViewFrameFacade SyncState(InputEvent inputEvent)
@@ -167,6 +181,7 @@ namespace SlowpokeHubs
                 //Process change direction
                 if (inputEvent.changeDirection != null)
                 {
+                   // _logger.Info(string.Format("Player {0}, new direction {1}", playerContainer.Player.Id, (inputEvent.changeDirection.X.ToString() + "/" + inputEvent.changeDirection.Y.ToString())));
                     ChangeBodyDirection(inputEvent.changeDirection.X, inputEvent.changeDirection.Y);
                 }
 
@@ -180,44 +195,58 @@ namespace SlowpokeHubs
             }
             catch (Exception exp)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Error {0}", exp.StackTrace));
-                //TODO: log exception
-                return new ViewFrameFacade();
+                _logger.Error(exp);
             }
+
+            return null;
         }
 
 		public override Task OnDisconnected (bool stopCalled)
 		{
-			IPlayerContainer  playerContainer;
-
-            if (_connectionsPlayerMapping.TryRemove(Context.ConnectionId, out playerContainer))
+            try
             {
-                MechanicEngine.ReleaseBody(playerContainer.Player.Id);
-			}
+                IPlayerContainer playerContainer;
+
+                if (_connectionsPlayerMapping.TryRemove(Context.ConnectionId, out playerContainer))
+                {
+                    MechanicEngine.ReleaseBody(playerContainer.Player.Id);
+                }
+            }
+            catch (Exception exp)
+            {
+                _logger.Error(exp);
+            }
 
 			return base.OnDisconnected(stopCalled);
 		}
 
 		public override Task OnConnected ()
 		{
-            string userIdStr = Context.Request.Headers["playerId"];
-            Guid userId;
-
-            if (userIdStr != null)
+            try
             {
-                userId = Guid.Parse(userIdStr);
+                string userIdStr = Context.Request.Headers["playerId"];
+                Guid userId;
+
+                if (userIdStr != null)
+                {
+                    userId = Guid.Parse(userIdStr);
+                }
+                else
+                {
+                    userId = Guid.Parse(((ClaimsIdentity)Context.User.Identity).FindFirst(v => v.Type == ClaimTypes.NameIdentifier).Value);
+                }
+
+                var player = MechanicEngine.LoadPlayerBody(userId);
+                var playerContainer = new PlayerContainer(
+                    player,
+                    null);
+
+                _connectionsPlayerMapping.TryAdd(Context.ConnectionId, playerContainer);
             }
-            else
+            catch (Exception exp)
             {
-                userId = Guid.Parse(((ClaimsIdentity)Context.User.Identity).FindFirst(v => v.Type == ClaimTypes.NameIdentifier).Value);
+                _logger.Error(exp);
             }
-
-           var player = MechanicEngine.LoadPlayerBody(userId);
-           var playerContainer = new PlayerContainer(
-               player,
-               null);
-
-           _connectionsPlayerMapping.TryAdd(Context.ConnectionId, playerContainer);
 
 			return base.OnConnected ();
 		}

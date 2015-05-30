@@ -212,6 +212,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{6932c8cf-f33f-4f40-9e12-c27473457e74}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SlowpokeHubs\SlowpokeHubs.csproj">
       <Project>{cc0576be-2b88-4d33-8c95-d16405570673}</Project>
       <Name>SlowpokeHubs</Name>

@@ -12,6 +12,7 @@ using SlowpokeEngine.Engines.Map;
 using SlowpokeEngine.Engines.Levels;
 using SlowpokeEngine.Entities;
 using SlowpokeEngine.Engines.Services;
+using Common;
 
 namespace SlowpokeEngine.Engines
 {
@@ -26,6 +27,7 @@ namespace SlowpokeEngine.Engines
         private IGameLevelRepository _gameLevelRepository;
         private Action<IPlayerBodyFacade> _playerStateHandler;
         private Random _randomizer = new Random();
+        private ILogger _logger;
 
         
         private readonly ActionHandlersManager<Func<GameCommand, PhysicsProcessingResult,bool>, Action<GameCommand, PhysicsProcessingResult>> _actionHandlers
@@ -41,9 +43,11 @@ namespace SlowpokeEngine.Engines
 			IMapEngine mapEngine, 
 			IBodyBuilder bodyBuilder,
             IActiveBodyEyesight viewPort,
-            IGameLevelRepository gameLevelRepository
+            IGameLevelRepository gameLevelRepository,
+            ILogger logger
 		)
 		{
+            _logger = logger;
 			_physicalEngine = physicalEngine;
 			_mapEngine = mapEngine;
 			_bodyBuilder = bodyBuilder;
@@ -61,22 +65,49 @@ namespace SlowpokeEngine.Engines
 
 		private void EventLoop()
 		{
+            int oldQueueSize = 0;
+            int processingVelocity = 1;
+
             while (!_cancelationTokenSource.Token.IsCancellationRequested)
             {
                 try
                 {
                     GameCommand nextCommand;
 
-                    if (ActionQueue.TryDequeue(out nextCommand))
+                    //Adjust queue processing velocity
+                    int queueSize = ActionQueue.Count();
+                    if (queueSize == 0)
                     {
-                        //TODO: when all command would be implemented on client side, remove this shit
-                        if (nextCommand.Id != 0)
-                            nextCommand.ActiveBody.LastProcessedCommandId = nextCommand.Id;
-
-                        //Execute command
-                        nextCommand.Execute();
+                        processingVelocity = 0;
                     }
                     else
+                    {
+                        double queueRelativeGrowth = oldQueueSize == 0 ? queueSize : (double)queueSize / oldQueueSize;
+                        processingVelocity = (int)Math.Ceiling((processingVelocity == 0 ? 1 : processingVelocity) * queueRelativeGrowth);
+                    }
+
+                    oldQueueSize = queueSize;
+
+                    //Process batch of command
+                    for (int i = 0; i < processingVelocity; i++)
+                    {
+                        if (ActionQueue.TryDequeue(out nextCommand))
+                        {
+                            //TODO: when all command would be implemented on client side, remove this shit
+                            if (nextCommand.Id != 0)
+                                nextCommand.ActiveBody.LastProcessedCommandId = nextCommand.Id;
+
+                            //Execute command
+                            nextCommand.Execute();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+
+                    if (queueSize == 0)
                     {
                         Thread.Sleep(10);
                     }
@@ -87,7 +118,7 @@ namespace SlowpokeEngine.Engines
                 }
                 catch (Exception exp)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Loop error: {0}.", exp.Message));
+                    _logger.Error("Loop error", exp);
                 }
             }
 		}

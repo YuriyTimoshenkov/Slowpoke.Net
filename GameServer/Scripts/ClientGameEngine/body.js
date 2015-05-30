@@ -157,11 +157,7 @@ var BulletBody = BaseBody.extend({
             self.gameRect.center = {
                 X: self.gameRect.centerx + self.speed * duration * self.unitDirection.x / 1000,
                 Y: self.gameRect.centery + self.speed * duration * self.unitDirection.y / 1000
-            };
-
-
-            console.log('bullet x = ' + self.gameRect.centerx);
-            
+            };            
         }
     }
 });

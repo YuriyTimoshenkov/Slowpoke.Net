@@ -48,7 +48,9 @@
                     {
                         serverCommands = serverCommands.concat(self.syncPredictiveBodies(serverBody));
                         self.player.syncSessionId = syncSessionId;
+                     
                         self.player.serverSync(serverBody);
+    
                         break;
                     }
             }
@@ -64,9 +66,13 @@
             }
         });
 
+        try{
         if (frame.Map)
             self.updateMap(frame.Map)
-
+        }
+                        catch (ex) {
+                            console.log("syncServerSideBody: " +ex)
+                        }
         return serverCommands;
     }
 
@@ -140,31 +146,41 @@
     this.syncServerSideBody = function (serverBody, syncSessionId) {
         // Create and update
         var filtered = this.bodies.filter(function (body) { return serverBody.Id === body.Id });
-        if (filtered.length > 0) {
-            filtered[0].serverSync(serverBody);
-            filtered[0].syncSessionId = syncSessionId;
-            self.onObjectStateChanged(serverBody, 'update');
 
-            
+        if (filtered.length > 0) {
+            try
+            {
+                filtered[0].serverSync(serverBody);
+            }
+            catch (ex) {
+                console.log("syncServerSideBody: " + ex)
+            }
+            filtered[0].syncSessionId = syncSessionId;
+
+            self.onObjectStateChanged(serverBody, 'update');    
         }
         else {
             var newObject = self.gameObjectFactory.createGameObjectbyServerBody(serverBody)
 
             newObject.syncSessionId = syncSessionId;
             this.bodies.push(newObject);
+
             self.onObjectStateChanged(newObject, 'add');
         }
     }
 
     this.syncClientSideBody = function (serverBody, syncSessionId) {
         // Create and update
-        var filtered = this.bodies.filter(function (obj) { return serverBody.Id === obj.id });
+        var filtered = this.bodies.filter(function (body) { return serverBody.Id === body.Id });
         
         if (filtered.length === 0) {
             var newObject = self.gameObjectFactory.createGameObjectbyServerBody(serverBody)
             newObject.syncSessionId = syncSessionId;
             this.bodies.push(newObject);
             self.onObjectStateChanged(newObject, 'add');
+        }
+        else {
+            filtered[0].syncSessionId = syncSessionId;
         }
     }
 
