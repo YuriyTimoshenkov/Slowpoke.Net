@@ -66,30 +66,32 @@ function Vector(x, y) {
 }
 
 ObjectsContainersSynchronizer = {
-    syncObjectsContainers: function (oldContainer, newContainer, createHandler, updateHandler) {
-        // Calculate objects to delete 
-        var objectsToDelete = [];
-        oldContainer.forEach(function (oldElement) {
-            var Id = oldElement.Id;
-            var objectsFromNewContainer = newContainer.filter(function (newElement) { return newElement.Id == Id })
-            if (objectsFromNewContainer.length == 0) {
-                objectsToDelete.push(oldElement)
+    syncObjectsContainers: function (oldContainer, newContainer, createHandler, updateHandler, removehandler) {
+        //Create new container with new + updated elements
+        var result = newContainer.map(function (newElement) {
+
+            var objectsFromOldContainer = oldContainer.filter(function (oldElement) { return newElement.Id == oldElement.Id })
+
+            if (objectsFromOldContainer.length > 0) {
+                updateHandler(objectsFromOldContainer[0]);
+
+                return objectsFromOldContainer[0];
             }
-            // Calculate objects to update and update them
-            // we expect maximum 1 element will be presend in newContainer
-            else updateHandler(oldElement, objectsFromNewContainer[0])
+            else {
+                return createHandler(newElement)
+            }
         });
 
-        // Actually deleting items
-        objectsToDelete.forEach(function (obj) {
-            var i = oldContainer.indexOf(obj);
-            oldContainer.splice(i, 1)
+        // Generate remove events
+        oldContainer.forEach(function (item) {
+            var existingItem = result.filter(function(v) { return v.Id === item.Id});
+            
+            if (existingItem.length === 0) {
+                removehandler(item);
+            }
         });
 
-        // Create missing objects
-        newContainer.forEach(function (newElement) {
-            if (oldContainer.filter(function (oldElement) { return newElement.Id == oldElement.Id }).length == 0) { createHandler(newElement) }
-        });
+        return result;
     }
 }
 

@@ -131,6 +131,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         ///Update ping
         self.gameContext.ping = Math.round(1000 / timeDiff)
         
+        //Call later if needed
         if (timeDiff <= self.gameContext.serverLoopTimeout) {
             setTimeout(function () {
                 self.syncState(clientEvents)
@@ -150,7 +151,13 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
                 }
                 catch(ex)
                 {
+                    var clientEventData = self.controlsManager.handleControlsCommon();
+
+                    //Process state with new mechanic
+                    clientEventData.commands = [];
+
                     console.log("Error: " + ex)
+                    self.syncState(clientEventData);
                 }
             }, function (error) {
                 console.log("Error: " + error)

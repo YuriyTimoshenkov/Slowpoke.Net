@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SlowpokeEngine.Engines.Levels;
 using SlowpokeEngine.Engines.Services;
+using Common;
 
 namespace SlowpokeEngine
 {
@@ -22,6 +23,7 @@ namespace SlowpokeEngine
             UnityContainer unityContainer = new UnityContainer();
 
             unityContainer.RegisterInstance<UnityContainer>(unityContainer);
+            unityContainer.RegisterType<ILogger, NLogAdapter>(new InjectionConstructor("Slowpoke.Log"));
             unityContainer.RegisterType<ICharacterRepository, CharacterRepositoryEF>();
             unityContainer.RegisterType<IMechanicService, NPCGenerationService>("NPCGenerationService");
             unityContainer.RegisterType<IMechanicService, LifeContainersGenerationService>("LifeContainerGenerationService");

@@ -48,7 +48,9 @@
                     {
                         serverCommands = serverCommands.concat(self.syncPredictiveBodies(serverBody));
                         self.player.syncSessionId = syncSessionId;
+                     
                         self.player.serverSync(serverBody);
+    
                         break;
                     }
             }
@@ -64,9 +66,10 @@
             }
         });
 
+        
         if (frame.Map)
             self.updateMap(frame.Map)
-
+        
         return serverCommands;
     }
 
@@ -84,7 +87,9 @@
 
         //Update predictive bodies
         self.bodies.filter(function (body) { return self.getBodyProcessingType(body) === bodyProcessingTypes.ClientSide })
-            .forEach(function (body) { body.update() });
+            .forEach(function (body) {
+                body.update()
+            });
     }
 
 
@@ -138,41 +143,52 @@
     this.syncServerSideBody = function (serverBody, syncSessionId) {
         // Create and update
         var filtered = this.bodies.filter(function (body) { return serverBody.Id === body.Id });
+
         if (filtered.length > 0) {
-            filtered[0].serverSync(serverBody);
+            try
+            {
+                filtered[0].serverSync(serverBody);
+            }
+            catch (ex) {
+                console.log("syncServerSideBody: " + ex)
+            }
             filtered[0].syncSessionId = syncSessionId;
-            self.onObjectStateChanged(serverBody, 'update');
+
+            self.onObjectStateChanged(serverBody, 'update');    
         }
         else {
             var newObject = self.gameObjectFactory.createGameObjectbyServerBody(serverBody)
 
             newObject.syncSessionId = syncSessionId;
             this.bodies.push(newObject);
+
             self.onObjectStateChanged(newObject, 'add');
         }
     }
 
     this.syncClientSideBody = function (serverBody, syncSessionId) {
         // Create and update
-        var filtered = this.bodies.filter(function (obj) { return serverBody.Id == obj.id });
+        var filtered = this.bodies.filter(function (body) { return serverBody.Id === body.Id });
         
-        if (filtered.length == 0) {
+        if (filtered.length === 0) {
             var newObject = self.gameObjectFactory.createGameObjectbyServerBody(serverBody)
             newObject.syncSessionId = syncSessionId;
             this.bodies.push(newObject);
             self.onObjectStateChanged(newObject, 'add');
         }
+        else {
+            filtered[0].syncSessionId = syncSessionId;
+        }
     }
 
-    this.updateMap = function (tiles) {
-        self.mapEngine.cells.forEach(function (cell) {
-            self.onObjectStateChanged(cell, 'remove');
-        });
-        self.mapEngine.update(tiles)
 
-        self.mapEngine.cells.forEach(function (cell) {
-            self.onObjectStateChanged(cell, 'add');
-        });
+
+    this.updateMap = function (tiles) {
+        self.mapEngine.update(tiles,
+            function (cell) { self.onObjectStateChanged(cell, 'add'); return cell; },
+            null,
+            function (cell) { self.onObjectStateChanged(cell, 'remove') }
+            );
     }
 
     this.onObjectStateChanged = function (object, state) { }
@@ -191,4 +207,3 @@
     this.player = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.PLAYER, player)
     this.bodies.push(this.player);
 }
-

@@ -10,8 +10,12 @@ function GameMap(serverMap, gameObjectFactory) {
     this.mapCellFactory = new MapCellFactory(this.cellSize, gameObjectFactory);
     var self = this
 
-    this.update = function (tiles) {
-        ObjectsContainersSynchronizer.syncObjectsContainers(self.cells, tiles, self.createHandler, self.updateHandler)
+    this.update = function (tiles, createHandler, updateHandler, removehandler) {
+        console.log("GameMap update")
+        self.cells = ObjectsContainersSynchronizer.syncObjectsContainers(self.cells, tiles,
+            function (serverTile) { return createHandler(self.createHandler(serverTile)) },
+            self.updateHandler,
+            function (cell) { removehandler(cell) });
     }
 
     this.createHandler = function (tileData) {
@@ -26,6 +30,8 @@ function GameMap(serverMap, gameObjectFactory) {
         }
         var cell = self.mapCellFactory.createMapCell(mapCellType, tileData);
         self.cells.push(cell)
+
+        return cell;
     }
 
     this.updateHandler = function (tile, tileData) {

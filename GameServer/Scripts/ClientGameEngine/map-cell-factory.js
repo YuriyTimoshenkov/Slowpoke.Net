@@ -2,8 +2,8 @@
     var self = this;
     this.size = size;
     this.gameObjectFactory = gameObjectFactory;
-    this.tree = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.TREE, { Position: { X: 0, Y: 0 } });
-    this.tree.image.cache(0, 0, self.size, self.size)
+    //this.tree = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.TREE, { Position: { X: 0, Y: 0 } });
+    //this.tree.image.cache(0, 0, self.size, self.size)
 
     this.tileImages = [];
     this.tileImages[gameTypes.tiles.MEADOW] = new createjs.Shape();
