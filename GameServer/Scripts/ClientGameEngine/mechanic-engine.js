@@ -66,13 +66,10 @@
             }
         });
 
-        try{
+        
         if (frame.Map)
             self.updateMap(frame.Map)
-        }
-                        catch (ex) {
-                            console.log("syncServerSideBody: " +ex)
-                        }
+        
         return serverCommands;
     }
 
@@ -184,15 +181,14 @@
         }
     }
 
-    this.updateMap = function (tiles) {
-        self.mapEngine.cells.forEach(function (cell) {
-            self.onObjectStateChanged(cell, 'remove');
-        });
-        self.mapEngine.update(tiles)
 
-        self.mapEngine.cells.forEach(function (cell) {
-            self.onObjectStateChanged(cell, 'add');
-        });
+
+    this.updateMap = function (tiles) {
+        self.mapEngine.update(tiles,
+            function (cell) { self.onObjectStateChanged(cell, 'add'); return cell; },
+            null,
+            function (cell) { self.onObjectStateChanged(cell, 'remove') }
+            );
     }
 
     this.onObjectStateChanged = function (object, state) { }
@@ -211,4 +207,3 @@
     this.player = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.PLAYER, player)
     this.bodies.push(this.player);
 }
-

@@ -131,6 +131,7 @@ var PlayerBody = CharacterBody.extend({
                 self.updateLife(serverBody.Life);
             }
 
+
             // Update score
             if (serverBody.Score) {
                 self.score = serverBody.Score;
