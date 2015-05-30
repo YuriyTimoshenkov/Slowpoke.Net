@@ -11,7 +11,6 @@ function GameMap(serverMap, gameObjectFactory) {
     var self = this
 
     this.update = function (tiles) {
-        console.log("GameMap update")
         ObjectsContainersSynchronizer.syncObjectsContainers(self.cells, tiles, self.createHandler, self.updateHandler)
     }
 

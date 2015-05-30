@@ -29,7 +29,7 @@
 
     this.setTarget = function (target) {
         self.target = target;
-        self.stage.addChild(target.image);
+        self.stage.addChild(target.image, target.objectMenu);
     }
 
     this.calculatePlayerDirectionVector = function (mousePoint) {
@@ -51,8 +51,12 @@
 
                 obj.image.x = self.target.image.x - dx;
                 obj.image.y = self.target.image.y - dy;
-                //obj.objectMenu.x = self.target.image.x - dx;
-                //obj.objectMenu.y = self.target.image.y - dy;
+
+                // Update objectMenu for NPCAI only
+                if (obj.serverBody.BodyType === "NPCAI") {
+                    obj.objectMenu.x = self.target.image.x - dx;
+                    obj.objectMenu.y = self.target.image.y - dy;
+                }
             }
         })
 
@@ -120,7 +124,7 @@
         }
         self.stage.sortChildren(sortFunction);
         // Add menu objects
-        self.stage.addChild(this.menu.pingText);
+        self.stage.addChild(this.menu.pingText, this.menu.fpsText, this.menu.lifeText, this.menu.weaponText, this.menu.scoreText);
 
         // Render
         self.stage.update();

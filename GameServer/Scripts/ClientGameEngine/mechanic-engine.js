@@ -46,7 +46,6 @@
                     }
                 case bodyProcessingTypes.ClientSidePrediction:
                     {
-                        console.log("player body updated: " + serverBody.Direction.X)
                         serverCommands = serverCommands.concat(self.syncPredictiveBodies(serverBody));
                         self.player.syncSessionId = syncSessionId;
                         self.player.serverSync(serverBody);
@@ -143,8 +142,6 @@
             filtered[0].serverSync(serverBody);
             filtered[0].syncSessionId = syncSessionId;
             self.onObjectStateChanged(serverBody, 'update');
-
-            
         }
         else {
             var newObject = self.gameObjectFactory.createGameObjectbyServerBody(serverBody)

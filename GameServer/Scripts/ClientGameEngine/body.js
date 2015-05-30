@@ -3,6 +3,7 @@
         var self = this;
         this.serverBody = serverBody;
         this.Id = serverBody.Id;
+        this.name = serverBody.Name;
         this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
         this.gameRect.center = serverBody.Shape.Position;
         this.direction = serverBody.Direction || { X: 0, Y: 0 };
@@ -85,6 +86,10 @@ var CharacterBody = BaseBody.extend({
         this.weaponImage = null;
         this.currentWeapon = serverBody.CurrentWeapon;
 
+        this.serverSync = function (serverBody) {
+            self.updateLife(serverBody.Life)
+        }
+
         this.createLifeText = function () {
             var textSize = 15;
             return new createjs.Text(self.life, textSize + "px Arial", "#AAA9AB");
@@ -122,8 +127,8 @@ var PlayerBody = CharacterBody.extend({
             }
 
             // Update weapon
-            if (serverBody.CurrentWeapons != 'undefined' && self.currentWeapon !== serverBody.CurrentWeapons) {
-                self.currentWeapon = serverBody.CurrentWeapons;
+            if (serverBody.CurrentWeapon != 'undefined' && self.currentWeapon !== serverBody.CurrentWeapon) {
+                self.currentWeapon = serverBody.CurrentWeapon;
             }
 
             // Update life
@@ -158,10 +163,6 @@ var BulletBody = BaseBody.extend({
                 X: self.gameRect.centerx + self.speed * duration * self.unitDirection.x / 1000,
                 Y: self.gameRect.centery + self.speed * duration * self.unitDirection.y / 1000
             };
-
-
-            console.log('bullet x = ' + self.gameRect.centerx);
-            
         }
     }
 });
