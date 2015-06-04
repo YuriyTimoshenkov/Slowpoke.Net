@@ -112,6 +112,13 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
                 ));
         }
 
+        if (clientEventData.changeDirection !== undefined) {
+            self.mechanicEngine.addCommand(new CommandChangeDirection(
+                self.mechanicEngine.player.Id,
+                clientEventData.changeDirection
+                ));
+        }
+
         self.mechanicEngine.update();
 
         this.viewManager.render(this.mechanicEngine.bodies, this.mechanicEngine.mapEngine.cells);
@@ -141,24 +148,18 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
             self.lastServerSync = new Date()
 
             this.serverProxy.syncState(clientEvents, function (state) {
-                try {
+//                try {
                     var clientEventData = self.controlsManager.handleControlsCommon();
 
                     //Process state with new mechanic
                     clientEventData.commands = self.mechanicEngine.syncServerFrames(state);
 
                     self.syncState(clientEventData);
-                }
-                catch(ex)
-                {
-                    var clientEventData = self.controlsManager.handleControlsCommon();
-
-                    //Process state with new mechanic
-                    clientEventData.commands = [];
-
-                    console.log("Error: " + ex)
-                    self.syncState(clientEventData);
-                }
+                //}
+                //catch(ex)
+                //{
+                //    console.log("Error: " + ex)
+                //}
             }, function (error) {
                 console.log("Error: " + error)
 

@@ -114,7 +114,6 @@
 
         controlsToReport.use = self.controlsToReport.use;
         controlsToReport.shoot = self.controlsToReport.shoot;
-        controlsToReport.changeDirection = self.controlsToReport.changeDirection;
         controlsToReport.weaponSwitch = self.controlsToReport.weaponSwitch;
  
         self.nullifyControlsToReport();
@@ -139,6 +138,8 @@
                 duration: Math.min.apply(Math, keysduration.map(function (item) { return item.duration; }))
             };
         }
+
+        controlsToReport.changeDirection = self.controlsToReport.changeDirection;
 
         return controlsToReport
     }
@@ -198,6 +199,6 @@
         self.controlsToReport["use"] = false;
         self.controlsToReport["weaponSwitch"] = false;
         self.controlsToReport["shoot"] = false;
-        self.controlsToReport["changeDirection"] = null;
+        self.controlsToReport["changeDirection"] = undefined;
     }
 }

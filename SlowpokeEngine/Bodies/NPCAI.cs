@@ -55,6 +55,7 @@ namespace SlowpokeEngine.Bodies
                 {
                     _mechanicEngine.ProcessGameCommand(
                         new GameCommandChangeDirection(
+                            1,
                             newDirection,
                             _mechanicEngine, this
                             ));

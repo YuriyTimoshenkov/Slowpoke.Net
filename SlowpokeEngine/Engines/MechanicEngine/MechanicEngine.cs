@@ -95,7 +95,9 @@ namespace SlowpokeEngine.Engines
                         {
                             //TODO: when all command would be implemented on client side, remove this shit
                             if (nextCommand.Id != 0)
+                            {
                                 nextCommand.ActiveBody.LastProcessedCommandId = nextCommand.Id;
+                            }
 
                             //Execute command
                             nextCommand.Execute();

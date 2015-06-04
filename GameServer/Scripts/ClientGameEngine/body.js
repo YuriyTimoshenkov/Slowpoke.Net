@@ -6,50 +6,29 @@
         this.name = serverBody.Name;
         this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
         this.gameRect.center = serverBody.Shape.Position;
-        this.direction = serverBody.Direction || { X: 0, Y: 0 };
+        this.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y)
+            || new Vector(0,-1);
         this.image = new createjs.Container();
         this.image.zIndex = 1;
         this.speed = serverBody.Speed;
+        this.baseRotationVector = new Vector(0, -1);
     },
     updateDirection: function (newDirection) {
-        // Calc rotation for object rendering
-
-        var a = { X: 0, Y: -1 }
-        var b = newDirection;
-
-        var value1 = a.X * b.X + a.Y * b.Y;
-        var value21 = Math.sqrt(Math.pow(a.X, 2) + Math.pow(a.Y, 2));
-        var value22 = Math.sqrt(Math.pow(b.X, 2) + Math.pow(b.Y, 2));
-        var value2 = value21 * value22;
-        var value = value1 / value2;
-        var rotationDeltaRad = Math.acos(value);
+        var rotationDeltaRad = Math.acos(this.baseRotationVector.product(newDirection)/
+            this.baseRotationVector.length() * newDirection.length());
 
         var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
 
         // To check rotation direction
         var centerX = this.image.x;
-        var centerY = this.image.y;
-        var mouseX = centerX + newDirection.X;
-        var mouseY = centerY + newDirection.Y;
+        var mouseX = centerX + newDirection.x;
 
         // Clockwise
-        if (mouseX > centerX) {
+        if (mouseX >= centerX) {
             this.image.rotation = rotationDeltaDegree;
-        }
-            // Counter-clockwise
-        else if (mouseX < centerX) {
-            this.image.rotation = 360 - rotationDeltaDegree;
-        }
-            // if mousex = centerx
+        }// Counter-clockwise
         else {
-            // if up
-            if (mouseY < centerY) {
-                this.image.rotation = 0;
-            }
-                // if down
-            else if (mouseY > centerY) {
-                this.image.rotation = 180;
-            }
+            this.image.rotation = 360 - rotationDeltaDegree;
         }
 
         // Update direction and weapon
@@ -60,7 +39,7 @@
         var newDirection = serverBody.Direction;
 
         if (this.direction.X !== serverBody.Direction.X || this.direction.Y !== serverBody.Direction.Y) {
-            this.updateDirection(serverBody.Direction);
+            this.updateDirection(new Vector(serverBody.Direction.X, serverBody.Direction.Y));
         }
 
         //Position
@@ -117,13 +96,6 @@ var PlayerBody = CharacterBody.extend({
         this._super(serverBody);
     },
     serverSync: function (serverBody) {
-        // Update direction
-        var newDirection = serverBody.Direction;
-
-        if (this.direction.X !== serverBody.Direction.X || this.direction.Y !== serverBody.Direction.Y) {
-            this.updateDirection(serverBody.Direction);
-        }
-
         // Update weapon
         if (serverBody.CurrentWeapon != 'undefined' && this.currentWeapon !== serverBody.CurrentWeapon) {
             this.currentWeapon = serverBody.CurrentWeapon;
@@ -148,7 +120,7 @@ var BulletBody = BaseBody.extend({
 
         this._super(serverBody);
         this.lastUpdateTime = new Date().getTime();
-        this.unitDirection = new Vector(self.direction.X, self.direction.Y).calculateUnitVector();
+        this.unitDirection = new Vector(self.direction.x, self.direction.y).calculateUnitVector();
     },
       serverSync :function (serverBody) { },
 

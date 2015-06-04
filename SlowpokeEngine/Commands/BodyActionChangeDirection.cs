@@ -8,9 +8,10 @@ namespace SlowpokeEngine.Actions
 	{
 		public Vector Direction { get; private set;}
 
-        public GameCommandChangeDirection(Vector direction, IMechanicEngine mechanicEngine, ActiveBody activeBody) :
+        public GameCommandChangeDirection(long id, Vector direction, IMechanicEngine mechanicEngine, ActiveBody activeBody) :
             base(mechanicEngine, activeBody)
 		{
+            Id = id;
             Direction = direction;
 		}
 	}

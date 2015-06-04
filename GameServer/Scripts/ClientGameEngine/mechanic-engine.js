@@ -13,6 +13,7 @@
 
         //Try tp merge duplication commands 
         if (self.commandQueue.length > 0
+            && command.__proto__ === CommandMove.prototypes
             && self.commandQueue[self.commandQueue.length - 1].direction.x === command.direction.x
             && self.commandQueue[self.commandQueue.length - 1].direction.y === command.direction.y
             && self.commandQueue[self.commandQueue.length - 1].syncedWithServer === false) {
@@ -111,6 +112,7 @@
 
             self.player.gameRect.centerx = serverBody.Shape.Position.X;
             self.player.gameRect.centery = serverBody.Shape.Position.Y;
+            self.player.direction = new Vector(serverBody.Direction.x, serverBody.Direction.y).calculateUnitVector();
 
             //Recalculate applied commands
             self.commandQueueProcessed.forEach(function (item) {

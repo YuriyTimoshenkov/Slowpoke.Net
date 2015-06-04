@@ -63,6 +63,14 @@ function Vector(x, y) {
 
         return new Vector(self.x / magnitude, self.y / magnitude);
     }
+
+    this.product = function (vector) {
+        return self.x * vector.x + self.y * vector.y
+    }
+
+    this.length = function () {
+        return Math.sqrt(Math.pow(self.x, 2) + Math.pow(self.y, 2));
+    }
 }
 
 ObjectsContainersSynchronizer = {

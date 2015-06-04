@@ -42,9 +42,9 @@ namespace SlowpokeEngine.Bodies
             ProcessAction(new GameCommandMove(commandId, direction, _mechanicEngine, this, duration));
         }
 
-        public void ChangeDirection(Vector direction)
+        public void ChangeDirection(long commandId, Vector direction)
         {
-            ProcessAction(new GameCommandChangeDirection(direction, _mechanicEngine, this));
+            ProcessAction(new GameCommandChangeDirection(commandId, direction, _mechanicEngine, this));
         }
 
         public override void ReleaseGame()

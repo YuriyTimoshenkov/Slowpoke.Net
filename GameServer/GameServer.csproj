@@ -161,7 +161,7 @@
     <Content Include="Scripts\ClientGameEngine\map-cell.js" />
     <Content Include="Scripts\ClientGameEngine\mechanic-engine.js" />
     <Content Include="Scripts\ClientGameEngine\menu.js" />
-    <Content Include="Scripts\ClientGameEngine\move-command.js" />
+    <Content Include="Scripts\ClientGameEngine\commands.js" />
     <Content Include="Scripts\ClientGameEngine\weapon.js" />
     <Content Include="Scripts\lib\class.js" />
     <Content Include="Scripts\lib\promise-6.1.0.min.js" />

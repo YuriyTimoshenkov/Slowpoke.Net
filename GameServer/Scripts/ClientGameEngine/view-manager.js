@@ -36,7 +36,7 @@
         var playerCenter = new Point(this.target.image.x, this.target.image.y);
 
         // Get mouse vector not normalized
-        var mouseVectorNotNormalized = new Point(Math.round(mousePoint.x - playerCenter.x), Math.round(mousePoint.y - playerCenter.y));
+        var mouseVectorNotNormalized = new Vector(Math.round(mousePoint.x - playerCenter.x), Math.round(mousePoint.y - playerCenter.y));
         return mouseVectorNotNormalized;
     }
 
