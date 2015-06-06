@@ -64,6 +64,8 @@ namespace SlowpokeEngine.Bodies
         public int Speed { get; private set; }
 
         public long LastProcessedCommandId { get; set; }
+        public long CreatedByCommandId { get; set; }
+        public Guid OwnerId { get; protected set; }
 
 		public ActiveBody(
 			Shape shape, 
@@ -128,7 +130,7 @@ namespace SlowpokeEngine.Bodies
                 _currentWeaponIndex--;
         }
 
-        public void Shoot()
+        public void Shoot(long commandId = 0)
         {
             if (CurrentWeapon != null)
             {
@@ -137,7 +139,7 @@ namespace SlowpokeEngine.Bodies
                 var startPosition = Direction.MovePoint(
                     Shape.Position, Shape.MaxDimension * 1.5);
 
-                CurrentWeapon.Shoot(startPosition, Direction, this.Id);
+                CurrentWeapon.Shoot(startPosition, Direction, this.Id, commandId);
             }
         }
 

@@ -53,12 +53,12 @@ namespace SlowpokeHubs
                 player.ChangeDirection(commandId, new Vector(x, y));
 		}
 
-        private void Shoot()
+        private void Shoot(long commandId)
         {
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
             if (player != null)
-                player.Shoot();
+                player.Shoot(commandId);
         }
 
         private void Use()
@@ -122,6 +122,11 @@ namespace SlowpokeHubs
                                     command.Id,
                                     double.Parse(command.Data.FirstOrDefault(v => v[0] == "X")[1]),
                                     double.Parse(command.Data.FirstOrDefault(v => v[0] == "Y")[1]));
+                                break;
+                            }
+                        case "Shoot":
+                            {
+                                Shoot(command.Id);
                                 break;
                             }
                         default: break;
@@ -193,7 +198,7 @@ namespace SlowpokeHubs
 
                 if (inputEvent.use) { Use(); }
 
-                if (inputEvent.shoot) { Shoot(); }
+                if (inputEvent.shoot) { Shoot(0); }
 
                 if (inputEvent.weaponSwitch) { ChangeWeapon(); }
 

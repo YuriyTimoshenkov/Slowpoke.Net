@@ -54,6 +54,7 @@
         
         if (self.focus) {
             // If moving button
+            console.log('move button');
             var moveKeyContext = self.moveKeysContext.filter(function (item) { return item.Code === e.keyCode })[0];
             if (moveKeyContext !== undefined && moveKeyContext.keyDownTimeStamp === null) {
                     moveKeyContext.keyDownTimeStamp = new Date();
@@ -113,7 +114,6 @@
         var controlsToReport = {};
 
         controlsToReport.use = self.controlsToReport.use;
-        controlsToReport.shoot = self.controlsToReport.shoot;
         controlsToReport.weaponSwitch = self.controlsToReport.weaponSwitch;
  
         self.nullifyControlsToReport();
@@ -140,6 +140,8 @@
         }
 
         controlsToReport.changeDirection = self.controlsToReport.changeDirection;
+        controlsToReport.shoot = self.controlsToReport["shoot"];
+        self.controlsToReport["shoot"] = false;
 
         return controlsToReport
     }
@@ -191,6 +193,7 @@
 
     this.addMouseMoveHandler = function (handler) {
         this.canvas.onmousemove = function (e) {
+            console.log('mouse move');
             self.controlsToReport["changeDirection"] = handler(e);
         }
     }
@@ -198,7 +201,5 @@
     this.nullifyControlsToReport = function () {
         self.controlsToReport["use"] = false;
         self.controlsToReport["weaponSwitch"] = false;
-        self.controlsToReport["shoot"] = false;
-        self.controlsToReport["changeDirection"] = undefined;
     }
 }

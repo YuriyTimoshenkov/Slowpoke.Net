@@ -104,6 +104,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
         var clientEventData = self.controlsManager.handleControlsMove();
 
+        //TODO: refactor command creation 
         if (clientEventData.move !== undefined) {
             self.mechanicEngine.addCommand(new CommandMove(
                 self.mechanicEngine.player.Id,
@@ -116,6 +117,12 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
             self.mechanicEngine.addCommand(new CommandChangeDirection(
                 self.mechanicEngine.player.Id,
                 clientEventData.changeDirection
+                ));
+        }
+
+        if (clientEventData.shoot === true) {
+            self.mechanicEngine.addCommand(new CommandShoot(
+                self.mechanicEngine.player.Id
                 ));
         }
 
@@ -148,7 +155,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
             self.lastServerSync = new Date()
 
             this.serverProxy.syncState(clientEvents, function (state) {
-//                try {
+                //try {
                     var clientEventData = self.controlsManager.handleControlsCommon();
 
                     //Process state with new mechanic

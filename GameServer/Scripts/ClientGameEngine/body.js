@@ -38,7 +38,7 @@
         // Update direction
         var newDirection = serverBody.Direction;
 
-        if (this.direction.X !== serverBody.Direction.X || this.direction.Y !== serverBody.Direction.Y) {
+        if (this.direction.X - serverBody.Direction.X > 0.0001 || this.direction.Y - serverBody.Direction.Y > 0.0001) {
             this.updateDirection(new Vector(serverBody.Direction.X, serverBody.Direction.Y));
         }
 

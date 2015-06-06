@@ -24,7 +24,7 @@ namespace SlowpokeEngine.Weapons
             string name
             ):base(damage, bulletSize, shootingDistance, bulletSpeed, shootFrequency,mechanicEngine, name) {}
 
-        protected override List<Bullet> CreateBullet(Point startPosition, Vector direction, Guid ownerId)
+        protected override List<Bullet> CreateBullet(Point startPosition, Vector direction, Guid ownerId, long commandId = 0)
         {
             return Enumerable.Range(0, 7).Select(i =>
                 {
@@ -33,7 +33,7 @@ namespace SlowpokeEngine.Weapons
 
                     var newDirection = new Vector(dirX, dirY);
 
-                    return new Bullet(_shootingDistance, _bulletSpeed, _damage, new ShapeCircle(_bulletSize, startPosition), newDirection, ownerId, _mechanicEngine);
+                    return new Bullet(_shootingDistance, _bulletSpeed, _damage, new ShapeCircle(_bulletSize, startPosition), newDirection, ownerId, _mechanicEngine, commandId);
                 }).ToList();
         }
     }

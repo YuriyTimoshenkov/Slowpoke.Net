@@ -58,7 +58,7 @@
         });
 
         self.bodies = self.bodies.filter(function (body) {
-            if (body.syncSessionId === syncSessionId) {
+            if (body.syncSessionId === syncSessionId || body.syncSessionId === undefined) {
                 return true;
             }
             else {
@@ -76,14 +76,16 @@
 
     this.update = function () {
         //Process commands
-        var commandToProcess = self.commandQueue.shift();
+        while (self.commandQueue.length > 0) {
+            var commandToProcess = self.commandQueue.shift();
 
-        if (commandToProcess !== undefined) {
-            commandToProcess.process(self);
+            if (commandToProcess !== undefined) {
+                commandToProcess.id = new Date().getTime();
 
-            commandToProcess.id = new Date().getTime();
+                commandToProcess.process(self);
 
-            self.commandQueueProcessed.push(commandToProcess);
+                self.commandQueueProcessed.push(commandToProcess);
+            }
         }
 
         //Update predictive bodies
@@ -170,7 +172,10 @@
 
     this.syncClientSideBody = function (serverBody, syncSessionId) {
         // Create and update
-        var filtered = this.bodies.filter(function (body) { return serverBody.Id === body.Id });
+        var filtered = this.bodies.filter(function (body) {
+            return serverBody.Id === body.Id
+            || serverBody.CreatedByCommandId >= body.CreatedByCommandId
+        });
         
         if (filtered.length === 0) {
             var newObject = self.gameObjectFactory.createGameObjectbyServerBody(serverBody)
@@ -179,7 +184,9 @@
             self.onObjectStateChanged(newObject, 'add');
         }
         else {
-            filtered[0].syncSessionId = syncSessionId;
+            filtered.forEach(function (item) {
+                item.syncSessionId = syncSessionId;
+            });
         }
     }
 

@@ -12,7 +12,7 @@ namespace SlowpokeEngine.Bodies
 
         void Move(long commandId, Vector direction, TimeSpan duration);
         void ChangeDirection(long commandId, Vector direction);
-        void Shoot();
+        void Shoot(long commandId);
         void ChangeWeapon();
         void Use();
 	}

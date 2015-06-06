@@ -17,8 +17,9 @@ namespace SlowpokeEngine.Weapons
             Shape shape,
             Vector direction,
             Guid ownerId,
-            IMechanicEngine mechanicEngine)
-            : base(shootingDistance, speed, damage, shape, direction, ownerId, mechanicEngine)
+            IMechanicEngine mechanicEngine,
+            long commandId)
+            : base(shootingDistance, speed, damage, shape, direction, ownerId, mechanicEngine, commandId)
         {
             BangRadius = bangRadius;
         }

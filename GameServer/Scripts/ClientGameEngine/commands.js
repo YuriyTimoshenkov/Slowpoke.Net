@@ -14,7 +14,7 @@
         if (bodies !== undefined && bodies.length > 0) {
             var body = bodies[0];
 
-            this.processBody(body);
+            this.processBody(body, mechanicEngine);
 
             //save state
             this.state = {
@@ -27,10 +27,6 @@
     processBody: function(body) {},
     toServerCommand: function () { },
     compareState: function (body) {
-
-        console.log('direction diff x: ' + (body.Direction.X - this.state.direction.x)
-            + ' y: ' + (body.Direction.Y - this.state.direction.y));
-
         return body.Shape.Position.X === this.state.x
         && body.Shape.Position.Y === this.state.y
         && (body.Direction.X - this.state.direction.x) < this.directionPossibleDiff
@@ -80,6 +76,80 @@ var CommandChangeDirection = CommandBase.extend({
             Data: [
                 ["X", this.unitNewDirection.x],
                 ["Y", this.unitNewDirection.y]]
+        }
+    }
+});
+
+var CommandShoot = CommandBase.extend({
+    init: function (bodyId) {
+        this._super(bodyId);
+
+        this.bulletDeviationRadians = [0.01, 0.025, 0.045, 0, -0.01, -0.025, -0.045];
+    },
+    processBody: function (body, mechanicEngine) {
+
+        if (body.currentWeapon === 'Shotgun') {
+            var self = this;
+
+            this.bulletDeviationRadians.forEach(function (item) {
+                var dirX = body.direction.x * Math.cos(item) - body.direction.y * Math.sin(item);
+                var dirY = body.direction.x * Math.sin(item) + body.direction.y * Math.cos(item);
+
+                var newObject = mechanicEngine.gameObjectFactory.createGameObject(
+               gameTypes.gameObjects.BULLET, {
+                   BodyType: 'Bullet',
+                   Id: 0,
+                   Name: 'Bullet',
+                   Shape: {
+                       Radius: 2,
+                       Position:
+                           {
+                               X: body.gameRect.centerx,
+                               Y: body.gameRect.centery
+                           }
+                   },
+                   Direction: {
+                       X: dirX,
+                       Y: dirY
+                   },
+                   Speed: 1400
+               });
+
+                newObject.CreatedByCommandId = self.id;
+                mechanicEngine.bodies.push(newObject);
+                mechanicEngine.onObjectStateChanged(newObject, 'add');
+            });
+        }
+        else {
+            var newObject = mechanicEngine.gameObjectFactory.createGameObject(
+                gameTypes.gameObjects.BULLET, {
+                    BodyType: 'Bullet',
+                    Id: 0,
+                    Name: 'Bullet',
+                    Shape: {
+                        Radius: 2,
+                        Position:
+                            {
+                                X: body.gameRect.centerx,
+                                Y: body.gameRect.centery
+                            }
+                    },
+                    Direction: {
+                        X: body.direction.x,
+                        Y: body.direction.y
+                    },
+                    Speed: 1400
+                });
+
+            newObject.CreatedByCommandId = this.id;
+            mechanicEngine.bodies.push(newObject);
+            mechanicEngine.onObjectStateChanged(newObject, 'add');
+        }
+    },
+    toServerCommand: function () {
+        return {
+            Name: "Shoot",
+            Id: this.id
         }
     }
 });
