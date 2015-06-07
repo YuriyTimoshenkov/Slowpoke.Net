@@ -215,4 +215,5 @@
 
     this.player = self.gameObjectFactory.createGameObject(gameTypes.gameObjects.PLAYER, player)
     this.bodies.push(this.player);
+    this.onObjectStateChanged(this.player, 'add');
 }
