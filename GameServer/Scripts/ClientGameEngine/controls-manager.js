@@ -54,7 +54,6 @@
         
         if (self.focus) {
             // If moving button
-            console.log('move button');
             var moveKeyContext = self.moveKeysContext.filter(function (item) { return item.Code === e.keyCode })[0];
             if (moveKeyContext !== undefined && moveKeyContext.keyDownTimeStamp === null) {
                     moveKeyContext.keyDownTimeStamp = new Date();
@@ -193,7 +192,6 @@
 
     this.addMouseMoveHandler = function (handler) {
         this.canvas.onmousemove = function (e) {
-            console.log('mouse move');
             self.controlsToReport["changeDirection"] = handler(e);
         }
     }

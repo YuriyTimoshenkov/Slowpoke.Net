@@ -108,12 +108,14 @@
         obj.image.scaleX = 0.05;
         obj.image.scaleY = 0.05;
 
-        lifeContainer.image.addChild(obj.image);
+        var a = lifeContainer.image.addChild(obj.image);
 
         // Configure image
-        var imageWidth = 215.45;
-        var imageHeight = 738.3;
-        lifeContainer.image.cache(0, 0, 30, 40);
+        var imageWidth = 30;
+        var imageHeight = 40;
+        lifeContainer.image.regX = imageWidth / 2;
+        lifeContainer.image.regY = imageHeight / 2;
+        lifeContainer.image.cache(0, 0, imageWidth, imageHeight);
 
         return lifeContainer;
     }
