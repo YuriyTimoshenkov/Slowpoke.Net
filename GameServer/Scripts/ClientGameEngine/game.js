@@ -47,8 +47,10 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
     this.handleLoadMap = function (serverMap) {
         
-        self.mechanicEngine = new mechanicEngineFactory().createMechanicEngine(self.player, serverMap);
+        self.mechanicEngine = new MechanicEngineTS();
         self.viewManager.init(self.mechanicEngine);
+
+        self.mechanicEngine.addPlayerBody(self.player);
 
         viewManager.setTarget(self.mechanicEngine.player)
 
@@ -63,7 +65,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         var clientEventData = self.controlsManager.handleControlsCommon();
         clientEventData.commands = [];
 
-        self.syncState(clientEventData);
+        //self.syncState(clientEventData);
     }
 
     this.errorHandler = function (error) {
@@ -107,28 +109,30 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         //TODO: refactor command creation 
         if (clientEventData.move !== undefined) {
             self.mechanicEngine.addCommand(new CommandMove(
-                self.mechanicEngine.player.Id,
+                self.mechanicEngine.player.id,
+                new Date().getTime(),
                 clientEventData.move.duration,
                 clientEventData.move.direction
                 ));
         }
 
-        if (clientEventData.changeDirection !== undefined) {
+        if (clientEventData.changeDirection !== undefined && clientEventData.changeDirection !== null) {
             self.mechanicEngine.addCommand(new CommandChangeDirection(
-                self.mechanicEngine.player.Id,
+                self.mechanicEngine.player.id,
+                new Date().getTime(),
                 clientEventData.changeDirection
                 ));
         }
 
-        if (clientEventData.shoot === true) {
-            self.mechanicEngine.addCommand(new CommandShoot(
-                self.mechanicEngine.player.Id
-                ));
-        }
+        //if (clientEventData.shoot === true) {
+        //    self.mechanicEngine.addCommand(new CommandShoot(
+        //        self.mechanicEngine.player.id
+        //        ));
+        //}
 
         self.mechanicEngine.update();
 
-        this.viewManager.render(this.mechanicEngine.bodies, this.mechanicEngine.mapEngine.cells);
+        this.viewManager.render(this.mechanicEngine.bodies);//, this.mechanicEngine.mapEngine.cells);
     }
 
     this.calcFPS = function () {

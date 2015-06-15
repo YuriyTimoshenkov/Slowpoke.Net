@@ -5,6 +5,7 @@
     canvas.height = canvasSize.height;
 
     var textGap = 30;
+    this.bodyImages = [];
     this.weaponPoint = new Point(5, canvas.height - 50);
     this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - textGap);
     this.scorePoint = new Point(this.weaponPoint.x, this.lifePoint.y - textGap)
@@ -13,6 +14,7 @@
 
     this.menu = menu;
     this.stage = new createjs.Stage(canvas);
+    this.viewBodyFactory = new ViewBodyFactory();
 
     // Add menu objects
     self.stage.addChild(this.menu.weaponText, this.menu.lifeText, this.menu.fpsText, this.menu.scoreText, this.menu.pingText);
@@ -23,52 +25,78 @@
 
     this.render = function (bodies, cells) {
         this.updateCanvasXY(bodies, cells);
-        this.updateMenu();
+        //this.updateMenu();
         this.draw();
     }
 
-    this.setTarget = function (target) {
-        self.target = target;
-        self.stage.addChild(target.image, target.objectMenu);
+    this.setTarget = function (body) {
+        self.targetBody = body;
+
+        self.targetBodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
     }
 
     this.calculatePlayerDirectionVector = function (mousePoint) {
-        var playerCenter = new Point(this.target.image.x, this.target.image.y);
+        var playerCenter = new Point(self.targetBodyImage.x, self.targetBodyImage.y);
 
         // Get mouse vector not normalized
         var mouseVectorNotNormalized = new Vector(Math.round(mousePoint.x - playerCenter.x), Math.round(mousePoint.y - playerCenter.y));
         return mouseVectorNotNormalized;
     }
 
-    this.updateCanvasXY = function (bodies, cells) {
-        var self = this;
+    updateDirection: function (newDirection) {
+        var rotationDeltaRad = Math.acos(this.baseRotationVector.product(newDirection)/
+            this.baseRotationVector.length() * newDirection.length());
+
+        var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
+
+        // To check rotation direction
+        var centerX = this.image.x;
+        var mouseX = centerX + newDirection.x;
+
+        // Clockwise
+        if (mouseX >= centerX) {
+            this.image.rotation = rotationDeltaDegree;
+        }// Counter-clockwise
+        else {
+            this.image.rotation = 360 - rotationDeltaDegree;
+        }
+
+        // Update direction and weapon
+        this.direction = newDirection;
+    } 
+
+    this.updateCanvasXY = function (bodies){//, cells) {
 
         // Update objects
-        bodies.forEach(function (obj) {
-            if (obj.Id !== self.target.Id) {
-                var dx = self.target.gameRect.centerx - obj.gameRect.centerx;
-                var dy = self.target.gameRect.centery - obj.gameRect.centery;
+        self.mechanicEngine.bodies.forEach(function (body) {
+            if (body.Id !== self.target.Id) {
+                var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
 
-                obj.image.x = self.target.image.x - dx;
-                obj.image.y = self.target.image.y - dy;
+                if (bodyImage !== undefined) {
+                    var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
+                    var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
 
-                // Update objectMenu for NPCAI only
-                if (obj.serverBody.BodyType === "NPCAI") {
-                    obj.objectMenu.x = self.target.image.x - dx;
-                    obj.objectMenu.y = self.target.image.y - dy;
+                    bodyImage.image.x = self.targetBodyImage.x - dx;
+                    bodyImage.image.y = self.targetBodyImage.y - dy;
+
+                    // Update objectMenu for NPCAI only
+                    //if (obj.serverBody.BodyType === "NPCAI") {
+                    //    obj.objectMenu.x = self.target.image.x - dx;
+                    //    obj.objectMenu.y = self.target.image.y - dy;
+                    //}
                 }
             }
         })
 
         // Update cells
-        cells.forEach(function (cell) {
-                var dx = self.target.gameRect.centerx - cell.gameRect.centerx;
-                var dy = self.target.gameRect.centery - cell.gameRect.centery;
+        //cells.forEach(function (cell) {
+        //        var dx = self.target.gameRect.centerx - cell.gameRect.centerx;
+        //        var dy = self.target.gameRect.centery - cell.gameRect.centery;
 
-                // Cells are rects, and rects do not have center property
-                cell.image.x = self.target.image.x - dx - cell.width / 2;
-                cell.image.y = self.target.image.y - dy - cell.height / 2;
-            })
+        //        // Cells are rects, and rects do not have center property
+        //        cell.image.x = self.target.image.x - dx - cell.width / 2;
+        //        cell.image.y = self.target.image.y - dy - cell.height / 2;
+        //    })
     }
 
     this.updateMenu = function () {
@@ -95,23 +123,6 @@
       
     this.draw = function () {
         var self = this;
-        
-        // Probably place for optimization. 
-        // TODO: To remove\add only those objects, which were changed
-        //self.stage.removeAllChildren();
-
-        // Add cells
-        //frame.cells.forEach(function (cell) {
-        //    self.stage.addChild(cell.image);
-        //})
-
-        // Add game objects
-        //frame.objects.forEach(function (element, index, array) {
-        //    self.stage.addChild(element.image);
-        //    if (element.objectMenu.children.length > 0) {
-        //        self.stage.addChild(element.objectMenu);
-        //    }
-        //});
 
         var sortFunction = function (a, b) {
             //if (a.zIndex === undefined || b.zIndex === undefined) {
@@ -131,28 +142,13 @@
     }
 
     this.init = function (mechanicEngine) {
-        mechanicEngine.onObjectStateChanged = function (object, state) {
-            switch (state) {
-                case 'remove': {
-                    self.stage.removeChild(object.image);
+        self.mechanicEngine = mechanicEngine;
 
-                    break;
-                }
-                case 'add': {
-                    if (object.image === undefined || object.image.zIndex === undefined)
-                        console.log('fuck');
+        mechanicEngine.onActiveBodyAdd.push(function (body) {
+            var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
+            self.bodyImages.push({id:body.id, image: image});
 
-                    self.stage.addChild(object.image);
-
-                    if (object.objectMenu !== undefined && object.objectMenu.children.length > 0) {
-                        self.stage.addChild(object.objectMenu);
-                    }
-                    break;
-                }
-                case 'update': {
-                    break;
-                }
-            }
-        }
+            self.stage.addChild(image);
+        });
     }
 }

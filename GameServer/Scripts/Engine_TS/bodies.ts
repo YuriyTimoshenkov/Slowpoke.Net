@@ -1,4 +1,12 @@
-﻿class ActiveBody {
+﻿interface  ServerBody {
+    Id: number;
+    Name: string;
+    Shape: { Radius: number; Position: { x: number; y: number } }
+    Direction: { X: number; Y: number }
+    Speed: number;
+    BodyType: string;
+}
+class ActiveBody {
     id: number;
     name: string;
     gameRect: Rect;
@@ -6,10 +14,12 @@
     speed: number;
     baseRotationVector: Vector;
     zIndex: number;
+    bodyType: string;
 
-    constructor(serverBody: any) {
+    constructor(serverBody: ServerBody) {
         this.id = serverBody.Id;
         this.name = serverBody.Name;
+        this.bodyType = serverBody.BodyType;
         this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
         this.gameRect.center = serverBody.Shape.Position;
         this.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y)

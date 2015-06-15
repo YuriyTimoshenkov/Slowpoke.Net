@@ -136,6 +136,7 @@
     <Content Include="Content\ng-dialog.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Icon.png" />
+    <Content Include="Scripts\ClientGameEngine\view-body-factory.js" />
     <Content Include="Scripts\lib\angular.js" />
     <Content Include="Scripts\lib\angular.min.js" />
     <Content Include="Scripts\lib\angular.min.js.map" />

@@ -1,15 +1,24 @@
-﻿class MechanicEngine {
+﻿class MechanicEngineTS {
     bodies: ActiveBody[];
     commandQueue: CommandBase[];
     commandQueueProcessed: CommandBase[];
     onActiveBodyAdd: {(body: ActiveBody): void}[];
     player: PlayerBody;
 
-    constructor(player:any) {
-        this.player = new PlayerBody(player);
+    constructor() {
+        this.bodies = [];
+        this.onActiveBodyAdd = [];
+        this.commandQueue = [];
+        this.commandQueueProcessed = [];
+    }
+
+    addPlayerBody(body: ServerBody) {
+        this.player = new PlayerBody(body);
+        var self = this;
+        this.bodies.push(this.player);
 
         this.onActiveBodyAdd.forEach(function (item) {
-            item(this.player);
+            item(self.player);
         });
     }
 
@@ -23,9 +32,7 @@
             var commandToProcess = this.commandQueue.shift();
 
             if (commandToProcess !== undefined) {
-                commandToProcess.id = new Date().getTime();
-
-                commandToProcess.process(self);
+                commandToProcess.process(this);
 
                 this.commandQueueProcessed.push(commandToProcess);
             }

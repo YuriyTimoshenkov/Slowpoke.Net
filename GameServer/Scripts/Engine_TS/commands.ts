@@ -1,9 +1,9 @@
 ﻿class ServerCommand {
     id: number;
     name: string;
-    data: [];
+    data: string[][];
 
-    constructor(id: number, name: string, data: []) {
+    constructor(id: number, name: string, data: string[][]) {
         this.id = id;
         this.name = name;
         this.data = data;
@@ -22,11 +22,11 @@ class CommandBase {
         this.syncedWithServer = false;
         this.id = id;
     }
-    process(mechanicEngine:any) {
+   process(mechanicEngine: MechanicEngineTS) {
         var self = this;
 
         var bodies = mechanicEngine.bodies.filter(function (item) {
-            return item.Id === self.bodyId;
+            return item.id === self.bodyId;
         });
 
         if (bodies !== undefined && bodies.length > 0) {
@@ -43,7 +43,7 @@ class CommandBase {
         }
    }
 
-    processBody(body: ActiveBody, mechanicEngine: any) {}
+    processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS) {}
     toServerCommand() { }
     compareState(body) {
         return body.Shape.Position.X === this.state.x
@@ -64,19 +64,41 @@ class CommandMove extends CommandBase{
         this.direction = new Vector(direction.x, direction.y);
         this.unitDirection = this.direction.calculateUnitVector();
     }
-    processBody(body) {
-        body.gameRect.center = {
-            X: body.gameRect.centerx + body.speed * this.duration * this.unitDirection.x / 1000,
-            Y: body.gameRect.centery + body.speed * this.duration * this.unitDirection.y / 1000
-        };
+    processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS)  {
+        body.gameRect.center = new Point(
+            body.gameRect.centerx + body.speed * this.duration * this.unitDirection.x / 1000,
+            body.gameRect.centery + body.speed * this.duration * this.unitDirection.y / 1000
+        );
     }
 
     toServerCommand() {
         return new ServerCommand(this.id, "Move",
             [
-                ["X", this.direction.x],
-                ["Y", this.direction.y],
-                ["Duration", this.duration]]
+                ["X", this.direction.x.toString()],
+                ["Y", this.direction.y.toString()],
+                ["Duration", this.duration.toString()]]
             )
+    }
+}
+
+class CommandChangeDirection extends CommandBase {
+    unitNewDirection: Vector;
+
+    constructor(bodyId: number, id: number, newDirection: Vector) {
+        super(bodyId, id);
+        this.unitNewDirection = newDirection.calculateUnitVector();
+    }
+    processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS) {
+        body.updateDirection(this.unitNewDirection);
+    }
+
+    toServerCommand() {
+        return {
+            Name: "ChangeDirection",
+            Id: this.id,
+            Data: [
+                ["X", this.unitNewDirection.x],
+                ["Y", this.unitNewDirection.y]]
+        };
     }
 }
