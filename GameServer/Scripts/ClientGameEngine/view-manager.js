@@ -11,6 +11,7 @@
     this.scorePoint = new Point(this.weaponPoint.x, this.lifePoint.y - textGap)
     this.fpsPoint = new Point(canvas.width - 80, this.weaponPoint.y - 10);
     this.pingPoint = new Point(canvas.width - 80, this.weaponPoint.y - 20);
+    this.baseRotationVector = new Vector(0, -1);
 
     this.menu = menu;
     this.stage = new createjs.Stage(canvas);
@@ -41,35 +42,13 @@
         // Get mouse vector not normalized
         var mouseVectorNotNormalized = new Vector(Math.round(mousePoint.x - playerCenter.x), Math.round(mousePoint.y - playerCenter.y));
         return mouseVectorNotNormalized;
-    }
-
-    updateDirection: function (newDirection) {
-        var rotationDeltaRad = Math.acos(this.baseRotationVector.product(newDirection)/
-            this.baseRotationVector.length() * newDirection.length());
-
-        var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
-
-        // To check rotation direction
-        var centerX = this.image.x;
-        var mouseX = centerX + newDirection.x;
-
-        // Clockwise
-        if (mouseX >= centerX) {
-            this.image.rotation = rotationDeltaDegree;
-        }// Counter-clockwise
-        else {
-            this.image.rotation = 360 - rotationDeltaDegree;
-        }
-
-        // Update direction and weapon
-        this.direction = newDirection;
     } 
 
     this.updateCanvasXY = function (bodies){//, cells) {
 
         // Update objects
         self.mechanicEngine.bodies.forEach(function (body) {
-            if (body.Id !== self.target.Id) {
+            if (body.id !== self.targetBody.id) {
                 var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
 
                 if (bodyImage !== undefined) {
@@ -141,6 +120,25 @@
         self.stage.update();
     }
 
+    this.updateDirection = function (newDirection, image) {
+        var rotationDeltaRad = Math.acos(this.baseRotationVector.product(newDirection)/
+            this.baseRotationVector.length() * newDirection.length());
+
+        var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
+
+        // To check rotation direction
+        var centerX = image.x;
+        var mouseX = centerX + newDirection.x;
+
+        // Clockwise
+        if (mouseX >= centerX) {
+            image.rotation = rotationDeltaDegree;
+        }// Counter-clockwise
+        else {
+            image.rotation = 360 - rotationDeltaDegree;
+        }
+    }
+
     this.init = function (mechanicEngine) {
         self.mechanicEngine = mechanicEngine;
 
@@ -149,6 +147,23 @@
             self.bodyImages.push({id:body.id, image: image});
 
             self.stage.addChild(image);
+        });
+
+        mechanicEngine.onActiveBodyChanged.push(function (body, changesType) {
+
+            switch(changesType)
+            {
+                case 0:
+                    {
+                        var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
+
+                        self.updateDirection(body.direction, bodyImage);
+
+                        break;
+                    }
+                default:
+                    break;
+            }
         });
     }
 }

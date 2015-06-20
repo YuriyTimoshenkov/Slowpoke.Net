@@ -58,3 +58,5 @@ class Rect{
         this.centery = value.y;
     }
 }
+
+enum BodyChangesType { direction, position }

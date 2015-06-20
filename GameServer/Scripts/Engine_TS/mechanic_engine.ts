@@ -2,7 +2,8 @@
     bodies: ActiveBody[];
     commandQueue: CommandBase[];
     commandQueueProcessed: CommandBase[];
-    onActiveBodyAdd: {(body: ActiveBody): void}[];
+    onActiveBodyAdd: { (body: ActiveBody): void }[];
+    onActiveBodyChanged: { (body: ActiveBody, changesType: BodyChangesType): void }[];
     player: PlayerBody;
 
     constructor() {
@@ -10,6 +11,7 @@
         this.onActiveBodyAdd = [];
         this.commandQueue = [];
         this.commandQueueProcessed = [];
+        this.onActiveBodyChanged = [];
     }
 
     addPlayerBody(body: ServerBody) {

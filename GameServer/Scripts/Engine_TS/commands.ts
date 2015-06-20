@@ -89,7 +89,11 @@ class CommandChangeDirection extends CommandBase {
         this.unitNewDirection = newDirection.calculateUnitVector();
     }
     processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS) {
-        body.updateDirection(this.unitNewDirection);
+        body.direction = this.unitNewDirection;
+
+        mechanicEngine.onActiveBodyChanged.forEach(function (item) {
+            item(body, BodyChangesType.direction);
+        });
     }
 
     toServerCommand() {
