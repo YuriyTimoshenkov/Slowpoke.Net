@@ -64,6 +64,7 @@ class CommandMove extends CommandBase{
         this.direction = new Vector(direction.x, direction.y);
         this.unitDirection = this.direction.calculateUnitVector();
     }
+
     processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS)  {
         body.gameRect.center = new Point(
             body.gameRect.centerx + body.speed * this.duration * this.unitDirection.x / 1000,
@@ -91,7 +92,7 @@ class CommandChangeDirection extends CommandBase {
     processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS) {
         body.direction = this.unitNewDirection;
 
-        mechanicEngine.onActiveBodyChanged.forEach(function (item) {
+        mechanicEngine.onBodyChanged.forEach(function (item) {
             item(body, BodyChangesType.direction);
         });
     }

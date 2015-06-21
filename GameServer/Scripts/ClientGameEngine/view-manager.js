@@ -55,14 +55,28 @@
                     var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
                     var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
 
-                    bodyImage.image.x = self.targetBodyImage.x - dx;
-                    bodyImage.image.y = self.targetBodyImage.y - dy;
+                    bodyImage.x = self.targetBodyImage.x - dx;
+                    bodyImage.y = self.targetBodyImage.y - dy;
 
                     // Update objectMenu for NPCAI only
                     //if (obj.serverBody.BodyType === "NPCAI") {
                     //    obj.objectMenu.x = self.target.image.x - dx;
                     //    obj.objectMenu.y = self.target.image.y - dy;
                     //}
+                }
+            }
+        })
+
+        self.mechanicEngine.passiveBodies.forEach(function (body) {
+            if (body.id !== self.targetBody.id) {
+                var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
+
+                if (bodyImage !== undefined) {
+                    var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
+                    var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
+
+                    bodyImage.x = self.targetBodyImage.x - dx - body.size / 2;
+                    bodyImage.y = self.targetBodyImage.y - dy - body.size / 2;
                 }
             }
         })
@@ -142,14 +156,14 @@
     this.init = function (mechanicEngine) {
         self.mechanicEngine = mechanicEngine;
 
-        mechanicEngine.onActiveBodyAdd.push(function (body) {
+        mechanicEngine.onBodyAdd.push(function (body) {
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
             self.bodyImages.push({id:body.id, image: image});
 
             self.stage.addChild(image);
         });
 
-        mechanicEngine.onActiveBodyChanged.push(function (body, changesType) {
+        mechanicEngine.onBodyChanged.push(function (body, changesType) {
 
             switch(changesType)
             {

@@ -9,16 +9,13 @@
         GUN: 6,
         SHOTGUN: 7,
         DYNAMITE: 8,
-        TREE: 9
-    },
-
-    tiles: {
-        MEADOW: 0,
-        WATER: 1,
-        ROCK: 2,
-        ROAD: 3,
-        FORD: 4,
-        TREE: 5
+        TREE: 9,
+        MEADOW: 10,
+        WATER: 11,
+        ROCK: 12,
+        ROAD: 13,
+        FORD: 14,
+        TREE: 15
     }
 }
 

@@ -17,7 +17,7 @@ namespace SlowpokeEngine.Engines.Map
         public TileSolidityType Solid {get;set;}
         public Point Position {get;set;}
         public ShapeFacade Shape {get;set;}
-        public string TileTypeName { get; set; }
+        public string BodyType { get; set; }
 
         public MapTileFacade(Guid id, string color, TileSolidityType solid, Point position, ShapeFacade shape, string tileTypeName)
         {
@@ -26,7 +26,7 @@ namespace SlowpokeEngine.Engines.Map
             Solid = solid;
             Position = position;
             Shape = shape;
-            TileTypeName = tileTypeName;
+            BodyType = tileTypeName;
         }
 
         public static MapTileFacade FromMapTile(IMapTile mapTile)

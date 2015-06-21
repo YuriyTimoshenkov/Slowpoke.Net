@@ -231,7 +231,9 @@
     <TypeScriptCompile Include="Scripts\Engine_TS\bodies.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\commands.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\common.ts" />
+    <TypeScriptCompile Include="Scripts\Engine_TS\map_engine.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\mechanic_engine.ts" />
+    <TypeScriptCompile Include="Scripts\Engine_TS\tile.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

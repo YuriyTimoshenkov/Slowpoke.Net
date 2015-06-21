@@ -39,7 +39,7 @@ class Rect{
     private width: number;
     private height: number;
 
-    constructor(x, y, w, h) {
+    constructor(x: number, y: number, w: number, h: number) {
         this.x = x;
         this.y = y;
         this.width = w;
@@ -60,3 +60,44 @@ class Rect{
 }
 
 enum BodyChangesType { direction, position }
+
+class ObjectsContainersSynchronizerTS<T extends Body, F extends ServerBody> {
+
+    syncObjectsContainersTS(
+        oldContainer: T[],
+        newContainer: F[],
+        createHandler: { (body: F): T },
+        updateHandler: { (body: T): void },
+        removehandler: { (body: T): void }) {
+
+        //Create new container with new + updated elements
+        var result = newContainer.map(function (newElement) {
+
+            var objectsFromOldContainer = oldContainer.filter(function (oldElement) { return newElement.Id == oldElement.id })
+
+            if (objectsFromOldContainer.length > 0) {
+                updateHandler(objectsFromOldContainer[0]);
+
+                return objectsFromOldContainer[0];
+            }
+            else {
+                return createHandler(newElement)
+            }
+        });
+
+        // Generate remove events
+        oldContainer.forEach(function (item) {
+            var existingItem = result.filter(function (v) { return v.id === item.id });
+
+            if (existingItem.length === 0) {
+                removehandler(item);
+            }
+        });
+
+        return result;
+    }
+}
+
+interface ServerFrame {
+    Map: ServerTile[];
+}

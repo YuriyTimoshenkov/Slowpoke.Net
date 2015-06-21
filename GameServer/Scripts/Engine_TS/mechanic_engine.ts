@@ -1,17 +1,21 @@
 ﻿class MechanicEngineTS {
     bodies: ActiveBody[];
+    passiveBodies: Body[];
     commandQueue: CommandBase[];
     commandQueueProcessed: CommandBase[];
-    onActiveBodyAdd: { (body: ActiveBody): void }[];
-    onActiveBodyChanged: { (body: ActiveBody, changesType: BodyChangesType): void }[];
+    onBodyAdd: { (body: Body): void }[];
+    onBodyChanged: { (body: Body, changesType: BodyChangesType): void }[];
     player: PlayerBody;
+    mapEngine: MapEngine;
 
-    constructor() {
+    constructor(serverMap: ServerMap) {
         this.bodies = [];
-        this.onActiveBodyAdd = [];
+        this.passiveBodies = [];
+        this.onBodyAdd = [];
         this.commandQueue = [];
         this.commandQueueProcessed = [];
-        this.onActiveBodyChanged = [];
+        this.onBodyChanged = [];
+        this.mapEngine = new MapEngine(serverMap, this);
     }
 
     addPlayerBody(body: ServerBody) {
@@ -19,7 +23,7 @@
         var self = this;
         this.bodies.push(this.player);
 
-        this.onActiveBodyAdd.forEach(function (item) {
+        this.onBodyAdd.forEach(function (item) {
             item(self.player);
         });
     }
@@ -44,5 +48,12 @@
         this.bodies.forEach(function (body) {
             body.update()
         });
+    }
+
+    syncServerFrames(frame: ServerFrame) {
+
+        if (frame.Map != null) {
+            this.mapEngine.update(frame.Map);
+        }
     }
 } 

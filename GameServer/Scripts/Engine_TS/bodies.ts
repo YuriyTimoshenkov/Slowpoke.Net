@@ -1,32 +1,46 @@
-﻿interface  ServerBody {
+﻿interface ServerBody {
     Id: number;
+    BodyType: string;
+    Shape: { Radius: number; Position: { X: number; Y: number } }
+}
+
+interface ServerActiveBody extends ServerBody {
     Name: string;
-    Shape: { Radius: number; Position: { x: number; y: number } }
     Direction: { X: number; Y: number }
     Speed: number;
-    BodyType: string;
 }
-class ActiveBody {
+class Body {
     id: number;
     name: string;
     gameRect: Rect;
-    direction: Vector;
-    speed: number;
-    baseRotationVector: Vector;
     zIndex: number;
     bodyType: string;
 
-    constructor(serverBody: ServerBody) {
+    constructor(id: number, name: string, bodyType: string) {
+        this.id = id;
+        this.name = name;
+        this.bodyType = bodyType;
+    }
+}
+
+class ActiveBody extends Body{
+    direction: Vector;
+    speed: number;
+    baseRotationVector: Vector;
+
+    constructor(serverBody: ServerActiveBody) {
         this.id = serverBody.Id;
         this.name = serverBody.Name;
         this.bodyType = serverBody.BodyType;
         this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
-        this.gameRect.center = serverBody.Shape.Position;
+        this.gameRect.center = new Point(serverBody.Shape.Position.X, serverBody.Shape.Position.Y);
         this.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y)
         || new Vector(0, -1);
         this.zIndex = 1;
         this.speed = serverBody.Speed;
         this.baseRotationVector = new Vector(0, -1);
+
+        super(this.id, this.name, serverBody.BodyType);
     }
     serverSync(serverBody) {
         // Update direction

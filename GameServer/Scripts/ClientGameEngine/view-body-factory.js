@@ -29,6 +29,7 @@
         image.scaleX = 0.4;
         image.scaleY = 0.4;
         image.cache(0, 0, imageSize, imageSize);
+        image.zIndex = 1;
 
         return image;
     }
@@ -132,6 +133,43 @@
         return treeContainer;
     }
 
+    this.builders[gameTypes.gameObjects.MEADOW] = function (serverBody) {
+        var image = new createjs.Shape();
+        image.graphics.beginFill("#C0F598").drawRect(0, 0, serverBody.size, serverBody.size);
+        image.zIndex = 0;
+        return image;
+    }
+    this.builders[gameTypes.gameObjects.WATER] = function (serverBody) {
+        var image = new createjs.Shape();
+        image.zIndex = 0;
+        image.graphics.beginFill("#89EBF0").drawRect(0, 0, serverBody.size, serverBody.size);
+        return image;
+    }
+    this.builders[gameTypes.gameObjects.ROCK] = function (serverBody) {
+        var image = new createjs.Shape();
+        image.zIndex = 0;
+        image.graphics.beginFill("#6E6E6E").drawRect(0, 0, serverBody.size, serverBody.size);
+        return image;
+    }
+    this.builders[gameTypes.gameObjects.ROAD] = function (serverBody) {
+        var image = new createjs.Shape();
+        image.zIndex = 0;
+        image.graphics.beginFill("#6E6E6E").drawRect(0, 0, serverBody.size, serverBody.size);
+        return image;
+    }
+    this.builders[gameTypes.gameObjects.FORD] = function (serverBody) {
+        var image = new createjs.Shape();
+        image.zIndex = 0;
+        image.graphics.beginFill("#EDC791").drawRect(0, 0, serverBody.size, serverBody.size);
+        return image;
+    }
+    this.builders[gameTypes.gameObjects.TREE] = function (serverBody) {
+        var image = new createjs.Shape();
+        image.zIndex = 0;
+        image.graphics.beginFill("#5EAB00").drawRect(0, 0, serverBody.size, serverBody.size);
+        return image;
+    }
+
      
     this.serverTypeMap = [];
     this.serverTypeMap["NPCAI"] = gameTypes.gameObjects.NPCAI;
@@ -139,4 +177,11 @@
     this.serverTypeMap["Bullet"] = gameTypes.gameObjects.BULLET;
     this.serverTypeMap["BulletDynamite"] = gameTypes.gameObjects.DYNAMITE;
     this.serverTypeMap["LifeContainer"] = gameTypes.gameObjects.LIFECONTAINER;
+
+    this.serverTypeMap["meadow"] = gameTypes.gameObjects.MEADOW;
+    this.serverTypeMap["water"] = gameTypes.gameObjects.WATER;
+    this.serverTypeMap["rock"] = gameTypes.gameObjects.ROCK;
+    this.serverTypeMap["road"] = gameTypes.gameObjects.ROAD;
+    this.serverTypeMap["ford"] = gameTypes.gameObjects.FORD;
+    this.serverTypeMap["tree"] = gameTypes.gameObjects.TREE;
 }

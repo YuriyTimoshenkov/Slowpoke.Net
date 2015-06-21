@@ -47,7 +47,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
     this.handleLoadMap = function (serverMap) {
         
-        self.mechanicEngine = new MechanicEngineTS();
+        self.mechanicEngine = new MechanicEngineTS(serverMap);
         self.viewManager.init(self.mechanicEngine);
 
         self.mechanicEngine.addPlayerBody(self.player);
@@ -65,7 +65,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         var clientEventData = self.controlsManager.handleControlsCommon();
         clientEventData.commands = [];
 
-        //self.syncState(clientEventData);
+        self.syncState(clientEventData);
     }
 
     this.errorHandler = function (error) {
