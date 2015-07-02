@@ -233,6 +233,7 @@
     <TypeScriptCompile Include="Scripts\Engine_TS\common.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\map_engine.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\mechanic_engine.ts" />
+    <TypeScriptCompile Include="Scripts\Engine_TS\serverbody_synchronizer.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\tile.ts" />
   </ItemGroup>
   <PropertyGroup>

@@ -34,82 +34,73 @@
         return image;
     }
     this.builders[gameTypes.gameObjects.PLAYEROTHER] = function (serverBody) {
-        var player = new CharacterBody(serverBody);
 
         // Assign image
-        var obj = new CowboyContainer();
-        player.image.addChild(obj.image);
+        var cc = new CowboyContainer();
+        //player.image.addChild(obj.image);
 
-        // Create name text
-        var textSize = 15;
-        var nameText = new createjs.Text(player.name, textSize + "px Arial", "#AAA9AB");
-        nameText.x = -player.gameRect.width * 1.5;
-        nameText.y = -player.gameRect.height * 1.5;
-        player.objectMenu.addChild(nameText);
+        //// Create name text
+        //var textSize = 15;
+        //var nameText = new createjs.Text(player.name, textSize + "px Arial", "#AAA9AB");
+        //nameText.x = -player.gameRect.width * 1.5;
+        //nameText.y = -player.gameRect.height * 1.5;
+        //player.objectMenu.addChild(nameText);
 
         // Configure image
+        var image = cc.image;
         var imageSize = 280;
-        player.image.regX = imageSize / 2;
-        player.image.regY = imageSize / 2;
-        player.image.scaleX = 0.4;
-        player.image.scaleY = 0.4;
-        player.image.cache(0, 0, imageSize, imageSize);
+        image.regX = imageSize / 2;
+        image.regY = imageSize / 2;
+        image.scaleX = 0.4;
+        image.scaleY = 0.4;
+        image.cache(0, 0, imageSize, imageSize);
 
-        return player;
+        return image;
     }
     this.builders[gameTypes.gameObjects.NPCAI] = function (serverBody) {
-        var npc = new CharacterBody(serverBody);
-
         // Assign image
         var obj = new PolicemanContainer();
-        npc.image.addChild(obj.image);
+        //npc.image.addChild(obj.image);
 
-        // Create life text
-        npc.addLifeText();
+        //// Create life text
+        //npc.addLifeText();
 
         // Configure image
+        var image = obj.image;
         var imageSize = 280;
-        npc.image.regX = imageSize / 2;
-        npc.image.regY = imageSize / 2;
-        npc.image.scaleX = 0.4;
-        npc.image.scaleY = 0.4;
-        npc.image.cache(0, 0, imageSize, imageSize);
+        image.regX = imageSize / 2;
+        image.regY = imageSize / 2;
+        image.scaleX = 0.4;
+        image.scaleY = 0.4;
+        image.cache(0, 0, imageSize, imageSize);
 
-        return npc;
+        return image;
     }
     this.builders[gameTypes.gameObjects.BULLET] = function (serverBody) {
-        var bullet = new BulletBody(serverBody);
-
         // Assign image
         var bulletImage = new createjs.Shape();
         bulletImage.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#F08200").dc(2, 2, 2);
         bulletImage.scaleX = 0.5;
         bulletImage.scaleY = 0.5;
-            // KOSTIL 
-            // trigger direction update
-        bullet.updateDirection(bullet.direction);
-        bullet.image.addChild(bulletImage);
 
-        return bullet;
+        return bulletImage;
     }
     this.builders[gameTypes.gameObjects.LIFECONTAINER] = function (serverBody) {
-        var lifeContainer = new BaseBody(serverBody);
 
         // Assign image
         var obj = new BottleContainer();
         obj.image.scaleX = 0.05;
         obj.image.scaleY = 0.05;
 
-        var a = lifeContainer.image.addChild(obj.image);
-
+        var image = obj.image;
         // Configure image
         var imageWidth = 30;
         var imageHeight = 40;
-        lifeContainer.image.regX = imageWidth / 2;
-        lifeContainer.image.regY = imageHeight / 2;
-        lifeContainer.image.cache(0, 0, imageWidth, imageHeight);
+        image.regX = imageWidth / 2;
+        image.regY = imageHeight / 2;
+        image.cache(0, 0, imageWidth, imageHeight);
 
-        return lifeContainer;
+        return image;
     }
     this.builders[gameTypes.gameObjects.TREE] = function (serverBody) {
         var treeBody = {

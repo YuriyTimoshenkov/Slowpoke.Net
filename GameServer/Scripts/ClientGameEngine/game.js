@@ -52,9 +52,11 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
         self.mechanicEngine.addPlayerBody(self.player);
 
-        viewManager.setTarget(self.mechanicEngine.player)
+        self.viewManager.setTarget(self.mechanicEngine.player)
 
         controlsManager.addMouseMoveHandler(self.handleMouseMove)
+
+        self.serverBodySynchornizer = new ServerBodySynchornizer(self.mechanicEngine);
 
         // Start game loop
         self.clientLoop = setInterval(function () { self.loop() }, self.gameContext.renderLoopTimeout)
@@ -163,7 +165,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
                     var clientEventData = self.controlsManager.handleControlsCommon();
 
                     //Process state with new mechanic
-                    clientEventData.commands = self.mechanicEngine.syncServerFrames(state);
+                    clientEventData.commands = self.serverBodySynchornizer.syncServerFrames(state);//self.mechanicEngine.syncServerFrames(state);
 
                     self.syncState(clientEventData);
                 //}

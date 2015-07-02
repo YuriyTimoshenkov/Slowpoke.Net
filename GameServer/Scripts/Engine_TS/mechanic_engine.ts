@@ -4,6 +4,7 @@
     commandQueue: CommandBase[];
     commandQueueProcessed: CommandBase[];
     onBodyAdd: { (body: Body): void }[];
+    onBodyRemove: { (body: Body): void }[];
     onBodyChanged: { (body: Body, changesType: BodyChangesType): void }[];
     player: PlayerBody;
     mapEngine: MapEngine;

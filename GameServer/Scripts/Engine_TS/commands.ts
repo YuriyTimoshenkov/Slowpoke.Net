@@ -44,7 +44,7 @@ class CommandBase {
    }
 
     processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS) {}
-    toServerCommand() { }
+    toServerCommand(): ServerCommand { return null; }
     compareState(body) {
         return body.Shape.Position.X === this.state.x
         && body.Shape.Position.Y === this.state.y
@@ -72,7 +72,7 @@ class CommandMove extends CommandBase{
         );
     }
 
-    toServerCommand() {
+    toServerCommand(): ServerCommand {
         return new ServerCommand(this.id, "Move",
             [
                 ["X", this.direction.x.toString()],
@@ -97,13 +97,11 @@ class CommandChangeDirection extends CommandBase {
         });
     }
 
-    toServerCommand() {
-        return {
-            Name: "ChangeDirection",
-            Id: this.id,
-            Data: [
-                ["X", this.unitNewDirection.x],
-                ["Y", this.unitNewDirection.y]]
-        };
+    toServerCommand(): ServerCommand {
+        return new ServerCommand(this.id, "ChangeDirection",
+            [
+                ["X", this.unitNewDirection.x.toString()],
+                ["Y", this.unitNewDirection.y.toString()]]
+            );
     }
 }

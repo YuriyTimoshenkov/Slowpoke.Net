@@ -1,6 +1,7 @@
 ﻿interface ServerBody {
     Id: number;
     BodyType: string;
+    LastProcessedCommandId: number;
     Shape: { Radius: number; Position: { X: number; Y: number } }
 }
 
@@ -15,11 +16,20 @@ class Body {
     gameRect: Rect;
     zIndex: number;
     bodyType: string;
+    syncSessionId: number;
 
     constructor(id: number, name: string, bodyType: string) {
         this.id = id;
         this.name = name;
         this.bodyType = bodyType;
+    }
+}
+
+class PassiveBody extends Body {
+    constructor(serverBody: ServerBody){
+        super(serverBody.Id, serverBody.Id.toString(), serverBody.BodyType);
+
+        this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
     }
 }
 

@@ -101,3 +101,9 @@ class ObjectsContainersSynchronizerTS<T extends Body, F extends ServerBody> {
 interface ServerFrame {
     Map: ServerTile[];
 }
+
+enum BodyProcessingTypes {
+    ServerSide = 1,
+    ClientSide = 2,
+    ClientSidePrediction = 3
+}
