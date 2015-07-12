@@ -16,6 +16,7 @@
         this.commandQueue = [];
         this.commandQueueProcessed = [];
         this.onBodyChanged = [];
+        this.onBodyRemove = [];
         this.mapEngine = new MapEngine(serverMap, this);
     }
 

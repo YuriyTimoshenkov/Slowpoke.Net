@@ -179,5 +179,22 @@
                     break;
             }
         });
+
+        mechanicEngine.onBodyRemove.push(function (body) {
+            var childImageToRemove;
+            self.bodyImages = self.bodyImages.filter(function (v) {
+                if (v.id === body.id) {
+                    childImageToRemove = v.image;
+
+                    return false;
+                }
+                else
+                    return true;
+            });
+
+            if (childImageToRemove !== undefined) {
+                self.stage.removeChild(childImageToRemove);
+            }
+        });
     }
 }

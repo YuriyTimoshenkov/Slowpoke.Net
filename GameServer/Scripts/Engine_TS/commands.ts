@@ -36,8 +36,8 @@ class CommandBase {
 
             //save state
             this.state = {
-                x: body.gameRect.centerx,
-                y: body.gameRect.centery,
+                x: body.gameRect.center.x,
+                y: body.gameRect.center.y,
                 direction: body.direction
             };
         }
@@ -46,10 +46,10 @@ class CommandBase {
     processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS) {}
     toServerCommand(): ServerCommand { return null; }
     compareState(body) {
-        return body.Shape.Position.X === this.state.x
-        && body.Shape.Position.Y === this.state.y
+        return this.state === undefined || (body.Shape.Position.X === this.state.x
+            && body.Shape.Position.Y === this.state.y
             && (body.Direction.X - this.state.direction.x) < CommandBase.directionPossibleDiff
-            && (body.Direction.Y - this.state.direction.y) < CommandBase.directionPossibleDiff
+            && (body.Direction.Y - this.state.direction.y) < CommandBase.directionPossibleDiff);
     }
 } 
 

@@ -102,27 +102,6 @@
 
         return image;
     }
-    this.builders[gameTypes.gameObjects.TREE] = function (serverBody) {
-        var treeBody = {
-            Name: "TreeContainer",
-            BodyType: "PassiveBody",
-            Id: 333,
-            Shape: { Position: { X: 0, Y: 0 }, Raius: 10 },
-            Life: 10,
-            LifeMax: 10,
-            Direction: { X: 0, Y: 0 },
-            CurrentWeapon: "",
-            Speed: 0
-    }
-
-        var treeContainer = new BaseBody(treeBody);
-
-        var obj = new TreeContainer();
-        obj.image.scaleX = 0.06;
-        obj.image.scaleY = 0.06;
-        treeContainer.image = obj.image;//.addChild(obj.image);
-        return treeContainer;
-    }
 
     this.builders[gameTypes.gameObjects.MEADOW] = function (serverBody) {
         var image = new createjs.Shape();
@@ -145,7 +124,7 @@
     this.builders[gameTypes.gameObjects.ROAD] = function (serverBody) {
         var image = new createjs.Shape();
         image.zIndex = 0;
-        image.graphics.beginFill("#6E6E6E").drawRect(0, 0, serverBody.size, serverBody.size);
+        image.graphics.beginFill("#EDC791").drawRect(0, 0, serverBody.size, serverBody.size);
         return image;
     }
     this.builders[gameTypes.gameObjects.FORD] = function (serverBody) {

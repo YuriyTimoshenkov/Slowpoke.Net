@@ -86,6 +86,8 @@ namespace SlowpokeHubs
                 //Update currrent tile
                 var currentTile = MechanicEngine.ViewPort.GetPlayerCurrentTile(playerContainer.Player.Id);
 
+                _logger.Info(string.Format("Current player tile  X: {0}, Y: {1}", currentTile.Position.X, currentTile.Position.Y));
+
                 if (playerContainer.PreviousTile == null || (currentTile != null && playerContainer.PreviousTile.Position != currentTile.Position))
                 {
                     playerContainer.PreviousTile = currentTile;

@@ -76,28 +76,28 @@
         }
     }
 
-    syncPredictiveBodies(serverBody: ServerActiveBody): ServerCommand[] {
+    syncPredictiveBodies(serverBody: ServerActiveBody, mechanicEngine: MechanicEngineTS): ServerCommand[] {
         //Find first synced with server command
-        var firstSyncedCommand: CommandBase = this.mechanicEngine.commandQueueProcessed.filter(function (command) {
+        var firstSyncedCommand: CommandBase = mechanicEngine.commandQueueProcessed.filter(function (command) {
             return command.id === serverBody.LastProcessedCommandId;
         })[0];
 
         //Remove all commands till synced one
-        this.mechanicEngine.commandQueueProcessed = this.mechanicEngine.commandQueueProcessed.slice(
-            this.mechanicEngine.commandQueueProcessed.indexOf(firstSyncedCommand) + 1,
-            this.mechanicEngine.commandQueueProcessed.length
+        this.mechanicEngine.commandQueueProcessed = mechanicEngine.commandQueueProcessed.slice(
+            mechanicEngine.commandQueueProcessed.indexOf(firstSyncedCommand) + 1,
+            mechanicEngine.commandQueueProcessed.length
             );
 
         //Update body if needed
         if (firstSyncedCommand !== undefined && !firstSyncedCommand.compareState(serverBody)) {
 
-            this.mechanicEngine.player.gameRect.centerx = serverBody.Shape.Position.X;
-            this.mechanicEngine.player.gameRect.centery = serverBody.Shape.Position.Y;
-            this.mechanicEngine.player.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y).calculateUnitVector();
+            mechanicEngine.player.gameRect.centerx = serverBody.Shape.Position.X;
+            mechanicEngine.player.gameRect.centery = serverBody.Shape.Position.Y;
+            mechanicEngine.player.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y).calculateUnitVector();
 
             //Recalculate applied commands
-            this.mechanicEngine.commandQueueProcessed.forEach(function (command) {
-                command.process(this.mechanicEngine);
+            mechanicEngine.commandQueueProcessed.forEach(function (command) {
+                command.process(mechanicEngine);
             });
 
             console.log('[Sync server] Recalculation applied.');
@@ -106,7 +106,7 @@
         }
 
         //Prepeare command for server
-        var resultNotYetSyncedItems = this.mechanicEngine.commandQueueProcessed.filter(function (command) {
+        var resultNotYetSyncedItems = mechanicEngine.commandQueueProcessed.filter(function (command) {
             return command.syncedWithServer === false;
         });
 
@@ -144,10 +144,9 @@
                 }
             case BodyProcessingTypes.ClientSidePrediction:
                 {
-                    serverCommands = serverCommands.concat(self.syncPredictiveBodies(serverBody));
+                    serverCommands = serverCommands.concat(self.syncPredictiveBodies(serverBody, self.mechanicEngine));
                     self.mechanicEngine.player.syncSessionId = syncSessionId;
 
-                    self.mechanicEngine.player.serverSync(serverBody);
 
                     break;
                 }

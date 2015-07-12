@@ -5,7 +5,7 @@
 }
 
 function gameBuilder(canvasTagId) {
-    var gameContext = new GameContext('initial', 1000/30, 1000/30)
+    var gameContext = new GameContext('initial', 1000/30, 1000/100)
     var serverProxy = new serverProxyFactory().createServerProxy('/')
     var viewM = new viewManagerFactory().createViewManager(canvasTagId, gameContext)
     var controlsM = new controlsManagerFactory().createControlsManager()

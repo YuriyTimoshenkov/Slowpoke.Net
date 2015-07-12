@@ -64,10 +64,14 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         self.gameContext.state = 'playing'
 
         // Start listening server
-        var clientEventData = self.controlsManager.handleControlsCommon();
-        clientEventData.commands = [];
+        self.clientEventData = self.controlsManager.handleControlsCommon();
+        self.clientEventData.commands = [];
 
-        self.syncState(clientEventData);
+        self.SyncState = 'free';
+
+        setInterval(function () {
+            self.SyncWithServer(self.clientEventData)
+        }, self.gameContext.serverLoopTimeout);
     }
 
     this.errorHandler = function (error) {
@@ -144,30 +148,26 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         return Math.round(1000 / deltaTime);
     }
 
-    this.syncState = function (clientEvents) {
-        var currentTime = new Date()
-        var timeDiff = currentTime - self.lastServerSync
+    this.SyncWithServer = function (clientEvents) {
 
-        ///Update ping
-        self.gameContext.ping = Math.round(1000 / timeDiff)
-        
-        //Call later if needed
-        if (timeDiff <= self.gameContext.serverLoopTimeout) {
-            setTimeout(function () {
-                self.syncState(clientEvents)
-            }, self.gameContext.serverLoopTimeout - timeDiff)
-        }
-        else {
-            self.lastServerSync = new Date()
+        if (self.SyncState !== undefined && self.SyncState !== 'running') {
+            self.SyncState = 'running';
 
-            this.serverProxy.syncState(clientEvents, function (state) {
+            var currentTime = new Date()
+            var timeDiff = currentTime - self.lastServerSync
+
+            ///Update ping
+            self.gameContext.ping = Math.round(1000 / timeDiff)
+            self.lastServerSync = new Date();
+
+            self.serverProxy.syncState(clientEvents, function (state) {
                 //try {
-                    var clientEventData = self.controlsManager.handleControlsCommon();
+                    self.clientEventData = self.controlsManager.handleControlsCommon();
 
                     //Process state with new mechanic
-                    clientEventData.commands = self.serverBodySynchornizer.syncServerFrames(state);//self.mechanicEngine.syncServerFrames(state);
+                    self.clientEventData.commands = self.serverBodySynchornizer.syncServerFrames(state);//self.mechanicEngine.syncServerFrames(state);
 
-                    self.syncState(clientEventData);
+                    self.SyncState = 'free';
                 //}
                 //catch(ex)
                 //{
@@ -176,9 +176,9 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
             }, function (error) {
                 console.log("Error: " + error)
 
-                self.syncState(clientEvents);
+                self.SyncState = 'free';
             });
+        }
     }
-}
 }
 
