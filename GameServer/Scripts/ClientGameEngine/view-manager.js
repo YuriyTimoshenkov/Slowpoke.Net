@@ -160,6 +160,10 @@
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
             self.bodyImages.push({id:body.id, image: image});
 
+            if (body.direction !== undefined) {
+                self.updateDirection(body.direction, image);
+            }
+
             self.stage.addChild(image);
         });
 

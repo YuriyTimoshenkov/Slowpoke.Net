@@ -154,4 +154,25 @@
     this.serverTypeMap["road"] = gameTypes.gameObjects.ROAD;
     this.serverTypeMap["ford"] = gameTypes.gameObjects.FORD;
     this.serverTypeMap["tree"] = gameTypes.gameObjects.TREE;
+
+    this.updateDirection = function (newDirection, image) {
+        var baseRotationVector = new Vector(0, -1);
+
+        var rotationDeltaRad = Math.acos(baseRotationVector.product(newDirection) /
+            baseRotationVector.length() * newDirection.length());
+
+        var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
+
+        // To check rotation direction
+        var centerX = image.x;
+        var mouseX = centerX + newDirection.x;
+
+        // Clockwise
+        if (mouseX >= centerX) {
+            image.rotation = rotationDeltaDegree;
+        }// Counter-clockwise
+        else {
+            image.rotation = 360 - rotationDeltaDegree;
+        }
+    }
 }

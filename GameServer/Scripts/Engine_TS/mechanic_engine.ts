@@ -20,7 +20,7 @@
         this.mapEngine = new MapEngine(serverMap, this);
     }
 
-    addPlayerBody(body: ServerBody) {
+    addPlayerBody(body: ServerCharacterBody) {
         this.player = new PlayerBody(body);
         var self = this;
         this.bodies.push(this.player);
@@ -50,12 +50,5 @@
         this.bodies.forEach(function (body) {
             body.update()
         });
-    }
-
-    syncServerFrames(frame: ServerFrame) {
-
-        if (frame.Map != null) {
-            this.mapEngine.update(frame.Map);
-        }
     }
 } 

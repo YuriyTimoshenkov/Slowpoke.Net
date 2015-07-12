@@ -64,7 +64,10 @@
 
     syncClientSideBody(serverBody: ServerBody, syncSessionId: number) {
 
-        var filtered = this.mechanicEngine.bodies.filter(function (body) { return serverBody.Id === body.id });
+        var filtered = this.mechanicEngine.bodies.filter(function (body) {
+            return serverBody.Id === body.id
+                || serverBody.CreatedByCommandId >= body.createdByCommandId
+        });
 
         if (filtered.length === 0) {
             this.createNewBody(serverBody, syncSessionId);

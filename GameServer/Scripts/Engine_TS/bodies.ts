@@ -2,6 +2,7 @@
     Id: number;
     BodyType: string;
     LastProcessedCommandId: number;
+    CreatedByCommandId: number;
     Shape: { Radius: number; Position: { X: number; Y: number } }
 }
 
@@ -10,6 +11,13 @@ interface ServerActiveBody extends ServerBody {
     Direction: { X: number; Y: number }
     Speed: number;
 }
+
+interface ServerCharacterBody extends ServerActiveBody {
+    Life: number;
+    MaxLife: number;
+    CurrentWeapon: string;
+}
+
 class Body {
     id: number;
     name: string;
@@ -37,6 +45,7 @@ class ActiveBody extends Body{
     direction: Vector;
     speed: number;
     baseRotationVector: Vector;
+    createdByCommandId: number;
 
     constructor(serverBody: ServerActiveBody) {
         this.id = serverBody.Id;
@@ -67,10 +76,10 @@ class ActiveBody extends Body{
 class CharacterBody extends ActiveBody{
     currentWeapon: string;
     life: number;
-    maxLife: string;
+    maxLife: number;
     score: number;
 
-    constructor(serverBody: any) {
+    constructor(serverBody: ServerCharacterBody) {
         super(serverBody);
 
         this.life = serverBody.Life || 0;
@@ -101,5 +110,28 @@ class PlayerBody extends CharacterBody {
         if (serverBody.Score) {
             this.score = serverBody.Score;
         }
+    }
+}
+
+class Bullet extends ActiveBody {
+    lastUpdateTime: number;
+    unitDirection: Vector;
+
+    constructor(serverBody: ServerActiveBody) {
+        super(serverBody);
+
+        this.lastUpdateTime = new Date().getTime();
+        this.unitDirection = new Vector(this.direction.x, this.direction.y).calculateUnitVector();
+    }
+
+    update() {
+        var currentTime = new Date().getTime();
+        var duration = currentTime - this.lastUpdateTime;
+        this.lastUpdateTime = currentTime;
+
+        this.gameRect.center = new Point(
+            this.gameRect.centerx + this.speed * duration * this.unitDirection.x / 1000,
+            this.gameRect.centery + this.speed * duration * this.unitDirection.y / 1000
+        );
     }
 }

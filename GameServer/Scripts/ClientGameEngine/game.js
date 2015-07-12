@@ -130,11 +130,12 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
                 ));
         }
 
-        //if (clientEventData.shoot === true) {
-        //    self.mechanicEngine.addCommand(new CommandShoot(
-        //        self.mechanicEngine.player.id
-        //        ));
-        //}
+        if (clientEventData.shoot === true) {
+            self.mechanicEngine.addCommand(new CommandShoot(
+                self.mechanicEngine.player.id,
+                new Date().getTime()
+                ));
+        }
 
         self.mechanicEngine.update();
 
