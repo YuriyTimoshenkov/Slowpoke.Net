@@ -230,6 +230,7 @@
     <TypeScriptCompile Include="Scripts\Engine_TS\bodies.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\commands.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\common.ts" />
+    <TypeScriptCompile Include="Scripts\Engine_TS\game-constants.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\map_engine.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\mechanic_engine.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\menu.ts" />
@@ -239,7 +240,9 @@
     <TypeScriptCompile Include="Scripts\Engine_TS\view-engine.ts" />
     <TypeScriptCompile Include="Scripts\lib\createjs-lib.d.ts" />
     <TypeScriptCompile Include="Scripts\lib\easeljs.d.ts" />
+    <TypeScriptCompile Include="Scripts\lib\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\lib\tweenjs.d.ts" />
+    <TypeScriptCompile Include="Scripts\Resources\Images\cowboyTS.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
