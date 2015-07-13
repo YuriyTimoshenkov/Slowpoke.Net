@@ -8,7 +8,7 @@
     menu: any;
     mechanicEngine: MechanicEngineTS;
 
-    constructor(canvas, canvasSize, menu, gameContext,) {
+    constructor(canvas, canvasSize, menu, gameContext) {
         canvas.width = canvasSize.width;
         canvas.height = canvasSize.height;
         this.stage = new createjs.Stage(canvas);
