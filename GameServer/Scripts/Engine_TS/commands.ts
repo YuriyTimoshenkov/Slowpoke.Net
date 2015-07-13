@@ -142,7 +142,13 @@ class CommandShoot extends CommandBase {
                         X: dirX,
                         Y: dirY
                     },
-                    Speed: 1400
+                    Speed: 1000
+                });
+
+                newBullet.createdByCommandId = this.id;
+                mechanicEngine.bodies.push(newBullet);
+                mechanicEngine.onBodyAdd.forEach(function (item) {
+                    item(newBullet);
                 });
             });
         }
@@ -166,14 +172,14 @@ class CommandShoot extends CommandBase {
                         Y: body.direction.y
                     },
                     Speed: 1400
-                });
-        }
+            });
 
-        newBullet.createdByCommandId = this.id;
-        mechanicEngine.bodies.push(newBullet);
-        mechanicEngine.onBodyAdd.forEach(function (item) {
-            item(newBullet);
-        });
+            newBullet.createdByCommandId = this.id;
+            mechanicEngine.bodies.push(newBullet);
+            mechanicEngine.onBodyAdd.forEach(function (item) {
+                item(newBullet);
+            });
+        }
     }
 
     toServerCommand(): ServerCommand {

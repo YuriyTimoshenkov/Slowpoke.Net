@@ -99,7 +99,10 @@ class CharacterBody extends ActiveBody{
 class PlayerBody extends CharacterBody {
 
     serverSync(serverBody) {
-        super.serverSync(serverBody);
+        //TODO: implement true polumorphic body processing
+
+        //super.serverSync(serverBody);
+        this.life = serverBody.Life;
 
         // Update weapon
         if (serverBody.CurrentWeapon != 'undefined' && this.currentWeapon !== serverBody.CurrentWeapon) {

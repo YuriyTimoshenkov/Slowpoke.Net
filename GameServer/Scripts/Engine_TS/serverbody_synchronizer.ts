@@ -147,9 +147,11 @@
                 }
             case BodyProcessingTypes.ClientSidePrediction:
                 {
+                    //TODO: implement true polymorphic body processing
                     serverCommands = serverCommands.concat(self.syncPredictiveBodies(serverBody, self.mechanicEngine));
                     self.mechanicEngine.player.syncSessionId = syncSessionId;
 
+                    self.mechanicEngine.player.serverSync(serverBody);
 
                     break;
                 }
