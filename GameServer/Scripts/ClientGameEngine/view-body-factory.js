@@ -11,16 +11,15 @@
 
     this.builders = [];
     this.builders[gameTypes.gameObjects.PLAYER] = function (serverBody) {        
-        var image = new createjs.Container();
 
         var canvasXY = new Point($(document).width() / 2,
                                  $(document).height() / 2);
-        image.x = canvasXY.x;
-        image.y = canvasXY.y;
+
 
         // Assign image
-        var obj = new CowboyContainer();
-        image.addChild(obj.image);
+        var image = new CowboyContainer().image;
+        image.x = canvasXY.x;
+        image.y = canvasXY.y;
 
         // Configure image
         var imageSize = 280;
@@ -29,7 +28,7 @@
         image.scaleX = 0.4;
         image.scaleY = 0.4;
         image.cache(0, 0, imageSize, imageSize);
-        image.zIndex = 1;
+        image.zIndex = 10;
 
         return image;
     }
@@ -54,6 +53,7 @@
         image.scaleX = 0.4;
         image.scaleY = 0.4;
         image.cache(0, 0, imageSize, imageSize);
+        image.zIndex = 10;
 
         return image;
     }
@@ -73,6 +73,7 @@
         image.scaleX = 0.4;
         image.scaleY = 0.4;
         image.cache(0, 0, imageSize, imageSize);
+        image.zIndex = 10;
 
         return image;
     }
@@ -82,23 +83,24 @@
         bulletImage.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#F08200").dc(2, 2, 2);
         bulletImage.scaleX = 0.5;
         bulletImage.scaleY = 0.5;
+        bulletImage.zIndex = 5;
 
         return bulletImage;
     }
     this.builders[gameTypes.gameObjects.LIFECONTAINER] = function (serverBody) {
-
         // Assign image
-        var obj = new BottleContainer();
-        obj.image.scaleX = 0.05;
-        obj.image.scaleY = 0.05;
+        var image = new BottleContainer().image;
 
-        var image = obj.image;
+
         // Configure image
         var imageWidth = 30;
         var imageHeight = 40;
         image.regX = imageWidth / 2;
         image.regY = imageHeight / 2;
+        image.scaleX = 0.5;
+        image.scaleY = 0.5;
         image.cache(0, 0, imageWidth, imageHeight);
+        image.zIndex = 5;
 
         return image;
     }

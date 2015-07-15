@@ -25,11 +25,17 @@ class MapEngine {
         var self = this;
         this.tiles = this.serverSynchronizer.syncObjectsContainersTS(this.tiles, tiles,
             function (tile: ServerTile) {
+                tile.Shape.Radius = self.tileSize;
                 var newTile = new Tile(
-                    tile.Id,
-                    new Point(tile.Shape.Position.X, tile.Shape.Position.Y),
-                    self.tileSize,
-                    tile.BodyType);
+                    {
+                        Id: tile.Id,
+                        BodyType: tile.BodyType,
+                        LastProcessedCommandId: tile.LastProcessedCommandId,
+                        CreatedByCommandId: tile.CreatedByCommandId,
+                        Shape: tile.Shape,
+                        Name: tile.Name
+                    }
+                    );
 
                 //generate add tile event
                 self.mechanicEngine.onBodyAdd.forEach(function (item) {

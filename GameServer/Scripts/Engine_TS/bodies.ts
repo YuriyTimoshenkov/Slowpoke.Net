@@ -3,7 +3,8 @@
     BodyType: string;
     LastProcessedCommandId: number;
     CreatedByCommandId: number;
-    Shape: { Radius: number; Position: { X: number; Y: number } }
+    Shape: { Radius: number; Position: { X: number; Y: number } };  
+    Name: string;
 }
 
 interface ServerActiveBody extends ServerBody {
@@ -26,18 +27,23 @@ class Body {
     bodyType: string;
     syncSessionId: number;
 
-    constructor(id: number, name: string, bodyType: string) {
-        this.id = id;
-        this.name = name;
-        this.bodyType = bodyType;
+    constructor(serverBody: ServerBody) {
+        this.id = serverBody.Id;
+        this.name = serverBody.Name;
+        this.bodyType = serverBody.BodyType;
+
+        if (serverBody.Shape == undefined) {
+            console.log('sdf');
+        }
+
+        this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
+        this.gameRect.center = new Point(serverBody.Shape.Position.X, serverBody.Shape.Position.Y);
     }
 }
 
 class PassiveBody extends Body {
     constructor(serverBody: ServerBody){
-        super(serverBody.Id, serverBody.Id.toString(), serverBody.BodyType);
-
-        this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
+        super(serverBody);
     }
 }
 
@@ -51,15 +57,14 @@ class ActiveBody extends Body{
         this.id = serverBody.Id;
         this.name = serverBody.Name;
         this.bodyType = serverBody.BodyType;
-        this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
-        this.gameRect.center = new Point(serverBody.Shape.Position.X, serverBody.Shape.Position.Y);
+
         this.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y)
         || new Vector(0, -1);
         this.zIndex = 1;
         this.speed = serverBody.Speed;
         this.baseRotationVector = new Vector(0, -1);
 
-        super(this.id, this.name, serverBody.BodyType);
+        super(serverBody);
     }
     serverSync(serverBody) {
         // Update direction

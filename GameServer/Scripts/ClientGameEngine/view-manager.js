@@ -75,8 +75,8 @@
                     var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
                     var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
 
-                    bodyImage.x = self.targetBodyImage.x - dx - body.size / 2;
-                    bodyImage.y = self.targetBodyImage.y - dy - body.size / 2;
+                    bodyImage.x = self.targetBodyImage.x - dx - body.gameRect.width / 2;
+                    bodyImage.y = self.targetBodyImage.y - dy - body.gameRect.width / 2;
                 }
             }
         })
