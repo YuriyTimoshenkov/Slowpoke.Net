@@ -36,8 +36,8 @@ class Point {
 class Rect{
     private x: number;
     private y: number;
-    private width: number;
-    private height: number;
+    width: number;
+    height: number;
 
     constructor(x: number, y: number, w: number, h: number) {
         this.x = x;
