@@ -107,38 +107,38 @@
 
     this.builders[gameTypes.gameObjects.MEADOW] = function (serverBody) {
         var image = new createjs.Shape();
-        image.graphics.beginFill("#C0F598").drawRect(0, 0, serverBody.size, serverBody.size);
+        image.graphics.beginFill("#C0F598").drawRect(-serverBody.size / 2, -serverBody.size / 2, serverBody.size, serverBody.size);
         image.zIndex = 0;
         return image;
     }
     this.builders[gameTypes.gameObjects.WATER] = function (serverBody) {
         var image = new createjs.Shape();
         image.zIndex = 0;
-        image.graphics.beginFill("#89EBF0").drawRect(0, 0, serverBody.size, serverBody.size);
+        image.graphics.beginFill("#89EBF0").drawRect(-serverBody.size / 2, -serverBody.size / 2,serverBody.size, serverBody.size);
         return image;
     }
     this.builders[gameTypes.gameObjects.ROCK] = function (serverBody) {
         var image = new createjs.Shape();
         image.zIndex = 0;
-        image.graphics.beginFill("#6E6E6E").drawRect(0, 0, serverBody.size, serverBody.size);
+        image.graphics.beginFill("#6E6E6E").drawRect(-serverBody.size / 2, -serverBody.size / 2,serverBody.size, serverBody.size);
         return image;
     }
     this.builders[gameTypes.gameObjects.ROAD] = function (serverBody) {
         var image = new createjs.Shape();
         image.zIndex = 0;
-        image.graphics.beginFill("#EDC791").drawRect(0, 0, serverBody.size, serverBody.size);
+        image.graphics.beginFill("#EDC791").drawRect(-serverBody.size / 2, -serverBody.size / 2, serverBody.size, serverBody.size);
         return image;
     }
     this.builders[gameTypes.gameObjects.FORD] = function (serverBody) {
         var image = new createjs.Shape();
         image.zIndex = 0;
-        image.graphics.beginFill("#EDC791").drawRect(0, 0, serverBody.size, serverBody.size);
+        image.graphics.beginFill("#EDC791").drawRect(-serverBody.size / 2, -serverBody.size / 2, serverBody.size, serverBody.size);
         return image;
     }
     this.builders[gameTypes.gameObjects.TREE] = function (serverBody) {
         var image = new createjs.Shape();
         image.zIndex = 0;
-        image.graphics.beginFill("#5EAB00").drawRect(0, 0, serverBody.size, serverBody.size);
+        image.graphics.beginFill("#5EAB00").drawRect(-serverBody.size / 2, -serverBody.size / 2, serverBody.size, serverBody.size);
         return image;
     }
 

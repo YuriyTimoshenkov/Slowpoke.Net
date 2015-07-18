@@ -29,7 +29,7 @@ class CommandBase{
             return item.id === self.bodyId;
         });
 
-        if (bodies !== undefined && bodies.length > 0) {
+        if (bodies && bodies.length > 0) {
             var body = bodies[0];
 
             this.processBody(body, mechanicEngine);
@@ -69,7 +69,11 @@ class CommandMove extends CommandBase{
         body.gameRect.center = new Point(
             body.gameRect.centerx + body.speed * this.duration * this.unitDirection.x / 1000,
             body.gameRect.centery + body.speed * this.duration * this.unitDirection.y / 1000
-        );
+            );
+
+        mechanicEngine.onBodyChanged.forEach(function (item) {
+            item(body, BodyChangesType.position);
+        });
     }
 
     toServerCommand(): ServerCommand {

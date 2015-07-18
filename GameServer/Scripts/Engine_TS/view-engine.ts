@@ -1,15 +1,14 @@
-﻿
+﻿/// <reference path="../typings/easeljs/easeljs.d.ts" />
 
 class ViewEngine {
-    bodyImages: any[];
+    bodyImages: BodyImage[];
     stage: createjs.Stage;
     viewBodyFactory: ViewBodyFactory;
     baseRotationVector: Vector;
-    targetBody: any;
+    targetBody: Body;
     targetBodyImage: any;
     menu: any;
     mechanicEngine: MechanicEngineTS;
-    //render: (bodies) => void;
 
     constructor(canvas, canvasSize, menu, gameContext, viewBodyFactory: ViewBodyFactory) {
         canvas.width = canvasSize.width;
@@ -18,32 +17,49 @@ class ViewEngine {
         this.viewBodyFactory = viewBodyFactory;
         this.bodyImages = [];
         this.baseRotationVector = new Vector(0, -1);
-
-        //this.render = (bodies) => {
-        //    this.renderInternal(bodies, this);
-        //};
     }
 
-    init(mechanicEngine) {
+    init(mechanicEngine: MechanicEngineTS) {
         var self = this;
         this.mechanicEngine = mechanicEngine;
+
         mechanicEngine.onBodyAdd.push(function (body) {
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
             self.bodyImages.push(new BodyImage(body.id, image));
 
-            if (body.direction !== undefined) {
+            if (self.targetBody != undefined) {
+                self.updateBodyPosition(body);
+            }
+
+            if (body instanceof ActiveBody) {
                 self.updateImageDirection(body.direction, image);
             }
 
             self.stage.addChild(image);
         });
-        mechanicEngine.onBodyChanged.push(function (body, changesType) {
-            switch (changesType) {
-                case 0:
-                    {
-                        var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
 
-                        self.updateImageDirection(body.direction, bodyImage);
+        mechanicEngine.onBodyChanged.push(function (body, changesType) {
+
+            var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
+
+            switch (changesType) {
+                case BodyChangesType.direction:
+                    {
+                        if (body instanceof ActiveBody) {
+                            self.updateImageDirection(body.direction, bodyImage);
+                        }
+
+                        break;
+                    }
+                case BodyChangesType.position:
+                    {
+                        if (self.targetBody.id == body.id) {
+                            self.updateCanvasPosition(self.mechanicEngine.bodies);
+                        }
+                        else {
+
+                            self.updateBodyPosition(body);
+                        }
 
                         break;
                     }
@@ -52,6 +68,7 @@ class ViewEngine {
             }
 
         });
+
         mechanicEngine.onBodyRemove.push(function (body) {
             var childImageToRemove;
             self.bodyImages = self.bodyImages.filter(function (v) {
@@ -71,55 +88,48 @@ class ViewEngine {
     }
 
     render(bodies) {
-        this.updateCanvasPosition(bodies);
         this.updateMenu();
         this.draw();
 
     }
 
-    //renderInternal(bodies) {
-    //    self.updateCanvasPosition(bodies, self);
-    //    self.updateMenu();
-    //    self.draw(self);
-    //}
-
     updateCanvasPosition(bodies) {
         var self = this;
+
         // Update objects
         self.mechanicEngine.bodies.forEach(function (body) {
             if (body.id !== self.targetBody.id) {
-                var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
-
-                if (bodyImage !== undefined) {
-                    var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
-                    var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
-
-                    bodyImage.x = self.targetBodyImage.x - dx;
-                    bodyImage.y = self.targetBodyImage.y - dy;
-
-                    // Update objectMenu for NPCAI only
-                    //if (obj.serverBody.BodyType === "NPCAI") {
-                    //    obj.objectMenu.x = self.target.image.x - dx;
-                    //    obj.objectMenu.y = self.target.image.y - dy;
-                    //}
-                }
+                self.updateBodyPosition(body);
             }
         })
 
         self.mechanicEngine.passiveBodies.forEach(function (body) {
             if (body.id !== self.targetBody.id) {
-                var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
-
-                if (bodyImage !== undefined) {
-                    var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
-                    var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
-
-                    bodyImage.x = self.targetBodyImage.x - dx - body.gameRect.width / 2;
-                    bodyImage.y = self.targetBodyImage.y - dy - body.gameRect.width / 2;
-                }
+                self.updateBodyPosition(body);
             }
         })
     }
+
+    updateBodyPosition(body: Body) {
+        var self = this;
+
+        var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
+
+        if (bodyImage !== undefined) {
+            var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
+            var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
+
+            bodyImage.x = self.targetBodyImage.x - dx;
+            bodyImage.y = self.targetBodyImage.y - dy;
+
+            // Update objectMenu for NPCAI only
+            //if (obj.serverBody.BodyType === "NPCAI") {
+            //    obj.objectMenu.x = self.target.image.x - dx;
+            //    obj.objectMenu.y = self.target.image.y - dy;
+            //}
+        }
+    }
+
 
     draw() {
         var self = this;
@@ -175,7 +185,7 @@ class ViewEngine {
 
 class BodyImage {
     id: any;
-    image: any;
+    image: createjs.Container;
     constructor(id, image) {
         this.id = id;
         this.image = image;

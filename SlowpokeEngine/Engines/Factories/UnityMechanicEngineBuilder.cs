@@ -68,7 +68,7 @@ namespace SlowpokeEngine
             mechanicEngine.Services.Add(npcGenerationService);
 
             var lifeContainerGenerationService = unityContainer.Resolve<IMechanicService>(
-                "LifeContainerGenerationService", new ParameterOverride("containersCount", 100));
+                "LifeContainerGenerationService", new ParameterOverride("containersCount", 0));
             mechanicEngine.Services.Add(lifeContainerGenerationService);
 
 			return mechanicEngine;

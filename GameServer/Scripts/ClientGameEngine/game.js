@@ -70,7 +70,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
         self.SyncState = 'free';
 
         setInterval(function () {
-            self.SyncWithServer(self.clientEventData)
+            self.SyncWithServer(self.clientEventData);
         }, self.gameContext.serverLoopTimeout);
     }
 
