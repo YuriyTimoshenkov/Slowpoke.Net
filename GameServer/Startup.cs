@@ -5,6 +5,8 @@ using Microsoft.Owin.Cors;
 using Owin;
 using SlowpokeHubs;
 using System;
+using System.Globalization;
+using System.Threading;
 
 [assembly: OwinStartupAttribute(typeof(GameServer.Startup))]
 namespace GameServer
@@ -15,6 +17,8 @@ namespace GameServer
         {
             app.Use(async (Context, next) =>
             {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-EN");
+
                 var token = Context.Request.Query.Get("token");
                 if (token != null)
                 {

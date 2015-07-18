@@ -9,7 +9,7 @@ class ViewEngine {
     targetBodyImage: any;
     menu: any;
     mechanicEngine: MechanicEngineTS;
-    render: (bodies) => void;
+    //render: (bodies) => void;
 
     constructor(canvas, canvasSize, menu, gameContext, viewBodyFactory: ViewBodyFactory) {
         canvas.width = canvasSize.width;
@@ -19,9 +19,9 @@ class ViewEngine {
         this.bodyImages = [];
         this.baseRotationVector = new Vector(0, -1);
 
-        this.render = (bodies) => {
-            this.renderInternal(bodies, this);
-        };
+        //this.render = (bodies) => {
+        //    this.renderInternal(bodies, this);
+        //};
     }
 
     init(mechanicEngine) {
@@ -70,13 +70,21 @@ class ViewEngine {
         });
     }
 
-    renderInternal(bodies, self: ViewEngine) {
-        self.updateCanvasPosition(bodies, self);
-        self.updateMenu();
-        self.draw(self);
+    render(bodies) {
+        this.updateCanvasPosition(bodies);
+        this.updateMenu();
+        this.draw();
+
     }
 
-    updateCanvasPosition(bodies, self: ViewEngine) {
+    //renderInternal(bodies) {
+    //    self.updateCanvasPosition(bodies, self);
+    //    self.updateMenu();
+    //    self.draw(self);
+    //}
+
+    updateCanvasPosition(bodies) {
+        var self = this;
         // Update objects
         self.mechanicEngine.bodies.forEach(function (body) {
             if (body.id !== self.targetBody.id) {
@@ -113,8 +121,8 @@ class ViewEngine {
         })
     }
 
-    draw(self: ViewEngine) {
-
+    draw() {
+        var self = this;
         var sortFunction = function (a: createjs.Container, b: createjs.Container) {
             //if (a.zIndex === undefined || b.zIndex === undefined) {
             //    console.log("In sort function");

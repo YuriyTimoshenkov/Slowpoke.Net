@@ -114,8 +114,8 @@ namespace SlowpokeHubs
 
                                 MoveBody(
                                     command.Id,
-                                    double.Parse(command.Data.FirstOrDefault(v => v[0] == "X")[1], CultureInfo.CurrentCulture),
-                                    double.Parse(command.Data.FirstOrDefault(v => v[0] == "Y")[1], CultureInfo.CurrentCulture),
+                                    double.Parse(command.Data.FirstOrDefault(v => v[0] == "X")[1]),
+                                    double.Parse(command.Data.FirstOrDefault(v => v[0] == "Y")[1]),
                                     int.Parse(command.Data.FirstOrDefault(v => v[0] == "Duration")[1]));
                                 break;
                             }
@@ -123,8 +123,8 @@ namespace SlowpokeHubs
                             {
                                 ChangeBodyDirection(
                                     command.Id,
-                                    double.Parse(command.Data.FirstOrDefault(v => v[0] == "X")[1], CultureInfo.CurrentCulture),
-                                    double.Parse(command.Data.FirstOrDefault(v => v[0] == "Y")[1], CultureInfo.CurrentCulture));
+                                    double.Parse(command.Data.FirstOrDefault(v => v[0] == "X")[1]),
+                                    double.Parse(command.Data.FirstOrDefault(v => v[0] == "Y")[1]));
                                 break;
                             }
                         case "Shoot":
