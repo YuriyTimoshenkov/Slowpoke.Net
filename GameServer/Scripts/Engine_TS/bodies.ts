@@ -75,7 +75,7 @@ class ActiveBody extends Body{
         //Position
         this.gameRect.center = serverBody.Shape.Position;
     }
-    update() { }
+    update(mechanicEngine: MechanicEngineTS) { }
 } 
 
 class CharacterBody extends ActiveBody{
@@ -132,14 +132,14 @@ class Bullet extends ActiveBody {
         this.unitDirection = new Vector(this.direction.x, this.direction.y).calculateUnitVector();
     }
 
-    update() {
+    update(mechanicEngine: MechanicEngineTS) {
         var currentTime = new Date().getTime();
         var duration = currentTime - this.lastUpdateTime;
         this.lastUpdateTime = currentTime;
 
-        this.gameRect.center = new Point(
-            this.gameRect.centerx + this.speed * duration * this.unitDirection.x / 1000,
-            this.gameRect.centery + this.speed * duration * this.unitDirection.y / 1000
-        );
+        var moveCommand = new CommandMove(this.id, new Date().getTime(), duration, this.unitDirection);
+        moveCommand.syncedWithServer = true;
+
+        mechanicEngine.addCommand(moveCommand);
     }
 }

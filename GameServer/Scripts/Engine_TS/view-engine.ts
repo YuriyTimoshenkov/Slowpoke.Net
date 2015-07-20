@@ -90,20 +90,19 @@ class ViewEngine {
     render(bodies) {
         this.updateMenu();
         this.draw();
-
     }
 
     updateCanvasPosition(bodies) {
         var self = this;
 
         // Update objects
-        self.mechanicEngine.bodies.forEach(function (body) {
+        this.mechanicEngine.bodies.forEach(function (body) {
             if (body.id !== self.targetBody.id) {
                 self.updateBodyPosition(body);
             }
         })
 
-        self.mechanicEngine.passiveBodies.forEach(function (body) {
+        this.mechanicEngine.passiveBodies.forEach(function (body) {
             if (body.id !== self.targetBody.id) {
                 self.updateBodyPosition(body);
             }
@@ -113,14 +112,14 @@ class ViewEngine {
     updateBodyPosition(body: Body) {
         var self = this;
 
-        var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
+        var bodyImage = this.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
 
         if (bodyImage !== undefined) {
-            var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
-            var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
+            var dx = this.targetBody.gameRect.centerx - body.gameRect.centerx;
+            var dy = this.targetBody.gameRect.centery - body.gameRect.centery;
 
-            bodyImage.x = self.targetBodyImage.x - dx;
-            bodyImage.y = self.targetBodyImage.y - dy;
+            bodyImage.x = this.targetBodyImage.x - dx;
+            bodyImage.y = this.targetBodyImage.y - dy;
 
             // Update objectMenu for NPCAI only
             //if (obj.serverBody.BodyType === "NPCAI") {
@@ -133,14 +132,12 @@ class ViewEngine {
 
     draw() {
         var self = this;
+
         var sortFunction = function (a: createjs.Container, b: createjs.Container) {
-            //if (a.zIndex === undefined || b.zIndex === undefined) {
-            //    console.log("In sort function");
-            //}
             
             if (a.zIndex < b.zIndex) return -1;
             if (a.zIndex > b.zIndex) return 1;
-            return -1;
+            return 0;
         }
         self.stage.sortChildren(sortFunction);
 

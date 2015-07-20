@@ -24,15 +24,15 @@
                 newBody = new PassiveBody(serverBody);
                 this.mechanicEngine.passiveBodies.push(newBody);
 
+                newBody.syncSessionId = syncSessionId;
+
+                this.mechanicEngine.onBodyAdd.forEach(function (item) {
+                    item(newBody);
+                });
+
                 break;
             }
         }
-
-        newBody.syncSessionId = syncSessionId;
-
-        this.mechanicEngine.onBodyAdd.forEach(function (item) {
-            item(newBody);
-        });
 
 
         return newBody;
@@ -82,7 +82,7 @@
     syncPredictiveBodies(serverBody: ServerActiveBody, mechanicEngine: MechanicEngineTS): ServerCommand[] {
         //Find first synced with server command
         var firstSyncedCommand: CommandBase = mechanicEngine.commandQueueProcessed.filter(function (command) {
-            return command.id === serverBody.LastProcessedCommandId;
+            return command.id === serverBody.LastProcessedCommandId && command.bodyId == mechanicEngine.player.id;
         })[0];
 
         //Remove all commands till synced one
@@ -129,6 +129,11 @@
     syncServerFramesHandler(frame, self: ServerBodySynchornizer): ServerCommand[] {
     var syncSessionId = new Date().getTime();
     var serverCommands: ServerCommand[] = [];
+
+    if (!frame)
+    {
+        console.log('sdfd');
+    }
 
     frame.Bodies.forEach(function (serverBody) {
         switch (self.getServerBodyProcessingType(serverBody)) {
