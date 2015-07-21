@@ -2,6 +2,7 @@
 
 class ViewEngine {
     bodyImages: BodyImage[];
+    mapImageContainer: createjs.Container;
     stage: createjs.Stage;
     viewBodyFactory: ViewBodyFactory;
     baseRotationVector: Vector;
@@ -17,6 +18,8 @@ class ViewEngine {
         this.viewBodyFactory = viewBodyFactory;
         this.bodyImages = [];
         this.baseRotationVector = new Vector(0, -1);
+        this.mapImageContainer = new createjs.Container();
+        this.stage.addChild(this.mapImageContainer);
     }
 
     init(mechanicEngine: MechanicEngineTS) {
@@ -27,15 +30,23 @@ class ViewEngine {
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
             self.bodyImages.push(new BodyImage(body.id, image));
 
-            if (self.targetBody != undefined) {
-                self.updateBodyPosition(body);
+            if (body instanceof Tile) {
+                image.x = body.gameRect.centerx;
+                image.y = body.gameRect.centery;
+                self.mapImageContainer.addChild(image);
             }
 
-            if (body instanceof ActiveBody) {
-                self.updateImageDirection(body.direction, image);
-            }
+            else {
+                if (self.targetBody != undefined) {
+                    self.updateBodyPosition(body);
+                }
 
-            self.stage.addChild(image);
+                if (body instanceof ActiveBody) {
+                    self.updateImageDirection(body.direction, image);
+                }
+
+                self.stage.addChild(image);
+            }
         });
 
         mechanicEngine.onBodyChanged.push(function (body, changesType) {
@@ -80,10 +91,16 @@ class ViewEngine {
                 else
                     return true;
             });
-
+               
             if (childImageToRemove !== undefined) {
-                self.stage.removeChild(childImageToRemove);
+                if(body instanceof Tile) {
+                    self.mapImageContainer.removeChild(childImageToRemove);
+                }
+                else {
+                    self.stage.removeChild(childImageToRemove);
+                }
             }
+
         });
     }
 
@@ -104,10 +121,12 @@ class ViewEngine {
         })
 
         self.mechanicEngine.passiveBodies.forEach(function (body) {
-            if (body.id !== self.targetBody.id) {
-                self.updateBodyPosition(body);
+            if (!(body instanceof Tile)) {
+                self.updateBodyPosition(body);    
             }
         })
+
+        self.updateMapImagePosition();
     }
 
     updateBodyPosition(body: Body) {
@@ -130,6 +149,12 @@ class ViewEngine {
         }
     }
 
+    updateMapImagePosition() {
+        var self = this;
+        var targetBodyImage = self.bodyImages.filter(function (v) { return v.id === self.targetBody.id ? true : false })[0].image;
+        this.mapImageContainer.regX = this.targetBody.gameRect.centerx - targetBodyImage.x;
+        this.mapImageContainer.regY = this.targetBody.gameRect.centery - targetBodyImage.y;
+    }
 
     draw() {
         var self = this;
