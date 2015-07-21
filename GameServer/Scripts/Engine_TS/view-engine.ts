@@ -70,10 +70,11 @@ class ViewEngine {
         });
 
         mechanicEngine.onBodyRemove.push(function (body) {
-            var childImageToRemove;
+            var childImageToRemove: any[] = [];
+
             self.bodyImages = self.bodyImages.filter(function (v) {
                 if (v.id === body.id) {
-                    childImageToRemove = v.image;
+                    childImageToRemove.push(v.image);
 
                     return false;
                 }
@@ -82,7 +83,10 @@ class ViewEngine {
             });
 
             if (childImageToRemove !== undefined) {
-                self.stage.removeChild(childImageToRemove);
+
+                childImageToRemove.forEach(function (item) { 
+                    self.stage.removeChild(item);
+                });
             }
         });
     }

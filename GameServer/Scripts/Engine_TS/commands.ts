@@ -151,10 +151,11 @@ class CommandShoot extends CommandBase {
                 });
 
                 newBullet.createdByCommandId = self.id;
-                mechanicEngine.bodies.push(newBullet);
                 mechanicEngine.onBodyAdd.forEach(function (item) {
                     item(newBullet);
                 });
+
+                mechanicEngine.bodies.push(newBullet);
             });
         }
         else {

@@ -34,6 +34,23 @@
         this.commandQueue.push(command);
     }
 
+    removeActiveBody(bodyId: number) {
+        var self = this;
+
+        this.bodies = this.bodies.filter(function (body: ActiveBody) {
+            if (body.id != bodyId) {
+                return true;
+            }
+            else {
+                self.onBodyRemove.forEach(function (item) { item(body); });
+
+                return false;
+            }
+        });
+
+
+    }
+
     update() {
         var self = this;
 

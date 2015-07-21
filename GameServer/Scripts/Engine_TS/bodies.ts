@@ -27,6 +27,7 @@ class Body {
     bodyType: string;
     syncSessionId: number;
 
+
     constructor(serverBody: ServerBody) {
         this.id = serverBody.Id;
         this.name = serverBody.Name;
@@ -123,23 +124,32 @@ class PlayerBody extends CharacterBody {
 
 class Bullet extends ActiveBody {
     lastUpdateTime: number;
+    startTime: number;
     unitDirection: Vector;
+    flyDuration: number = 1500;
 
     constructor(serverBody: ServerActiveBody) {
         super(serverBody);
 
         this.lastUpdateTime = new Date().getTime();
+        this.startTime = this.lastUpdateTime;
         this.unitDirection = new Vector(this.direction.x, this.direction.y).calculateUnitVector();
     }
 
     update(mechanicEngine: MechanicEngineTS) {
         var currentTime = new Date().getTime();
         var duration = currentTime - this.lastUpdateTime;
+        var durationFromStart = currentTime - this.startTime;
         this.lastUpdateTime = currentTime;
 
-        var moveCommand = new CommandMove(this.id, new Date().getTime(), duration, this.unitDirection);
-        moveCommand.syncedWithServer = true;
+        if (durationFromStart > this.flyDuration) {
+            mechanicEngine.removeActiveBody(this.id);
+        }
+        else {
+            var moveCommand = new CommandMove(this.id, new Date().getTime(), duration, this.unitDirection);
+            moveCommand.syncedWithServer = true;
 
-        mechanicEngine.addCommand(moveCommand);
+            mechanicEngine.addCommand(moveCommand);
+        }
     }
 }
