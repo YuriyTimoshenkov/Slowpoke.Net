@@ -165,7 +165,7 @@ class ViewEngine {
             
             if (a.zIndex < b.zIndex) return -1;
             if (a.zIndex > b.zIndex) return 1;
-            return -1;
+            return 0;
         }
         self.stage.sortChildren(sortFunction);
 
