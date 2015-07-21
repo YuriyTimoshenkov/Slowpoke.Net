@@ -18,13 +18,14 @@ class ViewEngine {
         this.viewBodyFactory = viewBodyFactory;
         this.bodyImages = [];
         this.baseRotationVector = new Vector(0, -1);
-        this.mapImageContainer = new createjs.Container();
-        this.stage.addChild(this.mapImageContainer);
+
     }
 
     init(mechanicEngine: MechanicEngineTS) {
         var self = this;
         this.mechanicEngine = mechanicEngine;
+        this.mapImageContainer = new createjs.Container();
+        this.stage.addChild(this.mapImageContainer);
 
         mechanicEngine.onBodyAdd.push(function (body) {
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
@@ -151,9 +152,8 @@ class ViewEngine {
 
     updateMapImagePosition() {
         var self = this;
-        var targetBodyImage = self.bodyImages.filter(function (v) { return v.id === self.targetBody.id ? true : false })[0].image;
-        this.mapImageContainer.regX = this.targetBody.gameRect.centerx - targetBodyImage.x;
-        this.mapImageContainer.regY = this.targetBody.gameRect.centery - targetBodyImage.y;
+        this.mapImageContainer.regX = this.targetBody.gameRect.centerx - this.targetBodyImage.x;
+        this.mapImageContainer.regY = this.targetBody.gameRect.centery - this.targetBodyImage.y;
     }
 
     draw() {
@@ -204,6 +204,8 @@ class ViewEngine {
     setTarget(body) {
         this.targetBody = body;
         this.targetBodyImage = this.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
+        // Small Kostil - we need to recalculate map image coordinates at the very beginning
+        this.updateMapImagePosition();
     }
 
 }   
