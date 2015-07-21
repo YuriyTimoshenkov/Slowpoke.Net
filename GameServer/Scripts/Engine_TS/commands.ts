@@ -123,13 +123,14 @@ class CommandShoot extends CommandBase {
         var newBullet: Bullet;
 
         if (body.currentWeapon === 'Shotgun') {
+            var self = this;
 
             this.bulletDeviationRadians.forEach(function (item) {
                 var dirX = body.direction.x * Math.cos(item) - body.direction.y * Math.sin(item);
                 var dirY = body.direction.x * Math.sin(item) + body.direction.y * Math.cos(item);
 
                 newBullet = new Bullet({
-                    CreatedByCommandId: this.id,
+                    CreatedByCommandId: self.id,
                     LastProcessedCommandId: 1,
                     BodyType: 'Bullet',
                     Id: new Date().getTime(),
@@ -149,7 +150,7 @@ class CommandShoot extends CommandBase {
                     Speed: 1000
                 });
 
-                newBullet.createdByCommandId = this.id;
+                newBullet.createdByCommandId = self.id;
                 mechanicEngine.bodies.push(newBullet);
                 mechanicEngine.onBodyAdd.forEach(function (item) {
                     item(newBullet);

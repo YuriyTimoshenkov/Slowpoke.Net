@@ -35,6 +35,8 @@
     }
 
     update() {
+        var self = this;
+
         //Process commands
         while (this.commandQueue.length > 0) {
             var commandToProcess = this.commandQueue.shift();
@@ -48,7 +50,7 @@
 
         //Update predictive bodies
         this.bodies.forEach(function (body) {
-            body.update()
+            body.update(self)
         });
     }
 } 
