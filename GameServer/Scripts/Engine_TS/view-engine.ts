@@ -112,7 +112,7 @@ class ViewEngine {
         });
     }
 
-    render(bodies) {
+    render() {
         this.updateMenu();
         this.draw();
 
@@ -128,11 +128,11 @@ class ViewEngine {
             }
         })
 
-        self.mechanicEngine.passiveBodies.forEach(function (body) {
-            if (!(body instanceof Tile)) {
-                self.updateBodyPosition(body);
-            }
-        })
+        //self.mechanicEngine.passiveBodies.forEach(function (body) {
+        //    if (!(body instanceof Tile)) {
+        //        self.updateBodyPosition(body);
+        //    }
+        //})
 
         self.updateMapImagePosition();
     }

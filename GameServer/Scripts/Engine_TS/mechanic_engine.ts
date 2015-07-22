@@ -1,6 +1,5 @@
 ﻿class MechanicEngineTS {
-    bodies: ActiveBody[];
-    passiveBodies: Body[];
+    bodies: Body[];
     commandQueue: CommandBase[];
     commandQueueProcessed: CommandBase[];
     onBodyAdd: { (body: Body): void }[];
@@ -11,7 +10,6 @@
 
     constructor(serverMap: ServerMap) {
         this.bodies = [];
-        this.passiveBodies = [];
         this.onBodyAdd = [];
         this.commandQueue = [];
         this.commandQueueProcessed = [];

@@ -42,7 +42,7 @@ class MapEngine {
                     item(newTile);
                 });
 
-                self.mechanicEngine.passiveBodies.push(newTile);
+                //self.mechanicEngine.passiveBodies.push(newTile);
 
                 return newTile;
             },
@@ -53,12 +53,12 @@ class MapEngine {
             },
             function (body: Body) {
                 //Remove passive body
-                self.mechanicEngine.passiveBodies = self.mechanicEngine.passiveBodies.filter(function (item)
-                {
-                    if (item.id != body.id) {
-                        return true;
-                    }
-                });
+                //self.mechanicEngine.passiveBodies = self.mechanicEngine.passiveBodies.filter(function (item)
+                //{
+                //    if (item.id != body.id) {
+                //        return true;
+                //    }
+                //});
 
                 //Generate event
                 if (self.mechanicEngine.onBodyRemove != undefined)

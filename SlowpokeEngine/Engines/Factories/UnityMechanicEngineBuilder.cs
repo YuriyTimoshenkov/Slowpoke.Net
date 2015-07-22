@@ -64,11 +64,11 @@ namespace SlowpokeEngine
 
             //Build services
             var npcGenerationService = unityContainer.Resolve<IMechanicService>(
-                "NPCGenerationService", new ParameterOverride("npcCount", 0));
+                "NPCGenerationService", new ParameterOverride("npcCount", 100));
             mechanicEngine.Services.Add(npcGenerationService);
 
             var lifeContainerGenerationService = unityContainer.Resolve<IMechanicService>(
-                "LifeContainerGenerationService", new ParameterOverride("containersCount", 0));
+                "LifeContainerGenerationService", new ParameterOverride("containersCount", 50));
             mechanicEngine.Services.Add(lifeContainerGenerationService);
 
 			return mechanicEngine;

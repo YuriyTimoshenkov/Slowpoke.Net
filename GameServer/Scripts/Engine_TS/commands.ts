@@ -43,7 +43,7 @@ class CommandBase{
         }
    }
 
-    processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS) {}
+    processBody(body: Body, mechanicEngine: MechanicEngineTS) {}
     toServerCommand(): ServerCommand { return null; }
     compareState(body) {
         return this.state === undefined || (body.Shape.Position.X === this.state.x

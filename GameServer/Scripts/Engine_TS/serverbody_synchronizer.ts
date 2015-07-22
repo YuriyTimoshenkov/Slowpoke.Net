@@ -22,16 +22,24 @@
         switch (serverBody.BodyType) {
             case "LifeContainer": {
                 newBody = new PassiveBody(serverBody);
-                this.mechanicEngine.passiveBodies.push(newBody);
-
-                newBody.syncSessionId = syncSessionId;
-
-                this.mechanicEngine.onBodyAdd.forEach(function (item) {
-                    item(newBody);
-                });
 
                 break;
             }
+            case "NPCAI": {
+                newBody = new CharacterBody(<ServerCharacterBody> serverBody);
+
+                break;
+            }
+        }
+
+        if (newBody) {
+            this.mechanicEngine.bodies.push(newBody);
+
+            newBody.syncSessionId = syncSessionId;
+
+            this.mechanicEngine.onBodyAdd.forEach(function (item) {
+                item(newBody);
+            });
         }
 
 
@@ -42,7 +50,7 @@
         var filtered = this.mechanicEngine.bodies.filter(function (body) { return serverBody.Id === body.id });
 
         if (filtered.length > 0) {
-            var body: ActiveBody = filtered[0];
+            var body: Body = filtered[0];
 
             try
             {
@@ -52,6 +60,10 @@
                 console.log("syncServerSideBody: " + ex)
             }
             body.syncSessionId = syncSessionId;
+
+            this.mechanicEngine.onBodyChanged.forEach(function (item) {
+                item(body, BodyChangesType.position);
+            });
 
             this.mechanicEngine.onBodyChanged.forEach(function (item) {
                 item(body, BodyChangesType.direction);

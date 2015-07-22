@@ -26,6 +26,8 @@ class Body {
     zIndex: number;
     bodyType: string;
     syncSessionId: number;
+    direction: Vector;
+        createdByCommandId: number;
 
 
     constructor(serverBody: ServerBody) {
@@ -40,6 +42,10 @@ class Body {
         this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
         this.gameRect.center = new Point(serverBody.Shape.Position.X, serverBody.Shape.Position.Y);
     }
+
+    update(mechanicEngine: MechanicEngineTS) { }
+
+    serverSync(serverBody) { }
 }
 
 class PassiveBody extends Body {
@@ -49,10 +55,9 @@ class PassiveBody extends Body {
 }
 
 class ActiveBody extends Body{
-    direction: Vector;
     speed: number;
     baseRotationVector: Vector;
-    createdByCommandId: number;
+
 
     constructor(serverBody: ServerActiveBody) {
         this.id = serverBody.Id;
@@ -67,16 +72,15 @@ class ActiveBody extends Body{
 
         super(serverBody);
     }
-    serverSync(serverBody) {
+    serverSync(serverBody: ServerActiveBody) {
         // Update direction
         if (Math.abs(this.direction.x - serverBody.Direction.X) > 0.0001 || Math.abs(this.direction.y - serverBody.Direction.Y) > 0.0001) {
             this.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y);
         }
 
         //Position
-        this.gameRect.center = serverBody.Shape.Position;
+        this.gameRect.center = new Point(serverBody.Shape.Position.X, serverBody.Shape.Position.Y);
     }
-    update(mechanicEngine: MechanicEngineTS) { }
 } 
 
 class CharacterBody extends ActiveBody{

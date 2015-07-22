@@ -139,7 +139,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
         self.mechanicEngine.update();
 
-        this.viewManager.render(this.mechanicEngine.bodies);//, this.mechanicEngine.mapEngine.cells);
+        this.viewManager.render();//, this.mechanicEngine.mapEngine.cells);
     }
 
     this.calcFPS = function () {

@@ -59,14 +59,14 @@
     }
     this.builders[gameTypes.gameObjects.NPCAI] = function (serverBody) {
         // Assign image
-        var obj = new PolicemanContainer();
+        var cc = new PolicemanContainer();
         //npc.image.addChild(obj.image);
 
         //// Create life text
         //npc.addLifeText();
 
         // Configure image
-        var image = obj.image;
+        var image = cc.image;
         var imageSize = 280;
         image.regX = imageSize / 2;
         image.regY = imageSize / 2;
@@ -93,13 +93,13 @@
 
 
         // Configure image
-        var imageWidth = 30;
-        var imageHeight = 40;
-        image.regX = imageWidth / 2;
-        image.regY = imageHeight / 2;
-        image.scaleX = 0.5;
-        image.scaleY = 0.5;
-        image.cache(0, 0, imageWidth, imageHeight);
+        //var imageWidth = 200;
+        //var imageHeight = 200;
+        //image.regX = imageWidth / 2;
+        //image.regY = imageHeight / 2;
+        image.scaleX = 0.05;
+        image.scaleY = 0.05;
+        //image.cache(0, 0, imageWidth, imageHeight);
         image.zIndex = 5;
 
         return image;

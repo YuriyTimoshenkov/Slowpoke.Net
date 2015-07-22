@@ -61,7 +61,7 @@ namespace SlowpokeEngine.Bodies
                             ));
                 }
 
-                Shoot();
+                //Shoot();
 
                 //Run to enemy
                 if (_startMove == DateTime.MinValue)
