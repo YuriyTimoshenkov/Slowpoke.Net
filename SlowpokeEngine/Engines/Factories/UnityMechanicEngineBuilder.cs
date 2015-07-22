@@ -16,7 +16,7 @@ namespace SlowpokeEngine
 {
 	public class UnityMechanicEngineBuilder : IMechanicEngineBuilder
 	{
-        private readonly int _mapCellSize = 50;
+        private readonly int _mapCellSize = 100;
 
 		public IMechanicEngine Build()
 		{
@@ -54,7 +54,7 @@ namespace SlowpokeEngine
                 typeof(IGameSessionRepository),
                 100, 100,
                 string.Empty,
-                15,
+                7,
                 200
                 ));
 
