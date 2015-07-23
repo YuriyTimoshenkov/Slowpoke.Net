@@ -54,7 +54,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
         self.viewManager.setTarget(self.mechanicEngine.player)
 
-        controlsManager.addMouseMoveHandler(self.handleMouseMove)
+        self.controlsManager.addMouseMoveHandler(self.handleMouseMove)
 
         self.serverBodySynchornizer = new ServerBodySynchornizer(self.mechanicEngine);
 
@@ -69,7 +69,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
         self.SyncState = 'free';
 
-        setInterval(function () {
+        self.serverLoop = setInterval(function () {
             self.SyncWithServer(self.clientEventData);
         }, self.gameContext.serverLoopTimeout);
     }
@@ -180,6 +180,11 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
                 self.SyncState = 'free';
             });
         }
+    }
+    
+    this.stop = function () {
+        clearInterval(self.clientLoop);
+        clearInterval(self.serverLoop);
     }
 }
 

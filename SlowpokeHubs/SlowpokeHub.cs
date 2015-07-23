@@ -166,6 +166,9 @@ namespace SlowpokeHubs
             try
             {
                 var playerContainer = _connectionsPlayerMapping[Context.ConnectionId];
+
+                playerContainer.PreviousTile = null;
+
                 MechanicEngine.StartGame(playerContainer.Player);
 
                 return BodyFacade.FromBody(playerContainer.Player);

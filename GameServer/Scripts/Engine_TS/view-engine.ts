@@ -25,7 +25,10 @@ class ViewEngine {
         var self = this;
         this.mechanicEngine = mechanicEngine;
         this.mapImageContainer = this.viewBodyFactory.createMapContainer();
+        this.stage.removeAllChildren(); 
         this.stage.addChild(this.mapImageContainer);
+        this.bodyImages = [];
+        this.targetBody = undefined;
 
         mechanicEngine.onBodyAdd.push(function (body) {
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);

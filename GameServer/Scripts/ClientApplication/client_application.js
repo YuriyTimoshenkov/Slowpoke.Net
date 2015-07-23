@@ -22,7 +22,7 @@ app.service('slowpokeClient', function () {
                 })
             };
 
-        //Gameover handler handler
+        //Gameover handler
         slowpokeClient.game.gameOverDialogHandler =
            function () {
                if (slowpokeClient.activeDialog === true)
@@ -48,8 +48,9 @@ app.service('slowpokeClient', function () {
         $scope.WindowName = 'Connection lost.'
         $scope.Message = 'Do you want to retry?'
         $scope.$parent.disconnectedDialog.then(function (value) {
-            slowpokeClient.activeDialog = false
-            slowpokeClient.game.run()
+            slowpokeClient.activeDialog = false;
+            slowpokeClient.game.stop();
+            slowpokeClient.game.run();
         }, function (reason) {
             slowpokeClient.activeDialog = false
             $window.location.href = 'http://www.google.com'
@@ -59,8 +60,9 @@ app.service('slowpokeClient', function () {
         $scope.WindowName = 'Game over'
         $scope.Message = 'You has been killed dude! Do you want to start new game?'
         $scope.$parent.disconnectedDialog.then(function (value) {
-            slowpokeClient.activeDialog = false
-            slowpokeClient.game.run()
+            slowpokeClient.activeDialog = false;
+            slowpokeClient.game.stop();
+            slowpokeClient.game.run();
         }, function (reason) {
             slowpokeClient.activeDialog = false
             $window.location.href = 'http://www.google.com'
