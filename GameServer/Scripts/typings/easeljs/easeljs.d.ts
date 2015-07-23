@@ -910,6 +910,7 @@ declare module createjs {
         text: string;
         textAlign: string;
         textBaseline: string;
+        zIndex: number;
 
         // methods
         clone(): Text;
