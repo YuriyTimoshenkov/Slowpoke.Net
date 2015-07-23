@@ -6,19 +6,27 @@ class ViewEngine {
     stage: createjs.Stage;
     viewBodyFactory: ViewBodyFactory;
     baseRotationVector: Vector;
-    targetBody: Body;
+    targetBody: PlayerBody;
     targetBodyImage: createjs.Container;
-    menu: any;
+    menu: Menu;
     mechanicEngine: MechanicEngineTS;
+    gameContext: any;
+    weaponPoint: Point;
+    lifePoint: Point;
+    scorePoint: Point;
+    fpsPoint: Point;
+    pingPoint: Point;
 
-    constructor(canvas, canvasSize, menu, gameContext, viewBodyFactory: ViewBodyFactory) {
+    constructor(canvas, canvasSize, menu: Menu, gameContext, viewBodyFactory: ViewBodyFactory) {
         canvas.width = canvasSize.width;
         canvas.height = canvasSize.height;
         this.stage = new createjs.Stage(canvas);
+        this.menu = menu;
+        this.gameContext = gameContext;
         this.viewBodyFactory = viewBodyFactory;
         this.bodyImages = [];
         this.baseRotationVector = new Vector(0, -1);
-
+        this.initMenu(canvas);
     }
 
     init(mechanicEngine: MechanicEngineTS) {
@@ -32,7 +40,6 @@ class ViewEngine {
 
         mechanicEngine.onBodyAdd.push(function (body) {
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
-
             self.bodyImages.push(new BodyImage(body.id, image));
 
             if (body instanceof Tile) {
@@ -51,13 +58,12 @@ class ViewEngine {
                 }
 
                 self.stage.addChild(image);
-
                 self.stage.sortChildren(function (a: createjs.Container, b: createjs.Container) {
-                    if (a.zIndex < b.zIndex) return -1;
-                    if (a.zIndex > b.zIndex) return 1;
-                    return 0;
-                });
-            }
+                                               if (a.zIndex < b.zIndex) return -1;
+                                               if (a.zIndex > b.zIndex) return 1;
+                                              return 0;
+                                 });
+                }
         });
 
         mechanicEngine.onBodyChanged.push(function (body, changesType) {
@@ -122,28 +128,28 @@ class ViewEngine {
         });
     }
 
+    initMenu(canvas) {
+        var textGap = 30;
+        this.weaponPoint = new Point(5, canvas.height - 50);
+        this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - textGap);
+        this.scorePoint = new Point(this.weaponPoint.x, this.lifePoint.y - textGap)
+        this.fpsPoint = new Point(canvas.width - 80, this.weaponPoint.y - 10);
+        this.pingPoint = new Point(canvas.width - 80, this.weaponPoint.y - 20);
+        
+    }
+
     render() {
         this.updateMenu();
         this.draw();
-
     }
 
     updateCanvasPosition(bodies) {
         var self = this;
-
-        // Update objects
         self.mechanicEngine.bodies.forEach(function (body) {
             if (body.id !== self.targetBody.id) {
                 self.updateBodyPosition(body);
             }
         })
-
-        //self.mechanicEngine.passiveBodies.forEach(function (body) {
-        //    if (!(body instanceof Tile)) {
-        //        self.updateBodyPosition(body);
-        //    }
-        //})
-
         self.updateMapImagePosition();
     }
 
@@ -175,11 +181,30 @@ class ViewEngine {
 
     draw() {
         var self = this;
-
         self.stage.update();
     }
 
-    updateMenu() { }
+    updateMenu () {
+        if (!this.menu.weapon || this.menu.weapon !== this.targetBody.currentWeapon) {
+            this.menu.updateWeapon(this.targetBody.currentWeapon, this.weaponPoint);
+        }
+
+        if (this.menu.life !== this.targetBody.life) {
+            this.menu.updateLife(this.targetBody.life, this.lifePoint);
+        }
+
+        if (this.menu.fps !== this.gameContext.fps) {
+            this.menu.updateFPS(this.gameContext.fps, this.fpsPoint)
+        }
+
+        if (this.menu.ping !== this.gameContext.ping) {
+            this.menu.updatePing(this.gameContext.ping, this.pingPoint)
+        }
+
+        if (this.menu.score !== this.targetBody.score) {
+            this.menu.updateScore(this.targetBody.score, this.scorePoint)
+        }
+    }
 
     updateImageDirection(newDirection: Vector, image: any) {
         var rotationDeltaRad = Math.acos(this.baseRotationVector.product(newDirection) /
@@ -213,8 +238,9 @@ class ViewEngine {
         this.targetBodyImage = this.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
         // Small Kostil - we need to recalculate map image coordinates at the very beginning
         this.updateMapImagePosition();
+        this.updateMenu();
+        this.stage.addChild(this.menu.weaponText, this.menu.lifeText, this.menu.fpsText, this.menu.scoreText, this.menu.pingText);
     }
-
 }   
 
 class BodyImage {
