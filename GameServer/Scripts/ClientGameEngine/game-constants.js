@@ -15,7 +15,8 @@
         ROCK: 12,
         ROAD: 13,
         FORD: 14,
-        TREE: 15
+        TREE: 15,
+        MAP: 16,
     }
 }
 

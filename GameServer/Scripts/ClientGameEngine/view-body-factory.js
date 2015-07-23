@@ -9,6 +9,13 @@
         return self.createGameObject(self.serverTypeMap[body.bodyType], body);
     }
 
+    this.createMapContainer = function () {
+        var image = new createjs.Container();
+        image.zIndex = 0;
+        
+        return image;
+    }
+
     this.builders = [];
     this.builders[gameTypes.gameObjects.PLAYER] = function (serverBody) {        
 
@@ -83,7 +90,7 @@
         bulletImage.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#F08200").dc(2, 2, 2);
         bulletImage.scaleX = 0.5;
         bulletImage.scaleY = 0.5;
-        bulletImage.zIndex = 5;
+        bulletImage.zIndex = 6;
 
         return bulletImage;
     }
@@ -93,10 +100,10 @@
 
 
         // Configure image
-        //var imageWidth = 200;
-        //var imageHeight = 200;
-        //image.regX = imageWidth / 2;
-        //image.regY = imageHeight / 2;
+        var imageWidth = 200;
+        var imageHeight = 200;
+        image.regX = imageWidth / 2;
+        image.regY = imageHeight / 2;
         image.scaleX = 0.05;
         image.scaleY = 0.05;
         //image.cache(0, 0, imageWidth, imageHeight);
@@ -156,6 +163,7 @@
     this.serverTypeMap["road"] = gameTypes.gameObjects.ROAD;
     this.serverTypeMap["ford"] = gameTypes.gameObjects.FORD;
     this.serverTypeMap["tree"] = gameTypes.gameObjects.TREE;
+    this.serverTypeMap["map"] = gameTypes.gameObjects.MAP;
 
     this.updateDirection = function (newDirection, image) {
         var baseRotationVector = new Vector(0, -1);

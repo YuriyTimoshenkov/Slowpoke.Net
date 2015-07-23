@@ -7,7 +7,7 @@ class ViewEngine {
     viewBodyFactory: ViewBodyFactory;
     baseRotationVector: Vector;
     targetBody: Body;
-    targetBodyImage: any;
+    targetBodyImage: createjs.Container;
     menu: any;
     mechanicEngine: MechanicEngineTS;
 
@@ -24,11 +24,12 @@ class ViewEngine {
     init(mechanicEngine: MechanicEngineTS) {
         var self = this;
         this.mechanicEngine = mechanicEngine;
-        this.mapImageContainer = new createjs.Container();
+        this.mapImageContainer = this.viewBodyFactory.createMapContainer();
         this.stage.addChild(this.mapImageContainer);
 
         mechanicEngine.onBodyAdd.push(function (body) {
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
+
             self.bodyImages.push(new BodyImage(body.id, image));
 
             if (body instanceof Tile) {
@@ -38,15 +39,21 @@ class ViewEngine {
             }
 
             else {
-            if (self.targetBody != undefined) {
-                self.updateBodyPosition(body);
-            }
+                if (self.targetBody != undefined) {
+                    self.updateBodyPosition(body);
+                }
 
-            if (body instanceof ActiveBody) {
-                self.updateImageDirection(body.direction, image);
-            }
+                if (body instanceof ActiveBody) {
+                    self.updateImageDirection(body.direction, image);
+                }
 
-            self.stage.addChild(image);
+                self.stage.addChild(image);
+
+                self.stage.sortChildren(function (a: createjs.Container, b: createjs.Container) {
+                    if (a.zIndex < b.zIndex) return -1;
+                    if (a.zIndex > b.zIndex) return 1;
+                    return 0;
+                });
             }
         });
 
@@ -165,16 +172,6 @@ class ViewEngine {
 
     draw() {
         var self = this;
-        var sortFunction = function (a: createjs.Container, b: createjs.Container) {
-            //if (a.zIndex === undefined || b.zIndex === undefined) {
-            //    console.log("In sort function");
-            //}
-            
-            if (a.zIndex < b.zIndex) return -1;
-            if (a.zIndex > b.zIndex) return 1;
-            return 0;
-        }
-        self.stage.sortChildren(sortFunction);
 
         self.stage.update();
     }

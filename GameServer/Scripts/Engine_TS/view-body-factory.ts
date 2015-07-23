@@ -5,4 +5,6 @@ interface ViewBodyFactory {
     createGameObject(gameObjectType, data): createjs.Container;
 
     createGameObjectbyServerBody(body): createjs.Container;
+
+    createMapContainer(): createjs.Container;
 } 
