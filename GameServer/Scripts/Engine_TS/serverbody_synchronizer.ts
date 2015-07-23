@@ -30,6 +30,11 @@
 
                 break;
             }
+            case "Bullet": {
+                newBody = new Bullet(<ServerActiveBody> serverBody);
+
+                break;
+            }
         }
 
         if (newBody) {
