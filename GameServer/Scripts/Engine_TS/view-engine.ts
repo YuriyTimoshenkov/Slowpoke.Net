@@ -7,7 +7,7 @@ class ViewEngine {
     viewBodyFactory: ViewBodyFactory;
     baseRotationVector: Vector;
     targetBody: PlayerBody;
-    targetBodyImage: any;
+    targetBodyImage: createjs.Container;
     menu: Menu;
     mechanicEngine: MechanicEngineTS;
     gameContext: any;
@@ -32,7 +32,7 @@ class ViewEngine {
     init(mechanicEngine: MechanicEngineTS) {
         var self = this;
         this.mechanicEngine = mechanicEngine;
-        this.mapImageContainer = new createjs.Container();
+        this.mapImageContainer = this.viewBodyFactory.createMapContainer();
         this.stage.addChild(this.mapImageContainer);
 
         mechanicEngine.onBodyAdd.push(function (body) {
@@ -46,16 +46,21 @@ class ViewEngine {
             }
 
             else {
-            if (self.targetBody != undefined) {
-                self.updateBodyPosition(body);
-            }
+                if (self.targetBody != undefined) {
+                    self.updateBodyPosition(body);
+                }
 
-            if (body instanceof ActiveBody) {
-                self.updateImageDirection(body.direction, image);
-            }
+                if (body instanceof ActiveBody) {
+                    self.updateImageDirection(body.direction, image);
+                }
 
-            self.stage.addChild(image);
-            }
+                self.stage.addChild(image);
+                self.stage.sortChildren(function (a: createjs.Container, b: createjs.Container) {
+                                               if (a.zIndex < b.zIndex) return -1;
+                                               if (a.zIndex > b.zIndex) return 1;
+                                              return 0;
+                                 });
+                }
         });
 
         mechanicEngine.onBodyChanged.push(function (body, changesType) {
@@ -173,13 +178,6 @@ class ViewEngine {
 
     draw() {
         var self = this;
-        var sortFunction = function (a: createjs.Container, b: createjs.Container) {
-            if (a.zIndex < b.zIndex) return -1;
-            if (a.zIndex > b.zIndex) return 1;
-            return 0;
-        }
-        self.stage.sortChildren(sortFunction);
-
         self.stage.update();
     }
 
