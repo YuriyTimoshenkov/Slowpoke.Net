@@ -52,7 +52,9 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
         self.mechanicEngine.addPlayerBody(self.player);
 
-        self.viewManager.setTarget(self.mechanicEngine.player)
+        self.viewManager.setTarget(self.mechanicEngine.player);
+
+        self.mechanicEngine.onBodyChanged.trigger({ body: self.mechanicEngine.player, changesType: BodyChangesType.position });
 
         self.controlsManager.addMouseMoveHandler(self.handleMouseMove)
 
