@@ -74,6 +74,11 @@ class CommandMove extends CommandBase{
         mechanicEngine.onBodyChanged.forEach(function (item) {
             item(body, BodyChangesType.position);
         });
+
+
+        //if (body instanceof Bullet) {
+        //    console.log('body id: ' + body.id +' added: x - ' + body.gameRect.centerx + ', y - ' + body.gameRect.centery);
+        //}
     }
 
     toServerCommand(): ServerCommand {
@@ -125,6 +130,10 @@ class CommandShoot extends CommandBase {
         if (body.currentWeapon === 'Shotgun') {
             var self = this;
 
+            var bulletList: Bullet[] = [];
+
+            var bulletId = new Date().getTime()
+
             this.bulletDeviationRadians.forEach(function (item) {
                 var dirX = body.direction.x * Math.cos(item) - body.direction.y * Math.sin(item);
                 var dirY = body.direction.x * Math.sin(item) + body.direction.y * Math.cos(item);
@@ -133,7 +142,7 @@ class CommandShoot extends CommandBase {
                     CreatedByCommandId: self.id,
                     LastProcessedCommandId: 1,
                     BodyType: 'Bullet',
-                    Id: new Date().getTime(),
+                    Id: bulletId,
                     Name: 'Bullet',
                     Shape: {
                         Radius: 2,
@@ -151,11 +160,18 @@ class CommandShoot extends CommandBase {
                 });
 
                 newBullet.createdByCommandId = self.id;
+
+                bulletList.push(newBullet);
+
+                bulletId++;
+            });
+
+            bulletList.forEach(function (bullet) {
                 mechanicEngine.onBodyAdd.forEach(function (item) {
-                    item(newBullet);
+                    item(bullet);
                 });
 
-                mechanicEngine.bodies.push(newBullet);
+                mechanicEngine.bodies.push(bullet);
             });
         }
         else {

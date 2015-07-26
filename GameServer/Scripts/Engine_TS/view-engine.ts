@@ -55,6 +55,10 @@ class ViewEngine {
 
                 if (body instanceof ActiveBody) {
                     self.updateImageDirection(body.direction, image);
+
+                    if (body instanceof Bullet) {
+                        console.log('body added: ' + body.id +' x - ' + body.gameRect.centerx + ', y - ' + body.gameRect.centery);
+                    }
                 }
 
                 self.stage.addChild(image);
