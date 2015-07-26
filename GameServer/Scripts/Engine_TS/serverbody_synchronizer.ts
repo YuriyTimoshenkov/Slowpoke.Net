@@ -42,9 +42,7 @@
 
             newBody.syncSessionId = syncSessionId;
 
-            this.mechanicEngine.onBodyAdd.forEach(function (item) {
-                item(newBody);
-            });
+            this.mechanicEngine.onBodyAdd.trigger(newBody);
         }
 
 
@@ -66,13 +64,9 @@
             }
             body.syncSessionId = syncSessionId;
 
-            this.mechanicEngine.onBodyChanged.forEach(function (item) {
-                item(body, BodyChangesType.position);
-            });
+            this.mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.position });
 
-            this.mechanicEngine.onBodyChanged.forEach(function (item) {
-                item(body, BodyChangesType.direction);
-            });
+            this.mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.direction });
         }
         else {
             this.createNewBody(serverBody, syncSessionId);
@@ -185,9 +179,7 @@
             return true;
         }
         else {
-            self.mechanicEngine.onBodyRemove.forEach(function (bodyRemoveHandler) {
-                bodyRemoveHandler(body);
-            });
+            self.mechanicEngine.onBodyRemove.trigger(body);
 
             return false;
         }

@@ -117,11 +117,7 @@
     this.draw = function () {
         var self = this;
 
-        var sortFunction = function (a, b) {
-            //if (a.zIndex === undefined || b.zIndex === undefined) {
-            //    console.log("In sort function");
-            //}
-            
+        var sortFunction = function (a, b) {            
             if (a.zIndex < b.zIndex) return -1;
             if (a.zIndex > b.zIndex) return 1;
             return -1;

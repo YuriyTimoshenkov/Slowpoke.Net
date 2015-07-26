@@ -35,10 +35,6 @@ class Body {
         this.name = serverBody.Name;
         this.bodyType = serverBody.BodyType;
 
-        if (serverBody.Shape == undefined) {
-            console.log('sdf');
-        }
-
         this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
         this.gameRect.center = new Point(serverBody.Shape.Position.X, serverBody.Shape.Position.Y);
     }

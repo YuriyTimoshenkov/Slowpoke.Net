@@ -38,7 +38,7 @@ class ViewEngine {
         this.bodyImages = [];
         this.targetBody = undefined;
 
-        mechanicEngine.onBodyAdd.push(function (body) {
+        mechanicEngine.BodyAdded.add(function (body) {
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
             self.bodyImages.push(new BodyImage(body.id, image));
 
@@ -55,10 +55,6 @@ class ViewEngine {
 
                 if (body instanceof ActiveBody) {
                     self.updateImageDirection(body.direction, image);
-
-                    if (body instanceof Bullet) {
-                        console.log('body added: ' + body.id +' x - ' + body.gameRect.centerx + ', y - ' + body.gameRect.centery);
-                    }
                 }
 
                 self.stage.addChild(image);
@@ -70,27 +66,27 @@ class ViewEngine {
                 }
         });
 
-        mechanicEngine.onBodyChanged.push(function (body, changesType) {
+        mechanicEngine.onBodyChanged.add(function (e) {
 
-            var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
+            var bodyImage = self.bodyImages.filter(function (v) { return v.id === e.body.id ? true : false })[0].image;
 
-            switch (changesType) {
+            switch (e.changesType) {
                 case BodyChangesType.direction:
                     {
-                        if (body instanceof ActiveBody) {
-                            self.updateImageDirection(body.direction, bodyImage);
+                        if (e.body instanceof ActiveBody) {
+                            self.updateImageDirection(e.body.direction, bodyImage);
                         }
 
                         break;
                     }
                 case BodyChangesType.position:
                     {
-                        if (self.targetBody.id == body.id) {
+                        if (self.targetBody.id == e.body.id) {
                             self.updateCanvasPosition(self.mechanicEngine.bodies);
                         }
                         else {
 
-                            self.updateBodyPosition(body);
+                            self.updateBodyPosition(e.body);
                         }
 
                         break;
@@ -101,7 +97,7 @@ class ViewEngine {
 
         });
 
-        mechanicEngine.onBodyRemove.push(function (body) {
+        mechanicEngine.onBodyRemove.add(function (body) {
             var childImageToRemove: any[] = [];
 
             self.bodyImages = self.bodyImages.filter(function (v) {

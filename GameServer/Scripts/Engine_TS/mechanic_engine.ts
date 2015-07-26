@@ -1,20 +1,29 @@
-﻿class MechanicEngineTS {
+﻿/// <reference path="Event.ts" />
+
+class MechanicEngineTS {
     bodies: Body[];
     commandQueue: CommandBase[];
     commandQueueProcessed: CommandBase[];
-    onBodyAdd: { (body: Body): void }[];
-    onBodyRemove: { (body: Body): void }[];
-    onBodyChanged: { (body: Body, changesType: BodyChangesType): void }[];
+
+    onBodyAdd: slowpoke.Event<Body>;
+    get BodyAdded(): slowpoke.IEvent<Body> { return this.onBodyAdd; }
+
+    onBodyRemove: slowpoke.Event<Body>;
+    get BodyRemoved(): slowpoke.IEvent<Body> { return this.onBodyRemove; }
+
+    onBodyChanged: slowpoke.Event<{ body: Body; changesType: BodyChangesType }>;
+    get BodyChanged(): slowpoke.IEvent<{ body: Body; changesType: BodyChangesType }> { return this.onBodyChanged; }
+
     player: PlayerBody;
     mapEngine: MapEngine;
 
     constructor(serverMap: ServerMap) {
         this.bodies = [];
-        this.onBodyAdd = [];
+        this.onBodyAdd = new slowpoke.Event<Body>();
         this.commandQueue = [];
         this.commandQueueProcessed = [];
-        this.onBodyChanged = [];
-        this.onBodyRemove = [];
+        this.onBodyChanged = new slowpoke.Event< { body: Body; changesType: BodyChangesType }>();
+        this.onBodyRemove = new slowpoke.Event<Body>();
         this.mapEngine = new MapEngine(serverMap, this);
     }
 
@@ -23,9 +32,7 @@
         var self = this;
         this.bodies.push(this.player);
 
-        this.onBodyAdd.forEach(function (item) {
-            item(self.player);
-        });
+        this.onBodyAdd.trigger(self.player);
     }
 
     addCommand(command: CommandBase) {
@@ -40,7 +47,7 @@
                 return true;
             }
             else {
-                self.onBodyRemove.forEach(function (item) { item(body); });
+                self.onBodyRemove.trigger(body);
 
                 return false;
             }
