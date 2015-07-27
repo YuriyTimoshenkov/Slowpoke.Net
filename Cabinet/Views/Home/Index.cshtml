@@ -23,13 +23,14 @@
                                 <div class="form-group">
                                     @Html.Label("Choose your character", new { @class = "control-label" })
                                     <p>@Html.DropDownList("CharacterId", new SelectList(ViewBag.Characters, "Id", "Name"))</p>
-                                    <input type="submit" value="Play" class="btn btn-default" />
+                                    <input type="submit" value="Play" class="btn btn-success btn-lg" />
                                 </div>
                             }
                         }
                         else
                         {
                             <h3>Welcome to Slowpoke</h3>
+                            @Html.ActionLink("Register to Play", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink",  @class = "btn btn-success btn-lg" })
                         }
                     </div>
             </div>
