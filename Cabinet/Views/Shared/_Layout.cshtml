@@ -36,16 +36,22 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="container body-content" style="color: #949494">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Slowpoke.NET</p>
-        </footer>
+    </div>
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="col-sm-3 col-sm-offset-4">
+                <hr />
+                <p>&copy; @DateTime.Now.Year - Slowpoke.NET</p>
+                Created by Yuriy Timoshenkov & Dmitriy Malashenko
+            </div>
+        </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+            @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -2,31 +2,42 @@
     ViewBag.Title = "Home Page";
 }
 
-
-
-@if (Request.IsAuthenticated)
-{
+<div style="color: #787878; margin-top: 30px;">
     <div class="row">
-            @using (Html.BeginForm("Play", "Home", FormMethod.Post))
+        <div class="col-sm-4">
+
+        </div>
+        <div class="col-sm-3 ">
+            <div class="row text-center">
+                <img src="\Content\images\SlowpokeLogo.jpg" />
+            </div>
+            <div class="row">
+                    <div class="text-center ">
+                        @if (Request.IsAuthenticated)
+                        {
+                            using (Html.BeginForm("Play", "Home", FormMethod.Post))
+                            {
+                                <div class="form-group">
+                                    @Html.Label("Choose your character", new { @class = "control-label" })
+                                    <p>@Html.DropDownList("CharacterId", new SelectList(ViewBag.Characters, "Id", "Name"))</p>
+                                    <input type="submit" value="Play" class="btn btn-default" />
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <h3>Welcome to Slowpoke</h3>
+                        }
+                    </div>
+            </div>
+        </div>
+        <div class="col-sm-4" style=" min-width: 400px;">
+            @if (Request.IsAuthenticated)
             {
-                <div class="form-group">
-                    @Html.Label("Choose your character", new { @class = "col-md-2 control-label" })
-                    <div class="col-md-2">
-                        @Html.DropDownList("CharacterId", new SelectList(ViewBag.Characters, "Id","Name"))
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-2">
-                        <input type="submit" value="Play" class="btn btn-default" />
-                    </div>
-                </div>
-            }
-    </div>
-    <div class="row">
-        <h2>Last game sessions: </h2>
-        @if (ViewBag.GameSessionsCount > 0)
+                <h4>Last game sessions: </h4>
+        if (ViewBag.GameSessionsCount > 0)
         {
-            <table class="table">
+            <table class="table" style="font-size: 12px">
                 <tr>
                     <th>Started: </th>
                     <th>Duration: </th>
@@ -46,13 +57,9 @@
         {
             <div>No sessions available...</div>
         }
-            </div>
-  }
-else
-{
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Welcome to slowpoke.net game.</h2>
+            }
         </div>
     </div>
-}
+</div>
+
+
