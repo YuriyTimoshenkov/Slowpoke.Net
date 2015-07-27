@@ -9,6 +9,7 @@
     updateLifeText() { } 
     updateCurrentWeaponText() { }
     updateScoreText() { }
+    updateAll() { }
  
     removeSelf(container) { }   
 }
@@ -32,12 +33,9 @@ class PlayerInfoboxFixed extends Infobox {
             this.weaponPoint = startPoint;
             this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - this.textGap);
             this.scorePoint = new Point(this.weaponPoint.x, this.lifePoint.y - this.textGap);
-            this.subscribe();
             this.create(container);
         }
         
-        subscribe() { }
-
         create(container) {
             this.createLifeText();
             this.createWeaponText();
@@ -150,5 +148,61 @@ class NPCInfoboxFloating extends Infobox {
 
     removeSelf(container) {
         container.removeChild(this.lifeText);
+    }
+}
+
+class PerformanceInfoboxFixed extends Infobox {
+    textGap = 20;
+    textColor = "red";
+    textSize = 10;
+    ppsPoint: Point;
+    fpsPoint: Point;
+    ppsText: createjs.Text;
+    fpsText: createjs.Text;
+
+    constructor(data, container: createjs.Stage, startPoint?: Point) {
+        super(data, container);
+        this.ppsPoint = startPoint;
+        this.fpsPoint = new Point(this.ppsPoint.x, this.ppsPoint.y - this.textGap);
+        this.create(container);
+    }
+
+    create(container) {
+        this.createPPSText();
+        this.createFPSText();
+        container.addChild(this.ppsPoint, this.fpsPoint);
+    }
+
+    createPPSText() {
+        var text = "PPS: " + this.data.pps;
+        this.ppsText = new createjs.Text(text, this.textSize + "px Arial", this.textColor);
+        this.ppsText.x = this.ppsPoint.x;
+        this.ppsText.y = this.ppsPoint.y;
+        this.ppsText.zIndex = 100;
+    }
+    createFPSText() {
+        var text = "FPS: " + this.data.fps;
+        this.fpsText = new createjs.Text(text, this.textSize + "px Arial", this.textColor);
+        this.fpsText.x = this.fpsPoint.x;
+        this.fpsText.y = this.fpsPoint.y;
+        this.fpsText.zIndex = 100;
+    }
+
+    updateAll() {
+        this.updatePPSText();
+        this.updateFPSText();
+    }
+
+    updatePPSText() {
+        this.ppsText.text = "PPS: " + this.data.pps;
+    }
+
+    updateFPSText() {
+        this.fpsText.text = "FPS: " + this.data.fps;
+    }
+
+    removeSelf(container) {
+        container.removeChild(this.ppsText);
+        container.removeChild(this.fpsText);
     }
 }

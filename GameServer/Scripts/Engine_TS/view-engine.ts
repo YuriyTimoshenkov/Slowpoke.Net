@@ -12,12 +12,8 @@ class ViewEngine {
     infoboxFactory: InfoboxFactory;
     mechanicEngine: MechanicEngineTS;
     gameContext: any;
-    weaponPoint: Point;
-    lifePoint: Point;
-    scorePoint: Point;
-    fpsPoint: Point;
-    pingPoint: Point;
     animations: Animation[];
+    generalInfoboxes: Infobox[];
 
     constructor(canvas, canvasSize, infoboxFactory: InfoboxFactory, gameContext, viewBodyFactory: ViewBodyFactory) {
         this.canvas = canvas;
@@ -29,8 +25,8 @@ class ViewEngine {
         this.gameContext = gameContext;
         this.viewBodyFactory = viewBodyFactory;
         this.bodyImages = [];
+        this.generalInfoboxes = [];
         this.baseRotationVector = new Vector(0, -1);
-        //this.initMenu(canvas);
     }
 
     init(mechanicEngine: MechanicEngineTS) {
@@ -39,9 +35,8 @@ class ViewEngine {
         this.mapImageContainer = this.viewBodyFactory.createMapContainer();
         this.stage.removeAllChildren();
         this.stage.addChild(this.mapImageContainer);
-        this.bodyImages = [];
-        this.targetBody = undefined;
 
+        //var performanceInfobox = new PerformanceInfoboxFixed(this.gameContext, this.stage, new Point(this.canvas.width - 80, this.canvas.height - 50));
         mechanicEngine.BodyAdded.add(function (body) {
             //console.log("VE, adding: " + body.bodyType);
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
@@ -51,40 +46,19 @@ class ViewEngine {
             // create infoboxes start
             // if NPC
             if (body.bodyType === "NPCAI") {
-                //console.log("Creating NPC");
-                //console.log(self.stage.children.length);
-                var infoboxFloating = self.infoboxFactory.createInfobox(
-                    infoboxes.NPC_FLOATING,
-                    body,
-                    self.stage,
-                    new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.NPC_FLOATING, body, self.stage, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
                 bodyImageObject.infoboxes.push(infoboxFloating);
-                //console.log(self.stage.children.length);
             }
 
             // if PlayerOther
             else if (body.bodyType === "PlayerBody" && body instanceof PlayerOtherBody) {
-                var infoboxFloating = self.infoboxFactory.createInfobox(
-                    infoboxes.PLAYER_FLOATING,
-                    body,
-                    self.stage,
-                    new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.PLAYER_FLOATING, body, self.stage, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
                 bodyImageObject.infoboxes.push(infoboxFloating);
             }
             // if Player
             else if (body.bodyType === "PlayerBody" && body instanceof PlayerBody) {
-                var infoboxFloating = self.infoboxFactory.createInfobox(
-                    infoboxes.PLAYER_FLOATING,
-                    body,
-                    self.stage,
-                    new Point(bodyImageObject.image.x, bodyImageObject.image.y));
-
-                var infoboxFixed = self.infoboxFactory.createInfobox(
-                    infoboxes.PLAYER_FIXED,
-                    body,
-                    self.stage,
-                    new Point(5, this.canvas.height - 50));
-
+                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.PLAYER_FLOATING, body, self.stage, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+                var infoboxFixed = self.infoboxFactory.createInfobox(infoboxes.PLAYER_FIXED, body, self.stage, new Point(5, this.canvas.height - 50));
                 bodyImageObject.infoboxes.push(infoboxFloating);
                 bodyImageObject.infoboxes.push(infoboxFixed);
             }
@@ -118,7 +92,6 @@ class ViewEngine {
         mechanicEngine.onBodyChanged.add(function (e) {
 
             var bodyImageObject = self.bodyImages.filter(function (v) { return v.id === e.body.id ? true : false })[0];
-            if (!bodyImageObject) return;
 
             switch (e.changesType) {
                 case BodyChangesType.direction:
@@ -192,6 +165,7 @@ class ViewEngine {
     }
 
     render() {
+        this.generalInfoboxes.forEach(function (v) { v.updateAll() });
         this.updateAnimations();
         this.draw();
     }

@@ -118,8 +118,14 @@ class PlayerBody extends CharacterBody {
     serverSync(serverBody, mechanicEngine: MechanicEngineTS) {
         //TODO: implement true polumorphic body processing
 
-        super.serverSync(serverBody, mechanicEngine);
-        //this.life = serverBody.Life;
+        //super.serverSync(serverBody);
+        if (serverBody.Life !== this.life) {
+            // to avoid body hit when drinking a bottle
+            //if (serverBody.Life < this.life) { 
+            mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.hp });
+            //}
+            this.life = serverBody.Life;
+        }
 
         // Update weapon
         if (serverBody.CurrentWeapon && this.currentWeapon !== serverBody.CurrentWeapon) {
