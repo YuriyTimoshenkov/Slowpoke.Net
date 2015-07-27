@@ -95,10 +95,9 @@ class CharacterBody extends ActiveBody{
     }
 
     serverSync(serverBody, mechanicEngine: MechanicEngineTS) {
-        var self = this;
         super.serverSync(serverBody, mechanicEngine);
         if (serverBody.Life !== this.life) {
-            mechanicEngine.onBodyChanged.forEach(function (item) { item(self, BodyChangesType.hp) });
+            mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.hp });
             this.life = serverBody.Life;
         }
 

@@ -19,9 +19,9 @@ class MechanicEngineTS {
 
     constructor(serverMap: ServerMap) {
         this.bodies = [];
-        this.onBodyAdd = new slowpoke.Event<Body>();
         this.commandQueue = [];
         this.commandQueueProcessed = [];
+        this.onBodyAdd = new slowpoke.Event<Body>();
         this.onBodyChanged = new slowpoke.Event< { body: Body; changesType: BodyChangesType }>();
         this.onBodyRemove = new slowpoke.Event<Body>();
         this.mapEngine = new MapEngine(serverMap, this);
