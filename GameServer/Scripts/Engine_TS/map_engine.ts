@@ -38,9 +38,7 @@ class MapEngine {
                     );
 
                 //generate add tile event
-                self.mechanicEngine.onBodyAdd.forEach(function (item) {
-                    item(newTile);
-                });
+                self.mechanicEngine.onBodyAdd.trigger(newTile);
 
                 //self.mechanicEngine.passiveBodies.push(newTile);
 
@@ -62,9 +60,7 @@ class MapEngine {
 
                 //Generate event
                 if (self.mechanicEngine.onBodyRemove != undefined)
-                    self.mechanicEngine.onBodyRemove.forEach(function (item) {
-                        item(body);
-                    });
+                    self.mechanicEngine.onBodyRemove.trigger(body);
             });
     }
 } 

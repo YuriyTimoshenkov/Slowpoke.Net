@@ -71,14 +71,7 @@ class CommandMove extends CommandBase{
             body.gameRect.centery + body.speed * this.duration * this.unitDirection.y / 1000
             );
 
-        mechanicEngine.onBodyChanged.forEach(function (item) {
-            item(body, BodyChangesType.position);
-        });
-
-
-        //if (body instanceof Bullet) {
-        //    console.log('body id: ' + body.id +' added: x - ' + body.gameRect.centerx + ', y - ' + body.gameRect.centery);
-        //}
+        mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.position });
     }
 
     toServerCommand(): ServerCommand {
@@ -101,9 +94,7 @@ class CommandChangeDirection extends CommandBase {
     processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS) {
         body.direction = this.unitNewDirection;
 
-        mechanicEngine.onBodyChanged.forEach(function (item) {
-            item(body, BodyChangesType.direction);
-        });
+        mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.direction });
     }
 
     toServerCommand(): ServerCommand {
@@ -167,9 +158,7 @@ class CommandShoot extends CommandBase {
             });
 
             bulletList.forEach(function (bullet) {
-                mechanicEngine.onBodyAdd.forEach(function (item) {
-                    item(bullet);
-                });
+                mechanicEngine.onBodyAdd.trigger(bullet);
 
                 mechanicEngine.bodies.push(bullet);
             });
@@ -198,9 +187,7 @@ class CommandShoot extends CommandBase {
 
             newBullet.createdByCommandId = this.id;
             mechanicEngine.bodies.push(newBullet);
-            mechanicEngine.onBodyAdd.forEach(function (item) {
-                item(newBullet);
-            });
+            mechanicEngine.onBodyAdd.trigger(newBullet);
         }
     }
 
