@@ -16,12 +16,14 @@ class ViewEngine {
     scorePoint: Point;
     fpsPoint: Point;
     pingPoint: Point;
+    animations: Animation[];
 
     constructor(canvas, canvasSize, menu: Menu, gameContext, viewBodyFactory: ViewBodyFactory) {
         canvas.width = canvasSize.width;
         canvas.height = canvasSize.height;
         this.stage = new createjs.Stage(canvas);
         this.menu = menu;
+        this.animations = [];
         this.gameContext = gameContext;
         this.viewBodyFactory = viewBodyFactory;
         this.bodyImages = [];
@@ -57,7 +59,7 @@ class ViewEngine {
                     self.updateImageDirection(body.direction, image);
 
                     if (body instanceof Bullet) {
-                        console.log('body added: ' + body.id +' x - ' + body.gameRect.centerx + ', y - ' + body.gameRect.centery);
+                        //console.log('body added: ' + body.id +' x - ' + body.gameRect.centerx + ', y - ' + body.gameRect.centery);
                     }
                 }
 
@@ -92,9 +94,15 @@ class ViewEngine {
 
                             self.updateBodyPosition(body);
                         }
-
                         break;
                     }
+                case BodyChangesType.hp:
+                    var bodyImageObject = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0];
+                    var animation = new BodyHitAnimation(bodyImageObject, self);
+                    animation.start();
+                    self.animations.push(animation);
+                    break;
+                
                 default:
                     break;
             }
@@ -144,7 +152,13 @@ class ViewEngine {
 
     render() {
         this.updateMenu();
+        this.updateAnimations();
         this.draw();
+    }
+
+    updateAnimations() {
+        var self = this;
+        this.animations.forEach(function (animation) { animation.update(self); });
     }
 
     updateCanvasPosition(bodies) {

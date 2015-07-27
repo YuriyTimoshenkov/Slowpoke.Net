@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -228,6 +229,7 @@
     <Folder Include="Scripts\Resources\Sounds\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\Engine_TS\animation.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\bodies.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\commands.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\common.ts" />

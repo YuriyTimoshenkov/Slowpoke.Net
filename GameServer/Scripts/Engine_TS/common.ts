@@ -59,7 +59,7 @@ class Rect{
     }
 }
 
-enum BodyChangesType { direction, position }
+enum BodyChangesType { direction, position, hp }
 
 class ObjectsContainersSynchronizerTS<T extends Body, F extends ServerBody> {
 

@@ -59,7 +59,7 @@
 
             try
             {
-                body.serverSync(serverBody);
+                body.serverSync(serverBody, this.mechanicEngine);
             }
             catch (ex) {
                 console.log("syncServerSideBody: " + ex)
@@ -173,7 +173,7 @@
                     serverCommands = serverCommands.concat(self.syncPredictiveBodies(serverBody, self.mechanicEngine));
                     self.mechanicEngine.player.syncSessionId = syncSessionId;
 
-                    self.mechanicEngine.player.serverSync(serverBody);
+                    self.mechanicEngine.player.serverSync(serverBody, self.mechanicEngine);
 
                     break;
                 }

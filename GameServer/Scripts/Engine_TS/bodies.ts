@@ -45,7 +45,7 @@ class Body {
 
     update(mechanicEngine: MechanicEngineTS) { }
 
-    serverSync(serverBody) { }
+    serverSync(serverBody, mechanicEngine: MechanicEngineTS) { }
 }
 
 class PassiveBody extends Body {
@@ -72,7 +72,7 @@ class ActiveBody extends Body{
 
         super(serverBody);
     }
-    serverSync(serverBody: ServerActiveBody) {
+    serverSync(serverBody: ServerActiveBody, mechanicEngine: MechanicEngineTS) {
         // Update direction
         if (Math.abs(this.direction.x - serverBody.Direction.X) > 0.0001 || Math.abs(this.direction.y - serverBody.Direction.Y) > 0.0001) {
             this.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y);
@@ -98,21 +98,25 @@ class CharacterBody extends ActiveBody{
         this.currentWeapon = serverBody.CurrentWeapon;
     }
 
-    serverSync (serverBody) {
-        super.serverSync(serverBody);
+    serverSync(serverBody, mechanicEngine: MechanicEngineTS) {
+        var self = this;
+        super.serverSync(serverBody, mechanicEngine);
+        if (serverBody.Life !== this.life) {
+            mechanicEngine.onBodyChanged.forEach(function (item) { item(self, BodyChangesType.hp) });
+            this.life = serverBody.Life;
+        }
 
-        this.life = serverBody.Life;
     }
 }
 
 
 class PlayerBody extends CharacterBody {
 
-    serverSync(serverBody) {
+    serverSync(serverBody, mechanicEngine: MechanicEngineTS) {
         //TODO: implement true polumorphic body processing
 
-        //super.serverSync(serverBody);
-        this.life = serverBody.Life;
+        super.serverSync(serverBody, mechanicEngine);
+        //this.life = serverBody.Life;
 
         // Update weapon
         if (serverBody.CurrentWeapon != 'undefined' && this.currentWeapon !== serverBody.CurrentWeapon) {
