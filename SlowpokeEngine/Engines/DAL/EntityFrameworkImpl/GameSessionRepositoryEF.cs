@@ -33,5 +33,10 @@ namespace SlowpokeEngine.DAL
         {
             return _gameStorage.Sessions.Include(v => v.Character).Where(v => v.Character.OwnerUserId == userId);
         }
+
+        public int CalculateScore()
+        {
+            return _gameStorage.Sessions.Sum(v => v.Score);
+        }
     }
 }
