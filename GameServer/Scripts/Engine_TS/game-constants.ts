@@ -15,3 +15,5 @@
     ROAD,
     FORD
 }
+
+enum infoboxes { PLAYER_FIXED, PLAYER_FLOATING, NPC_FLOATING }

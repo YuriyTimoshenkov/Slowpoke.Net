@@ -4,11 +4,12 @@ class ViewEngine {
     bodyImages: BodyImage[];
     mapImageContainer: createjs.Container;
     stage: createjs.Stage;
+    canvas: any;
     viewBodyFactory: ViewBodyFactory;
     baseRotationVector: Vector;
     targetBody: PlayerBody;
     targetBodyImage: createjs.Container;
-    menu: Menu;
+    infoboxFactory: InfoboxFactory;
     mechanicEngine: MechanicEngineTS;
     gameContext: any;
     weaponPoint: Point;
@@ -18,31 +19,77 @@ class ViewEngine {
     pingPoint: Point;
     animations: Animation[];
 
-    constructor(canvas, canvasSize, menu: Menu, gameContext, viewBodyFactory: ViewBodyFactory) {
-        canvas.width = canvasSize.width;
-        canvas.height = canvasSize.height;
+    constructor(canvas, canvasSize, infoboxFactory: InfoboxFactory, gameContext, viewBodyFactory: ViewBodyFactory) {
+        this.canvas = canvas;
+        this.canvas.width = canvasSize.width;
+        this.canvas.height = canvasSize.height;
         this.stage = new createjs.Stage(canvas);
-        this.menu = menu;
+        this.infoboxFactory = infoboxFactory;
         this.animations = [];
         this.gameContext = gameContext;
         this.viewBodyFactory = viewBodyFactory;
         this.bodyImages = [];
         this.baseRotationVector = new Vector(0, -1);
-        this.initMenu(canvas);
+        //this.initMenu(canvas);
     }
 
     init(mechanicEngine: MechanicEngineTS) {
         var self = this;
         this.mechanicEngine = mechanicEngine;
         this.mapImageContainer = this.viewBodyFactory.createMapContainer();
-        this.stage.removeAllChildren(); 
+        this.stage.removeAllChildren();
         this.stage.addChild(this.mapImageContainer);
         this.bodyImages = [];
         this.targetBody = undefined;
 
         mechanicEngine.BodyAdded.add(function (body) {
+            //console.log("VE, adding: " + body.bodyType);
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
-            self.bodyImages.push(new BodyImage(body.id, image));
+            var bodyImageObject = new BodyImage(body.id, image)
+            self.bodyImages.push(bodyImageObject);
+
+            // create infoboxes start
+            // if NPC
+            if (body.bodyType === "NPCAI") {
+                //console.log("Creating NPC");
+                //console.log(self.stage.children.length);
+                var infoboxFloating = self.infoboxFactory.createInfobox(
+                    infoboxes.NPC_FLOATING,
+                    body,
+                    self.stage,
+                    new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+                bodyImageObject.infoboxes.push(infoboxFloating);
+                //console.log(self.stage.children.length);
+            }
+
+            // if PlayerOther
+            else if (body.bodyType === "PlayerBody" && body instanceof PlayerOtherBody) {
+                var infoboxFloating = self.infoboxFactory.createInfobox(
+                    infoboxes.PLAYER_FLOATING,
+                    body,
+                    self.stage,
+                    new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+                bodyImageObject.infoboxes.push(infoboxFloating);
+            }
+            // if Player
+            else if (body.bodyType === "PlayerBody" && body instanceof PlayerBody) {
+                var infoboxFloating = self.infoboxFactory.createInfobox(
+                    infoboxes.PLAYER_FLOATING,
+                    body,
+                    self.stage,
+                    new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+
+                var infoboxFixed = self.infoboxFactory.createInfobox(
+                    infoboxes.PLAYER_FIXED,
+                    body,
+                    self.stage,
+                    new Point(5, this.canvas.height - 50));
+
+                bodyImageObject.infoboxes.push(infoboxFloating);
+                bodyImageObject.infoboxes.push(infoboxFixed);
+            }
+            // create infoboxes end
+
 
             if (body instanceof Tile) {
                 image.x = body.gameRect.centerx;
@@ -52,7 +99,7 @@ class ViewEngine {
 
             else {
                 if (self.targetBody != undefined) {
-                    self.updateBodyPosition(body);
+                    self.updateBodyPosition(body, bodyImageObject);
                 }
 
                 if (body instanceof ActiveBody) {
@@ -61,22 +108,23 @@ class ViewEngine {
 
                 self.stage.addChild(image);
                 self.stage.sortChildren(function (a: createjs.Container, b: createjs.Container) {
-                                               if (a.zIndex < b.zIndex) return -1;
-                                               if (a.zIndex > b.zIndex) return 1;
-                                              return 0;
-                                 });
-                }
+                    if (a.zIndex < b.zIndex) return -1;
+                    if (a.zIndex > b.zIndex) return 1;
+                    return 0;
+                });
+            }
         });
 
         mechanicEngine.onBodyChanged.add(function (e) {
 
-            var bodyImage = self.bodyImages.filter(function (v) { return v.id === e.body.id ? true : false })[0].image;
+            var bodyImageObject = self.bodyImages.filter(function (v) { return v.id === e.body.id ? true : false })[0];
+            if (!bodyImageObject) return;
 
             switch (e.changesType) {
                 case BodyChangesType.direction:
                     {
                         if (e.body instanceof ActiveBody) {
-                            self.updateImageDirection(e.body.direction, bodyImage);
+                            self.updateImageDirection(e.body.direction, bodyImageObject.image);
                         }
 
                         break;
@@ -88,17 +136,25 @@ class ViewEngine {
                         }
                         else {
 
-                            self.updateBodyPosition(e.body);
+                            self.updateBodyPosition(e.body, bodyImageObject);
                         }
-
                         break;
                     }
                 case BodyChangesType.hp:
-                    var bodyImageObject = self.bodyImages.filter(function (v) { return v.id === e.body.id ? true : false })[0];
                     var animation = new BodyHitAnimation(bodyImageObject, self);
                     animation.start();
                     self.animations.push(animation);
+                    bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateLifeText() });
                     break;
+
+                case BodyChangesType.currentWeapon:
+                    bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateCurrentWeaponText() });
+                    break;
+
+                case BodyChangesType.score:
+                    bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateScoreText() });
+                    break;
+
                 default:
                     break;
             }
@@ -106,11 +162,11 @@ class ViewEngine {
         });
 
         mechanicEngine.onBodyRemove.add(function (body) {
-            var childImageToRemove: any[] = [];
+            var childrenImageObjectsToRemove: any[] = [];
 
             self.bodyImages = self.bodyImages.filter(function (v) {
                 if (v.id === body.id) {
-                    childImageToRemove.push(v.image);
+                    childrenImageObjectsToRemove.push(v);
 
                     return false;
                 }
@@ -118,36 +174,24 @@ class ViewEngine {
                     return true;
             });
 
-            if (childImageToRemove !== undefined) {
-                if(body instanceof Tile) {
-                        childImageToRemove.forEach(function (item) {
-                        self.mapImageContainer.removeChild(item);
+            if (childrenImageObjectsToRemove !== undefined) {
+                if (body instanceof Tile) {
+                    childrenImageObjectsToRemove.forEach(function (item) {
+                        self.mapImageContainer.removeChild(item.image);
                     });
                 }
                 else {
-                    childImageToRemove.forEach(function (item) {
-                        self.stage.removeChild(item);
+                    childrenImageObjectsToRemove.forEach(function (item) {
+                        self.stage.removeChild(item.image);
+                        item.infoboxes.forEach(function (infobox) { infobox.removeSelf(self.stage) });
                     });
-
- 
-            }
+                }
             }
 
         });
     }
 
-    initMenu(canvas) {
-        var textGap = 30;
-        this.weaponPoint = new Point(5, canvas.height - 50);
-        this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - textGap);
-        this.scorePoint = new Point(this.weaponPoint.x, this.lifePoint.y - textGap)
-        this.fpsPoint = new Point(canvas.width - 80, this.weaponPoint.y - 10);
-        this.pingPoint = new Point(canvas.width - 80, this.weaponPoint.y - 20);
-        
-    }
-
     render() {
-        this.updateMenu();
         this.updateAnimations();
         this.draw();
     }
@@ -161,30 +205,24 @@ class ViewEngine {
         var self = this;
         self.mechanicEngine.bodies.forEach(function (body) {
             if (body.id !== self.targetBody.id) {
-                self.updateBodyPosition(body);
+                var bodyImageObject = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0];
+                self.updateBodyPosition(body, bodyImageObject);
             }
         })
         self.updateMapImagePosition();
     }
 
-    updateBodyPosition(body: Body) {
+    updateBodyPosition(body: Body, bodyImageObject: BodyImage) {
         var self = this;
 
-        var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
-
-        if (bodyImage !== undefined) {
+        if (bodyImageObject.image !== undefined) {
             var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
             var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
 
-            bodyImage.x = self.targetBodyImage.x - dx;
-            bodyImage.y = self.targetBodyImage.y - dy;
-
-            // Update objectMenu for NPCAI only
-            //if (obj.serverBody.BodyType === "NPCAI") {
-            //    obj.objectMenu.x = self.target.image.x - dx;
-            //    obj.objectMenu.y = self.target.image.y - dy;
-            //}
+            bodyImageObject.image.x = self.targetBodyImage.x - dx;
+            bodyImageObject.image.y = self.targetBodyImage.y - dy;
         }
+        bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updatePosition(new Point(bodyImageObject.image.x, bodyImageObject.image.y)); });
     }
 
     updateMapImagePosition() {
@@ -198,27 +236,6 @@ class ViewEngine {
         self.stage.update();
     }
 
-    updateMenu () {
-        if (!this.menu.weapon || this.menu.weapon !== this.targetBody.currentWeapon) {
-            this.menu.updateWeapon(this.targetBody.currentWeapon, this.weaponPoint);
-        }
-
-        if (this.menu.life !== this.targetBody.life) {
-            this.menu.updateLife(this.targetBody.life, this.lifePoint);
-        }
-
-        if (this.menu.fps !== this.gameContext.fps) {
-            this.menu.updateFPS(this.gameContext.fps, this.fpsPoint)
-        }
-
-        if (this.menu.ping !== this.gameContext.ping) {
-            this.menu.updatePing(this.gameContext.ping, this.pingPoint)
-        }
-
-        if (this.menu.score !== this.targetBody.score) {
-            this.menu.updateScore(this.targetBody.score, this.scorePoint)
-        }
-    }
 
     updateImageDirection(newDirection: Vector, image: any) {
         var rotationDeltaRad = Math.acos(this.baseRotationVector.product(newDirection) /
@@ -252,16 +269,16 @@ class ViewEngine {
         this.targetBodyImage = this.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
         // Small Kostil - we need to recalculate map image coordinates at the very beginning
         this.updateMapImagePosition();
-        this.updateMenu();
-        this.stage.addChild(this.menu.weaponText, this.menu.lifeText, this.menu.fpsText, this.menu.scoreText, this.menu.pingText);
     }
-}   
+}
 
 class BodyImage {
     id: any;
     image: createjs.Container;
+    infoboxes: Infobox[];
     constructor(id, image) {
         this.id = id;
         this.image = image;
+        this.infoboxes = [];
     }
 }

@@ -27,7 +27,7 @@ class Body {
     bodyType: string;
     syncSessionId: number;
     direction: Vector;
-        createdByCommandId: number;
+    createdByCommandId: number;
 
 
     constructor(serverBody: ServerBody) {
@@ -97,13 +97,21 @@ class CharacterBody extends ActiveBody{
     serverSync(serverBody, mechanicEngine: MechanicEngineTS) {
         super.serverSync(serverBody, mechanicEngine);
         if (serverBody.Life !== this.life) {
-            mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.hp });
+            // to avoid body hit when drinking a bottle
+            //if (serverBody.Life < this.life) { 
+                mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.hp });
+            //}
             this.life = serverBody.Life;
         }
 
     }
 }
 
+class PlayerOtherBody extends CharacterBody {
+    constructor(serverBody: ServerCharacterBody) {
+        super(serverBody);
+    }
+}
 
 class PlayerBody extends CharacterBody {
 
@@ -114,13 +122,15 @@ class PlayerBody extends CharacterBody {
         //this.life = serverBody.Life;
 
         // Update weapon
-        if (serverBody.CurrentWeapon != 'undefined' && this.currentWeapon !== serverBody.CurrentWeapon) {
+        if (serverBody.CurrentWeapon && this.currentWeapon !== serverBody.CurrentWeapon) {
             this.currentWeapon = serverBody.CurrentWeapon;
+            mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.currentWeapon });
         }
 
         // Update score
-        if (serverBody.Score) {
+        if (serverBody.Score && serverBody.Score !== this.score) {
             this.score = serverBody.Score;
+            mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.score });
         }
     }
 }

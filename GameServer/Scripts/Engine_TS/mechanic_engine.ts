@@ -31,7 +31,6 @@ class MechanicEngineTS {
         this.player = new PlayerBody(body);
         var self = this;
         this.bodies.push(this.player);
-
         this.onBodyAdd.trigger(self.player);
     }
 

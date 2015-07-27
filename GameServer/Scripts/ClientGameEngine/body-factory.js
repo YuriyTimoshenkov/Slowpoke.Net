@@ -42,7 +42,7 @@
         return player;
     }
     this.builders[gameTypes.gameObjects.PLAYEROTHER] = function (serverBody) {
-        var player = new CharacterBody(serverBody);
+        var player = new PlayerOtherBody(serverBody);
 
         // Assign image
         var obj = new CowboyContainer();

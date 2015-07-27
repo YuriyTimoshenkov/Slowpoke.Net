@@ -26,8 +26,8 @@ function viewManagerFactory() {
     this.createViewManager = function (canvasTagId, gameContext) {
         var canvas = document.getElementById(canvasTagId);
         var canvasSize = { width: $(document).width(), height: $(document).height() }
-        var menu = new Menu();
-        return new ViewEngine(canvas, canvasSize, menu, gameContext, new ViewBodyFactory());
+        var infoboxFactory = new InfoboxFactory();
+        return new ViewEngine(canvas, canvasSize, infoboxFactory, gameContext, new ViewBodyFactory());
     }
 }
 
