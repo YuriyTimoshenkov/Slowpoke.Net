@@ -192,8 +192,8 @@ namespace SlowpokeEngine.Engines
                 var tile = notSolidTiles.ElementAt(tileNumber);
 
                 playerBody.Shape = new ShapeCircle(20, new Point(
-                    tile.Shape.Position.X,
-                    tile.Shape.Position.Y));
+                    200,//tile.Shape.Position.X,
+                    200));//tile.Shape.Position.Y));
             }
 
             playerBody.Heal(playerBody.LifeMax);

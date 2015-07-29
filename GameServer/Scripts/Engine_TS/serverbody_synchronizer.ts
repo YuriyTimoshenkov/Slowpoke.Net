@@ -35,6 +35,11 @@
 
                 break;
             }
+            case "PlayerBody": {
+                newBody = new PlayerOtherBody(<ServerCharacterBody> serverBody);
+
+                break;
+            }
         }
 
         if (newBody) {

@@ -48,7 +48,7 @@ namespace NPCClient
                 // Only PlayerBodies can be enemies
                 if (isEnemy(body))
                 {
-                    var _newDirection = Vector.Subtract(body.Shape.Position, _position);
+                    var _newDirection = Vector.CalculateUnitVector(Vector.Subtract(body.Shape.Position, _position));
                     double distance = calculateDistance(_newDirection);
                     if (distance < minDistance || minDistance == -1)
                     {

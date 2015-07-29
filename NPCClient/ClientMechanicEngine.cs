@@ -55,18 +55,25 @@ namespace NPCClient
         {
             var inputEvent = PlayerEvents[bodyId];
 
-            inputEvent.changeDirection = new InputEventPoint()
+            inputEvent.commands.Add(new InputCommand()
             {
-                X = direction.X,
-                Y = direction.Y
-            };
+                Name = "ChangeDirection",
+                Data = new List<IList<string>>()
+                {
+                    new List<string>() { "X", direction.X.ToString() },
+                    new List<string>() { "Y", direction.Y.ToString() },
+                }
+            });
         }
 
         public void Shoot(Guid bodyId)
         {
             var inputEvent = PlayerEvents[bodyId];
 
-            inputEvent.shoot = true;
+            inputEvent.commands.Add(new InputCommand()
+            {
+                Name = "Shoot"
+            });
         }
     }
 }
