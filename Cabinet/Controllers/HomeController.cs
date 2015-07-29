@@ -48,6 +48,9 @@ namespace Cabinet.Controllers
                 var gameSessions = gameSessionsRepo.Find(userId).OrderByDescending(v => v.StartTime).Take(10);
                 ViewBag.GameSessions = gameSessions;
                 ViewBag.GameSessionsCount = gameSessions.Count();
+
+                //Calculate score
+                ViewBag.Score = gameSessionsRepo.CalculateScore();
             }
 
             

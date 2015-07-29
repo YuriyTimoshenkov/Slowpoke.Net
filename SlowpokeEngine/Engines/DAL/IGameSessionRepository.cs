@@ -11,5 +11,7 @@ namespace SlowpokeEngine.DAL
         void AddSession(GameSession session);
         void CloseSession(Guid sessionId);
         IEnumerable<GameSession> Find(Guid userId);
+
+        int CalculateScore();
     }
 }

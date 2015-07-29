@@ -24,7 +24,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("My slowpoke", "Index", "Home")</li>
                     @if (Request.IsAuthenticated)
                     {
                        <li>@Html.ActionLink("Characters", "Characters", "Home")</li>
