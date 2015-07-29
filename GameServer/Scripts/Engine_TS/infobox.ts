@@ -167,14 +167,16 @@ class PerformanceInfoboxFixed extends Infobox {
         this.create(container);
     }
 
-    create(container) {
+    create(container: createjs.Stage) {
         this.createPPSText();
         this.createFPSText();
-        container.addChild(this.ppsPoint, this.fpsPoint);
+        console.log(this.ppsText.id)
+        console.log(this.fpsText.id)
+        container.addChild(this.ppsText, this.fpsText);
     }
 
     createPPSText() {
-        var text = "PPS: " + this.data.pps;
+        var text = "PPS: " + this.data.ping;
         this.ppsText = new createjs.Text(text, this.textSize + "px Arial", this.textColor);
         this.ppsText.x = this.ppsPoint.x;
         this.ppsText.y = this.ppsPoint.y;
@@ -194,15 +196,10 @@ class PerformanceInfoboxFixed extends Infobox {
     }
 
     updatePPSText() {
-        this.ppsText.text = "PPS: " + this.data.pps;
+        this.ppsText.text = "PPS: " + this.data.ping;
     }
 
     updateFPSText() {
         this.fpsText.text = "FPS: " + this.data.fps;
-    }
-
-    removeSelf(container) {
-        container.removeChild(this.ppsText);
-        container.removeChild(this.fpsText);
     }
 }

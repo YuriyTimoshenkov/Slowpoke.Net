@@ -5,6 +5,7 @@ class ViewEngine {
     mapImageContainer: createjs.Container;
     stage: createjs.Stage;
     canvas: any;
+    menu: Menu;
     viewBodyFactory: ViewBodyFactory;
     baseRotationVector: Vector;
     targetBody: PlayerBody;
@@ -13,7 +14,6 @@ class ViewEngine {
     mechanicEngine: MechanicEngineTS;
     gameContext: any;
     animations: Animation[];
-    generalInfoboxes: Infobox[];
 
     constructor(canvas, canvasSize, infoboxFactory: InfoboxFactory, gameContext, viewBodyFactory: ViewBodyFactory) {
         this.canvas = canvas;
@@ -23,20 +23,19 @@ class ViewEngine {
         this.infoboxFactory = infoboxFactory;
         this.animations = [];
         this.gameContext = gameContext;
+        this.menu = new Menu(this.gameContext, this.stage, this.canvas);
         this.viewBodyFactory = viewBodyFactory;
         this.bodyImages = [];
-        this.generalInfoboxes = [];
         this.baseRotationVector = new Vector(0, -1);
     }
 
     init(mechanicEngine: MechanicEngineTS) {
         var self = this;
         this.mechanicEngine = mechanicEngine;
+        this.menu.init();
         this.mapImageContainer = this.viewBodyFactory.createMapContainer();
-        this.stage.removeAllChildren();
         this.stage.addChild(this.mapImageContainer);
-
-        //var performanceInfobox = new PerformanceInfoboxFixed(this.gameContext, this.stage, new Point(this.canvas.width - 80, this.canvas.height - 50));
+        
         mechanicEngine.BodyAdded.add(function (body) {
             //console.log("VE, adding: " + body.bodyType);
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
@@ -165,7 +164,7 @@ class ViewEngine {
     }
 
     render() {
-        this.generalInfoboxes.forEach(function (v) { v.updateAll() });
+        this.menu.performanceInfobox.updateAll();
         this.updateAnimations();
         this.draw();
     }
@@ -209,7 +208,6 @@ class ViewEngine {
         var self = this;
         self.stage.update();
     }
-
 
     updateImageDirection(newDirection: Vector, image: any) {
         var rotationDeltaRad = Math.acos(this.baseRotationVector.product(newDirection) /
