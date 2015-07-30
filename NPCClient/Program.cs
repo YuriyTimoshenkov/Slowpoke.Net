@@ -13,13 +13,13 @@ namespace NPCClient
 {
     class Program
     {
-        static readonly string _serverUrl = "https://localhost:44301";
+        static readonly string _serverUrl = "http://localhost:8504";
         static IClientMechanicEngine _mechanicEngine = new ClientMechanicEngine();
         static IPlayerEventsProvider _eventProvider;
         static readonly int PingPerSecond = 15;
         static List<Guid> playersIdList = new List<Guid>()
         {
-            Guid.Parse("64428291-1832-481f-b8d2-e6e53ad782be"),
+            //Guid.Parse("64428291-1832-481f-b8d2-e6e53ad782be"),
             Guid.Parse("9c4366d2-22ef-4af1-b6d9-f2127dc373b6")
         };
 
