@@ -2,7 +2,9 @@
 
 class ViewEngine {
     bodyImages: BodyImage[];
-    mapImageContainer: createjs.Container;
+    level0Container: createjs.Container;  // Tile: ground
+    level1Container: createjs.Container;  // PassiveBody: various things, life containers, weapons
+    level2Container: createjs.Container;  // ActiveBody: humans, animals, bullets
     stage: createjs.Stage;
     canvas: any;
     menu: Menu;
@@ -33,11 +35,13 @@ class ViewEngine {
         var self = this;
         this.mechanicEngine = mechanicEngine;
         this.menu.init();
-        this.mapImageContainer = this.viewBodyFactory.createMapContainer();
-        this.stage.addChild(this.mapImageContainer);
+        this.level0Container = new createjs.Container();
+        this.level1Container = new createjs.Container();
+        this.level2Container = new createjs.Container();
+        // DO NOT CHANGE THE ORDER OF CONTAINERS - this is for sorting
+        this.stage.addChildAt(this.level0Container, this.level1Container, this.level2Container, 0);
         
         mechanicEngine.BodyAdded.add(function (body) {
-            //console.log("VE, adding: " + body.bodyType);
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
             var bodyImageObject = new BodyImage(body.id, image)
             self.bodyImages.push(bodyImageObject);
@@ -45,47 +49,25 @@ class ViewEngine {
             // create infoboxes start
             // if NPC
             if (body.bodyType === "NPCAI") {
-                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.NPC_FLOATING, body, self.stage, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.NPC_FLOATING, body, self.level2Container, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
                 bodyImageObject.infoboxes.push(infoboxFloating);
             }
 
             // if PlayerOther
             else if (body.bodyType === "PlayerBody" && body instanceof PlayerOtherBody) {
-                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.PLAYER_FLOATING, body, self.stage, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.PLAYER_FLOATING, body, self.level2Container, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
                 bodyImageObject.infoboxes.push(infoboxFloating);
             }
             // if Player
             else if (body.bodyType === "PlayerBody" && body instanceof PlayerBody) {
-                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.PLAYER_FLOATING, body, self.stage, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.PLAYER_FLOATING, body, self.level2Container, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
                 var infoboxFixed = self.infoboxFactory.createInfobox(infoboxes.PLAYER_FIXED, body, self.stage, new Point(5, this.canvas.height - 50));
                 bodyImageObject.infoboxes.push(infoboxFloating);
                 bodyImageObject.infoboxes.push(infoboxFixed);
             }
             // create infoboxes end
 
-
-            if (body instanceof Tile) {
-                image.x = body.gameRect.centerx;
-                image.y = body.gameRect.centery;
-                self.mapImageContainer.addChild(image);
-            }
-
-            else {
-                if (self.targetBody != undefined) {
-                    self.updateBodyPosition(body, bodyImageObject);
-                }
-
-                if (body instanceof ActiveBody) {
-                    self.updateImageDirection(body.direction, image);
-                }
-
-                self.stage.addChild(image);
-                self.stage.sortChildren(function (a: createjs.Container, b: createjs.Container) {
-                    if (a.zIndex < b.zIndex) return -1;
-                    if (a.zIndex > b.zIndex) return 1;
-                    return 0;
-                });
-            }
+            self.addBodyHandler(body, bodyImageObject.image);
         });
 
         mechanicEngine.onBodyChanged.add(function (e) {
@@ -103,13 +85,7 @@ class ViewEngine {
                     }
                 case BodyChangesType.position:
                     {
-                        if (self.targetBody.id == e.body.id) {
-                            self.updateCanvasPosition(self.mechanicEngine.bodies);
-                        }
-                        else {
-
-                            self.updateBodyPosition(e.body, bodyImageObject);
-                        }
+                        self.positionChangeHandler(e.body, bodyImageObject);
                         break;
                     }
                 case BodyChangesType.hp:
@@ -146,24 +122,42 @@ class ViewEngine {
                     return true;
             });
 
-            if (childrenImageObjectsToRemove !== undefined) {
+
+            childrenImageObjectsToRemove.forEach(function (item) { 
                 if (body instanceof Tile) {
-                    childrenImageObjectsToRemove.forEach(function (item) {
-                        self.mapImageContainer.removeChild(item.image);
-                    });
+                    self.level0Container.removeChild(item.image);
                 }
-                else {
-                    childrenImageObjectsToRemove.forEach(function (item) {
-                        self.stage.removeChild(item.image);
-                        item.infoboxes.forEach(function (infobox) { infobox.removeSelf(self.stage) });
-                    });
+                else if (body instanceof PassiveBody) {
+                    self.level1Container.removeChild(item.image);
+
                 }
-            }
+                else if (body instanceof ActiveBody) {
+                    self.level2Container.removeChild(item.image);
+                    item.infoboxes.forEach(function (infobox) { infobox.removeSelf(self.level2Container) });
+                }
+            });
 
         });
     }
 
+    addBodyHandler = (body: Body, image: createjs.DisplayObject) => {
+        image.x = body.gameRect.centerx;
+        image.y = body.gameRect.centery;
+        if (body instanceof Tile) {
+            this.level0Container.addChild(image);
+        }
+        else if (body instanceof PassiveBody) {
+            this.level1Container.addChild(image);
+        }   
+        else if (body instanceof ActiveBody) {
+            this.updateImageDirection(body.direction, image);
+            this.level2Container.addChild(image);
+        }
+        else console.log("ViewEngine: onboardObjectForRendering: Incorrect body type")
+    }
+
     render() {
+        console.log(this.bodyImages.length);
         this.menu.performanceInfobox.updateAll();
         this.updateAnimations();
         this.draw();
@@ -174,39 +168,30 @@ class ViewEngine {
         this.animations.forEach(function (animation) { animation.update(self); });
     }
 
-    updateCanvasPosition(bodies) {
-        var self = this;
-        self.mechanicEngine.bodies.forEach(function (body) {
-            if (body.id !== self.targetBody.id) {
-                var bodyImageObject = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0];
-                self.updateBodyPosition(body, bodyImageObject);
-            }
-        })
-        self.updateMapImagePosition();
+    updateContainersPosition = () => {
+        var halfCanvasWidth = this.canvas.width / 2;
+        var halfCanvasHeight = this.canvas.height / 2;
+        this.level0Container.regX = this.targetBody.gameRect.centerx - halfCanvasWidth;
+        this.level0Container.regY = this.targetBody.gameRect.centery - halfCanvasHeight
+
+        this.level1Container.regX = this.targetBody.gameRect.centerx - halfCanvasWidth;
+        this.level1Container.regY = this.targetBody.gameRect.centery - halfCanvasHeight;
+
+        this.level2Container.regX = this.targetBody.gameRect.centerx - halfCanvasWidth;
+        this.level2Container.regY = this.targetBody.gameRect.centery - halfCanvasHeight;
     }
 
-    updateBodyPosition(body: Body, bodyImageObject: BodyImage) {
-        var self = this;
-
-        if (bodyImageObject.image !== undefined) {
-            var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
-            var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
-
-            bodyImageObject.image.x = self.targetBodyImage.x - dx;
-            bodyImageObject.image.y = self.targetBodyImage.y - dy;
-        }
+    positionChangeHandler = (body, bodyImageObject) => {
+        bodyImageObject.image.x = body.gameRect.centerx;
+        bodyImageObject.image.y = body.gameRect.centery;
         bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updatePosition(new Point(bodyImageObject.image.x, bodyImageObject.image.y)); });
-    }
-
-    updateMapImagePosition() {
-        var self = this;
-        this.mapImageContainer.regX = this.targetBody.gameRect.centerx - this.targetBodyImage.x;
-        this.mapImageContainer.regY = this.targetBody.gameRect.centery - this.targetBodyImage.y;
+        if (this.targetBody.id === body.id) {
+            this.updateContainersPosition();
+        }
     }
 
     draw() {
-        var self = this;
-        self.stage.update();
+        this.stage.update();
     }
 
     updateImageDirection(newDirection: Vector, image: any) {
@@ -229,7 +214,8 @@ class ViewEngine {
     }
 
     calculatePlayerDirectionVector(mousePoint) {
-        var playerCenter = new Point(this.targetBodyImage.x, this.targetBodyImage.y);
+        //var playerCenter = new Point(this.targetBodyImage.x, this.targetBodyImage.y);
+        var playerCenter = new Point(this.canvas.width / 2, this.canvas.height / 2);
 
         // Get mouse vector not normalized
         var mouseVectorNotNormalized = new Vector(Math.round(mousePoint.x - playerCenter.x), Math.round(mousePoint.y - playerCenter.y));
@@ -238,9 +224,11 @@ class ViewEngine {
 
     setTarget(body) {
         this.targetBody = body;
-        this.targetBodyImage = this.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
-        // Small Kostil - we need to recalculate map image coordinates at the very beginning
-        this.updateMapImagePosition();
+    }
+
+    setTargetBodyImage() {
+        var self = this;
+        this.targetBodyImage = this.bodyImages.filter(function (v) { return v.id === self.targetBody.id ? true : false })[0].image;
     }
 }
 

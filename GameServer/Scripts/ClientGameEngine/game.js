@@ -2,14 +2,14 @@
  * Created by dimapct on 12.02.2015.
  */
 
-function Game(gameContext, serverProxy, controlsManager, viewManager) {
+function Game(gameContext, serverProxy, controlsManager, viewEngine) {
     var self = this
 
     this.serverProxy = serverProxy
     this.gameContext = gameContext
     this.serverFramesQueue = []
     this.controlsManager = controlsManager
-    this.viewManager = viewManager
+    this.viewEngine = viewEngine
     this.lastUpdateTime = 0;
     this.clock = new Date();
     this.lastServerSync = new Date()
@@ -29,7 +29,7 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
     }
 
     this.handleMouseMove = function (e) {
-        return self.viewManager.calculatePlayerDirectionVector(new Point(e.clientX, e.clientY))
+        return self.viewEngine.calculatePlayerDirectionVector(new Point(e.clientX, e.clientY))
     }
     
     this.handleLoadPlayer = function (player) {
@@ -48,11 +48,13 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
     this.handleLoadMap = function (serverMap) {
         
         self.mechanicEngine = new MechanicEngineTS(serverMap);
-        self.viewManager.init(self.mechanicEngine);
+        self.viewEngine.init(self.mechanicEngine);
 
         self.mechanicEngine.addPlayerBody(self.player);
 
-        self.viewManager.setTarget(self.mechanicEngine.player);
+        self.viewEngine.setTarget(self.mechanicEngine.player);
+        self.mechanicEngine.onBodyAdd.trigger(self.mechanicEngine.player);
+        self.viewEngine.setTargetBodyImage();
 
         self.mechanicEngine.onBodyChanged.trigger({ body: self.mechanicEngine.player, changesType: BodyChangesType.position });
 
@@ -141,7 +143,9 @@ function Game(gameContext, serverProxy, controlsManager, viewManager) {
 
         self.mechanicEngine.update();
 
-        this.viewManager.render();
+
+
+        this.viewEngine.render();
     }
 
     this.calcFPS = function () {

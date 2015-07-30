@@ -217,6 +217,7 @@ declare module createjs {
         visible: boolean;
         x: number;
         y: number;
+        zIndex: number;
 
         // methods
         cache(x: number, y: number, width: number, height: number, scale?: number): void;

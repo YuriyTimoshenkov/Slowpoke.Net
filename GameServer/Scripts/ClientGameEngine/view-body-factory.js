@@ -9,24 +9,17 @@
         return self.createGameObject(self.serverTypeMap[body.bodyType], body);
     }
 
-    this.createMapContainer = function () {
-        var image = new createjs.Container();
-        image.zIndex = 0;
-        
-        return image;
-    }
-
     this.builders = [];
     this.builders[gameTypes.gameObjects.PLAYER] = function (serverBody) {        
 
-        var canvasXY = new Point($(document).width() / 2,
-                                 $(document).height() / 2);
+        //var canvasXY = new Point($(document).width() / 2,
+        //                         $(document).height() / 2);
 
 
         // Assign image
         var image = new CowboyContainer().image;
-        image.x = canvasXY.x;
-        image.y = canvasXY.y;
+        //image.x = canvasXY.x;
+        //image.y = canvasXY.y;
 
         // Configure image
         var imageSize = 280;
@@ -35,8 +28,7 @@
         image.scaleX = 0.4;
         image.scaleY = 0.4;
         image.cache(0, 0, imageSize, imageSize);
-        image.zIndex = 10;
-
+        image.zIndex = 555;
         return image;
     }
     this.builders[gameTypes.gameObjects.PLAYEROTHER] = function (serverBody) {

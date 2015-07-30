@@ -106,7 +106,10 @@ class PlayerInfoboxFloating extends Infobox {
         this.nameText.y = this.startPoint.y - this.data.gameRect.height - 20;
         this.nameText.zIndex = 100;
     }
-
+    updatePosition(startPoint) {
+        this.nameText.x = startPoint.x - this.data.gameRect.width;
+        this.nameText.y = startPoint.y - this.data.gameRect.height - 20;
+    }
     removeSelf(container) {
         container.removeChild(this.nameText);
     }
@@ -170,8 +173,6 @@ class PerformanceInfoboxFixed extends Infobox {
     create(container: createjs.Stage) {
         this.createPPSText();
         this.createFPSText();
-        console.log(this.ppsText.id)
-        console.log(this.fpsText.id)
         container.addChild(this.ppsText, this.fpsText);
     }
 

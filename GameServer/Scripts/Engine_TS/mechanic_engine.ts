@@ -29,9 +29,7 @@ class MechanicEngineTS {
 
     addPlayerBody(body: ServerCharacterBody) {
         this.player = new PlayerBody(body);
-        var self = this;
         this.bodies.push(this.player);
-        this.onBodyAdd.trigger(self.player);
     }
 
     addCommand(command: CommandBase) {
