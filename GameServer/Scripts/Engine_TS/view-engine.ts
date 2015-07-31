@@ -2,9 +2,9 @@
 
 class ViewEngine {
     bodyImages: BodyImage[];
-    level0Container: createjs.Container;  // Tile: ground
-    level1Container: createjs.Container;  // PassiveBody: various things, life containers, weapons
-    level2Container: createjs.Container;  // ActiveBody: humans, animals, bullets
+    levelContainers: createjs.Container[];  // Tile: ground
+    //level1Container: createjs.Container;  // PassiveBody: various things, life containers, weapons
+    //level2Container: createjs.Container;  // ActiveBody: humans, animals, bullets
     stage: createjs.Stage;
     canvas: any;
     menu: Menu;
@@ -35,11 +35,14 @@ class ViewEngine {
         var self = this;
         this.mechanicEngine = mechanicEngine;
         this.menu.init();
-        this.level0Container = new createjs.Container();
-        this.level1Container = new createjs.Container();
-        this.level2Container = new createjs.Container();
+
+        this.levelContainers = [];
+        this.levelContainers.push(new createjs.Container());
+        this.levelContainers.push(new createjs.Container());
+        this.levelContainers.push(new createjs.Container());
+
         // DO NOT CHANGE THE ORDER OF CONTAINERS - this is for sorting
-        this.stage.addChildAt(this.level0Container, this.level1Container, this.level2Container, 0);
+        this.stage.addChildAt(this.levelContainers[0], this.levelContainers[1], this.levelContainers[2], 0);
         
         mechanicEngine.BodyAdded.add(function (body) {
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
@@ -70,9 +73,9 @@ class ViewEngine {
                         break;
                     }
                 case BodyChangesType.hp:
-                    var animation = new BodyHitAnimation(bodyImageObject, self);
-                    animation.start();
-                    self.animations.push(animation);
+                    //var animation = new BodyHitAnimation(bodyImageObject, self);
+                    //animation.start();
+                    //self.animations.push(animation);
                     bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateLifeText() });
                     break;
 
@@ -106,15 +109,16 @@ class ViewEngine {
 
             childrenImageObjectsToRemove.forEach(function (item) { 
                 if (body instanceof Tile) {
-                    self.level0Container.removeChild(item.image);
+                    self.levelContainers[0].removeChild(item.image);
                 }
                 else if (body instanceof PassiveBody) {
-                    self.level1Container.removeChild(item.image);
+                    self.levelContainers[1].removeChild(item.image);
 
                 }
                 else if (body instanceof ActiveBody) {
-                    self.level2Container.removeChild(item.image);
-                    item.infoboxes.forEach(function (infobox) { infobox.removeSelf(self.level2Container) });
+                    self.levelContainers[2].removeChild(item.image);
+
+                    item.infoboxes.forEach(function (infobox) { infobox.removeSelf(self.levelContainers[2]) });
                 }
             });
 
@@ -127,7 +131,7 @@ class ViewEngine {
         infoboxes.forEach((infobox) => {
             var container;
             if (infobox instanceof PlayerInfoboxFixed) container = self.stage
-            else container = self.level2Container;
+            else container = self.levelContainers[2];
             infobox.addSelfToContainer(container);
         });
         bodyImageObject.infoboxes = bodyImageObject.infoboxes.concat(infoboxes);
@@ -136,15 +140,17 @@ class ViewEngine {
     addBodyHandler = (body: Body, image: createjs.DisplayObject) => {
         image.x = body.gameRect.centerx;
         image.y = body.gameRect.centery;
+
+
         if (body instanceof Tile) {
-            this.level0Container.addChild(image);
+            this.levelContainers[0].addChild(image);
         }
         else if (body instanceof PassiveBody) {
-            this.level1Container.addChild(image);
+            this.levelContainers[1].addChild(image);
         }   
         else if (body instanceof ActiveBody) {
             this.updateImageDirection(body.direction, image);
-            this.level2Container.addChild(image);
+            this.levelContainers[2].addChild(image);
         }
         else console.log("ViewEngine: onboardObjectForRendering: Incorrect body type")
     }
@@ -163,20 +169,20 @@ class ViewEngine {
     updateContainersPosition = () => {
         var halfCanvasWidth = this.canvas.width / 2;
         var halfCanvasHeight = this.canvas.height / 2;
-        this.level0Container.regX = this.targetBody.gameRect.centerx - halfCanvasWidth;
-        this.level0Container.regY = this.targetBody.gameRect.centery - halfCanvasHeight
+        var self = this;
 
-        this.level1Container.regX = this.targetBody.gameRect.centerx - halfCanvasWidth;
-        this.level1Container.regY = this.targetBody.gameRect.centery - halfCanvasHeight;
-
-        this.level2Container.regX = this.targetBody.gameRect.centerx - halfCanvasWidth;
-        this.level2Container.regY = this.targetBody.gameRect.centery - halfCanvasHeight;
+        this.levelContainers.forEach(function (container) {
+            container.regX = self.targetBody.gameRect.centerx - halfCanvasWidth;
+            container.regY = self.targetBody.gameRect.centery - halfCanvasHeight
+        });
     }
 
     positionChangeHandler = (body, bodyImageObject) => {
         bodyImageObject.image.x = body.gameRect.centerx;
         bodyImageObject.image.y = body.gameRect.centery;
+
         bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updatePosition(new Point(bodyImageObject.image.x, bodyImageObject.image.y)); });
+
         if (this.targetBody.id === body.id) {
             this.updateContainersPosition();
         }

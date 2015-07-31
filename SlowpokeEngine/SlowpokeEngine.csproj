@@ -85,7 +85,7 @@
     <Compile Include="Engines\Map\IMapTile.cs" />
     <Compile Include="Engines\Map\Map.cs" />
     <Compile Include="Engines\Map\MapTerrain.cs" />
-    <Compile Include="Engines\Map\MapTile.cs" />
+    <Compile Include="Engines\MechanicEngine\MapTile.cs" />
     <Compile Include="Engines\Map\TileSolidityType.cs" />
     <Compile Include="Engines\MechanicEngine\MechanicEngineHandlersBuilder.cs" />
     <Compile Include="Engines\Services\IMechanicService.cs" />
