@@ -46,26 +46,7 @@ class ViewEngine {
             var bodyImageObject = new BodyImage(body.id, image)
             self.bodyImages.push(bodyImageObject);
 
-            // create infoboxes start
-            // if NPC
-            if (body.bodyType === "NPCAI") {
-                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.NPC_FLOATING, body, self.level2Container, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
-                bodyImageObject.infoboxes.push(infoboxFloating);
-            }
-
-            // if PlayerOther
-            else if (body.bodyType === "PlayerBody" && body instanceof PlayerOtherBody) {
-                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.PLAYER_FLOATING, body, self.level2Container, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
-                bodyImageObject.infoboxes.push(infoboxFloating);
-            }
-            // if Player
-            else if (body.bodyType === "PlayerBody" && body instanceof PlayerBody) {
-                var infoboxFloating = self.infoboxFactory.createInfobox(infoboxes.PLAYER_FLOATING, body, self.level2Container, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
-                var infoboxFixed = self.infoboxFactory.createInfobox(infoboxes.PLAYER_FIXED, body, self.stage, new Point(5, this.canvas.height - 50));
-                bodyImageObject.infoboxes.push(infoboxFloating);
-                bodyImageObject.infoboxes.push(infoboxFixed);
-            }
-            // create infoboxes end
+            self.createInfoboxes(body, bodyImageObject);
 
             self.addBodyHandler(body, bodyImageObject.image);
         });
@@ -140,6 +121,18 @@ class ViewEngine {
         });
     }
 
+    createInfoboxes(body, bodyImageObject) {
+        var self = this;
+        var infoboxes = self.infoboxFactory.createInfoboxes(body, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+        infoboxes.forEach((infobox) => {
+            var container;
+            if (infobox instanceof PlayerInfoboxFixed) container = self.stage
+            else container = self.level2Container;
+            infobox.addSelfToContainer(container);
+        });
+        bodyImageObject.infoboxes = bodyImageObject.infoboxes.concat(infoboxes);
+    }
+
     addBodyHandler = (body: Body, image: createjs.DisplayObject) => {
         image.x = body.gameRect.centerx;
         image.y = body.gameRect.centery;
@@ -157,8 +150,7 @@ class ViewEngine {
     }
 
     render() {
-        console.log(this.bodyImages.length);
-        this.menu.performanceInfobox.updateAll();
+        this.menu.update();
         this.updateAnimations();
         this.draw();
     }

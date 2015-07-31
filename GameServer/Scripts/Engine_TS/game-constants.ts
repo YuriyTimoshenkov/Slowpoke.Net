@@ -1,4 +1,4 @@
-﻿enum gameObjects {
+﻿enum GameObjects {
     PLAYER,
     PLAYEROTHER,
     NPCAI,
@@ -16,4 +16,4 @@
     FORD
 }
 
-enum infoboxes { PLAYER_FIXED, PLAYER_FLOATING, NPC_FLOATING }
+enum Infoboxes { PLAYER_FIXED, PLAYER_FLOATING, NPC_FLOATING }

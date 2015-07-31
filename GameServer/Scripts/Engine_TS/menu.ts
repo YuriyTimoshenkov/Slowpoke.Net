@@ -11,10 +11,11 @@
     }
 
     init() {
-        this.performanceInfobox = new PerformanceInfoboxFixed(this.gameContext, this.stage, new Point(this.canvas.width - 80, this.canvas.height - 50));
+        this.performanceInfobox = new PerformanceInfoboxFixed(this.gameContext, new Point(this.canvas.width - 80, this.canvas.height - 50));
+        this.performanceInfobox.addSelfToContainer(this.stage);
     }
 
     update() {
-        this.performanceInfobox.updateAll();
+        this.performanceInfobox.update();
     }
 }

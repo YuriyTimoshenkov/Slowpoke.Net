@@ -1,7 +1,7 @@
 ﻿class Infobox {
     data: any;
 
-    constructor(data, container, startPoint?) {
+    constructor(data, startPoint?) {
         this.data = data;
     }
     updatePosition(startPoint: Point) { }
@@ -10,7 +10,7 @@
     updateCurrentWeaponText() { }
     updateScoreText() { }
     updateAll() { }
- 
+    addSelfToContainer(container) { }
     removeSelf(container) { }   
 }
 
@@ -28,18 +28,21 @@ class PlayerInfoboxFixed extends Infobox {
         weaponText: createjs.Text;
         scoreText: createjs.Text;
 
-        constructor(data, container: createjs.Stage, startPoint?: Point) {
-            super(data, container);
+        constructor(data, startPoint?: Point) {
+            super(data);
             this.weaponPoint = startPoint;
             this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - this.textGap);
             this.scorePoint = new Point(this.weaponPoint.x, this.lifePoint.y - this.textGap);
-            this.create(container);
+            this.create();
         }
         
-        create(container) {
+        create() {
             this.createLifeText();
             this.createWeaponText();
             this.createScoreText();
+        }
+
+        addSelfToContainer(container) {
             container.addChild(this.lifeText, this.weaponText, this.scoreText);
         }
 
@@ -89,14 +92,17 @@ class PlayerInfoboxFloating extends Infobox {
     startPoint: Point;
     nameText: createjs.Text;
 
-    constructor(data, container, startPoint) {
-        super(data, container, startPoint);
+    constructor(data, startPoint) {
+        super(data, startPoint);
         this.startPoint = startPoint;
-        this.create(container);
+        this.create();
     }
 
-    create(container) {
+    create() {
         this.createNameText();
+    }
+
+    addSelfToContainer(container) {
         container.addChild(this.nameText);
     }
 
@@ -123,17 +129,18 @@ class NPCInfoboxFloating extends Infobox {
     lifeText: createjs.Text;
 
 
-    constructor(data, container, startPoint) {
-        super(data, container, startPoint);
+    constructor(data, startPoint) {
+        super(data, startPoint);
         this.startPoint = startPoint;
-        this.create(container);
+        this.create();
     }
 
-    create(container) {
+    create() {
         this.createLifeText();
+    }
+    addSelfToContainer(container) {
         container.addChild(this.lifeText);
     }
-
     createLifeText() {
         this.lifeText = new createjs.Text(this.data.life, this.textSize + "px Arial", this.lifeTextColor);
         this.lifeText.x = this.startPoint.x - this.data.gameRect.width;
@@ -163,19 +170,20 @@ class PerformanceInfoboxFixed extends Infobox {
     ppsText: createjs.Text;
     fpsText: createjs.Text;
 
-    constructor(data, container: createjs.Stage, startPoint?: Point) {
-        super(data, container);
+    constructor(data, startPoint?: Point) {
+        super(data);
         this.ppsPoint = startPoint;
         this.fpsPoint = new Point(this.ppsPoint.x, this.ppsPoint.y - this.textGap);
-        this.create(container);
+        this.create();
     }
 
-    create(container: createjs.Stage) {
+    create() {
         this.createPPSText();
         this.createFPSText();
+    }
+    addSelfToContainer(container) {
         container.addChild(this.ppsText, this.fpsText);
     }
-
     createPPSText() {
         var text = "PPS: " + this.data.ping;
         this.ppsText = new createjs.Text(text, this.textSize + "px Arial", this.textColor);
@@ -191,7 +199,7 @@ class PerformanceInfoboxFixed extends Infobox {
         this.fpsText.zIndex = 100;
     }
 
-    updateAll() {
+    update() {
         this.updatePPSText();
         this.updateFPSText();
     }
