@@ -2,9 +2,7 @@
 
 class ViewEngine {
     bodyImages: BodyImage[];
-    levelContainers: createjs.Container[];  // Tile: ground
-    //level1Container: createjs.Container;  // PassiveBody: various things, life containers, weapons
-    //level2Container: createjs.Container;  // ActiveBody: humans, animals, bullets
+    levelContainers: createjs.Container[];  
     stage: createjs.Stage;
     canvas: any;
     menu: Menu;
@@ -35,7 +33,10 @@ class ViewEngine {
         var self = this;
         this.mechanicEngine = mechanicEngine;
         this.menu.init();
-
+        
+        // Tile: ground
+        // PassiveBody: various things, life containers, weapons
+        // ActiveBody: humans, animals, bullets
         this.levelContainers = [];
         this.levelContainers.push(new createjs.Container());
         this.levelContainers.push(new createjs.Container());
@@ -73,9 +74,9 @@ class ViewEngine {
                         break;
                     }
                 case BodyChangesType.hp:
-                    //var animation = new BodyHitAnimation(bodyImageObject, self);
-                    //animation.start();
-                    //self.animations.push(animation);
+                    var animation = new BodyHitAnimation(bodyImageObject, self);
+                    animation.start();
+                    self.animations.push(animation);
                     bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateLifeText() });
                     break;
 
