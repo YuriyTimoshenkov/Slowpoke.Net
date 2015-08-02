@@ -1,21 +1,11 @@
-﻿class Infobox {
-    data: any;
-
-    constructor(data, startPoint?) {
-        this.data = data;
-    }
-    updatePosition(startPoint: Point) { }
-
-    updateLifeText() { } 
-    updateCurrentWeaponText() { }
-    updateScoreText() { }
-    updateAll() { }
-    addSelfToContainer(container) { }
-    removeSelf(container) { }   
+﻿interface Infobox {
+    update(updateType: BodyChangesType, body: Body);
+    addSelfToContainer(container: createjs.Container);
+    removeSelf(container: createjs.Container);
 }
 
 
-class PlayerInfoboxFixed extends Infobox {
+class PlayerInfoboxFixed implements Infobox{
         textGap = 30;
         lifeTextColor = "blue";
         weaponTextColor = "blue";
@@ -28,55 +18,54 @@ class PlayerInfoboxFixed extends Infobox {
         weaponText: createjs.Text;
         scoreText: createjs.Text;
 
-        constructor(data, startPoint?: Point) {
-            super(data);
+        constructor(body: CharacterBody, startPoint: Point) {
             this.weaponPoint = startPoint;
             this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - this.textGap);
             this.scorePoint = new Point(this.weaponPoint.x, this.lifePoint.y - this.textGap);
-            this.create();
+            this.create(body);
         }
         
-        create() {
-            this.createLifeText();
-            this.createWeaponText();
-            this.createScoreText();
+        create(body: CharacterBody) {
+            this.createLifeText(body);
+            this.createWeaponText(body);
+            this.createScoreText(body);
         }
 
         addSelfToContainer(container) {
             container.addChild(this.lifeText, this.weaponText, this.scoreText);
         }
 
-        createLifeText() {
-            var text = "HP: " + this.data.life;
+        createLifeText(body: CharacterBody) {
+            var text = "HP: " + body.life;
             this.lifeText = new createjs.Text(text, this.textSize + "px Arial", this.lifeTextColor);
             this.lifeText.x = this.lifePoint.x;
             this.lifeText.y = this.lifePoint.y;
             this.lifeText.zIndex = 100;
         }
-        createWeaponText() {
-            this.weaponText = new createjs.Text(this.data.currentWeapon, this.textSize + "px Arial", this.lifeTextColor);
+        createWeaponText(body: CharacterBody) {
+            this.weaponText = new createjs.Text(body.currentWeapon, this.textSize + "px Arial", this.lifeTextColor);
             this.weaponText.zIndex = 3;
             this.weaponText.x = this.weaponPoint.x;
             this.weaponText.y = this.weaponPoint.y;
             this.weaponText.zIndex = 100;
         }
-        createScoreText() {
-            var text = "Score: " + this.data.score;
+        createScoreText(body: CharacterBody) {
+            var text = "Score: " + body.score;
             this.scoreText = new createjs.Text(text, this.textSize + "px Arial", this.scoreTextColor);
             this.scoreText.x = this.scorePoint.x;
             this.scoreText.y = this.scorePoint.y;
             this.scoreText.zIndex = 100;
         }
         
-        updateScoreText() {
-            this.scoreText.text = "Score: " + this.data.score;
+        updateScoreText(body: CharacterBody) {
+            this.scoreText.text = "Score: " + body.score;
         }
 
-        updateCurrentWeaponText() {
-            this.weaponText.text = this.data.currentWeapon;
+        updateCurrentWeaponText(body: CharacterBody) {
+            this.weaponText.text = body.currentWeapon;
         }
-        updateLifeText() {
-            this.lifeText.text = "HP: " + this.data.life;
+        updateLifeText(body: CharacterBody) {
+            this.lifeText.text = "HP: " + body.life;
         } 
 
         removeSelf(container) {
@@ -84,84 +73,90 @@ class PlayerInfoboxFixed extends Infobox {
             container.removeChild(this.weaponText);
             container.removeChild(this.scoreText);
         }   
+
+        update(updateType: BodyChangesType, body: CharacterBody) {
+            this.updateScoreText(body);
+            this.updateCurrentWeaponText(body);
+            this.updateLifeText(body);
+        }
 }
 
-class PlayerInfoboxFloating extends Infobox {
+class PlayerInfoboxFloating implements Infobox {
     nameTextColor = "blue";
     textSize = 10;
-    startPoint: Point;
     nameText: createjs.Text;
 
-    constructor(data, startPoint) {
-        super(data, startPoint);
-        this.startPoint = startPoint;
-        this.create();
+    constructor(body: CharacterBody) {
+        this.create(body);
     }
 
-    create() {
-        this.createNameText();
+    create(body: CharacterBody) {
+        this.createNameText(body);
     }
 
     addSelfToContainer(container) {
         container.addChild(this.nameText);
     }
 
-    createNameText() {
-        this.nameText = new createjs.Text(this.data.name, this.textSize + "px Arial", this.nameTextColor);
-        this.nameText.x = this.startPoint.x - this.data.gameRect.width;
-        this.nameText.y = this.startPoint.y - this.data.gameRect.height - 20;
+    createNameText(body: CharacterBody) {
+        this.nameText = new createjs.Text(body.name, this.textSize + "px Arial", this.nameTextColor);
+        this.updatePosition(body);
         this.nameText.zIndex = 100;
     }
-    updatePosition(startPoint) {
-        this.nameText.x = startPoint.x - this.data.gameRect.width;
-        this.nameText.y = startPoint.y - this.data.gameRect.height - 20;
+    updatePosition(body: CharacterBody) {
+        this.nameText.x = body.gameRect.centerx - body.gameRect.width;
+        this.nameText.y = body.gameRect.centery - body.gameRect.height - 20;
     }
     removeSelf(container) {
         container.removeChild(this.nameText);
     }
 
+    update(updateType: BodyChangesType, body: CharacterBody) {
+        this.updatePosition(body);
+    }
 }
 
-class NPCInfoboxFloating extends Infobox {
+class NPCInfoboxFloating implements Infobox {
     lifeTextColor = "red";
     textSize = 16;
-    startPoint: Point;
     lifeText: createjs.Text;
 
 
-    constructor(data, startPoint) {
-        super(data, startPoint);
-        this.startPoint = startPoint;
-        this.create();
+    constructor(body: CharacterBody) {
+        this.create(body);
     }
 
-    create() {
-        this.createLifeText();
+    create(body: CharacterBody) {
+        this.createLifeText(body);
     }
     addSelfToContainer(container) {
         container.addChild(this.lifeText);
     }
-    createLifeText() {
-        this.lifeText = new createjs.Text(this.data.life, this.textSize + "px Arial", this.lifeTextColor);
-        this.lifeText.x = this.startPoint.x - this.data.gameRect.width;
-        this.lifeText.y = this.startPoint.y - this.data.gameRect.height - 20;
+    createLifeText(body: CharacterBody) {
+        this.lifeText = new createjs.Text(body.life.toString(), this.textSize + "px Arial", this.lifeTextColor);
+        this.updatePosition(body);
         this.lifeText.zIndex = 100;
     }
 
-    updatePosition(startPoint) {
-        this.lifeText.x = startPoint.x - this.data.gameRect.width;
-        this.lifeText.y = startPoint.y - this.data.gameRect.height - 20;
+    updatePosition(body: CharacterBody) {
+        this.lifeText.x = body.gameRect.centerx - body.gameRect.width;
+        this.lifeText.y = body.gameRect.centery - body.gameRect.height - 20;
     }
-    updateLifeText() {
-        this.lifeText.text = this.data.life;
+    updateLifeText(body: CharacterBody) {
+        this.lifeText.text = body.life.toString();
     } 
 
     removeSelf(container) {
         container.removeChild(this.lifeText);
     }
+
+    update(updateType: BodyChangesType, body: CharacterBody) {
+        this.updatePosition(body);
+        this.updateLifeText(body);
+    }
 }
 
-class PerformanceInfoboxFixed extends Infobox {
+class PerformanceInfoboxFixed  {
     textGap = 20;
     textColor = "red";
     textSize = 10;
@@ -169,9 +164,10 @@ class PerformanceInfoboxFixed extends Infobox {
     fpsPoint: Point;
     ppsText: createjs.Text;
     fpsText: createjs.Text;
+    data: any;
 
-    constructor(data, startPoint?: Point) {
-        super(data);
+    constructor(data, startPoint: Point) {
+        this.data = data;
         this.ppsPoint = startPoint;
         this.fpsPoint = new Point(this.ppsPoint.x, this.ppsPoint.y - this.textGap);
         this.create();

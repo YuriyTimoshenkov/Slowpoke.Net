@@ -8,35 +8,51 @@ namespace SlowpokeEngine.DAL
 {
     public class GameSessionRepositoryEF : IGameSessionRepository
     {
-        private GameStorage _gameStorage;
-
-        public GameSessionRepositoryEF()
-        {
-            _gameStorage = new GameStorage("DefaultConnection");
-        }
-
         public void AddSession(GameSession session)
         {
-            _gameStorage.Sessions.Add(session);
-            _gameStorage.SaveChanges();
+            using (var _gameStorage = new GameStorage("DefaultConnection"))
+            {
+                _gameStorage.Sessions.Add(session);
+                _gameStorage.SaveChanges();
+            }
         }
 
-        public void CloseSession(Guid sessionId)
+        public void CloseSession(Guid sessionId, int score)
         {
-            var session = _gameStorage.Sessions.FirstOrDefault(v => v.Id == sessionId);
-            session.EndTime = DateTime.Now;
+            using (var _gameStorage = new GameStorage("DefaultConnection"))
+            {
+                var session = _gameStorage.Sessions.FirstOrDefault(v => v.Id == sessionId);
+                session.EndTime = DateTime.Now;
+                session.Score = score;
 
-            _gameStorage.SaveChanges();
+                _gameStorage.SaveChanges();
+            }
+        }
+
+        public IEnumerable<GameSession> FindLastGameSessions(Guid userId, int sessionsCount)
+        {
+            using (var _gameStorage = new GameStorage("DefaultConnection"))
+            {
+                return _gameStorage.Sessions.Include(v => v.Character)
+                    .Where(v => v.Character.OwnerUserId == userId)
+                    .OrderByDescending(v => v.StartTime).Take(sessionsCount).ToList();
+            }
         }
 
         public IEnumerable<GameSession> Find(Guid userId)
         {
-            return _gameStorage.Sessions.Include(v => v.Character).Where(v => v.Character.OwnerUserId == userId);
+            using (var _gameStorage = new GameStorage("DefaultConnection"))
+            {
+                return _gameStorage.Sessions.Include(v => v.Character).Where(v => v.Character.OwnerUserId == userId);
+            }
         }
 
         public int CalculateScore()
         {
-            return _gameStorage.Sessions.Sum(v => v.Score);
+            using (var _gameStorage = new GameStorage("DefaultConnection"))
+            {
+                return _gameStorage.Sessions.Sum(v => v.Score);
+            }
         }
     }
 }

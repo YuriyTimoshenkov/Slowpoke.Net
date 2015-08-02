@@ -45,14 +45,14 @@ class ViewEngine {
         // DO NOT CHANGE THE ORDER OF CONTAINERS - this is for sorting
         this.stage.addChildAt(this.levelContainers[0], this.levelContainers[1], this.levelContainers[2], 0);
         
-        mechanicEngine.BodyAdded.add(function (body) {
+        mechanicEngine.BodyAdded.add(function (body: Body) {
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
             var bodyImageObject = new BodyImage(body.id, image)
             self.bodyImages.push(bodyImageObject);
 
-            self.createInfoboxes(body, bodyImageObject);
-
             self.addBodyHandler(body, bodyImageObject.image);
+
+            self.createInfoboxes(body, bodyImageObject);
         });
 
         mechanicEngine.onBodyChanged.add(function (e) {
@@ -77,20 +77,25 @@ class ViewEngine {
                     var animation = new BodyHitAnimation(bodyImageObject, self);
                     animation.start();
                     self.animations.push(animation);
-                    bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateLifeText() });
+                    //bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateLifeText() });
                     break;
 
                 case BodyChangesType.currentWeapon:
-                    bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateCurrentWeaponText() });
+                    //bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateCurrentWeaponText() });
                     break;
 
                 case BodyChangesType.score:
-                    bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateScoreText() });
+                    //bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateScoreText() });
                     break;
 
                 default:
                     break;
             }
+
+            bodyImageObject.infoboxes.forEach(function (infobox)
+            {
+                infobox.update(e.changesType, e.body)
+            });
 
         });
 
@@ -126,9 +131,10 @@ class ViewEngine {
         });
     }
 
-    createInfoboxes(body, bodyImageObject) {
+    createInfoboxes(body: Body, bodyImageObject: BodyImage) {
         var self = this;
         var infoboxes = self.infoboxFactory.createInfoboxes(body, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+
         infoboxes.forEach((infobox) => {
             var container;
             if (infobox instanceof PlayerInfoboxFixed) container = self.stage
@@ -178,11 +184,14 @@ class ViewEngine {
         });
     }
 
-    positionChangeHandler = (body, bodyImageObject) => {
+    positionChangeHandler = (body: Body, bodyImageObject: BodyImage) => {
         bodyImageObject.image.x = body.gameRect.centerx;
         bodyImageObject.image.y = body.gameRect.centery;
 
-        bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updatePosition(new Point(bodyImageObject.image.x, bodyImageObject.image.y)); });
+        //bodyImageObject.infoboxes.forEach(function (infobox) {
+        //    infobox.update(BodyChangesType.position, body);
+        //    //(new Point(bodyImageObject.image.x, bodyImageObject.image.y));
+        //});
 
         if (this.targetBody.id === body.id) {
             this.updateContainersPosition();

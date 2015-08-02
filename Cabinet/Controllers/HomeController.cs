@@ -45,7 +45,7 @@ namespace Cabinet.Controllers
 
                 //Get last 10 game sessions
                 var gameSessionsRepo = new GameSessionRepositoryEF();
-                var gameSessions = gameSessionsRepo.Find(userId).OrderByDescending(v => v.StartTime).Take(10);
+                var gameSessions = gameSessionsRepo.FindLastGameSessions(userId, 10);
                 ViewBag.GameSessions = gameSessions;
                 ViewBag.GameSessionsCount = gameSessions.Count();
 

@@ -8,36 +8,38 @@
         this.generateBuilders();
     }
 
-    createInfoboxes(data, startPoint?): Infobox[]{
+    createInfoboxes(data: Body, startPoint: Point): Infobox[]{
         var self = this;
         var infoboxes = [];
         var infoboxTypes = this.getInfoboxTypesToCreate(data);
+
         infoboxTypes.forEach((infoboxType) => {
             var infobox = self.builders[infoboxType](data, startPoint);
             infoboxes.push(infobox);
         });
+
         return infoboxes;
     }
 
     generateBuilders() {
         var self = this;
-        this.builders[Infoboxes.PLAYER_FIXED] = function (data, startPoint): Infobox{
+        this.builders[Infoboxes.PLAYER_FIXED] = function (data: CharacterBody, startPoint): Infobox{
             var startPointOverride = new Point(5, self.gameCanvas.height - 50)
             var infobox = new PlayerInfoboxFixed(data, startPointOverride);
             return infobox
         }
 
-        this.builders[Infoboxes.PLAYER_FLOATING] = function (data, startPoint): Infobox{
-            var infobox = new PlayerInfoboxFloating(data, startPoint);
-            return infobox
+        this.builders[Infoboxes.PLAYER_FLOATING] = function (data: CharacterBody, startPoint): Infobox{
+            var infobox = new PlayerInfoboxFloating(data);
+            return infobox;
         }
-        this.builders[Infoboxes.NPC_FLOATING] = function (data, startPoint): Infobox{
-            var infobox = new NPCInfoboxFloating(data, startPoint);
+        this.builders[Infoboxes.NPC_FLOATING] = function (data: CharacterBody, startPoint): Infobox{
+            var infobox = new NPCInfoboxFloating(data);
             return infobox
         }
     }
 
-    getInfoboxTypesToCreate(data): number[] {
+    getInfoboxTypesToCreate(data: Body): number[] {
         var infoboxTypes = [];
         // if NPC
         if (data.bodyType === "NPCAI") {

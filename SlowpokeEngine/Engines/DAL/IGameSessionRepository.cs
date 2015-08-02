@@ -9,8 +9,10 @@ namespace SlowpokeEngine.DAL
     public interface IGameSessionRepository
     {
         void AddSession(GameSession session);
-        void CloseSession(Guid sessionId);
+        void CloseSession(Guid sessionId, int score);
         IEnumerable<GameSession> Find(Guid userId);
+
+        IEnumerable<GameSession> FindLastGameSessions(Guid userId, int sessionsCount);
 
         int CalculateScore();
     }

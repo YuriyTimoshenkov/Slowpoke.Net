@@ -49,7 +49,7 @@ namespace SlowpokeEngine.Bodies
 
         public override void ReleaseGame()
         {
-            _sessionRepository.CloseSession(SessionId);
+            _sessionRepository.CloseSession(SessionId, Score);
 
             base.ReleaseGame();
         }
