@@ -18,5 +18,9 @@
 - Frontend:
   - AngularJs for  profile and web site
   - CreateJs (EasyJs, TweenJS,  SoundJS) for view engine
-  - TypeScript for client mechanic & physics engine
+  - TypeScript for client mechanic & physics engine 
 
+
+<br/>
+
+######Alpha version available on *http://www.slowpoking.com*
