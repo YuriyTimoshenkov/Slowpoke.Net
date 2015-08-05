@@ -102,6 +102,7 @@ function Game(gameContext, serverProxy, controlsManager, viewEngine) {
         clearInterval(self.serverLoop)
         clearInterval(self.clientLoop)
         self.serverProxy.stop()
+        self.viewEngine.stop()
         console.log("Game STOPPED")
     }
 
@@ -186,11 +187,6 @@ function Game(gameContext, serverProxy, controlsManager, viewEngine) {
                 self.SyncState = 'free';
             });
         }
-    }
-    
-    this.stop = function () {
-        clearInterval(self.clientLoop);
-        clearInterval(self.serverLoop);
     }
 }
 

@@ -49,7 +49,7 @@ app.service('slowpokeClient', function () {
         $scope.Message = 'Do you want to retry?'
         $scope.$parent.disconnectedDialog.then(function (value) {
             slowpokeClient.activeDialog = false;
-            slowpokeClient.game.stop();
+            slowpokeClient.game.stopGame();
             slowpokeClient.game.run();
         }, function (reason) {
             slowpokeClient.activeDialog = false
@@ -61,7 +61,7 @@ app.service('slowpokeClient', function () {
         $scope.Message = 'You has been killed dude! Do you want to start new game?'
         $scope.$parent.disconnectedDialog.then(function (value) {
             slowpokeClient.activeDialog = false;
-            slowpokeClient.game.stop();
+            slowpokeClient.game.stopGame();
             slowpokeClient.game.run();
         }, function (reason) {
             slowpokeClient.activeDialog = false

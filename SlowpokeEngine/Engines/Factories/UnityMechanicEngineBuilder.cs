@@ -52,7 +52,7 @@ namespace SlowpokeEngine
                 new Vector(1, 3),
                 typeof(IMechanicEngine),
                 typeof(IGameSessionRepository),
-                100, 1000,
+                100, 150,
                 string.Empty,
                 7,
                 200
