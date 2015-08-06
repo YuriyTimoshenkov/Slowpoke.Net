@@ -33,7 +33,15 @@ namespace SlowpokeEngine.Weapons
 
                     var newDirection = new Vector(dirX, dirY);
 
-                    return new Bullet(_shootingDistance, _bulletSpeed, _damage, new ShapeCircle(_bulletSize, startPosition), newDirection, ownerId, _mechanicEngine, commandId);
+                    return new Bullet(_shootingDistance,
+                        _bulletSpeed, 
+                        _damage, 
+                        new ShapeCircle(_bulletSize, startPosition), 
+                        newDirection, 
+                        ownerId,
+                        _mechanicEngine, 
+                        commandId,
+                        this.Name);
                 }).ToList();
         }
     }

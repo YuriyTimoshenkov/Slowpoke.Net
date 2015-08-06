@@ -134,6 +134,7 @@ class CommandShoot extends CommandBase {
                     LastProcessedCommandId: 1,
                     BodyType: 'Bullet',
                     Id: bulletId,
+                    BulletTypeName: body.currentWeapon,
                     Name: 'Bullet',
                     Shape: {
                         Radius: 2,
@@ -170,6 +171,7 @@ class CommandShoot extends CommandBase {
                     BodyType: 'Bullet',
                     Id: new Date().getTime(),
                     Name: 'Bullet',
+                    BulletTypeName: body.currentWeapon,
                     Shape: {
                         Radius: 2,
                         Position:

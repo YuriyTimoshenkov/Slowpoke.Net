@@ -28,7 +28,7 @@ namespace SlowpokeEngineTests
             mechanicEngine.FindBody(ownerId).Returns(player);
 
             var bulletCollisionHandler = handlers.BuildBulletCollisionHandler(mechanicEngine);
-            var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0,0)), new Vector(1, 1), ownerId, mechanicEngine, 0);
+            var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0,0)), new Vector(1, 1), ownerId, mechanicEngine, 0, string.Empty);
 
             var gameCommand = new GameCommandMove(0, new Vector(1,1), mechanicEngine, bullet, new TimeSpan());
             var npc = Substitute.For<NPCAI>(null, mechanicEngine, 0, 100, 100, 1);
@@ -56,7 +56,7 @@ namespace SlowpokeEngineTests
             mechanicEngine.FindBody(ownerId).Returns(player1);
 
             var bulletCollisionHandler = handlers.BuildBulletCollisionHandler(mechanicEngine);
-            var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0, 0)), new Vector(1, 1), ownerId, mechanicEngine, 0);
+            var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0, 0)), new Vector(1, 1), ownerId, mechanicEngine, 0, string.Empty);
 
             var gameCommand = new GameCommandMove(0, new Vector(1, 1), mechanicEngine, bullet, new TimeSpan());
             var npc = Substitute.For<NPCAI>(null, mechanicEngine, 0, 100, 100, 1);
@@ -79,7 +79,7 @@ namespace SlowpokeEngineTests
             var handlers = new MechanicEngineHandlersBuilder();
             var mechanicEngine = Substitute.For<IMechanicEngine>();
             var bulletCollisionHandler = handlers.BuildBulletCollisionHandler(mechanicEngine);
-            var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0, 0)), new Vector(1, 1), Guid.NewGuid(), mechanicEngine, 0);
+            var bullet = new Bullet(10, 10, 10, new ShapeCircle(10, new Point(0, 0)), new Vector(1, 1), Guid.NewGuid(), mechanicEngine, 0, string.Empty);
 
             var gameCommand = new GameCommandMove(0, new Vector(1, 1), mechanicEngine, bullet, new TimeSpan());
             var npc = Substitute.For<NPCAI>(null, mechanicEngine, 0, 100, 100, 1);
