@@ -6,7 +6,8 @@
     }
 
     this.createGameObjectbyServerBody = function (body) {
-        return self.createGameObject(self.serverTypeMap[body.bodyType], body);
+        var bodyTypeToCreate = body.bodyType === "Bullet" ? body.bulletTypeName : body.bodyType;
+        return self.createGameObject(self.serverTypeMap[bodyTypeToCreate], body);
     }
 
     this.builders = [];
@@ -163,9 +164,9 @@
     this.serverTypeMap = [];
     this.serverTypeMap["NPCAI"] = gameTypes.gameObjects.NPCAI;
     this.serverTypeMap["PlayerBody"] = gameTypes.gameObjects.PLAYER;
-    this.serverTypeMap["BulletGun"] = gameTypes.gameObjects.BULLETGUN;
-    this.serverTypeMap["BulletShotgun"] = gameTypes.gameObjects.BULLETSHOTGUN;
-    this.serverTypeMap["BulletRevolver"] = gameTypes.gameObjects.BULLETREVOLVER;
+    this.serverTypeMap["Gun"] = gameTypes.gameObjects.BULLETGUN;
+    this.serverTypeMap["Shotgun"] = gameTypes.gameObjects.BULLETSHOTGUN;
+    this.serverTypeMap["Revolver"] = gameTypes.gameObjects.BULLETREVOLVER;
     this.serverTypeMap["BulletDynamite"] = gameTypes.gameObjects.DYNAMITE;
     this.serverTypeMap["LifeContainer"] = gameTypes.gameObjects.LIFECONTAINER;
 
