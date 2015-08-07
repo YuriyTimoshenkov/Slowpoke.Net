@@ -20,6 +20,7 @@ class ViewEngine {
         this.canvas.width = canvasSize.width;
         this.canvas.height = canvasSize.height;
         this.stage = new createjs.Stage(canvas);
+
         this.infoboxFactory = infoboxFactory;
         this.animations = [];
         this.gameContext = gameContext;
@@ -237,6 +238,16 @@ class ViewEngine {
     setTargetBodyImage() {
         var self = this;
         this.targetBodyImage = this.bodyImages.filter(function (v) { return v.id === self.targetBody.id ? true : false })[0].image;
+    }
+
+    stop() {
+        this.stage.removeAllChildren();
+        this.stage.clear();
+
+
+        this.levelContainers.forEach(function (container) {
+            container.removeAllChildren();
+        });
     }
 }
 

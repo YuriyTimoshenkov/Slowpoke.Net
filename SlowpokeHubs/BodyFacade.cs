@@ -1,5 +1,6 @@
 ﻿using SlowpokeEngine.Bodies;
 using SlowpokeEngine.Entities;
+using SlowpokeEngine.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,8 @@ namespace SlowpokeHubs
         public long LastProcessedCommandId { get; set; }
         public long CreatedByCommandId { get; set; }
         public Guid OwnerId { get; set; }
+
+        public string BulletTypeName { get; set; }
 
         public static BodyFacade FromBody(Body body)
         {
@@ -58,6 +61,12 @@ namespace SlowpokeHubs
             {
                 var pBody = body as PlayerBody;
                 result.Name = pBody.Name;
+            }
+
+            if(body is Bullet)
+            {
+                var pBody = body as Bullet;
+                result.BulletTypeName = pBody.BulletTypeName;
             }
 
             return result;

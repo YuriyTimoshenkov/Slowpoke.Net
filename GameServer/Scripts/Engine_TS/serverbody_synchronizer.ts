@@ -31,7 +31,7 @@
                 break;
             }
             case "Bullet": {
-                newBody = new Bullet(<ServerActiveBody> serverBody);
+                newBody = new Bullet(<ServerBulletBody> serverBody);
 
                 break;
             }

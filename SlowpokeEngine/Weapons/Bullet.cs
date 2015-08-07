@@ -16,6 +16,7 @@ namespace SlowpokeEngine.Weapons
         public Point StartPosition { get; private set; }
         public int ShootingDistance { get; private set; }
         public int Damage { get; private set;}
+        public string BulletTypeName { get; private set; }
 
         public Bullet(
             int shootingDistance,
@@ -25,13 +26,15 @@ namespace SlowpokeEngine.Weapons
 			Vector direction,
             Guid ownerId,
 			IMechanicEngine mechanicEngine,
-            long commandId)
+            long commandId,
+            string bulletTypeName)
             : base(shape, direction, mechanicEngine, 1, 1, 0, speed)
         {
             ShootingDistance = shootingDistance;
             Damage = damage;
             OwnerId = ownerId;
             CreatedByCommandId = commandId;
+            BulletTypeName = bulletTypeName;
             
             //calculate position
             Shape.Position = Direction.MovePoint(Shape.Position, Shape.MaxDimension);

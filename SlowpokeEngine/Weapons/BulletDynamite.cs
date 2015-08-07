@@ -19,7 +19,7 @@ namespace SlowpokeEngine.Weapons
             Guid ownerId,
             IMechanicEngine mechanicEngine,
             long commandId)
-            : base(shootingDistance, speed, damage, shape, direction, ownerId, mechanicEngine, commandId)
+            : base(shootingDistance, speed, damage, shape, direction, ownerId, mechanicEngine, commandId, "Dynamite")
         {
             BangRadius = bangRadius;
         }

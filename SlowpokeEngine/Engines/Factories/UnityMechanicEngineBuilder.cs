@@ -52,7 +52,7 @@ namespace SlowpokeEngine
                 new Vector(1, 3),
                 typeof(IMechanicEngine),
                 typeof(IGameSessionRepository),
-                100, 1000,
+                100, 150,
                 string.Empty,
                 7,
                 200
@@ -89,10 +89,10 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<WeaponMultipleShotgunBullet>(shotGun, new InjectionConstructor(
                15, 1, 350, 300*4, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), shotGun
                ));
-            string dynamite = "Dynamite";
-            unityContainer.RegisterType<WeaponDynamite>(dynamite, new InjectionConstructor(
-                2000, 20, 300, 4, 100, 5, new TimeSpan(0, 0, 0, 300), typeof(IMechanicEngine), dynamite
-                ));
+            //string dynamite = "Dynamite";
+            //unityContainer.RegisterType<WeaponDynamite>(dynamite, new InjectionConstructor(
+            //    2000, 20, 300, 4, 100, 5, new TimeSpan(0, 0, 0, 300), typeof(IMechanicEngine), dynamite
+            //    ));
         }
 	}
 }

@@ -50,7 +50,15 @@ namespace SlowpokeEngine.Weapons
         {
             return new List<Bullet>
             {
-                new Bullet(_shootingDistance, _bulletSpeed, _damage, new ShapeCircle(_bulletSize, startPosition), direction, ownerId, _mechanicEngine, commandId)
+                new Bullet(_shootingDistance, 
+                    _bulletSpeed, 
+                    _damage, 
+                    new ShapeCircle(_bulletSize, startPosition), 
+                    direction, 
+                    ownerId, 
+                    _mechanicEngine, 
+                    commandId,
+                    this.Name)
             };
         }
     }
