@@ -143,58 +143,53 @@
     }
 
     syncServerFramesHandler(frame, self: ServerBodySynchornizer): ServerCommand[] {
-    var syncSessionId = new Date().getTime();
-    var serverCommands: ServerCommand[] = [];
+        var syncSessionId = new Date().getTime();
+        var serverCommands: ServerCommand[] = [];
 
-    if (!frame)
-    {
-        console.log('sdfd');
+        frame.Bodies.forEach(function (serverBody) {
+            switch (self.getServerBodyProcessingType(serverBody)) {
+                case BodyProcessingTypes.ServerSide:
+                    {
+
+                        self.syncServerSideBody(serverBody, syncSessionId);
+
+                        break;
+                    };
+                case BodyProcessingTypes.ClientSide:
+                    {
+                        self.syncClientSideBody(serverBody, syncSessionId);
+
+                        break;
+                    }
+                case BodyProcessingTypes.ClientSidePrediction:
+                    {
+                        //TODO: implement true polymorphic body processing
+                        serverCommands = serverCommands.concat(self.syncPredictiveBodies(serverBody, self.mechanicEngine));
+                        self.mechanicEngine.player.syncSessionId = syncSessionId;
+
+                        self.mechanicEngine.player.serverSync(serverBody, self.mechanicEngine);
+
+                        break;
+                    }
+            }
+        });
+
+        self.mechanicEngine.bodies = self.mechanicEngine.bodies.filter(function (body) {
+            if (body.syncSessionId === syncSessionId || body.syncSessionId === undefined) {
+                return true;
+            }
+            else {
+                self.mechanicEngine.onBodyRemove.trigger(body);
+
+                return false;
+            }
+        });
+
+
+        if (frame.Map) {
+            self.mechanicEngine.mapEngine.update(frame.Map);
+        }
+
+        return serverCommands;
     }
-
-    frame.Bodies.forEach(function (serverBody) {
-        switch (self.getServerBodyProcessingType(serverBody)) {
-            case BodyProcessingTypes.ServerSide:
-                {
-
-                    self.syncServerSideBody(serverBody, syncSessionId);
-
-                    break;
-                };
-            case BodyProcessingTypes.ClientSide:
-                {
-                    self.syncClientSideBody(serverBody, syncSessionId);
-
-                    break;
-                }
-            case BodyProcessingTypes.ClientSidePrediction:
-                {
-                    //TODO: implement true polymorphic body processing
-                    serverCommands = serverCommands.concat(self.syncPredictiveBodies(serverBody, self.mechanicEngine));
-                    self.mechanicEngine.player.syncSessionId = syncSessionId;
-
-                    self.mechanicEngine.player.serverSync(serverBody, self.mechanicEngine);
-
-                    break;
-                }
-        }
-    });
-
-    self.mechanicEngine.bodies = self.mechanicEngine.bodies.filter(function (body) {
-        if (body.syncSessionId === syncSessionId || body.syncSessionId === undefined) {
-            return true;
-        }
-        else {
-            self.mechanicEngine.onBodyRemove.trigger(body);
-
-            return false;
-        }
-    });
-
-
-    if (frame.Map) {
-        self.mechanicEngine.mapEngine.update(frame.Map);
-    }
-
-    return serverCommands;
-}
 } 

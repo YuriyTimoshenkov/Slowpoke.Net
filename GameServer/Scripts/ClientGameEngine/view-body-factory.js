@@ -76,10 +76,28 @@
 
         return image;
     }
-    this.builders[gameTypes.gameObjects.BULLET] = function (serverBody) {
-        // Assign image
+    this.builders[gameTypes.gameObjects.BULLETSHOTGUN] = function (serverBody) {
         var bulletImage = new createjs.Shape();
         bulletImage.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#F08200").dc(2, 2, 2);
+        bulletImage.scaleX = 0.5;
+        bulletImage.scaleY = 0.5;
+        bulletImage.zIndex = 6;
+
+        return bulletImage;
+    }
+
+    this.builders[gameTypes.gameObjects.BULLETGUN] = function (serverBody) {
+        var bulletImage = new createjs.Shape();
+        bulletImage.graphics.lf(["#FF2828", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#FF2828").dc(2, 2, 2);
+        bulletImage.scaleX = 0.5;
+        bulletImage.scaleY = 0.5;
+        bulletImage.zIndex = 6;
+
+        return bulletImage;
+    }
+    this.builders[gameTypes.gameObjects.BULLETREVOLVER] = function (serverBody) {
+        var bulletImage = new createjs.Shape();
+        bulletImage.graphics.lf(["#000000", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 3, 20).ss(1).f("#000000").dc(2, 2, 2);
         bulletImage.scaleX = 0.5;
         bulletImage.scaleY = 0.5;
         bulletImage.zIndex = 6;
@@ -145,7 +163,9 @@
     this.serverTypeMap = [];
     this.serverTypeMap["NPCAI"] = gameTypes.gameObjects.NPCAI;
     this.serverTypeMap["PlayerBody"] = gameTypes.gameObjects.PLAYER;
-    this.serverTypeMap["Bullet"] = gameTypes.gameObjects.BULLET;
+    this.serverTypeMap["BulletGun"] = gameTypes.gameObjects.BULLETGUN;
+    this.serverTypeMap["BulletShotgun"] = gameTypes.gameObjects.BULLETSHOTGUN;
+    this.serverTypeMap["BulletRevolver"] = gameTypes.gameObjects.BULLETREVOLVER;
     this.serverTypeMap["BulletDynamite"] = gameTypes.gameObjects.DYNAMITE;
     this.serverTypeMap["LifeContainer"] = gameTypes.gameObjects.LIFECONTAINER;
 
