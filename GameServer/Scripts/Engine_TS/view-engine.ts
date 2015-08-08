@@ -74,19 +74,16 @@ class ViewEngine {
                         self.positionChangeHandler(e.body, bodyImageObject);
                         break;
                     }
-                case BodyChangesType.hp:
-                    var animation = new BodyHitAnimation(bodyImageObject, self);
-                    animation.start();
-                    self.animations.push(animation);
-                    //bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateLifeText() });
+                case BodyChangesType.hp: bodyImageObject
+                    //console.log(bodyImageObject.image)
+                    //console.log(bodyImageObject.image.gotoAndPlay)
+                    bodyImageObject.image.gotoAndPlay("bodyHit");
                     break;
 
                 case BodyChangesType.currentWeapon:
-                    //bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateCurrentWeaponText() });
                     break;
 
                 case BodyChangesType.score:
-                    //bodyImageObject.infoboxes.forEach(function (infobox) { infobox.updateScoreText() });
                     break;
 
                 default:
@@ -148,8 +145,6 @@ class ViewEngine {
     addBodyHandler = (body: Body, image: createjs.DisplayObject) => {
         image.x = body.gameRect.centerx;
         image.y = body.gameRect.centery;
-
-
         if (body instanceof Tile) {
             this.levelContainers[0].addChild(image);
         }
@@ -253,7 +248,7 @@ class ViewEngine {
 
 class BodyImage {
     id: any;
-    image: createjs.Container;
+    image: any;
     infoboxes: Infobox[];
     constructor(id, image) {
         this.id = id;

@@ -11,72 +11,86 @@
     }
 
     this.builders = [];
-    this.builders[gameTypes.gameObjects.PLAYER] = function (serverBody) {        
-
-        //var canvasXY = new Point($(document).width() / 2,
-        //                         $(document).height() / 2);
-
-
-        // Assign image
-        var image = new CowboyContainer().image;
-        //image.x = canvasXY.x;
-        //image.y = canvasXY.y;
-
-        // Configure image
+    this.builders[gameTypes.gameObjects.PLAYER] = function (serverBody) {
         var imageSize = 280;
-        image.regX = imageSize / 2;
-        image.regY = imageSize / 2;
-        image.scaleX = 0.4;
-        image.scaleY = 0.4;
-        image.cache(0, 0, imageSize, imageSize);
-        image.zIndex = 555;
-        return image;
+
+        // Create walk animation
+        var walkImage = new CowboyContainer().image;
+        walkImage.regX = imageSize / 2;
+        walkImage.regY = imageSize / 2;
+        walkImage.scaleX = 0.4;
+        walkImage.scaleY = 0.4;
+        walkImage.cache(0, 0, imageSize, imageSize);
+
+        // Create bodyHit animation
+        var bodyHitImage = new CowboyContainer().image;
+        bodyHitImage.filters = [new createjs.ColorFilter(1, 1, 1, 1, 85, 0, 0, 0)];
+        bodyHitImage.regX = imageSize / 2;
+        bodyHitImage.regY = imageSize / 2;
+        bodyHitImage.scaleX = 0.4;
+        bodyHitImage.scaleY = 0.4;
+        bodyHitImage.cache(0, 0, imageSize, imageSize);
+
+        // To avoid createjs limitation that transformation is ignored when converting DisplayObjects to SpriteSheets
+        var walkContainer = new createjs.Container();
+        var bodyHitContainer = new createjs.Container();
+        walkContainer.addChild(walkImage);
+        bodyHitContainer.addChild(bodyHitImage);
+
+        // Build SpriteSheet and Sprite
+        var builder = new createjs.SpriteSheetBuilder();
+        builder.addFrame(walkContainer);
+        builder.addFrame(bodyHitContainer);
+
+        builder.addAnimation("walk", [0]);
+        builder.addAnimation("bodyHit", [1], "walk")
+        var spriteSheet = builder.build();
+
+        return new createjs.Sprite(spriteSheet, "walk");
     }
+
     this.builders[gameTypes.gameObjects.PLAYEROTHER] = function (serverBody) {
-
-        // Assign image
-        var cc = new CowboyContainer();
-        //player.image.addChild(obj.image);
-
-        //// Create name text
-        //var textSize = 15;
-        //var nameText = new createjs.Text(player.name, textSize + "px Arial", "#AAA9AB");
-        //nameText.x = -player.gameRect.width * 1.5;
-        //nameText.y = -player.gameRect.height * 1.5;
-        //player.objectMenu.addChild(nameText);
-
-        // Configure image
-        var image = cc.image;
-        var imageSize = 280;
-        image.regX = imageSize / 2;
-        image.regY = imageSize / 2;
-        image.scaleX = 0.4;
-        image.scaleY = 0.4;
-        image.cache(0, 0, imageSize, imageSize);
-        image.zIndex = 10;
-
-        return image;
+        return self.createGameObject(gameTypes.gameObjects.PLAYER, serverBody)
     }
+
     this.builders[gameTypes.gameObjects.NPCAI] = function (serverBody) {
-        // Assign image
-        var cc = new PolicemanContainer();
-        //npc.image.addChild(obj.image);
-
-        //// Create life text
-        //npc.addLifeText();
-
-        // Configure image
-        var image = cc.image;
         var imageSize = 280;
-        image.regX = imageSize / 2;
-        image.regY = imageSize / 2;
-        image.scaleX = 0.4;
-        image.scaleY = 0.4;
-        image.cache(0, 0, imageSize, imageSize);
-        image.zIndex = 10;
 
-        return image;
+        // Create walk animation
+        var walkImage = new PolicemanContainer().image;
+        walkImage.regX = imageSize / 2;
+        walkImage.regY = imageSize / 2;
+        walkImage.scaleX = 0.4;
+        walkImage.scaleY = 0.4;
+        walkImage.cache(0, 0, imageSize, imageSize);
+
+        // Create bodyHit animation
+        var bodyHitImage = new PolicemanContainer().image;
+        bodyHitImage.filters = [new createjs.ColorFilter(1, 1, 1, 1, 85, 0, 0, 0)];
+        bodyHitImage.regX = imageSize / 2;
+        bodyHitImage.regY = imageSize / 2;
+        bodyHitImage.scaleX = 0.4;
+        bodyHitImage.scaleY = 0.4;
+        bodyHitImage.cache(0, 0, imageSize, imageSize);
+
+        // To avoid createjs limitation that transformation is ignored when converting DisplayObjects to SpriteSheets
+        var walkContainer = new createjs.Container();
+        var bodyHitContainer = new createjs.Container();
+        walkContainer.addChild(walkImage);
+        bodyHitContainer.addChild(bodyHitImage);
+
+        // Build SpriteSheet and Sprite
+        var builder = new createjs.SpriteSheetBuilder();
+        builder.addFrame(walkContainer);
+        builder.addFrame(bodyHitContainer);
+
+        builder.addAnimation("walk", [0]);
+        builder.addAnimation("bodyHit", [1], "walk")
+        var spriteSheet = builder.build();
+
+        return new createjs.Sprite(spriteSheet, "walk");
     }
+
     this.builders[gameTypes.gameObjects.BULLETSHOTGUN] = function (serverBody) {
         var bulletImage = new createjs.Shape();
         bulletImage.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#F08200").dc(2, 2, 2);
