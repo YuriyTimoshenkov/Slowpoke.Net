@@ -93,7 +93,7 @@
 
     this.builders[gameTypes.gameObjects.BULLETSHOTGUN] = function (serverBody) {
         var bulletImage = new createjs.Shape();
-        bulletImage.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#F08200").dc(2, 2, 2);
+        bulletImage.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 2, 40).ss(1).f("#F08200").dc(2, 2, 2);
         bulletImage.scaleX = 0.5;
         bulletImage.scaleY = 0.5;
         bulletImage.zIndex = 6;
@@ -103,7 +103,7 @@
 
     this.builders[gameTypes.gameObjects.BULLETGUN] = function (serverBody) {
         var bulletImage = new createjs.Shape();
-        bulletImage.graphics.lf(["#FF2828", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#FF2828").dc(2, 2, 2);
+        bulletImage.graphics.lf(["#FF2828", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 5, 60).ss(1).f("#FF2828").dc(2, 2, 2);
         bulletImage.scaleX = 0.5;
         bulletImage.scaleY = 0.5;
         bulletImage.zIndex = 6;
@@ -112,7 +112,7 @@
     }
     this.builders[gameTypes.gameObjects.BULLETREVOLVER] = function (serverBody) {
         var bulletImage = new createjs.Shape();
-        bulletImage.graphics.lf(["#000000", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 3, 20).ss(1).f("#000000").dc(2, 2, 2);
+        bulletImage.graphics.lf(["#000000", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#000000").dc(2, 2, 2);
         bulletImage.scaleX = 0.5;
         bulletImage.scaleY = 0.5;
         bulletImage.zIndex = 6;
