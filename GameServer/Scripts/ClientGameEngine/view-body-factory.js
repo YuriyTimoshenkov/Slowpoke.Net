@@ -16,10 +16,12 @@
 
         // Create walk animation
         var walkImage = new CowboyContainer().image;
+        
         walkImage.regX = imageSize / 2;
         walkImage.regY = imageSize / 2;
         walkImage.scaleX = 0.4;
         walkImage.scaleY = 0.4;
+        //walkImage.setBounds(0, 0, imageSize, imageSize);
         walkImage.cache(0, 0, imageSize, imageSize);
 
         // Create bodyHit animation
@@ -123,16 +125,21 @@
         // Assign image
         var image = new BottleContainer().image;
 
-
+        console.log("Creating lifge")
         // Configure image
-        var imageWidth = 200;
-        var imageHeight = 200;
-        image.regX = imageWidth / 2;
-        image.regY = imageHeight / 2;
-        image.scaleX = 0.05;
-        image.scaleY = 0.05;
-        //image.cache(0, 0, imageWidth, imageHeight);
-        image.zIndex = 5;
+        var imageOriginalWidth = 800;
+        var imageOriginalHeight = 800;
+        var scaleFactor = 0.05;
+        var w = 218 * scaleFactor;
+        var h = 740 * scaleFactor;
+        var x = -w / 2;
+        var y = -h / 2;
+        image.setBounds(x, y, w, h);
+        image.scaleX = scaleFactor;
+        image.scaleY = scaleFactor;		
+        image.regX = imageOriginalWidth / 2;
+        image.regY = imageOriginalHeight / 2;
+        image.cache(200, 20, 440, 760);
 
         return image;
     }

@@ -166,7 +166,6 @@
     <Content Include="Scripts\ClientGameEngine\mechanic-engine.js" />
     <Content Include="Scripts\ClientGameEngine\menu.js" />
     <Content Include="Scripts\ClientGameEngine\commands.js" />
-    <Content Include="Scripts\ClientGameEngine\weapon.js" />
     <Content Include="Scripts\lib\class.js" />
     <Content Include="Scripts\lib\promise-6.1.0.min.js" />
     <Content Include="Scripts\Resources\Images\bottle.js" />
@@ -244,6 +243,7 @@
     <TypeScriptCompile Include="Scripts\Engine_TS\tile.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\view-body-factory.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\view-engine.ts" />
+    <TypeScriptCompile Include="Scripts\Engine_TS\weapon.ts" />
     <TypeScriptCompile Include="Scripts\lib\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\Resources\Images\cowboyTS.ts" />
     <TypeScriptCompile Include="Scripts\typings\createjs-lib\createjs-lib.d.ts" />
