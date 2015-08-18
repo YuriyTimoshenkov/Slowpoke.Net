@@ -26,7 +26,6 @@ class ViewEngine {
         this.gameContext = gameContext;
         this.menu = new Menu(this.gameContext, this.stage, this.canvas);
         this.viewBodyFactory = viewBodyFactory;
-        this.bodyImages = [];
         this.baseRotationVector = new Vector(0, -1);
     }
 
@@ -34,6 +33,7 @@ class ViewEngine {
         var self = this;
         this.mechanicEngine = mechanicEngine;
         this.menu.init();
+        this.bodyImages = [];
         
         // Tile: ground
         // PassiveBody: various things, life containers, weapons
