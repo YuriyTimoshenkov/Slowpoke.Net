@@ -19,7 +19,7 @@ namespace SlowpokeEngineTests
             var player = new PlayerBody(null, new Vector(0,0), null, null, 0, 0, "Bob", 100, 1);
             int weaponsCount = player.WeaponsCount;
 
-            player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null, "Weapon"));
+            player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null, "Weapon", new ShapeRectangle(3, 7, new Point(0, 0))));
 
             Assert.AreEqual(weaponsCount, player.WeaponsCount - 1);
         }
@@ -30,8 +30,8 @@ namespace SlowpokeEngineTests
             var player = new PlayerBody(null, new Vector(0, 0), null, null, 0, 0, "Bob", 100, 1);
             int weaponsCount = player.WeaponsCount;
 
-            player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null, "Weapon"));
-            player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null, "Weapon"));
+            player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null, "Weapon", new ShapeRectangle(3, 7, new Point(0, 0))));
+            player.AddWeapon(new WeaponSimpleBullet(0, 0, 0, 0, new TimeSpan(), null, "Weapon", new ShapeRectangle(3, 7, new Point(0, 0))));
 
             player.ChangeWeapon();
 

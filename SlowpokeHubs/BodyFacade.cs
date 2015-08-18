@@ -21,9 +21,9 @@ namespace SlowpokeHubs
         public int Score { get; set; }
         public int ViewZone { get; set; }
         public int WeaponsCount { get; set; }
-        public string CurrentWeapon { get; set; }
+        public WeaponBase CurrentWeapon { get; set; }
         public IList<string> SocialGroups { get; set; }
-        public ShapeFacade Shape { get; set; }
+        public Shape Shape { get; set; }
         //Points per second
         public int Speed { get; set; }
         public long LastProcessedCommandId { get; set; }
@@ -38,12 +38,12 @@ namespace SlowpokeHubs
 
             result.Id = body.Id;
             result.BodyType = body.BodyType;
-            result.Shape = ShapeFacade.FromShape(body.Shape);
+            result.Shape = body.Shape;// ShapeFacade.FromShape(body.Shape);
 
             if(body is ActiveBody)
             {
                 var aBody = body as ActiveBody;
-                result.CurrentWeapon = aBody.CurrentWeapon == null ? string.Empty : aBody.CurrentWeapon.Name;
+                result.CurrentWeapon = aBody.CurrentWeapon;
                 result.Direction = aBody.Direction;
                 result.Life = aBody.Life;
                 result.LifeMax = aBody.LifeMax;

@@ -1,4 +1,23 @@
-﻿
+﻿interface ServerShape {
+    Position: ServerPoint;
+    MaxDimension: number;
+}
+
+interface ServerShapeCircle extends ServerShape {
+    Radius: number;
+}
+
+interface ServerShapeRectangle extends ServerShape {
+    Width: number;
+    Height: number;
+}
+
+interface ServerPoint {
+    X: number;
+    Y: number;
+}
+
+
 class Vector{
     x: number;
     y: number;

@@ -13,6 +13,7 @@ using SlowpokeEngine.Engines.Levels;
 using SlowpokeEngine.Entities;
 using SlowpokeEngine.Engines.Services;
 using Common;
+using Microsoft.Practices.Unity;
 
 namespace SlowpokeEngine.Engines
 {
@@ -28,6 +29,7 @@ namespace SlowpokeEngine.Engines
         private Action<IPlayerBodyFacade> _playerStateHandler;
         private Random _randomizer = new Random();
         private ILogger _logger;
+        private IUnityContainer _unityContainer;
 
         
         private readonly ActionHandlersManager<Func<GameCommand, PhysicsProcessingResult,bool>, Action<GameCommand, PhysicsProcessingResult>> _actionHandlers
@@ -44,7 +46,8 @@ namespace SlowpokeEngine.Engines
 			IBodyBuilder bodyBuilder,
             IActiveBodyEyesight viewPort,
             IGameLevelRepository gameLevelRepository,
-            ILogger logger
+            ILogger logger,
+            IUnityContainer unityContainer
 		)
 		{
             _logger = logger;
@@ -52,6 +55,8 @@ namespace SlowpokeEngine.Engines
 			_mapEngine = mapEngine;
 			_bodyBuilder = bodyBuilder;
             _gameLevelRepository = gameLevelRepository;
+            _unityContainer = unityContainer;
+
 			ViewPort = viewPort;
             Services = new List<IMechanicService>();
 
@@ -191,9 +196,9 @@ namespace SlowpokeEngine.Engines
                 var tileNumber = _randomizer.Next(tilesCount - 1);
                 var tile = notSolidTiles.ElementAt(tileNumber);
 
-                playerBody.Shape = new ShapeCircle(20, new Point(
-                    200,//tile.Shape.Position.X,
-                    200));//tile.Shape.Position.Y));
+                playerBody.Shape.Position = new Point(
+                    tile.Shape.Position.X,
+                    tile.Shape.Position.Y);
             }
 
             playerBody.Heal(playerBody.LifeMax);
@@ -248,11 +253,9 @@ namespace SlowpokeEngine.Engines
                         int positionY = (int)levelTile.Position.Y;
 
                         var NPCBody = _bodyBuilder.BuildNPCAI(this);
-
-                        //TODO fix injection parameters in Unity mapping config
-                        NPCBody.Shape = new ShapeCircle(20, new Point(
+                        NPCBody.Shape.Position = new Point(
                             _mapEngine.Map.Tiles[positionY][positionX].Shape.Position.X,
-                            _mapEngine.Map.Tiles[positionY][positionX].Shape.Position.Y));
+                            _mapEngine.Map.Tiles[positionY][positionX].Shape.Position.Y);
 
                         AddBody(NPCBody);
                     }

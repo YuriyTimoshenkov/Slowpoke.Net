@@ -1,4 +1,6 @@
-﻿class Weapon {
-    constructor() { }
+﻿class Weapon extends Body {
 
+    constructor(serverBody: ServerBody) {
+        super(serverBody);
+    }
 }

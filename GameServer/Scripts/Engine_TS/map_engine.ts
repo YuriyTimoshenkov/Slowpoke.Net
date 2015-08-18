@@ -25,7 +25,9 @@ class MapEngine {
         var self = this;
         this.tiles = this.serverSynchronizer.syncObjectsContainersTS(this.tiles, tiles,
             function (tile: ServerTile) {
-                tile.Shape.Radius = self.tileSize;
+                var shapeCircle = <ServerShapeCircle>tile.Shape;
+                shapeCircle.Radius = self.tileSize;
+
                 var newTile = new Tile(
                     {
                         Id: tile.Id,

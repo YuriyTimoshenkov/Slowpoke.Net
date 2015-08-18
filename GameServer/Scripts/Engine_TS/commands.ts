@@ -118,7 +118,7 @@ class CommandShoot extends CommandBase {
         var characterBody: CharacterBody = body;
         var newBullet: Bullet;
 
-        if (body.currentWeapon === 'Shotgun') {
+        if (body.currentWeapon.name == 'Shotgun') {
             var self = this;
 
             var bulletList: Bullet[] = [];
@@ -134,7 +134,7 @@ class CommandShoot extends CommandBase {
                     LastProcessedCommandId: 1,
                     BodyType: 'Bullet',
                     Id: bulletId,
-                    BulletTypeName: body.currentWeapon,
+                    BulletTypeName: body.currentWeapon.name,
                     Name: 'Bullet',
                     Shape: {
                         Radius: 2,
@@ -142,7 +142,8 @@ class CommandShoot extends CommandBase {
                         {
                             X: body.gameRect.centerx,
                             Y: body.gameRect.centery
-                        }
+                        },
+                        MaxDimension: 2
                     },
                     Direction: {
                         X: dirX,
@@ -171,14 +172,15 @@ class CommandShoot extends CommandBase {
                     BodyType: 'Bullet',
                     Id: new Date().getTime(),
                     Name: 'Bullet',
-                    BulletTypeName: body.currentWeapon,
+                    BulletTypeName: body.currentWeapon.name,
                     Shape: {
                         Radius: 2,
                         Position:
                         {
                             X: body.gameRect.centerx,
                             Y: body.gameRect.centery
-                        }
+                        },
+                        MaxDimension: 2
                     },
                     Direction: {
                         X: body.direction.x,

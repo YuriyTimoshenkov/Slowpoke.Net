@@ -3,7 +3,7 @@
     BodyType: string;
     LastProcessedCommandId: number;
     CreatedByCommandId: number;
-    Shape: { Radius: number; Position: { X: number; Y: number } };  
+    Shape: ServerShape;  
     Name: string;
 }
 
@@ -16,7 +16,8 @@ interface ServerActiveBody extends ServerBody {
 interface ServerCharacterBody extends ServerActiveBody {
     Life: number;
     MaxLife: number;
-    CurrentWeapon: string;
+    CurrentWeapon: ServerBody;
+    Score: number;
 }
 
 interface ServerBulletBody extends ServerActiveBody {
@@ -39,8 +40,17 @@ class Body {
         this.name = serverBody.Name;
         this.bodyType = serverBody.BodyType;
 
-        this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
-        this.gameRect.center = new Point(serverBody.Shape.Position.X, serverBody.Shape.Position.Y);
+        //TODO: implement correct polymorhic rect creation
+        var shape = <ServerShapeCircle>serverBody.Shape;
+        if (shape.Radius) {
+            this.gameRect = new Rect(0, 0, shape.Radius * 2, shape.Radius * 2);
+        }
+        else {
+            var shapeRectangle = <ServerShapeRectangle>serverBody.Shape;
+            this.gameRect = new Rect(0, 0, shapeRectangle.Width * 2, shapeRectangle.Height * 2);
+        }
+
+        this.gameRect.center = new Point(shape.Position.X, shape.Position.Y);
     }
 
     update(mechanicEngine: MechanicEngineTS) { }
@@ -84,7 +94,7 @@ class ActiveBody extends Body{
 } 
 
 class CharacterBody extends ActiveBody{
-    currentWeapon: string;
+    currentWeapon: Weapon;
     life: number;
     maxLife: number;
     score: number;
@@ -95,7 +105,7 @@ class CharacterBody extends ActiveBody{
         this.life = serverBody.Life || 0;
         this.maxLife = serverBody.MaxLife || 0;
         this.score = 0;
-        this.currentWeapon = serverBody.CurrentWeapon;
+        this.currentWeapon = new Weapon(serverBody.CurrentWeapon);
     }
 
     serverSync(serverBody, mechanicEngine: MechanicEngineTS) {
@@ -119,21 +129,19 @@ class PlayerOtherBody extends CharacterBody {
 
 class PlayerBody extends CharacterBody {
 
-    serverSync(serverBody, mechanicEngine: MechanicEngineTS) {
+    serverSync(serverBody: ServerCharacterBody, mechanicEngine: MechanicEngineTS) {
         //TODO: implement true polumorphic body processing
 
-        //super.serverSync(serverBody);
         if (serverBody.Life !== this.life) {
-            // to avoid body hit when drinking a bottle
-            //if (serverBody.Life < this.life) { 
+
             mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.hp });
-            //}
+
             this.life = serverBody.Life;
         }
 
         // Update weapon
-        if (serverBody.CurrentWeapon && this.currentWeapon !== serverBody.CurrentWeapon) {
-            this.currentWeapon = serverBody.CurrentWeapon;
+        if (serverBody.CurrentWeapon && this.currentWeapon.name !== serverBody.CurrentWeapon.Name) {
+            this.currentWeapon = new Weapon(serverBody.CurrentWeapon);
             mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.currentWeapon });
         }
 

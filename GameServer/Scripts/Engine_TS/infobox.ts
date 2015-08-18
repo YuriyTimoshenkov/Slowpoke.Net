@@ -43,7 +43,7 @@ class PlayerInfoboxFixed implements Infobox{
             this.lifeText.zIndex = 100;
         }
         createWeaponText(body: CharacterBody) {
-            this.weaponText = new createjs.Text(body.currentWeapon, this.textSize + "px Arial", this.lifeTextColor);
+            this.weaponText = new createjs.Text(body.currentWeapon.name, this.textSize + "px Arial", this.lifeTextColor);
             this.weaponText.zIndex = 3;
             this.weaponText.x = this.weaponPoint.x;
             this.weaponText.y = this.weaponPoint.y;
@@ -62,7 +62,7 @@ class PlayerInfoboxFixed implements Infobox{
         }
 
         updateCurrentWeaponText(body: CharacterBody) {
-            this.weaponText.text = body.currentWeapon;
+            this.weaponText.text = body.currentWeapon.name;
         }
         updateLifeText(body: CharacterBody) {
             this.lifeText.text = "HP: " + body.life;

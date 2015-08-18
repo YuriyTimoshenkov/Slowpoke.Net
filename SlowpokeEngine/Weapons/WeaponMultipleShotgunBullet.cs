@@ -21,8 +21,10 @@ namespace SlowpokeEngine.Weapons
             int bulletSpeed,
             TimeSpan shootFrequency,
             IMechanicEngine mechanicEngine,
-            string name
-            ):base(damage, bulletSize, shootingDistance, bulletSpeed, shootFrequency,mechanicEngine, name) {}
+            string name,
+            Shape shape
+            )
+            : base(damage, bulletSize, shootingDistance, bulletSpeed, shootFrequency, mechanicEngine, name, shape) { }
 
         protected override List<Bullet> CreateBullet(Point startPosition, Vector direction, Guid ownerId, long commandId = 0)
         {

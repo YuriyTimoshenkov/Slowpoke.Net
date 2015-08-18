@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlowpokeEngine.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +21,10 @@ namespace SlowpokeEngine.Weapons
             int bulletSpeed,
             TimeSpan shootFrequency,
             IMechanicEngine mechanicEngine,
-            string name
-            ):base(damage, bulletSize, shootingDistance, bulletSpeed, shootFrequency,mechanicEngine, name) 
+            string name,
+            Shape shape
+            )
+            : base(damage, bulletSize, shootingDistance, bulletSpeed, shootFrequency, mechanicEngine, name, shape) 
         {
             _dynamiteDetonationTick = new TimeSpan(0, 0, 0, 0, dynamiteDetonationMilliSeconds);
             _bangRadius = bangRadius;

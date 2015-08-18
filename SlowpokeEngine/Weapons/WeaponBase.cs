@@ -1,4 +1,5 @@
-﻿using SlowpokeEngine.Entities;
+﻿using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SlowpokeEngine.Weapons
 {
-    public abstract class WeaponBase
+    public abstract class WeaponBase : Body
     {
         protected int _damage;
         protected int _shootingDistance;
@@ -15,7 +16,8 @@ namespace SlowpokeEngine.Weapons
 
         public string Name { get; private set; }
 
-        public WeaponBase(int damage, int shootingDistance, IMechanicEngine mechanicEngine, string name)
+        public WeaponBase(int damage, int shootingDistance, IMechanicEngine mechanicEngine, string name, Shape shape)
+            : base(Guid.NewGuid(), shape)
         {
             _damage = damage;
             _shootingDistance = shootingDistance;
