@@ -125,7 +125,6 @@
         // Assign image
         var image = new BottleContainer().image;
 
-        console.log("Creating lifge")
         // Configure image
         var imageOriginalWidth = 800;
         var imageOriginalHeight = 800;

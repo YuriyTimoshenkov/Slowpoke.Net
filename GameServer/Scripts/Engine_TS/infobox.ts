@@ -104,8 +104,8 @@ class PlayerInfoboxFloating implements Infobox {
         this.nameText.zIndex = 100;
     }
     updatePosition(body: CharacterBody) {
-        this.nameText.x = body.gameRect.centerx - body.gameRect.width;
-        this.nameText.y = body.gameRect.centery - body.gameRect.height - 20;
+        this.nameText.x = body.gameRect.centerx - body.gameRect.width / 2;
+        this.nameText.y = body.gameRect.centery - body.gameRect.height / 2 - 20;
     }
     removeSelf(container) {
         container.removeChild(this.nameText);

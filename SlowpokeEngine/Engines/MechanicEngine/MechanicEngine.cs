@@ -196,9 +196,11 @@ namespace SlowpokeEngine.Engines
                 var tileNumber = _randomizer.Next(tilesCount - 1);
                 var tile = notSolidTiles.ElementAt(tileNumber);
 
-                playerBody.Shape.Position = new Point(
-                    tile.Shape.Position.X,
-                    tile.Shape.Position.Y);
+                //playerBody.Shape.Position = new Point(
+                //    tile.Shape.Position.X,
+                //    tile.Shape.Position.Y);
+
+                playerBody.Shape.Position = new Point(300, 300);
             }
 
             playerBody.Heal(playerBody.LifeMax);
