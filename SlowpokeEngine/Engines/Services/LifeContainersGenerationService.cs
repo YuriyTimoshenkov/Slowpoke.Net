@@ -41,9 +41,9 @@ namespace SlowpokeEngine.Engines.Services
 
                         var newContainer = _bodyBuilder.BuildLifeContainer(_mechanicEngine);
 
-                        newContainer.Shape = new ShapeCircle(20, new Point(
+                        newContainer.Shape.Position = new Point(
                             tile.Shape.Position.X,
-                            tile.Shape.Position.Y));
+                            tile.Shape.Position.Y);
 
                         _mechanicEngine.AddBody(newContainer);
                     }

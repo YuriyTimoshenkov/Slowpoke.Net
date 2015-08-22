@@ -42,9 +42,9 @@ namespace SlowpokeEngine.Engines.Services
 
                         var newNPC = _bodyBuilder.BuildNPCAI(_mechanicEngine);
 
-                        newNPC.Shape = new ShapeCircle(20, new Point(
+                        newNPC.Shape.Position = new Point(
                             tile.Shape.Position.X,
-                            tile.Shape.Position.Y));
+                            tile.Shape.Position.Y);
 
                         _mechanicEngine.AddBody(newNPC);
                     }

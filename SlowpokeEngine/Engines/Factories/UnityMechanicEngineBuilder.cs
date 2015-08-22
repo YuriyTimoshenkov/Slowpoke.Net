@@ -41,12 +41,22 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<IMechanicEngine, MechanicEngine>(new ContainerControlledLifetimeManager());
 
             unityContainer.RegisterType<IBodyBuilder, UnityBodyBuilder>();
+
+            unityContainer.RegisterType<Shape, ShapeCircle>("NPCShape",
+                new InjectionConstructor(20.0, new Point(200, 200)));
             unityContainer.RegisterType<NPCAI>(new InjectionConstructor(
-                new ShapeCircle(20, new Point(200, 200)), typeof(IMechanicEngine), 100, 100, 6, 70
+                new ResolvedParameter<Shape>("NPCShape"), 
+                typeof(IMechanicEngine), 100, 100, 6, 70
                 ));
-            unityContainer.RegisterType<LifeContainer>(new InjectionConstructor(
-                new ShapeCircle(30, new Point(200, 200)),
+
+            unityContainer.RegisterType<Shape, ShapeCircle>("LifeContainerShape",
+                new InjectionConstructor(30.0, new Point(200, 200)));
+            unityContainer.RegisterType<LifeContainer>(
+                new InjectionConstructor(
+                    new ResolvedParameter<Shape>("LifeContainerShape"),
                 50));
+
+
             unityContainer.RegisterType<PlayerBody>(new InjectionConstructor(
                 new ShapeCircle(40, new Point(275, 575)),
                 new Vector(1, 3),
