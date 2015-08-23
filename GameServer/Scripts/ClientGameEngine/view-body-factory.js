@@ -112,6 +112,17 @@
 
         return bulletImage;
     }
+
+    this.builders[gameTypes.gameObjects.DYNAMITE] = function (serverBody) {
+        var bulletImage = new createjs.Shape();
+        bulletImage.graphics.lf(["#FF2828", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 5, 60).ss(1).f("#FF2828").dc(2, 2, 2);
+        bulletImage.scaleX = 0.5;
+        bulletImage.scaleY = 0.5;
+        bulletImage.zIndex = 6;
+
+        return bulletImage;
+    }
+
     this.builders[gameTypes.gameObjects.BULLETREVOLVER] = function (serverBody) {
         var bulletImage = new createjs.Shape();
         bulletImage.graphics.lf(["#000000", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#000000").dc(2, 2, 2);
@@ -187,7 +198,7 @@
     this.serverTypeMap["Gun"] = gameTypes.gameObjects.BULLETGUN;
     this.serverTypeMap["Shotgun"] = gameTypes.gameObjects.BULLETSHOTGUN;
     this.serverTypeMap["Revolver"] = gameTypes.gameObjects.BULLETREVOLVER;
-    this.serverTypeMap["BulletDynamite"] = gameTypes.gameObjects.DYNAMITE;
+    this.serverTypeMap["Dynamite"] = gameTypes.gameObjects.DYNAMITE;
     this.serverTypeMap["LifeContainer"] = gameTypes.gameObjects.LIFECONTAINER;
 
     this.serverTypeMap["meadow"] = gameTypes.gameObjects.MEADOW;

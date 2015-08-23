@@ -9,11 +9,11 @@ namespace SlowpokeEngine.Weapons
 {
     class WeaponDynamite : WeaponSimpleBullet
     {
-        protected TimeSpan _dynamiteDetonationTick;
-        protected double _bangRadius;
+        private int _bangRadius;
+        private int _dynamiteDetonationTime;
 
         public WeaponDynamite(
-            int dynamiteDetonationMilliSeconds,
+            int dynamiteDetonationTime,
             int bangRadius,
             int damage,
             int bulletSize,
@@ -26,28 +26,23 @@ namespace SlowpokeEngine.Weapons
             )
             : base(damage, bulletSize, shootingDistance, bulletSpeed, shootFrequency, mechanicEngine, name, shape) 
         {
-            _dynamiteDetonationTick = new TimeSpan(0, 0, 0, 0, dynamiteDetonationMilliSeconds);
+            _dynamiteDetonationTime = dynamiteDetonationTime;
             _bangRadius = bangRadius;
         }
 
         public override void Shoot(Entities.Point startPosition, Entities.Vector direction, Guid ownerId, long commandId = 0)
         {
-            var bullets = CreateBullet(startPosition, direction, ownerId);
+            var dynamite = new DynamitBody(
+                new ShapeCircle(_bulletSize, startPosition),
+                direction,
+                _mechanicEngine,
+                _damage,
+                _bulletSpeed,
+                _dynamiteDetonationTime,
+                _bangRadius,
+                ownerId);
 
-            foreach (var dynamite in bullets)
-            {
-                _mechanicEngine.AddBody(dynamite);
-                
-
-            }
-        }
-
-        protected override List<Bullet> CreateBullet(Entities.Point startPosition, Entities.Vector direction, Guid ownerId, long commandId = 0)
-        {
-            return new List<Bullet>
-            {
-                new BulletDynamite(_bangRadius,_shootingDistance, _bulletSpeed, _damage, new Entities.ShapeCircle(_bulletSize, startPosition), direction, ownerId, _mechanicEngine, commandId)
-            };
+            _mechanicEngine.AddBody(dynamite);
         }
     }
 }

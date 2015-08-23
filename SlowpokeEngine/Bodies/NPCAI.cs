@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SlowpokeEngine.Bodies
 {
-	public class NPCAI : ActiveBody
+    public class NPCAI : CharacterBody
 	{
         private DateTime _startMove = DateTime.MinValue;
 

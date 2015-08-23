@@ -114,6 +114,28 @@ namespace SlowpokeEngine.Engines
 
                         return new PhysicsProcessingResultEmpty();
                     });
+
+            //Make damage
+            _commandHandlers.AddHandler((command) =>
+            {
+                return command is GameCommandMakeDamage;
+            },
+            (command) =>
+            {
+                var body = command.ActiveBody;
+                List<Body> collisionBodies = new List<Body>();
+
+                foreach (var bodyItem in _mapEngine.GetBodiesForCollision(body).Where(v => v is PassiveBody || (v is ActiveBody && ((ActiveBody)v).Id != body.Id)))
+                {
+                    if (_shapeCollisionManager.CheckCollision(body.Shape, bodyItem.Shape)
+                        && !(bodyItem is Bullet))
+                    {
+                        collisionBodies.Add(bodyItem);
+                    }
+                }
+
+                return new PhysicsProcessingResultCollision(collisionBodies);
+            });
         }
 	}
 }

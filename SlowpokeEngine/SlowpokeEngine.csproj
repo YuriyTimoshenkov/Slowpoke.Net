@@ -63,11 +63,13 @@
   <ItemGroup>
     <Compile Include="Bodies\Body.cs" />
     <Compile Include="Bodies\BodyState.cs" />
+    <Compile Include="Bodies\CharacterBody.cs" />
     <Compile Include="Bodies\Factories\UnityBodyBuilder.cs" />
     <Compile Include="Bodies\IUsableBody.cs" />
     <Compile Include="Bodies\LifeContainer.cs" />
     <Compile Include="Bodies\NPCAI.cs" />
     <Compile Include="Bodies\PassiveBody.cs" />
+    <Compile Include="Commands\GameCommandMakeDamage.cs" />
     <Compile Include="Commands\PhysicsProcessingResult.cs" />
     <Compile Include="Commands\PhysicsProcessingResultCollision.cs" />
     <Compile Include="Engines\DAL\EntityFrameworkImpl\CharacterRepositoryEF.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="Entities\Shape.cs" />
     <Compile Include="Entities\ShapeCircle.cs" />
     <Compile Include="Entities\ShapeRectangle.cs" />
+    <Compile Include="Weapons\DynamitBody.cs" />
     <Compile Include="Weapons\Extensions\ActionHandlersManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bodies\ActiveBody.cs" />
@@ -129,7 +132,6 @@
     <Compile Include="Engines\View\ActiveBodyEyesight.cs" />
     <Compile Include="Commands\BodyActionChangeDirection.cs" />
     <Compile Include="Weapons\Bullet.cs" />
-    <Compile Include="Weapons\BulletDynamite.cs" />
     <Compile Include="Weapons\WeaponBase.cs" />
     <Compile Include="Weapons\WeaponDynamite.cs" />
     <Compile Include="Weapons\WeaponMultipleShotgunBullet.cs" />
