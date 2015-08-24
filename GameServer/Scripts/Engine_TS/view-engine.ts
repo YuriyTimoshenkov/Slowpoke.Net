@@ -6,7 +6,7 @@ class ViewEngine {
     stage: createjs.Stage;
     canvas: any;
     menu: Menu;
-    viewBodyFactory: ViewBodyFactory;
+    bodyImageFactory: BodyImageFactory;
     baseRotationVector: Vector;
     targetBody: PlayerBody;
     targetBodyImage: createjs.Container;
@@ -15,17 +15,17 @@ class ViewEngine {
     gameContext: any;
     animations: Animation[];
 
-    constructor(canvas, canvasSize, infoboxFactory: InfoboxFactory, gameContext, viewBodyFactory: ViewBodyFactory) {
+    constructor(canvas, canvasSize, infoboxFactory: InfoboxFactory, gameContext, bodyImageFactory: BodyImageFactory) {
         this.canvas = canvas;
         this.canvas.width = canvasSize.width;
         this.canvas.height = canvasSize.height;
         this.stage = new createjs.Stage(canvas);
-
         this.infoboxFactory = infoboxFactory;
+        this.bodyImages = [];
         this.animations = [];
         this.gameContext = gameContext;
         this.menu = new Menu(this.gameContext, this.stage, this.canvas);
-        this.viewBodyFactory = viewBodyFactory;
+        this.bodyImageFactory = bodyImageFactory;
         this.baseRotationVector = new Vector(0, -1);
     }
 
@@ -33,7 +33,6 @@ class ViewEngine {
         var self = this;
         this.mechanicEngine = mechanicEngine;
         this.menu.init();
-        this.bodyImages = [];
         
         // Tile: ground
         // PassiveBody: various things, life containers, weapons
@@ -47,8 +46,7 @@ class ViewEngine {
         this.stage.addChildAt(this.levelContainers[0], this.levelContainers[1], this.levelContainers[2], 0);
         
         mechanicEngine.BodyAdded.add(function (body: Body) {
-            var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
-            var bodyImageObject = new BodyImage(body.id, image)
+            var bodyImageObject = self.bodyImageFactory.createBodyImagebyServerBody(body);
             self.bodyImages.push(bodyImageObject);
 
             self.addBodyHandler(body, bodyImageObject.image);
@@ -74,13 +72,17 @@ class ViewEngine {
                         self.positionChangeHandler(e.body, bodyImageObject);
                         break;
                     }
-                case BodyChangesType.hp: bodyImageObject
-                    //console.log(bodyImageObject.image)
-                    //console.log(bodyImageObject.image.gotoAndPlay)
-                    bodyImageObject.image.gotoAndPlay("bodyHit");
+                case BodyChangesType.hp:
+                    bodyImageObject.animate("bodyHit");
                     break;
 
                 case BodyChangesType.currentWeapon:
+                    var character = <CharacterBody>e.body;
+                    var bodyImage = <CharacterBodyImage>bodyImageObject;
+                    var newWeapon = character.currentWeapon;
+                    var newWeaponType = self.bodyImageFactory.serverTypeMap[newWeapon.name];
+                    var newWeaponImage = self.bodyImageFactory.viewBodyFactory.createViewBody(newWeaponType, newWeapon);
+                    bodyImage.setNewWeaponImage(newWeaponImage);
                     break;
 
                 case BodyChangesType.score:
@@ -248,11 +250,39 @@ class ViewEngine {
 
 class BodyImage {
     id: any;
-    image: any;
+    image: createjs.Container;
+    baseImage: any;
     infoboxes: Infobox[];
     constructor(id, image) {
         this.id = id;
-        this.image = image;
+        this.image = new createjs.Container();
+        this.image.addChild(image);
+        this.baseImage = image;
         this.infoboxes = [];
     }
+    animate(animationType: string) { }
+}
+
+class CharacterBodyImage extends BodyImage {
+    weaponImageContainer: createjs.Container;
+    constructor(id, image) {
+        super(id, image);
+        this.weaponImageContainer = new createjs.Container();
+        this.image.addChildAt(this.weaponImageContainer, 0);
+    }
+
+    setNewWeaponImage(weaponImage: createjs.DisplayObject) {
+        this.weaponImageContainer.removeAllChildren();
+        this.weaponImageContainer.addChild(weaponImage);
+    }
+
+    animate(animationType: string) {
+        switch (animationType) {
+            case "bodyHit":
+                this.baseImage.gotoAndPlay(animationType);
+                break;
+        }
+    }
+
+
 }

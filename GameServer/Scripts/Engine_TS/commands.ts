@@ -128,13 +128,12 @@ class CommandShoot extends CommandBase {
             this.bulletDeviationRadians.forEach(function (item) {
                 var dirX = body.direction.x * Math.cos(item) - body.direction.y * Math.sin(item);
                 var dirY = body.direction.x * Math.sin(item) + body.direction.y * Math.cos(item);
-
                 newBullet = new Bullet({
                     CreatedByCommandId: self.id,
                     LastProcessedCommandId: 1,
                     BodyType: 'Bullet',
                     Id: bulletId,
-                    BulletTypeName: body.currentWeapon.name,
+                    BulletTypeName: "Bullet" + body.currentWeapon.name,
                     Name: 'Bullet',
                     Shape: {
                         Radius: 2,
@@ -172,7 +171,7 @@ class CommandShoot extends CommandBase {
                     BodyType: 'Bullet',
                     Id: new Date().getTime(),
                     Name: 'Bullet',
-                    BulletTypeName: body.currentWeapon.name,
+                    BulletTypeName: "Bullet" + body.currentWeapon.name,
                     Shape: {
                         Radius: 2,
                         Position:

@@ -43,7 +43,7 @@ namespace SlowpokeEngine.Weapons
                         ownerId,
                         _mechanicEngine, 
                         commandId,
-                        this.Name);
+                        "Bullet" + this.Name);
                 }).ToList();
         }
     }

@@ -22,22 +22,18 @@
         switch (serverBody.BodyType) {
             case "LifeContainer": {
                 newBody = new PassiveBody(serverBody);
-
                 break;
             }
             case "NPCAI": {
                 newBody = new CharacterBody(<ServerCharacterBody> serverBody);
-
                 break;
             }
             case "Bullet": {
                 newBody = new Bullet(<ServerBulletBody> serverBody);
-
                 break;
             }
             case "PlayerBody": {
                 newBody = new PlayerOtherBody(<ServerCharacterBody> serverBody);
-
                 break;
             }
         }

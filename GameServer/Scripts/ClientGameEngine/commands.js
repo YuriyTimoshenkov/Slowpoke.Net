@@ -95,6 +95,7 @@ var CommandShoot = CommandBase.extend({
                 var dirX = body.direction.x * Math.cos(item) - body.direction.y * Math.sin(item);
                 var dirY = body.direction.x * Math.sin(item) + body.direction.y * Math.cos(item);
 
+                console.log("Command.js oOoOoOoOoOoO ");
                 var newObject = mechanicEngine.gameObjectFactory.createGameObject(
                gameTypes.gameObjects.BULLET, {
                    BodyType: 'Bullet',
