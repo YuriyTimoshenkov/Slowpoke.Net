@@ -139,8 +139,8 @@ class CommandShoot extends CommandBase {
                         Radius: 2,
                         Position:
                         {
-                            X: body.gameRect.centerx,
-                            Y: body.gameRect.centery
+                            X: body.gameRect.centerx + body.direction.x * 120,
+                            Y: body.gameRect.centery + body.direction.y * 120
                         },
                         MaxDimension: 2
                     },
@@ -176,8 +176,8 @@ class CommandShoot extends CommandBase {
                         Radius: 2,
                         Position:
                         {
-                            X: body.gameRect.centerx,
-                            Y: body.gameRect.centery
+                            X: body.gameRect.centerx + body.direction.x * 140,
+                            Y: body.gameRect.centery + body.direction.y * 140
                         },
                         MaxDimension: 2
                     },
