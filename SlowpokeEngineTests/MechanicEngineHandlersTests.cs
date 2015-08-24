@@ -24,7 +24,7 @@ namespace SlowpokeEngineTests
             Guid ownerId = Guid.NewGuid();
             var handlers = new MechanicEngineHandlersBuilder();
             var mechanicEngine = Substitute.For<IMechanicEngine>();
-            var player = Substitute.For<ActiveBody>(null, new Vector(1, 1), mechanicEngine, 100, 100, 100, 1);
+            var player = Substitute.For<CharacterBody>(null, new Vector(1, 1), mechanicEngine, 100, 100, 100, 1);
             mechanicEngine.FindBody(ownerId).Returns(player);
 
             var bulletCollisionHandler = handlers.BuildBulletCollisionHandler(mechanicEngine);

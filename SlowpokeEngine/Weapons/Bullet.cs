@@ -28,7 +28,7 @@ namespace SlowpokeEngine.Weapons
 			IMechanicEngine mechanicEngine,
             long commandId,
             string bulletTypeName)
-            : base(shape, direction, mechanicEngine, 1, 1, 0, speed)
+            : base(shape, direction, mechanicEngine, 1, 1, speed)
         {
             ShootingDistance = shootingDistance;
             Damage = damage;

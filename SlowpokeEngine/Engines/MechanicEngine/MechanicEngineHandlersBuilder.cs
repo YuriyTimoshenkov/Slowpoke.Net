@@ -31,27 +31,16 @@ namespace SlowpokeEngine.Engines
 
                         foreach (var body in resultCollision.Bodies)
                         {
-                            var bulletOwnerBody = mechanicEngine.FindBody(bullet.OwnerId);
+                            var bulletOwnerBody = mechanicEngine.FindBody(bullet.OwnerId) as CharacterBody;
 
 
                             if (body is ActiveBody && bulletOwnerBody != null
-                                && ((ActiveBody)body).SocialGroups.Intersect(bulletOwnerBody.SocialGroups).Count() == 0)
+                                && ((CharacterBody)body).SocialGroups.Intersect(bulletOwnerBody.SocialGroups).Count() == 0)
                             {
                                 //Set damage to collided active body
                                 var collidedActiveBody = ((ActiveBody)body);
-                                collidedActiveBody.Harm(bullet.Damage);
 
-                                //Kill collided active body if needed
-                                if (collidedActiveBody.Life <= 0)
-                                {
-                                    mechanicEngine.ReleaseBody(collidedActiveBody.Id);
-
-                                    //Increase score of bullet owner
-                                    if (bulletOwnerBody != null)
-                                    {
-                                        bulletOwnerBody.UpdateScore(collidedActiveBody.LifeMax);
-                                    }
-                                }
+                                ApplyDamageToActiveBody(mechanicEngine, bulletOwnerBody, collidedActiveBody, bullet.Damage);
                             }
                         }
                     });
@@ -76,6 +65,52 @@ namespace SlowpokeEngine.Engines
                         //Set usable container
                         player.UsableBodyInScope = (IUsableBody)resultCollision.Bodies[0];
                     });
+        }
+
+        public Tuple<
+            Func<GameCommand, PhysicsProcessingResult, bool>,
+            Action<GameCommand, PhysicsProcessingResult>> BuildMakeDamageCollisionHandler(IMechanicEngine mechanicEngine)
+        {
+            return new Tuple<Func<GameCommand, PhysicsProcessingResult, bool>, Action<GameCommand, PhysicsProcessingResult>>(
+            (gameCommand, result) =>
+            {
+                return result is PhysicsProcessingResultCollision
+                    && gameCommand is GameCommandMakeDamage;
+            },
+            (gameCommand, result) =>
+            {
+                var resultCollision = (PhysicsProcessingResultCollision)result;
+                var command = (GameCommandMakeDamage)gameCommand;
+
+                foreach (ActiveBody collidedActiveBody in resultCollision.Bodies.Where(v => v is ActiveBody))
+                {
+                    var bulletOwnerBody = mechanicEngine.FindBody(command.ActiveBody.OwnerId) as CharacterBody;
+
+                    ApplyDamageToActiveBody(mechanicEngine, bulletOwnerBody, collidedActiveBody, command.Damage);
+                }
+
+                if(command.ActiveBody is DynamitBody)
+                {
+                    mechanicEngine.ReleaseBody(command.ActiveBody.Id);
+                }
+            });
+        }
+
+        private void ApplyDamageToActiveBody(IMechanicEngine mechanicEngine,CharacterBody bulletOwnerBody, ActiveBody collidedActiveBody, int damage)
+        {
+            collidedActiveBody.Harm(damage);
+
+            //Kill collided active body if needed
+            if (collidedActiveBody.Life <= 0)
+            {
+                mechanicEngine.ReleaseBody(collidedActiveBody.Id);
+
+                //Increase score of bullet owner
+                if (bulletOwnerBody != null)
+                {
+                    bulletOwnerBody.UpdateScore(collidedActiveBody.LifeMax);
+                }
+            }
         }
     }
 }

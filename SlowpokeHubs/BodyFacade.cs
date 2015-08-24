@@ -43,18 +43,23 @@ namespace SlowpokeHubs
             if(body is ActiveBody)
             {
                 var aBody = body as ActiveBody;
-                result.CurrentWeapon = aBody.CurrentWeapon;
                 result.Direction = aBody.Direction;
                 result.Life = aBody.Life;
                 result.LifeMax = aBody.LifeMax;
-                result.Score = aBody.Score;
-                result.SocialGroups = aBody.SocialGroups;
                 result.Speed = aBody.Speed;
                 result.State = aBody.State;
-                result.ViewZone = aBody.ViewZone;
-                result.WeaponsCount = aBody.WeaponsCount;
                 result.LastProcessedCommandId = aBody.LastProcessedCommandId;
                 result.CreatedByCommandId = aBody.CreatedByCommandId;
+            }
+
+            if (body is CharacterBody)
+            {
+                var aBody = body as CharacterBody;
+                result.CurrentWeapon = aBody.CurrentWeapon;
+                result.Score = aBody.Score;
+                result.SocialGroups = aBody.SocialGroups;
+                result.ViewZone = aBody.ViewZone;
+                result.WeaponsCount = aBody.WeaponsCount;
             }
 
             if(body is PlayerBody)

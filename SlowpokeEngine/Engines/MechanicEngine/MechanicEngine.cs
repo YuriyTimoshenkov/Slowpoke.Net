@@ -231,6 +231,9 @@ namespace SlowpokeEngine.Engines
         protected virtual void BuildPhysicsResultHandlers()
         {
             var handlersBuilder = new MechanicEngineHandlersBuilder();
+
+            _actionHandlers.AddHandler(handlersBuilder.BuildMakeDamageCollisionHandler(this));
+
             //Bullets collision
             _actionHandlers.AddHandler(handlersBuilder.BuildBulletCollisionHandler(this));
 

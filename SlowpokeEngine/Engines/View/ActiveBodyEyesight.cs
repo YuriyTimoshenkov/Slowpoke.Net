@@ -25,7 +25,7 @@ namespace SlowpokeEngine.Engines
             if (_mapEngine.Bodies.TryGetValue(playerId, out body))
             {
                 var frame = new ViewFrame();
-                var player = body as ActiveBody;
+                var player = body as CharacterBody;
                 var currentTile = _mapEngine.GetBodyTile(playerId);
                 var map = _mapEngine.GetSurroundTiles(currentTile, player.ViewZone);
 

@@ -19,33 +19,6 @@ namespace SlowpokeEngine.Bodies
 
         public BodyState State { get; private set; }
 
-        private int _score;
-        public int Score
-        {
-            get
-            {
-                return _score;
-            }
-        }
-
-        public int ViewZone { get; private set; }
-
-        protected IList<WeaponBase> _weapons { get; private set; }
-        private int _currentWeaponIndex = 0;
-        public WeaponBase CurrentWeapon
-        {
-            get
-            {
-                if (_weapons.Count > _currentWeaponIndex)
-                {
-                    return _weapons[_currentWeaponIndex];
-                }
-                else
-                    return null;
-            }
-        }
-        public int WeaponsCount { get { return _weapons.Count; } }
-
         private IUsableBody _usableBodyInScope;
         private Point _lastUsableBodyActivePosition;
         public IUsableBody UsableBodyInScope
@@ -57,8 +30,6 @@ namespace SlowpokeEngine.Bodies
                 _lastUsableBodyActivePosition = new Point(this.Shape.Position.X, this.Shape.Position.Y);
             }
         }
-
-        public IList<string> SocialGroups { get; set; }
 
         //Points per second
         public int Speed { get; private set; }
@@ -72,7 +43,6 @@ namespace SlowpokeEngine.Bodies
 			Vector direction,
 			IMechanicEngine mechanicEngine,
             int life, int lifeMax,
-            int viewZone,
             int speed)
             : base(Guid.NewGuid(), shape)
 		{
@@ -81,11 +51,7 @@ namespace SlowpokeEngine.Bodies
 			Direction = direction;
             Life = life;
             LifeMax = lifeMax;
-            _weapons = new List<WeaponBase>();
-            SocialGroups = new List<string>();
             State = BodyState.Alive;
-            ViewZone = viewZone;
-            _score = 0;
             Speed = speed;
 		}
 
@@ -107,41 +73,7 @@ namespace SlowpokeEngine.Bodies
             Life -= damage;
         }
 
-        public void ChangeWeapon()
-        {
-            _currentWeaponIndex++;
-
-            if (_weapons.Count <= _currentWeaponIndex)
-            {
-                _currentWeaponIndex = 0;
-            }
-        }
-
-        public void AddWeapon(WeaponBase weapon)
-        {
-            _weapons.Add(weapon);
-        }
-
-        public void ThrowAwayCurrentWeapon()
-        {
-            _weapons.RemoveAt(_currentWeaponIndex);
-
-            if (_currentWeaponIndex <= _weapons.Count)
-                _currentWeaponIndex--;
-        }
-
-        public void Shoot(long commandId = 0)
-        {
-            if (CurrentWeapon != null)
-            {
-                //calculate start point
-                // Plus 1.5 step as Weapon gunpoint
-                var startPosition = Direction.MovePoint(
-                    Shape.Position, Shape.MaxDimension * 1.5);
-
-                CurrentWeapon.Shoot(startPosition, Direction, this.Id, commandId);
-            }
-        }
+        
 
         public void Heal(int healingPoints)
         {
@@ -159,10 +91,6 @@ namespace SlowpokeEngine.Bodies
                 UsableBodyInScope.Use(this);
                 _mechanicEngine.ReleaseBody(UsableBodyInScope.Id);
             }
-        }
-        public void UpdateScore(int value)
-        {
-            _score += value;
         }
 	}
 }

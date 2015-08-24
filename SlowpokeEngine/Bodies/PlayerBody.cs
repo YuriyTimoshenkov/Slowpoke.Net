@@ -8,7 +8,7 @@ using SlowpokeEngine.DAL;
 
 namespace SlowpokeEngine.Bodies
 {
-	public class PlayerBody : ActiveBody, IPlayerBodyFacade
+    public class PlayerBody : CharacterBody, IPlayerBodyFacade
 	{
         public Guid SessionId { get; set; }
 
