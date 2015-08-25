@@ -34,8 +34,8 @@
                                 Radius: 2,
                                 Position:
                                 {
-                                    X: startPoint.x,
-                                    Y: startPoint.y
+                                    X: startPoint.x + direction.x * 140,
+                                    Y: startPoint.y + direction.y * 140
                                 },
                                 MaxDimension: 2
                             },
@@ -67,8 +67,8 @@
                             Radius: 2,
                             Position:
                             {
-                                X: startPoint.x,
-                                Y: startPoint.y
+                                X: startPoint.x + direction.x * 140,
+                                Y: startPoint.y + direction.y * 140
                             },
                             MaxDimension: 2
                         },
@@ -98,8 +98,8 @@
                             Radius: 2,
                             Position:
                             {
-                                X: startPoint.x,
-                                Y: startPoint.y
+                                X: startPoint.x + direction.x * 140,
+                                Y: startPoint.y + direction.y * 140
                             },
                             MaxDimension: 2
                         },

@@ -30,9 +30,6 @@
             }
             case "Bullet": {
                 newBody = new Bullet(<ServerBulletBody> serverBody);
-                var x = newBody.gameRect.centerx + newBody.direction.x * 140;
-                var y = newBody.gameRect.centerx + newBody.direction.x * 140;
-                newBody.gameRect.center = new Point(x, y);
                 break;
             }
             case "PlayerBody": {
