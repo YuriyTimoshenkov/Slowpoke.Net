@@ -74,7 +74,7 @@ class ViewEngine {
                         self.positionChangeHandler(e.body, bodyImageObject);
                         break;
                     }
-                case BodyChangesType.hp: bodyImageObject
+                case BodyChangesType.hp: 
                     //console.log(bodyImageObject.image)
                     //console.log(bodyImageObject.image.gotoAndPlay)
                     bodyImageObject.image.gotoAndPlay("bodyHit");
@@ -98,7 +98,7 @@ class ViewEngine {
         });
 
         mechanicEngine.onBodyRemove.add(function (body) {
-            var childrenImageObjectsToRemove: any[] = [];
+            var childrenImageObjectsToRemove: BodyImage[] = [];
 
             self.bodyImages = self.bodyImages.filter(function (v) {
                 if (v.id === body.id) {
@@ -112,6 +112,12 @@ class ViewEngine {
 
 
             childrenImageObjectsToRemove.forEach(function (item) { 
+                
+                if (body instanceof DynamitBody) {
+                    item.image.gotoAndPlay("detonate");
+                }
+
+
                 if (body instanceof Tile) {
                     self.levelContainers[0].removeChild(item.image);
                 }
@@ -134,17 +140,16 @@ class ViewEngine {
         var infoboxes = self.infoboxFactory.createInfoboxes(body, new Point(bodyImageObject.image.x, bodyImageObject.image.y));
 
         infoboxes.forEach((infobox) => {
-            var container;
-            if (infobox instanceof PlayerInfoboxFixed) container = self.stage
-            else container = self.levelContainers[2];
-            infobox.addSelfToContainer(container);
+            infobox.addSelfToContainer(infobox instanceof PlayerInfoboxFixed ? self.stage : self.levelContainers[2]);
         });
+
         bodyImageObject.infoboxes = bodyImageObject.infoboxes.concat(infoboxes);
     }
 
-    addBodyHandler = (body: Body, image: createjs.DisplayObject) => {
+    addBodyHandler(body: Body, image: createjs.DisplayObject) {
         image.x = body.gameRect.centerx;
         image.y = body.gameRect.centery;
+
         if (body instanceof Tile) {
             this.levelContainers[0].addChild(image);
         }
@@ -180,7 +185,7 @@ class ViewEngine {
         });
     }
 
-    positionChangeHandler = (body: Body, bodyImageObject: BodyImage) => {
+    positionChangeHandler(body: Body, bodyImageObject: BodyImage) {
         bodyImageObject.image.x = body.gameRect.centerx;
         bodyImageObject.image.y = body.gameRect.centery;
 
@@ -243,16 +248,5 @@ class ViewEngine {
         this.levelContainers.forEach(function (container) {
             container.removeAllChildren();
         });
-    }
-}
-
-class BodyImage {
-    id: any;
-    image: any;
-    infoboxes: Infobox[];
-    constructor(id, image) {
-        this.id = id;
-        this.image = image;
-        this.infoboxes = [];
     }
 }

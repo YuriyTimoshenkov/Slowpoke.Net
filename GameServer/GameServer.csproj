@@ -233,6 +233,7 @@
     <TypeScriptCompile Include="Scripts\Engine_TS\commands.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\common.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Event.ts" />
+    <TypeScriptCompile Include="Scripts\Engine_TS\body-image.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\game-constants.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\infobox-factory.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\infobox.ts" />

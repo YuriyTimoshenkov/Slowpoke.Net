@@ -107,92 +107,13 @@ class CommandChangeDirection extends CommandBase {
 }
 
 class CommandShoot extends CommandBase {
-    bulletDeviationRadians: number[];
 
     constructor(bodyId: number, id: number) {
         super(bodyId, id);
-        this.bulletDeviationRadians = [0.01, 0.025, 0.045, 0, -0.01, -0.025, -0.045];
     }
+
     processBody(body: CharacterBody, mechanicEngine: MechanicEngineTS) {
-
-        var characterBody: CharacterBody = body;
-        var newBullet: Bullet;
-
-        if (body.currentWeapon.name == 'Shotgun') {
-            var self = this;
-
-            var bulletList: Bullet[] = [];
-
-            var bulletId = new Date().getTime()
-
-            this.bulletDeviationRadians.forEach(function (item) {
-                var dirX = body.direction.x * Math.cos(item) - body.direction.y * Math.sin(item);
-                var dirY = body.direction.x * Math.sin(item) + body.direction.y * Math.cos(item);
-
-                newBullet = new Bullet({
-                    CreatedByCommandId: self.id,
-                    LastProcessedCommandId: 1,
-                    BodyType: 'Bullet',
-                    Id: bulletId,
-                    BulletTypeName: body.currentWeapon.name,
-                    Name: 'Bullet',
-                    Shape: {
-                        Radius: 2,
-                        Position:
-                        {
-                            X: body.gameRect.centerx,
-                            Y: body.gameRect.centery
-                        },
-                        MaxDimension: 2
-                    },
-                    Direction: {
-                        X: dirX,
-                        Y: dirY
-                    },
-                    Speed: 1000
-                });
-
-                newBullet.createdByCommandId = self.id;
-
-                bulletList.push(newBullet);
-
-                bulletId++;
-            });
-
-            bulletList.forEach(function (bullet) {
-                mechanicEngine.onBodyAdd.trigger(bullet);
-
-                mechanicEngine.bodies.push(bullet);
-            });
-        }
-        else {
-            newBullet = new Bullet({
-                CreatedByCommandId: this.id,
-                LastProcessedCommandId: 1,
-                    BodyType: 'Bullet',
-                    Id: new Date().getTime(),
-                    Name: 'Bullet',
-                    BulletTypeName: body.currentWeapon.name,
-                    Shape: {
-                        Radius: 2,
-                        Position:
-                        {
-                            X: body.gameRect.centerx,
-                            Y: body.gameRect.centery
-                        },
-                        MaxDimension: 2
-                    },
-                    Direction: {
-                        X: body.direction.x,
-                        Y: body.direction.y
-                    },
-                    Speed: 1400
-            });
-
-            newBullet.createdByCommandId = this.id;
-            mechanicEngine.bodies.push(newBullet);
-            mechanicEngine.onBodyAdd.trigger(newBullet);
-        }
+        body.currentWeapon.Shoot(body.direction, new Point(body.gameRect.centerx, body.gameRect.centery), mechanicEngine);         
     }
 
     toServerCommand(): ServerCommand {

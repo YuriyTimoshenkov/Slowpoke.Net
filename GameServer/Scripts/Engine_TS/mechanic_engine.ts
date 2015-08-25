@@ -72,8 +72,4 @@ class MechanicEngineTS {
             body.update(self)
         });
     }
-
-    stop() {
-
-    }
 } 

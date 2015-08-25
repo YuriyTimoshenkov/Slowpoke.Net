@@ -186,3 +186,36 @@ class Bullet extends ActiveBody {
         }
     }
 }
+
+class DynamitBody extends ActiveBody {
+    lastUpdateTime: number;
+    startTime: number;
+    unitDirection: Vector;
+    flyDuration: number = 1000;
+    bulletTypeName: string;
+
+    constructor(activeBody: ServerActiveBody) {
+        super(activeBody);
+
+        this.lastUpdateTime = new Date().getTime();
+        this.startTime = this.lastUpdateTime;
+        this.unitDirection = new Vector(this.direction.x, this.direction.y).calculateUnitVector();
+    }
+
+    update(mechanicEngine: MechanicEngineTS) {
+        var currentTime = new Date().getTime();
+        var duration = currentTime - this.lastUpdateTime;
+        var durationFromStart = currentTime - this.startTime;
+        this.lastUpdateTime = currentTime;
+
+        if (durationFromStart > this.flyDuration) {
+            mechanicEngine.removeActiveBody(this.id);
+        }
+        else {
+            var moveCommand = new CommandMove(this.id, new Date().getTime(), duration, this.unitDirection);
+            moveCommand.syncedWithServer = true;
+
+            mechanicEngine.addCommand(moveCommand);
+        }
+    }
+}
