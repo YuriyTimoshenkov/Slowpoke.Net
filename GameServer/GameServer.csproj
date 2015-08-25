@@ -137,6 +137,7 @@
     <Content Include="Content\ng-dialog.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Icon.png" />
+    <Content Include="Scripts\ClientGameEngine\body-image-factory.js" />
     <Content Include="Scripts\ClientGameEngine\view-body-factory.js" />
     <Content Include="Scripts\lib\angular.js" />
     <Content Include="Scripts\lib\angular.min.js" />
@@ -242,7 +243,7 @@
     <TypeScriptCompile Include="Scripts\Engine_TS\menu.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\serverbody_synchronizer.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\tile.ts" />
-    <TypeScriptCompile Include="Scripts\Engine_TS\view-body-factory.ts" />
+    <TypeScriptCompile Include="Scripts\Engine_TS\body-image-factory.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\view-engine.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\weapon.ts" />
     <TypeScriptCompile Include="Scripts\lib\jquery.d.ts" />

@@ -1,13 +1,8 @@
 ﻿function ViewBodyFactory() {
     var self = this;
 
-    this.createGameObject = function (gameType, data) {
+    this.createViewBody = function (gameType, data) {
         return self.builders[gameType](data);
-    }
-
-    this.createGameObjectbyServerBody = function (body) {
-        var bodyTypeToCreate = body.bodyType === "Bullet" ? body.bulletTypeName : body.bodyType;
-        return self.createGameObject(self.serverTypeMap[bodyTypeToCreate], body);
     }
 
     this.builders = [];
@@ -93,6 +88,47 @@
         return new createjs.Sprite(spriteSheet, "walk");
     }
 
+    this.builders[gameTypes.gameObjects.SHOTGUN] = function (serverBody) {
+        var activeBodyRadius = 50;
+        var w = 6;
+        var h = activeBodyRadius + 35;
+        var x = -w / 2;
+        var y = -h;
+        var shotgunImage = new createjs.Shape();
+        shotgunImage.graphics.beginFill("black").drawRect(x, y, w, h);
+        return shotgunImage;
+    }
+    this.builders[gameTypes.gameObjects.GUN] = function (serverBody) {
+        var activeBodyRadius = 50;
+        var w = 4;
+        var h = activeBodyRadius + 50;
+        var x = -w / 2;
+        var y = -h;
+        var gunImage = new createjs.Shape();
+        gunImage.graphics.beginFill("maroon").drawRect(x, y, w, h);
+        return gunImage;
+    }
+    this.builders[gameTypes.gameObjects.REVOLVER] = function (serverBody) {
+        var activeBodyRadius = 50;
+        var w = 4;
+        var h = activeBodyRadius + 20;
+        var x = -w / 2;
+        var y = -h;
+        var revolverImage = new createjs.Shape();
+        revolverImage.graphics.beginFill("yellow").drawRect(x, y, w, h);
+        return revolverImage;
+    }
+    this.builders[gameTypes.gameObjects.DYNAMITE] = function (serverBody) {
+        var activeBodyRadius = 50;
+        var w = 3;
+        var h = activeBodyRadius + 15;
+        var x = -w / 2;
+        var y = -h;
+        var dynamitImage = new createjs.Shape();
+        dynamitImage.graphics.beginFill("red").drawRect(x, y, w, h);
+        return dynamitImage;
+    }
+
     this.builders[gameTypes.gameObjects.BULLETSHOTGUN] = function (serverBody) {
         var bulletImage = new createjs.Shape();
         bulletImage.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 2, 40).ss(1).f("#F08200").dc(2, 2, 2);
@@ -102,7 +138,6 @@
 
         return bulletImage;
     }
-
     this.builders[gameTypes.gameObjects.BULLETGUN] = function (serverBody) {
         var bulletImage = new createjs.Shape();
         bulletImage.graphics.lf(["#FF2828", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 5, 60).ss(1).f("#FF2828").dc(2, 2, 2);
@@ -168,6 +203,7 @@
 
         return bulletImage;
     }
+
     this.builders[gameTypes.gameObjects.LIFECONTAINER] = function (serverBody) {
         // Assign image
         var image = new BottleContainer().image;
@@ -227,42 +263,25 @@
         return image;
     }
 
-     
-    this.serverTypeMap = [];
-    this.serverTypeMap["NPCAI"] = gameTypes.gameObjects.NPCAI;
-    this.serverTypeMap["PlayerBody"] = gameTypes.gameObjects.PLAYER;
-    this.serverTypeMap["Gun"] = gameTypes.gameObjects.BULLETGUN;
-    this.serverTypeMap["Shotgun"] = gameTypes.gameObjects.BULLETSHOTGUN;
-    this.serverTypeMap["Revolver"] = gameTypes.gameObjects.BULLETREVOLVER;
-    this.serverTypeMap["Dynamite"] = gameTypes.gameObjects.DYNAMITE;
-    this.serverTypeMap["LifeContainer"] = gameTypes.gameObjects.LIFECONTAINER;
 
-    this.serverTypeMap["meadow"] = gameTypes.gameObjects.MEADOW;
-    this.serverTypeMap["water"] = gameTypes.gameObjects.WATER;
-    this.serverTypeMap["rock"] = gameTypes.gameObjects.ROCK;
-    this.serverTypeMap["road"] = gameTypes.gameObjects.ROAD;
-    this.serverTypeMap["ford"] = gameTypes.gameObjects.FORD;
-    this.serverTypeMap["tree"] = gameTypes.gameObjects.TREE;
-    this.serverTypeMap["map"] = gameTypes.gameObjects.MAP;
+    //this.updateDirection = function (newDirection, image) {
+    //    var baseRotationVector = new Vector(0, -1);
 
-    this.updateDirection = function (newDirection, image) {
-        var baseRotationVector = new Vector(0, -1);
+    //    var rotationDeltaRad = Math.acos(baseRotationVector.product(newDirection) /
+    //        baseRotationVector.length() * newDirection.length());
 
-        var rotationDeltaRad = Math.acos(baseRotationVector.product(newDirection) /
-            baseRotationVector.length() * newDirection.length());
+    //    var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
 
-        var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
+    //    // To check rotation direction
+    //    var centerX = image.x;
+    //    var mouseX = centerX + newDirection.x;
 
-        // To check rotation direction
-        var centerX = image.x;
-        var mouseX = centerX + newDirection.x;
-
-        // Clockwise
-        if (mouseX >= centerX) {
-            image.rotation = rotationDeltaDegree;
-        }// Counter-clockwise
-        else {
-            image.rotation = 360 - rotationDeltaDegree;
-        }
-    }
+    //    // Clockwise
+    //    if (mouseX >= centerX) {
+    //        image.rotation = rotationDeltaDegree;
+    //    }// Counter-clockwise
+    //    else {
+    //        image.rotation = 360 - rotationDeltaDegree;
+    //    }
+    //}
 }

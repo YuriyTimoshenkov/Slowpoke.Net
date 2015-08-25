@@ -28,7 +28,7 @@
                             LastProcessedCommandId: 1,
                             BodyType: 'Bullet',
                             Id: bulletId,
-                            BulletTypeName: self.name,
+                            BulletTypeName: "Bullet" + self.name,
                             Name: 'Bullet',
                             Shape: {
                                 Radius: 2,
@@ -93,7 +93,7 @@
                         BodyType: 'Bullet',
                         Id: new Date().getTime(),
                         Name: 'Bullet',
-                        BulletTypeName: this.name,
+                        BulletTypeName: "Bullet" + this.name,
                         Shape: {
                             Radius: 2,
                             Position:

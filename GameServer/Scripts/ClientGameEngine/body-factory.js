@@ -87,7 +87,7 @@
     }
     this.builders[gameTypes.gameObjects.BULLET] = function (serverBody) {
         var bullet = new BulletBody(serverBody);
-
+        console.log("body factor Bullet creation")
         // Assign image
         var bulletImage = new createjs.Shape();
         bulletImage.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 4, 50).ss(1).f("#F08200").dc(2, 2, 2);
