@@ -139,8 +139,8 @@ class NPCInfoboxFloating implements Infobox {
     }
 
     updatePosition(body: CharacterBody) {
-        this.lifeText.x = body.gameRect.centerx - body.gameRect.width;
-        this.lifeText.y = body.gameRect.centery - body.gameRect.height - 20;
+        this.lifeText.x = body.gameRect.centerx - body.gameRect.width / 2;
+        this.lifeText.y = body.gameRect.centery - body.gameRect.height / 2 - 30;
     }
     updateLifeText(body: CharacterBody) {
         this.lifeText.text = body.life.toString();
