@@ -157,16 +157,17 @@ class Bullet extends ActiveBody {
     lastUpdateTime: number;
     startTime: number;
     unitDirection: Vector;
-    flyDuration: number = 1500;
+    flyDistance: number;
     bulletTypeName: string;
 
-    constructor(serverBody: ServerBulletBody) {
+    constructor(serverBody: ServerBulletBody, flyDistance:number) {
         super(serverBody);
 
         this.lastUpdateTime = new Date().getTime();
         this.startTime = this.lastUpdateTime;
         this.unitDirection = new Vector(this.direction.x, this.direction.y).calculateUnitVector();
         this.bulletTypeName = serverBody.BulletTypeName;
+        this.flyDistance = flyDistance;
     }
 
     update(mechanicEngine: MechanicEngineTS) {
@@ -175,7 +176,7 @@ class Bullet extends ActiveBody {
         var durationFromStart = currentTime - this.startTime;
         this.lastUpdateTime = currentTime;
 
-        if (durationFromStart > this.flyDuration) {
+        if (duration / 1000  * this.speed > this.flyDistance) {
             mechanicEngine.removeActiveBody(this.id);
         }
         else {
@@ -191,15 +192,16 @@ class DynamitBody extends ActiveBody {
     lastUpdateTime: number;
     startTime: number;
     unitDirection: Vector;
-    flyDuration: number = 1000;
+    flyDistance: number;
     bulletTypeName: string;
 
-    constructor(activeBody: ServerActiveBody) {
+    constructor(activeBody: ServerActiveBody, flyDistance: number) {
         super(activeBody);
 
         this.lastUpdateTime = new Date().getTime();
         this.startTime = this.lastUpdateTime;
         this.unitDirection = new Vector(this.direction.x, this.direction.y).calculateUnitVector();
+        this.flyDistance = flyDistance;
     }
 
     update(mechanicEngine: MechanicEngineTS) {
@@ -208,7 +210,7 @@ class DynamitBody extends ActiveBody {
         var durationFromStart = currentTime - this.startTime;
         this.lastUpdateTime = currentTime;
 
-        if (durationFromStart > this.flyDuration) {
+        if (duration / 1000 * this.speed > this.flyDistance) {
             mechanicEngine.removeActiveBody(this.id);
         }
         else {

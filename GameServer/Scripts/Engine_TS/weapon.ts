@@ -43,8 +43,8 @@
                                 X: dirX,
                                 Y: dirY
                             },
-                            Speed: 1000
-                        });
+                            Speed: 1200
+                        }, 350);
 
                         newBullet.createdByCommandId = self.id;
 
@@ -77,7 +77,7 @@
                             Y: direction.y
                         },
                         Speed: 400
-                    });
+                    }, 200);
 
                     newBullet.createdByCommandId = this.id;
 
@@ -85,6 +85,36 @@
 
                     break;
                 };
+            case 'Gun': {
+                newBullet = new Bullet({
+                    CreatedByCommandId: this.id,
+                    LastProcessedCommandId: 1,
+                    BodyType: 'Bullet',
+                    Id: new Date().getTime(),
+                    Name: 'Bullet',
+                    BulletTypeName: "Bullet" + this.name,
+                    Shape: {
+                        Radius: 2,
+                        Position:
+                        {
+                            X: startPoint.x + direction.x * 140,
+                            Y: startPoint.y + direction.y * 140
+                        },
+                        MaxDimension: 2
+                    },
+                    Direction: {
+                        X: direction.x,
+                        Y: direction.y
+                    },
+                    Speed: 1600
+                }, 1000);
+
+                newBullet.createdByCommandId = this.id;
+
+                bulletList.push(newBullet);
+
+                break;
+            }
             default:
                 {
                     newBullet = new Bullet({
@@ -108,7 +138,7 @@
                             Y: direction.y
                         },
                         Speed: 1400
-                    });
+                    }, 400);
 
                     newBullet.createdByCommandId = this.id;
 

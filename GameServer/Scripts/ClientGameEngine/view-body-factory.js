@@ -150,34 +150,34 @@
 
     this.builders[gameTypes.gameObjects.DYNAMITE] = function (serverBody) {
         var bulletImage = new createjs.Shape();
-        bulletImage.graphics.rf(["#FF2828", "#FAFAC8"], [1, 0], 0, 0, 1, 0, 0, 15).dc(0, 0, 16).ss(1).f("#FF2828");
+        bulletImage.graphics.rf(["#FF2828", "#FAFAC8"], [1, 0], 15, 15, 1, 15, 15, 15).ss(1).dc(15, 15, 16);
         bulletImage.scaleX = 0.5;
         bulletImage.scaleY = 0.5;
         bulletImage.zIndex = 6;
 
         var c0 = new createjs.Container();
         c0.addChild(bulletImage);
-        c0.cache(0,0,15,15);
+        c0.cache(0,0,32,32);
 
         var bulletImage2 = new createjs.Shape();
-        bulletImage2.graphics.rf(["#FF2828", "#FAFAC8"], [1, 0], 0, 0, 1, 0, 0, 32).dc(0, 0, 32).ss(1).f("#FF2828");
+        bulletImage2.graphics.rf(["#FF2828", "#FAFAC8"], [1, 0], 30, 30, 1, 30, 30, 30).ss(1).dc(30, 30, 31);
         bulletImage2.scaleX = 0.5;
         bulletImage2.scaleY = 0.5;
         bulletImage2.zIndex = 6;
 
         var c1 = new createjs.Container();
         c1.addChild(bulletImage2);
-        c1.cache(0, 0, 32, 32);
+        c1.cache(0, 0, 62, 62);
 
         var bulletImage3 = new createjs.Shape();
-        bulletImage3.graphics.rf(["#FF2828", "#FAFAC8"], [1, 0], 0, 0, 1, 0, 0, 64).dc(0, 0, 64).ss(1).f("#FF2828");
+        bulletImage3.graphics.rf(["#FF2828", "#FAFAC8"], [1, 0], 60, 60, 1, 60, 60, 60).ss(1).dc(60, 60, 61);
         bulletImage3.scaleX = 0.5;
         bulletImage3.scaleY = 0.5;
         bulletImage3.zIndex = 6;
 
         var c2 = new createjs.Container();
         c2.addChild(bulletImage3);
-        c2.cache(0, 0, 64, 64);
+        c2.cache(0, 0, 122, 122);
 
         // Build SpriteSheet and Sprite
         var builder = new createjs.SpriteSheetBuilder();
@@ -190,8 +190,6 @@
         var spriteSheet = builder.build();
 
         return new createjs.Sprite(spriteSheet, "default");
-
-        //return bulletImage;
     }
 
     this.builders[gameTypes.gameObjects.BULLETREVOLVER] = function (serverBody) {

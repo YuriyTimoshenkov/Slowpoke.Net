@@ -47,6 +47,7 @@ class ViewEngine {
         
         mechanicEngine.BodyAdded.add(function (body: Body) {
             var bodyImageObject = self.bodyImageFactory.createBodyImagebyServerBody(body);
+
             self.bodyImages.push(bodyImageObject);
 
             self.addBodyHandler(body, bodyImageObject.image);
