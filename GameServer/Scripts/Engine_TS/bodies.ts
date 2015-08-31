@@ -22,6 +22,7 @@ interface ServerCharacterBody extends ServerActiveBody {
 
 interface ServerBulletBody extends ServerActiveBody {
     BulletTypeName: string;
+    ShootingDistance: number;
 }
 
 class Body {
@@ -160,14 +161,14 @@ class Bullet extends ActiveBody {
     flyDistance: number;
     bulletTypeName: string;
 
-    constructor(serverBody: ServerBulletBody, flyDistance:number) {
+    constructor(serverBody: ServerBulletBody) {
         super(serverBody);
 
         this.lastUpdateTime = new Date().getTime();
         this.startTime = this.lastUpdateTime;
         this.unitDirection = new Vector(this.direction.x, this.direction.y).calculateUnitVector();
         this.bulletTypeName = serverBody.BulletTypeName;
-        this.flyDistance = flyDistance;
+        this.flyDistance = serverBody.ShootingDistance;
     }
 
     update(mechanicEngine: MechanicEngineTS) {

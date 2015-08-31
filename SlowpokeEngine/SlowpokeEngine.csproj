@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Bodies\Body.cs" />
     <Compile Include="Bodies\BodyState.cs" />
+    <Compile Include="Bodies\BoxBody.cs" />
     <Compile Include="Bodies\CharacterBody.cs" />
     <Compile Include="Bodies\Factories\UnityBodyBuilder.cs" />
     <Compile Include="Bodies\IUsableBody.cs" />

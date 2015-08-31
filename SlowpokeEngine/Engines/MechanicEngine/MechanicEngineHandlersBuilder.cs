@@ -33,9 +33,12 @@ namespace SlowpokeEngine.Engines
                         {
                             var bulletOwnerBody = mechanicEngine.FindBody(bullet.OwnerId) as CharacterBody;
 
+                            if (body is CharacterBody && ((CharacterBody)body).SocialGroups.Intersect(bulletOwnerBody.SocialGroups).Count() > 0)
+                            {
+                                continue;
+                            }
 
-                            if (body is ActiveBody && bulletOwnerBody != null
-                                && ((CharacterBody)body).SocialGroups.Intersect(bulletOwnerBody.SocialGroups).Count() == 0)
+                            if (body is ActiveBody && bulletOwnerBody != null)
                             {
                                 //Set damage to collided active body
                                 var collidedActiveBody = ((ActiveBody)body);

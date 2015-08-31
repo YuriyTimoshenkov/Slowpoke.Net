@@ -43,8 +43,9 @@
                                 X: dirX,
                                 Y: dirY
                             },
-                            Speed: 1200
-                        }, 350);
+                            Speed: 1200,
+                            ShootingDistance: 350
+                        });
 
                         newBullet.createdByCommandId = self.id;
 
@@ -106,8 +107,9 @@
                         X: direction.x,
                         Y: direction.y
                     },
-                    Speed: 1600
-                }, 1000);
+                    Speed: 1600,
+                    ShootingDistance: 1000
+                });
 
                 newBullet.createdByCommandId = this.id;
 
@@ -137,8 +139,9 @@
                             X: direction.x,
                             Y: direction.y
                         },
-                        Speed: 1400
-                    }, 400);
+                        Speed: 1400,
+                        ShootingDistance: 400
+                    });
 
                     newBullet.createdByCommandId = this.id;
 

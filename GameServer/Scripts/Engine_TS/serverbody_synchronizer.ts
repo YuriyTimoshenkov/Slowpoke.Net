@@ -36,6 +36,10 @@
                 newBody = new PlayerOtherBody(<ServerCharacterBody> serverBody);
                 break;
             }
+            case "BoxBody": {
+                newBody = new PassiveBody(serverBody);
+                break;
+            }
         }
 
         if (newBody) {

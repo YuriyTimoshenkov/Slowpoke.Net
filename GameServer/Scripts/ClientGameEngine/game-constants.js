@@ -19,7 +19,8 @@
         ROAD: 16,
         FORD: 17,
         TREE: 18,
-        MAP: 19
+        MAP: 19,
+        BOX: 20
     }
 }
 

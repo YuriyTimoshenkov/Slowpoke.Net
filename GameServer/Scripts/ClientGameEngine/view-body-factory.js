@@ -260,6 +260,12 @@
         image.graphics.beginFill("#5EAB00").drawRect(-serverBody.size / 2, -serverBody.size / 2, serverBody.size, serverBody.size);
         return image;
     }
+    this.builders[gameTypes.gameObjects.BOX] = function (serverBody) {
+
+        var boxImage = new createjs.Shape();
+        boxImage.graphics.beginFill("orange").drawRect(-serverBody.gameRect.height, -serverBody.gameRect.height, serverBody.gameRect.height, serverBody.gameRect.height);
+        return boxImage;
+    }
 
 
     //this.updateDirection = function (newDirection, image) {

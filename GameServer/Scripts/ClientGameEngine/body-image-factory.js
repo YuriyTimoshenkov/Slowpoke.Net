@@ -106,6 +106,11 @@
         var bodyImage = new BodyImage(serverBody.id, tileImage);
         return bodyImage;
     }
+    this.builders[gameTypes.gameObjects.BOX] = function (serverBody) {
+        var boxImage = self.viewBodyFactory.createViewBody(gameTypes.gameObjects.BOX, serverBody);
+        var bodyImage = new BodyImage(serverBody.id, boxImage);
+        return bodyImage;
+    }
 
 
     this.serverTypeMap = [];
@@ -120,6 +125,7 @@
     this.serverTypeMap["Revolver"] = gameTypes.gameObjects.REVOLVER;
     this.serverTypeMap["Dynamite"] = gameTypes.gameObjects.DYNAMITE;
     this.serverTypeMap["LifeContainer"] = gameTypes.gameObjects.LIFECONTAINER;
+    this.serverTypeMap["BoxBody"] = gameTypes.gameObjects.BOX;
 
     this.serverTypeMap["meadow"] = gameTypes.gameObjects.MEADOW;
     this.serverTypeMap["water"] = gameTypes.gameObjects.WATER;
