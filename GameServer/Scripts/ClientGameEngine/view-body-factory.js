@@ -51,14 +51,15 @@
     }
 
     this.builders[gameTypes.gameObjects.NPCAI] = function (serverBody) {
-        var imageSize = 280;
+        var imageSize = 200;
+        var scaleFactor = 0.43;
 
         // Create walk animation
         var walkImage = new PolicemanContainer().image;
         walkImage.regX = imageSize / 2;
         walkImage.regY = imageSize / 2;
-        walkImage.scaleX = 0.4;
-        walkImage.scaleY = 0.4;
+        walkImage.scaleX = scaleFactor;
+        walkImage.scaleY = scaleFactor;
         walkImage.cache(0, 0, imageSize, imageSize);
 
         // Create bodyHit animation
@@ -66,8 +67,8 @@
         bodyHitImage.filters = [new createjs.ColorFilter(1, 1, 1, 1, 85, 0, 0, 0)];
         bodyHitImage.regX = imageSize / 2;
         bodyHitImage.regY = imageSize / 2;
-        bodyHitImage.scaleX = 0.4;
-        bodyHitImage.scaleY = 0.4;
+        bodyHitImage.scaleX = scaleFactor;
+        bodyHitImage.scaleY = scaleFactor;
         bodyHitImage.cache(0, 0, imageSize, imageSize);
 
         // To avoid createjs limitation that transformation is ignored when converting DisplayObjects to SpriteSheets
