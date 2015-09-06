@@ -223,8 +223,9 @@ namespace SlowpokeEngine.Engines
 
             foreach (var handler in _actionHandlers)
             {
-                if (handler.Item1(command, result))
+                if (handler.Item1(command, result)) { 
                     handler.Item2(command, result);
+                }
             }
         }
 
