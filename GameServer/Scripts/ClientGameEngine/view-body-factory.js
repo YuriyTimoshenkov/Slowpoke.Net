@@ -264,9 +264,16 @@
     this.builders[gameTypes.gameObjects.BOX] = function (serverBody) {
 
         var boxImage = new createjs.Shape();
-        boxImage.graphics.beginFill("orange").drawRect(0, 0, serverBody.gameRect.width, serverBody.gameRect.height);
+        boxImage.graphics.beginFill("orange").beginStroke("black").drawRect(0, 0, serverBody.gameRect.width, serverBody.gameRect.height);
         boxImage.regX = serverBody.gameRect.width / 2;
         boxImage.regX = serverBody.gameRect.height / 2;
+        var xStep = serverBody.gameRect.width / 10;
+
+        for (var x = xStep; x < serverBody.gameRect.width; x += xStep) {
+            console.log(111, x);
+            boxImage.graphics.beginStroke("black").moveTo(x, 0).lineTo(x, serverBody.gameRect.height);
+        }
+
         return boxImage;
     }
 

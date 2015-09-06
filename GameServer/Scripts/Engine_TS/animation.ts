@@ -98,7 +98,7 @@ class BoxDestroyAnimation extends Animation {
 
             // create piece
             var piece = new BoxPiece(speed, direction, rotationSpeed, skewSpeed, skewXSign, skewYSign);
-            piece.createPiece(pieceWidth, pieceMaxHeight, "red");
+            piece.createPiece(pieceWidth, pieceMaxHeight, "orange");
             piece.image.x = x;
             piece.image.y = y;
 
