@@ -37,7 +37,7 @@
                 break;
             }
             case "BoxBody": {
-                newBody = new PassiveBody(serverBody);
+                newBody = new BoxPassiveBody(serverBody);
                 break;
             }
             case "Revolver": {

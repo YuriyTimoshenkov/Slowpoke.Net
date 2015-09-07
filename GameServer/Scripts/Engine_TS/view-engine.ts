@@ -37,13 +37,15 @@ class ViewEngine {
         // Tile: ground
         // PassiveBody: various things, life containers, weapons
         // ActiveBody: humans, animals, bullets
+        // In the sky
         this.levelContainers = [];
+        this.levelContainers.push(new createjs.Container());
         this.levelContainers.push(new createjs.Container());
         this.levelContainers.push(new createjs.Container());
         this.levelContainers.push(new createjs.Container());
 
         // DO NOT CHANGE THE ORDER OF CONTAINERS - this is for sorting
-        this.stage.addChildAt(this.levelContainers[0], this.levelContainers[1], this.levelContainers[2], 0);
+        this.stage.addChildAt(this.levelContainers[0], this.levelContainers[1], this.levelContainers[2], this.levelContainers[3], 0);
         
         mechanicEngine.BodyAdded.add(function (body: Body) {
             var bodyImageObject = self.bodyImageFactory.createBodyImagebyServerBody(body);
@@ -106,20 +108,24 @@ class ViewEngine {
             self.bodyImages = self.bodyImages.filter(function (v) {
                 if (v.id === body.id) {
                     childrenImageObjectsToRemove.push(v);
-
                     return false;
                 }
                 else
                     return true;
             });
 
+            // Create Animations
+            if (body instanceof BoxPassiveBody) {
+                var anim = new BoxDestroyAnimation(body, self.levelContainers[1]);
+                self.animations.push(anim);
+                self.addAnimationHandler(anim);
+                anim.start();
+            }
 
             childrenImageObjectsToRemove.forEach(function (item) { 
-                
                 if (body instanceof DynamitBody) {
                     item.animate("detonate");
                 }
-
 
                 if (body instanceof Tile) {
                     self.levelContainers[0].removeChild(item.image);
@@ -130,7 +136,6 @@ class ViewEngine {
                 }
                 else if (body instanceof ActiveBody) {
                     self.levelContainers[2].removeChild(item.image);
-
                     item.infoboxes.forEach(function (infobox) { infobox.removeSelf(self.levelContainers[2]) });
                 }
             });
@@ -166,6 +171,12 @@ class ViewEngine {
         else console.log("ViewEngine: onboardObjectForRendering: Incorrect body type")
     }
 
+    addAnimationHandler(animation: Animation) {
+        if (animation instanceof BoxDestroyAnimation) {
+            animation.parentContainer.addChild(animation.animationContainer);
+        }
+    }
+
     render() {
         this.menu.update();
         this.updateAnimations();
@@ -174,7 +185,11 @@ class ViewEngine {
 
     updateAnimations() {
         var self = this;
-        this.animations.forEach(function (animation) { animation.update(self); });
+        this.animations.forEach(function (animation) { animation.update(); });
+        // Remove dead animations
+        this.animations = this.animations.filter(function (animation) { return animation.isAlive });
+        // Probably we don't need to add animations to this.bodyImages list
+        //this.bodyImages = this.bodyImages.filter(function (animation) { return animation.is});
     }
 
     updateContainersPosition = () => {

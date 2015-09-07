@@ -53,8 +53,8 @@ class Point {
 }
 
 class Rect{
-    private x: number;
-    private y: number;
+    x: number;
+    y: number;
     width: number;
     height: number;
 

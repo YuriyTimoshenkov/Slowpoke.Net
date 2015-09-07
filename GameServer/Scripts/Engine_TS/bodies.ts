@@ -65,6 +65,12 @@ class PassiveBody extends Body {
     }
 }
 
+class BoxPassiveBody extends PassiveBody {
+    constructor(serverBody: ServerBody) {
+        super(serverBody);
+    }
+}
+
 class ActiveBody extends Body{
     speed: number;
     baseRotationVector: Vector;
