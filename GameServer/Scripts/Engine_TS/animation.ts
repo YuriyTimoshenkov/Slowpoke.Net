@@ -90,9 +90,13 @@ class BoxDestroyAnimation extends Animation {
             // randomize skew signs
             var skewXSign;
             var skewYSign;
-            if (Math.floor((Math.random() * 2) + 1) === 1) skewXSign = 1;
+            var randomNumber = Math.floor((Math.random() * 3) + 1);
+            if (randomNumber === 1) skewXSign = 1;
+            else if (randomNumber === 2) skewXSign = 0;
             else skewXSign = -1;
-            if (Math.floor((Math.random() * 2) + 1) === 1) skewYSign = 1;
+            var randomNumber = Math.floor((Math.random() * 3) + 1);
+            if (randomNumber === 1) skewYSign = 1;
+            else if (randomNumber === 2) skewYSign = 0;
             else skewYSign = -1;
 
             // create piece
