@@ -92,7 +92,7 @@
     <Compile Include="Engines\Map\TileSolidityType.cs" />
     <Compile Include="Engines\MechanicEngine\MechanicEngineHandlersBuilder.cs" />
     <Compile Include="Engines\Services\IMechanicService.cs" />
-    <Compile Include="Engines\Services\LifeContainersGenerationService.cs" />
+    <Compile Include="Engines\Services\BoxesGenerationService.cs" />
     <Compile Include="Engines\Services\BaseGenerationService.cs" />
     <Compile Include="Engines\Services\NPCGenerationService.cs" />
     <Compile Include="Engines\View\IViewFrame.cs" />

@@ -23,7 +23,10 @@ class CharacterBodyImage extends BodyImage {
 
     setNewWeaponImage(weaponImage: createjs.DisplayObject) {
         this.weaponImageContainer.removeAllChildren();
-        this.weaponImageContainer.addChild(weaponImage);
+
+        if (weaponImage != null) {
+            this.weaponImageContainer.addChild(weaponImage);
+        }
     }
 
     animate(animationType: string) {

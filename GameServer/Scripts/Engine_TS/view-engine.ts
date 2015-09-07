@@ -156,7 +156,7 @@ class ViewEngine {
         if (body instanceof Tile) {
             this.levelContainers[0].addChild(image);
         }
-        else if (body instanceof PassiveBody) {
+        else if (body instanceof PassiveBody || body instanceof Weapon) {
             this.levelContainers[1].addChild(image);
         }   
         else if (body instanceof ActiveBody) {

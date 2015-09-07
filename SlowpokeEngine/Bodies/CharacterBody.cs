@@ -93,5 +93,32 @@ namespace SlowpokeEngine.Bodies
         {
             _score += value;
         }
+
+        public void ThrowCurrentWeapon()
+        {
+            if (CurrentWeapon == null)
+            {
+                return;
+            }
+            var currentWeapon = CurrentWeapon;
+            //Remove weapon from list and get next one
+            _weapons.RemoveAt(_currentWeaponIndex);
+
+            if (_weapons.Count <= _currentWeaponIndex)
+            {
+                if (_weapons.Count != 0)
+                {
+                    _currentWeaponIndex = 0;
+                }
+                else
+                {
+                    _currentWeaponIndex = 100;
+                }
+            }
+
+            currentWeapon.Shape.Position = new Point(this.Shape.Position.X, this.Shape.Position.Y);
+            //put weapon on the ground
+            _mechanicEngine.AddBody(currentWeapon);
+        }
     }
 }

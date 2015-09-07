@@ -5,6 +5,7 @@ using SlowpokeEngine.Weapons;
 using Microsoft.Practices.Unity;
 using SlowpokeEngine.DAL;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace SlowpokeEngine.Bodies
 {
@@ -13,6 +14,7 @@ namespace SlowpokeEngine.Bodies
         private UnityContainer _unityContainer;
         private IGameSessionRepository _sessionRepository;
         private ICharacterRepository _characterRepository;
+        private Random _randomizer = new Random();
 
         public UnityBodyBuilder(
             UnityContainer unityContainer,
@@ -66,6 +68,31 @@ namespace SlowpokeEngine.Bodies
 
             return player;
 		}
+
+        public BoxBody BuildBox(IMechanicEngine mechanicEngine, Point point)
+        {
+            var bodyType = _randomizer.Next(1000);
+            Body bodyInsideBox = null;
+
+            if (bodyType % 2 != 0)
+            {
+                bodyInsideBox = _unityContainer.Resolve<WeaponSimpleBullet>("Revolver");
+                System.Diagnostics.Debug.WriteLine("Revolver created");
+            }
+            else
+            {
+                bodyInsideBox = BuildLifeContainer(mechanicEngine);
+                System.Diagnostics.Debug.WriteLine("Life created");
+            }
+
+            var box = new BoxBody(new ShapeRectangle(30, 30, point),
+                new List<Body>() { bodyInsideBox },
+                mechanicEngine,
+                20,
+                20);
+
+            return box;
+        }
     }
 }
 

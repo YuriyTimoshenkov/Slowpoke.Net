@@ -9,6 +9,7 @@
     this.rightCode = 68;
     this.upCode = 87;
     this.downCode = 83;
+    this.throwWeaponCode = 16;
 
     this.focus = true;
 
@@ -27,6 +28,7 @@
         use: false,
         weaponSwitch: false,
         shoot: false,
+        throwWeapon: false,
         changeDirection: null
     }
 
@@ -65,6 +67,9 @@
             }
             else if (e.keyCode === self.weaponSwitchCode) {
                 self.controlsToReport["weaponSwitch"] = true;
+            }
+            else if (e.keyCode === self.throwWeaponCode) {
+                self.controlsToReport["throwWeapon"] = true;
             }
         }
     }
@@ -114,6 +119,7 @@
 
         controlsToReport.use = self.controlsToReport.use;
         controlsToReport.weaponSwitch = self.controlsToReport.weaponSwitch;
+        controlsToReport.throwWeapon = self.controlsToReport.throwWeapon;
  
         self.nullifyControlsToReport();
         return controlsToReport
@@ -199,5 +205,6 @@
     this.nullifyControlsToReport = function () {
         self.controlsToReport["use"] = false;
         self.controlsToReport["weaponSwitch"] = false;
+        self.controlsToReport.throwWeapon = false;
     }
 }

@@ -74,6 +74,11 @@ namespace SlowpokeHubs
                 result.BulletTypeName = pBody.BulletTypeName;
             }
 
+            if(body is WeaponBase)
+            {
+                result.BodyType = ((WeaponBase)body).Name;
+            }
+
             return result;
         }
     }

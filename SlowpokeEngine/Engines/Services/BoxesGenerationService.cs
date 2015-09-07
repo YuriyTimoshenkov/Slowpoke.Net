@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace SlowpokeEngine.Engines.Services
 {
-    public class LifeContainersGenerationService : BaseGenerationService
+    public class BoxesGenerationService : BaseGenerationService
     {
         private int _containersCount;
         private Random _randomizer =  new Random();
 
-        public LifeContainersGenerationService(
+        public BoxesGenerationService(
             IMechanicEngine mechanicEngine, 
             IBodyBuilder bodyBuilder,
             int containersCount):base(mechanicEngine, bodyBuilder)
@@ -22,13 +22,14 @@ namespace SlowpokeEngine.Engines.Services
         }
         protected override void Generate()
         {
-            var currentContainersCount = _mechanicEngine.Bodies.Where(v => v is LifeContainer).Count();
+            var currentBoxesCount = _mechanicEngine.Bodies.Where(v => v is BoxBody).Count();
 
-            var newContainersCount = _containersCount - currentContainersCount;
-            //Add new NPC if needed
-            if (newContainersCount > 0)
+            var newBoxesCount = _containersCount - currentBoxesCount;
+
+            //Add new boxes if needed
+            if (newBoxesCount > 0)
             {
-                foreach (var i in Enumerable.Range(0, newContainersCount))
+                foreach (var i in Enumerable.Range(0, newBoxesCount))
                 {
                     var suitableTiles = _mechanicEngine.Map.Tiles.SelectMany(v => v)
                         .Where(v => v.Solid == Map.TileSolidityType.NotSolid && v.Bodies.Count() == 0);
@@ -39,13 +40,11 @@ namespace SlowpokeEngine.Engines.Services
                         var tileNumber = _randomizer.Next(suitableTilesCount - 1);
                         var tile = suitableTiles.ElementAt(tileNumber);
 
-                        var newContainer = _bodyBuilder.BuildLifeContainer(_mechanicEngine);
-
-                        newContainer.Shape.Position = new Point(
+                        var newBox = _bodyBuilder.BuildBox(_mechanicEngine, new Point(
                             tile.Shape.Position.X,
-                            tile.Shape.Position.Y);
+                            tile.Shape.Position.Y));
 
-                        _mechanicEngine.AddBody(newContainer);
+                        _mechanicEngine.AddBody(newBox);
                     }
                 }
             }

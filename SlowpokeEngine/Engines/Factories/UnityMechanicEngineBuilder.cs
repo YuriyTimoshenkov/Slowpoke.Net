@@ -26,7 +26,7 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<ILogger, NLogAdapter>(new InjectionConstructor("Slowpoke.Log"));
             unityContainer.RegisterType<ICharacterRepository, CharacterRepositoryEF>();
             unityContainer.RegisterType<IMechanicService, NPCGenerationService>("NPCGenerationService");
-            unityContainer.RegisterType<IMechanicService, LifeContainersGenerationService>("LifeContainerGenerationService");
+            unityContainer.RegisterType<IMechanicService, BoxesGenerationService>("LifeContainerGenerationService");
             unityContainer.RegisterType<IMap, Map>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(_mapCellSize));

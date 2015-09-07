@@ -40,6 +40,10 @@
                 newBody = new PassiveBody(serverBody);
                 break;
             }
+            case "Revolver": {
+                newBody = new Weapon(serverBody);
+                break;
+            }
         }
 
         if (newBody) {

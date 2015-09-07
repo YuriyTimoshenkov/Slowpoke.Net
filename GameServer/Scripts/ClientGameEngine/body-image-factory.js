@@ -38,13 +38,17 @@
         return bodyImage;
     }
     this.builders[gameTypes.gameObjects.SHOTGUN] = function (serverBody) {
-        // this is for weapon creation as separate object (e.g. shotgun is on the ground)
+        var image = self.viewBodyFactory.createViewBody(gameTypes.gameObjects.SHOTGUN, serverBody);
+        var bodyImage = new BodyImage(serverBody.id, image);
+        return bodyImage;
     }
     this.builders[gameTypes.gameObjects.GUN] = function (serverBody) {
         // this is for weapon creation as separate object (e.g. shotgun is on the ground)
     }
     this.builders[gameTypes.gameObjects.REVOLVER] = function (serverBody) {
-        // this is for weapon creation as separate object (e.g. shotgun is on the ground)
+        var image = self.viewBodyFactory.createViewBody(gameTypes.gameObjects.REVOLVER, serverBody);
+        var bodyImage = new BodyImage(serverBody.id, image);
+        return bodyImage;
     }
     this.builders[gameTypes.gameObjects.DYNAMITE] = function (serverBody) {
         var bulletImage = self.viewBodyFactory.createViewBody(gameTypes.gameObjects.DYNAMITE, serverBody);

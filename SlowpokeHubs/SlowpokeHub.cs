@@ -132,6 +132,15 @@ namespace SlowpokeHubs
                                 Shoot(command.Id);
                                 break;
                             }
+                        case "ThrowCurrentWeapon":
+                            {
+                                var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
+
+                                if (player != null)
+                                    player.ThrowCurrentWeapon();
+
+                                break;
+                            }
                         default: break;
                     }
                 }
@@ -207,6 +216,14 @@ namespace SlowpokeHubs
                 if (inputEvent.shoot) { Shoot(0); }
 
                 if (inputEvent.weaponSwitch) { ChangeWeapon(); }
+
+                if (inputEvent.throwWeapon) 
+                {
+                    var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
+
+                    if (player != null)
+                        player.ThrowCurrentWeapon();
+                }
 
                 return GetFrame(playerContainer);
             }

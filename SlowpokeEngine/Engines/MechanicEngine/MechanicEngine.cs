@@ -265,14 +265,6 @@ namespace SlowpokeEngine.Engines
                         AddBody(NPCBody);
                     }
                 }
-
-            var box = new BoxBody(new ShapeCircle(30, new Point(500, 200)),
-                new List<Body>() { _unityContainer.Resolve<WeaponSimpleBullet>("Revolver") },
-                this,
-                20,
-                20);
-
-            this.AddBody(box);
         }
 
         private void UpdateBodies()

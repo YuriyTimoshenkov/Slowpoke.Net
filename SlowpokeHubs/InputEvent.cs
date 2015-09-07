@@ -11,6 +11,8 @@ namespace SlowpokeHubs
         public bool use { get; set; }
         public bool weaponSwitch { get; set; }
         public bool shoot { get; set; }
+
+        public bool throwWeapon { get; set; }
         public InputEventPoint changeDirection { get; set; }
         public IList<InputCommand> commands { get; set; }
 

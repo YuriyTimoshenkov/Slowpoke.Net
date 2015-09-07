@@ -141,7 +141,7 @@ class PlayerBody extends CharacterBody {
         }
 
         // Update weapon
-        if (serverBody.CurrentWeapon && this.currentWeapon.name !== serverBody.CurrentWeapon.Name) {
+        if ((serverBody.CurrentWeapon == null ? '' : this.currentWeapon.name) != serverBody.CurrentWeapon.Name) {
             this.currentWeapon = new Weapon(serverBody.CurrentWeapon);
             mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.currentWeapon });
         }

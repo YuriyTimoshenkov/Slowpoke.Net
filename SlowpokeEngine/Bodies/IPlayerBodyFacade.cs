@@ -15,6 +15,7 @@ namespace SlowpokeEngine.Bodies
         void Shoot(long commandId);
         void ChangeWeapon();
         void Use();
+        void ThrowCurrentWeapon();
 	}
 }
 
