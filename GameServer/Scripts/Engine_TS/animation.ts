@@ -56,7 +56,7 @@ class BoxDestroyAnimation extends Animation {
         super.update();
         var now = new Date().getTime();
         var currentDuration = now - this.creationTime;
-        var speedDecreaseFactor = currentDuration < this.piecesMovingDuration ? currentDuration / this.piecesMovingDuration : -1;
+        var speedDecreaseFactor = currentDuration < this.piecesMovingDuration ? (this.piecesMovingDuration - currentDuration) / this.piecesMovingDuration : -1;
         var alphaDecreaseFactor = currentDuration / this.animationDuration;
         this.pieces.forEach((piece) => { piece.update(speedDecreaseFactor) });
         this.animationContainer.alpha = 1 - alphaDecreaseFactor;
@@ -64,7 +64,6 @@ class BoxDestroyAnimation extends Animation {
 
     createAnimation(boxRect: Rect) {
         var piecesCount = Math.floor((Math.random() * (this.piecesCountRange[1] - this.piecesCountRange[0])) + this.piecesCountRange[0] + 1);
-        console.log("piecesCount", piecesCount);
         var pieceWidth = boxRect.width * 0.05;
         var pieceMaxHeight = boxRect.height * 0.7;
 
