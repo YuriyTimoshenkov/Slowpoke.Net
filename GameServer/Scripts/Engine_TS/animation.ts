@@ -68,7 +68,6 @@ class BoxDestroyAnimation extends Animation {
         var pieceMaxHeight = boxRect.height * 0.7;
 
         var speed = 3;
-        var rotationSpeed = 3;
         var skewSpeed = 20;
 
         for (var i = 0; i < piecesCount; i++) {
@@ -100,7 +99,7 @@ class BoxDestroyAnimation extends Animation {
             else skewYSign = -1;
 
             // create piece
-            var piece = new BoxPiece(speed, direction, rotationSpeed, skewSpeed, skewXSign, skewYSign);
+            var piece = new BoxPiece(speed, direction, skewSpeed, skewXSign, skewYSign);
             piece.createPiece(pieceWidth, pieceMaxHeight, "orange");
             piece.image.x = x;
             piece.image.y = y;
@@ -117,15 +116,13 @@ class BoxPiece {
     image: createjs.Shape;
     speed: number;
     direction: Vector;
-    rotationSpeed: number;
     skewSpeed: number;
     skewXSign: number;
     skewYSign: number;
-    constructor(speed: number, direction: Vector, rotationSpeed: number, skewSpeed: number, skewXSign: number, skewYSign: number) {
+    constructor(speed: number, direction: Vector, skewSpeed: number, skewXSign: number, skewYSign: number) {
         this.image = new createjs.Shape();
         this.speed = speed;
         this.direction = direction;
-        this.rotationSpeed = rotationSpeed;
         this.skewSpeed = skewSpeed;
         this.skewXSign = skewXSign;
         this.skewYSign = skewYSign;
@@ -150,7 +147,6 @@ class BoxPiece {
 
     update(speedDecreaseFactor: number) {
         if (speedDecreaseFactor !== -1) {
-            //this.image.rotation += this.rotationSpeed;
             this.image.skewX += this.skewXSign * this.skewSpeed / 2;
             this.image.skewY += this.skewYSign * this.skewSpeed;
             this.image.x += this.speed * speedDecreaseFactor * this.direction.x;
