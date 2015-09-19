@@ -11,6 +11,7 @@ using System.Linq;
 using SlowpokeEngine.Engines.Levels;
 using SlowpokeEngine.Engines.Services;
 using Common;
+using SlowpokeEngine.Configuration;
 
 namespace SlowpokeEngine
 {
@@ -18,7 +19,7 @@ namespace SlowpokeEngine
 	{
         private readonly int _mapCellSize = 100;
 
-		public IMechanicEngine Build()
+        public IMechanicEngine Build(Action<IPlayerBodyFacade> playerStateHandler, IEngineConfiguration configuration)
 		{
             UnityContainer unityContainer = new UnityContainer();
 
@@ -38,6 +39,7 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<IShapeCollisionManager, ShapeCollisionManager>();
             unityContainer.RegisterType<IPhysicsEngine, PhysicsEngine>();
             unityContainer.RegisterType<IActiveBodyEyesight, ActiveBodyEyesight>();
+            unityContainer.RegisterInstance<Action<IPlayerBodyFacade>>(playerStateHandler);
             unityContainer.RegisterType<IMechanicEngine, MechanicEngine>(new ContainerControlledLifetimeManager());
 
             unityContainer.RegisterType<IBodyBuilder, UnityBodyBuilder>();

@@ -47,7 +47,8 @@ namespace SlowpokeEngine.Engines
             IActiveBodyEyesight viewPort,
             IGameLevelRepository gameLevelRepository,
             ILogger logger,
-            IUnityContainer unityContainer
+            IUnityContainer unityContainer,
+            Action<IPlayerBodyFacade> playerStateHandler
 		)
 		{
             _logger = logger;
@@ -56,6 +57,7 @@ namespace SlowpokeEngine.Engines
 			_bodyBuilder = bodyBuilder;
             _gameLevelRepository = gameLevelRepository;
             _unityContainer = unityContainer;
+            _playerStateHandler = playerStateHandler;
 
 			ViewPort = viewPort;
             Services = new List<IMechanicService>();
@@ -130,11 +132,10 @@ namespace SlowpokeEngine.Engines
             }
 		}
 
-        public void StartEngine(Action<IPlayerBodyFacade> playerStateHandler)
+        public void StartEngine()
 		{
             BuildWorld();
 
-            _playerStateHandler = playerStateHandler;
 			_cancelationTokenSource = new CancellationTokenSource();
             Task.Factory.StartNew(EventLoop, _cancelationTokenSource.Token);
 		}
