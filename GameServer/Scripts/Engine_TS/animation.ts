@@ -68,7 +68,6 @@ class BoxDestroyAnimation extends Animation {
         var pieceMaxHeight = boxRect.height * 0.7;
 
         var speed = 3;
-        var rotationSpeed = 3;
         var skewSpeed = 20;
 
         for (var i = 0; i < piecesCount; i++) {
@@ -90,13 +89,17 @@ class BoxDestroyAnimation extends Animation {
             // randomize skew signs
             var skewXSign;
             var skewYSign;
-            if (Math.floor((Math.random() * 2) + 1) === 1) skewXSign = 1;
+            var randomNumber = Math.floor((Math.random() * 3) + 1);
+            if (randomNumber === 1) skewXSign = 1;
+            else if (randomNumber === 2) skewXSign = 0;
             else skewXSign = -1;
-            if (Math.floor((Math.random() * 2) + 1) === 1) skewYSign = 1;
+            var randomNumber = Math.floor((Math.random() * 3) + 1);
+            if (randomNumber === 1) skewYSign = 1;
+            else if (randomNumber === 2) skewYSign = 0;
             else skewYSign = -1;
 
             // create piece
-            var piece = new BoxPiece(speed, direction, rotationSpeed, skewSpeed, skewXSign, skewYSign);
+            var piece = new BoxPiece(speed, direction, skewSpeed, skewXSign, skewYSign);
             piece.createPiece(pieceWidth, pieceMaxHeight, "orange");
             piece.image.x = x;
             piece.image.y = y;
@@ -113,15 +116,13 @@ class BoxPiece {
     image: createjs.Shape;
     speed: number;
     direction: Vector;
-    rotationSpeed: number;
     skewSpeed: number;
     skewXSign: number;
     skewYSign: number;
-    constructor(speed: number, direction: Vector, rotationSpeed: number, skewSpeed: number, skewXSign: number, skewYSign: number) {
+    constructor(speed: number, direction: Vector, skewSpeed: number, skewXSign: number, skewYSign: number) {
         this.image = new createjs.Shape();
         this.speed = speed;
         this.direction = direction;
-        this.rotationSpeed = rotationSpeed;
         this.skewSpeed = skewSpeed;
         this.skewXSign = skewXSign;
         this.skewYSign = skewYSign;
@@ -146,7 +147,6 @@ class BoxPiece {
 
     update(speedDecreaseFactor: number) {
         if (speedDecreaseFactor !== -1) {
-            //this.image.rotation += this.rotationSpeed;
             this.image.skewX += this.skewXSign * this.skewSpeed / 2;
             this.image.skewY += this.skewYSign * this.skewSpeed;
             this.image.x += this.speed * speedDecreaseFactor * this.direction.x;
