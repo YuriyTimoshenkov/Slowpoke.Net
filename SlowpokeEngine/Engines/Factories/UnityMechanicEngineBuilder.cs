@@ -45,14 +45,18 @@ namespace SlowpokeEngine
             unityContainer.RegisterType<IBodyBuilder, UnityBodyBuilder>();
 
             unityContainer.RegisterType<Shape, ShapeCircle>("NPCShape",
-                new InjectionConstructor(40.0, new Point(200, 200)));
+                new InjectionConstructor(((ShapeCircle)configuration.NPC.Shape).Radius, configuration.NPC.Shape.Position));
             unityContainer.RegisterType<NPCAI>(new InjectionConstructor(
                 new ResolvedParameter<Shape>("NPCShape"), 
-                typeof(IMechanicEngine), 100, 100, 6, 70
+                typeof(IMechanicEngine), 
+                configuration.NPC.Life, 
+                configuration.NPC.LifeMax,
+                configuration.NPC.ViewZone,
+                configuration.NPC.Speed
                 ));
 
             unityContainer.RegisterType<Shape, ShapeCircle>("LifeContainerShape",
-                new InjectionConstructor(30.0, new Point(200, 200)));
+                new InjectionConstructor(((ShapeCircle)configuration.NPC.Shape).Radius, configuration.NPC.Shape.Position));
             unityContainer.RegisterType<LifeContainer>(
                 new InjectionConstructor(
                     new ResolvedParameter<Shape>("LifeContainerShape"),
@@ -60,62 +64,75 @@ namespace SlowpokeEngine
 
 
             unityContainer.RegisterType<Shape, ShapeCircle>("PlayerShape",
-                new InjectionConstructor(40.0, new Point(200, 200)));
+                new InjectionConstructor(((ShapeCircle)configuration.NPC.Shape).Radius, configuration.NPC.Shape.Position));
             unityContainer.RegisterType<PlayerBody>(new InjectionConstructor(
                 new ResolvedParameter<Shape>("PlayerShape"), 
                 new Vector(1, 3),
                 typeof(IMechanicEngine),
                 typeof(IGameSessionRepository),
-                1000, 15090,
+                configuration.Player.Life,
+                configuration.Player.LifeMax,
                 string.Empty,
-                7,
-                200
+                configuration.Player.ViewZone,
+                configuration.Player.Speed
                 ));
 
-            BuildWeapons(unityContainer);
+            BuildWeapons(unityContainer, configuration);
 
             var mechanicEngine = unityContainer.Resolve<IMechanicEngine>();
 
             //Build services
             var npcGenerationService = unityContainer.Resolve<IMechanicService>(
-                "NPCGenerationService", new ParameterOverride("npcCount", 50));
+                "NPCGenerationService", new ParameterOverride("npcCount", configuration.NPCGenerationService.EntitiesCount));
             mechanicEngine.Services.Add(npcGenerationService);
 
             var lifeContainerGenerationService = unityContainer.Resolve<IMechanicService>(
-                "LifeContainerGenerationService", new ParameterOverride("containersCount", 50));
+                "LifeContainerGenerationService", new ParameterOverride("containersCount", configuration.BoxesGenerationService.EntitiesCount));
             mechanicEngine.Services.Add(lifeContainerGenerationService);
 
 			return mechanicEngine;
 		}
 
 
-        private static void BuildWeapons(UnityContainer unityContainer)
+        private static void BuildWeapons(UnityContainer unityContainer, IEngineConfiguration configuration)
         {
             string revoler = "Revolver";
             unityContainer.RegisterType<WeaponSimpleBullet>(revoler, new InjectionConstructor(
-                5, 2, 400, 350*4, new TimeSpan(0, 0, 0, 0, 300), typeof(IMechanicEngine), revoler, new ShapeRectangle(3,7, new Point(0,0))
+                configuration.Revolver.Damage,
+                configuration.Revolver.BulletSize,
+                configuration.Revolver.ShootingDistance,
+                configuration.Revolver.BulletSpeed,
+                new TimeSpan(0, 0, 0, 0, configuration.Revolver.ShootingFrequency), typeof(IMechanicEngine), configuration.Revolver.Name, configuration.Revolver.Shape
                 ));
             string gun = "Gun";
             unityContainer.RegisterType<WeaponSimpleBullet>(gun, new InjectionConstructor(
-               7, 2, 1000, 400 * 4, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), gun, new ShapeRectangle(4, 12, new Point(0, 0))
-               ));
+                configuration.Gun.Damage,
+                configuration.Gun.BulletSize,
+                configuration.Gun.ShootingDistance,
+                configuration.Gun.BulletSpeed,
+                new TimeSpan(0, 0, 0, 0, configuration.Gun.ShootingFrequency), typeof(IMechanicEngine), configuration.Gun.Name, configuration.Gun.Shape
+                ));
             string shotGun = "Shotgun";
             unityContainer.RegisterType<WeaponMultipleShotgunBullet>(shotGun, new InjectionConstructor(
-               15, 1, 350, 300 * 4, new TimeSpan(0, 0, 1), typeof(IMechanicEngine), shotGun, new ShapeRectangle(5, 10, new Point(0, 0))
-               ));
+               configuration.ShortGun.Damage,
+                configuration.ShortGun.BulletSize,
+                configuration.ShortGun.ShootingDistance,
+                configuration.ShortGun.BulletSpeed,
+                new TimeSpan(0, 0, 0, 0, configuration.ShortGun.ShootingFrequency), typeof(IMechanicEngine), configuration.ShortGun.Name, configuration.ShortGun.Shape
+                ));
 
             string dynamite = "Dynamite";
             unityContainer.RegisterType<WeaponDynamite>(dynamite, new InjectionConstructor(
-                1000,//Detonation time
-                50,//Bang radius
-                50,//Damage
-                2,//Bullet size
-                100,//Shooting distances
-                100,//Bullet speed 
-                new TimeSpan(0, 0, 0, 1000),//Shooting frequency
+                configuration.Dynamit.DetonationTime,
+                configuration.Dynamit.BangRadius,
+                configuration.Dynamit.Damage,
+                configuration.Dynamit.BulletSize,
+                configuration.Dynamit.ShootingDistance,
+                configuration.Dynamit.BulletSpeed,
+                new TimeSpan(0, 0, 0, configuration.Dynamit.ShootingFrequency),
                 typeof(IMechanicEngine),
-                dynamite,
-                new ShapeCircle(10, new Point(0,0))
+                configuration.Dynamit.Name,
+                configuration.Dynamit.Shape
                 ));
         }
 	}

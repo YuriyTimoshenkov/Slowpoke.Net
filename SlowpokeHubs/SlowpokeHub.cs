@@ -118,9 +118,6 @@ namespace SlowpokeHubs
 
         private void ChangeBodyDirection(long commandId, double x, double y)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("Change direction: {0}, dX {1}, dy {2}", commandId.ToString(), x.ToString(), y.ToString()
-                ));
-
             var player = MechanicEngine.GetPlayerBody(_connectionsPlayerMapping[Context.ConnectionId].Player.Id);
 
             if(player != null)
@@ -183,8 +180,6 @@ namespace SlowpokeHubs
                     {
                         case "Move":
                             {
-                                System.Diagnostics.Debug.WriteLine(string.Format("1st id:{3},  duration: {2}, dX {0}, dy {1}", command.Data[0][1].ToString(), command.Data[1][1].ToString(), command.Data[2][1].ToString(), command.Id.ToString()));
-
                                 MoveBody(
                                     command.Id,
                                     double.Parse(command.Data.FirstOrDefault(v => v[0] == "X")[1]),

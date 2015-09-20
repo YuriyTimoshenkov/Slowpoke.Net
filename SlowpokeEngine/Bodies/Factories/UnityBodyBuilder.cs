@@ -77,12 +77,11 @@ namespace SlowpokeEngine.Bodies
             if (bodyType % 2 != 0)
             {
                 bodyInsideBox = _unityContainer.Resolve<WeaponSimpleBullet>("Revolver");
-                System.Diagnostics.Debug.WriteLine("Revolver created");
             }
             else
             {
                 bodyInsideBox = BuildLifeContainer(mechanicEngine);
-                System.Diagnostics.Debug.WriteLine("Life created");
+ 
             }
 
             var box = new BoxBody(new ShapeRectangle(30, 30, point),
