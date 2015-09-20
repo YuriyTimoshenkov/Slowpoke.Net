@@ -46,7 +46,7 @@ namespace SlowpokeHubs
                     ShootingDistance = 200,
                     BulletSpeed = 400,
                     ShootingFrequency = 1000,
-                    Name = "Dynamit",
+                    Name = "Dynamite",
                     Shape = new ShapeCircle(10, new Point(0, 0))
                 },
                 Gun = new SimpleWeaponSimpleBulletConfiguration()
@@ -76,7 +76,7 @@ namespace SlowpokeHubs
                     ShootingDistance = 350,
                     BulletSpeed = 1200,
                     ShootingFrequency = 1000,
-                    Name = "ShortGun",
+                    Name = "Shotgun",
                     Shape = new ShapeRectangle(5, 10, new Point(0, 0))
                 },
                 LifeContainer = new SimpleLifeContainerConfiguration()
