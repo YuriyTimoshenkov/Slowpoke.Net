@@ -72,7 +72,7 @@ namespace SlowpokeEngine.Engines
                     //get all bodies for collision checking
                     List<Body> collisionBodies = new List<Body>();
 
-                    foreach(var bodyItem in _mapEngine.GetBodiesForCollision(body).Where( v => v is PassiveBody || (v is ActiveBody &&  ((ActiveBody)v).Id != body.Id)))
+                    foreach (var bodyItem in _mapEngine.GetBodiesForCollision(body).Where(v => v is PassiveBody || v is IUsableBody || (v is ActiveBody && ((ActiveBody)v).Id != body.Id)))
                     {
                         if(_shapeCollisionManager.CheckCollision(body.Shape, bodyItem.Shape) 
                             && !(bodyItem is Bullet || bodyItem is DynamitBody))
@@ -83,7 +83,7 @@ namespace SlowpokeEngine.Engines
 
                     if (collisionBodies.Count > 0)
                     {
-                        if (collisionBodies.Count == 1 && collisionBodies[0] is IUsableBody)
+                        if (collisionBodies.All(v => v is IUsableBody))
                         {
                             _mapEngine.UpdateActiveBody(body);
                         }

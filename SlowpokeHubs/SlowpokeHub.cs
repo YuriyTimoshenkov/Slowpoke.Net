@@ -13,6 +13,7 @@ using SlowpokeEngine.Engines.Map;
 using SlowpokeEngine.Engines.View;
 using Common;
 using System.Globalization;
+using SlowpokeEngine.Configuration;
 
 namespace SlowpokeHubs
 {
@@ -22,6 +23,7 @@ namespace SlowpokeHubs
         private static ConcurrentDictionary<string, IPlayerContainer> _connectionsPlayerMapping =
             new ConcurrentDictionary<string, IPlayerContainer>();
         private static ILogger _logger;
+        private static readonly IEngineConfiguration _engineConfiguration;
 
         public static readonly string TokenCookieName = "SlowpokeToken";
         public static readonly TimeSpan TokentDuration = new TimeSpan(1,0,0);
@@ -29,9 +31,80 @@ namespace SlowpokeHubs
 
         public static IMechanicEngine MechanicEngine;
 
-        public SlowpokeHub()
+        static SlowpokeHub()
         {
-
+            //Create engine configuration
+            _engineConfiguration = new SimpleEngineConfiguration()
+            {
+                BoxesGenerationService = new SimpleEntityGenerationServiceConfiguration() { EntitiesCount = 50 },
+                Dynamit = new SimpleDynamitConfiguration()
+                {
+                    BangRadius = 300,
+                    DetonationTime = 1000,
+                    Damage = 50,
+                    BulletSize = 2,
+                    ShootingDistance = 200,
+                    BulletSpeed = 400,
+                    ShootingFrequency = 1000,
+                    Name = "Dynamit",
+                    Shape = new ShapeCircle(10, new Point(0, 0))
+                },
+                Gun = new SimpleWeaponSimpleBulletConfiguration()
+                {
+                    Damage = 7,
+                    BulletSize = 2,
+                    ShootingDistance = 1000,
+                    BulletSpeed = 1600,
+                    ShootingFrequency = 1000,
+                    Name = "Gun",
+                    Shape = new ShapeRectangle(4, 12, new Point(0, 0))
+                },
+                Revolver = new SimpleWeaponSimpleBulletConfiguration()
+                {
+                    Damage = 5,
+                    BulletSize = 2,
+                    ShootingDistance = 400,
+                    BulletSpeed = 1400,
+                    ShootingFrequency = 300,
+                    Name = "Revolver",
+                    Shape = new ShapeRectangle(3, 7, new Point(0, 0))
+                },
+                ShortGun = new SimpleWeaponSimpleBulletConfiguration()
+                {
+                    Damage = 15,
+                    BulletSize = 1,
+                    ShootingDistance = 350,
+                    BulletSpeed = 1200,
+                    ShootingFrequency = 1000,
+                    Name = "ShortGun",
+                    Shape = new ShapeRectangle(5, 10, new Point(0, 0))
+                },
+                LifeContainer = new SimpleLifeContainerConfiguration()
+                {
+                    LifeContent = 50,
+                    Shape = new ShapeCircle(30.0, new Point(200, 200))
+                },
+                NPC = new SimpleCharacterConfiguration()
+                {
+                    Shape = new ShapeCircle(40.0, new Point(200, 200)),
+                    Life = 100,
+                    LifeMax = 100,
+                    ViewZone = 6,
+                    Speed = 70
+                },
+                Player = new SimpleCharacterConfiguration()
+                {
+                    Shape = new ShapeCircle(40.0, new Point(200, 200)),
+                    Life = 1000,
+                    LifeMax = 1000,
+                    ViewZone = 7,
+                    Speed = 200
+                },
+                NPCGenerationService = new SimpleEntityGenerationServiceConfiguration() 
+                {
+                    EntitiesCount = 50 
+                }
+            };
         }
 
         #region private
@@ -150,12 +223,11 @@ namespace SlowpokeHubs
 
         public static void Run(ILogger logger)
         {
-
             _logger = logger;
             var meb = new UnityMechanicEngineBuilder();
-            SlowpokeHub.MechanicEngine = meb.Build();
+            SlowpokeHub.MechanicEngine = meb.Build(UpdatePlayerState, _engineConfiguration);
 
-            SlowpokeHub.MechanicEngine.StartEngine(UpdatePlayerState);
+            SlowpokeHub.MechanicEngine.StartEngine();
         }
 
         public static void UpdatePlayerState(IPlayerBodyFacade playerBodyFacade)

@@ -14,7 +14,7 @@ namespace SlowpokeEngine
         IList<IMechanicService> Services { get; }
         ICollection<Body> Bodies { get; }
         IMap Map { get; }
-        void StartEngine(Action<IPlayerBodyFacade> playerStateHandler);
+        void StartEngine();
 		void StopEngine();
 		PlayerBody LoadPlayerBody(Guid characterId);
         void ReleaseBody(Guid bodyId);

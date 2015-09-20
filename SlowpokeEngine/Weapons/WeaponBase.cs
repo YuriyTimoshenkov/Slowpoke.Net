@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SlowpokeEngine.Weapons
 {
-    public abstract class WeaponBase : Body
+    public abstract class WeaponBase : Body, IUsableBody
     {
         protected int _damage;
         protected int _shootingDistance;
@@ -26,5 +26,12 @@ namespace SlowpokeEngine.Weapons
         }
 
         public abstract void Shoot(Point startPosition, Vector direction, Guid ownerId, long commandId = 0);
+
+        public void Use(ActiveBody consumerBody)
+        {
+            _mechanicEngine.ReleaseBody(this.Id);
+
+            ((CharacterBody)consumerBody).AddWeapon(this);
+        }
     }
 }
