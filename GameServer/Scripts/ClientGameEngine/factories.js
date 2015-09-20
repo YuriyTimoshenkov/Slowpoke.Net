@@ -9,9 +9,9 @@ function gameBuilder(canvasTagId) {
     var serverProxy = new serverProxyFactory().createServerProxy('/')
     var viewM = new viewManagerFactory().createViewManager(canvasTagId, gameContext)
     var controlsM = new controlsManagerFactory().createControlsManager()
-
+    var physicsEngine = new PhysicsEngineFactory().createPhysicsEngine()
     this.buildGame = function () {
-        return new Game(gameContext, serverProxy, controlsM, viewM)
+        return new Game(gameContext, serverProxy, controlsM, viewM, physicsEngine)
     }
 }
 
@@ -43,5 +43,11 @@ function gameWorldManagerFactory() {
 function mechanicEngineFactory() {
     this.createMechanicEngine = function (player, serverMap) {
         return new MechanicEngine(player, serverMap)
+    }
+}
+
+function PhysicsEngineFactory() {
+    this.createPhysicsEngine = function () {
+        return new PhysicsEngine();
     }
 }

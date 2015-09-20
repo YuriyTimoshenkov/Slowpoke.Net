@@ -105,11 +105,11 @@ namespace SlowpokeEngine
             string dynamite = "Dynamite";
             unityContainer.RegisterType<WeaponDynamite>(dynamite, new InjectionConstructor(
                 1000,//Detonation time
-                300,//Bang radius
+                50,//Bang radius
                 50,//Damage
                 2,//Bullet size
-                200,//Shooting distances
-                100*4,//Bullet speed 
+                100,//Shooting distances
+                100,//Bullet speed 
                 new TimeSpan(0, 0, 0, 1000),//Shooting frequency
                 typeof(IMechanicEngine),
                 dynamite,

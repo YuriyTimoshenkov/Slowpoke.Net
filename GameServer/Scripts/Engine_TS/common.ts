@@ -126,3 +126,10 @@ enum BodyProcessingTypes {
     ClientSide = 2,
     ClientSidePrediction = 3
 }
+
+function getRandomInt(fromToRange: number[]): number {
+    return Math.floor((Math.random() * (fromToRange[1] - fromToRange[0])) + fromToRange[0] + 1);
+}
+function now(): number {
+    return new Date().getTime();
+}

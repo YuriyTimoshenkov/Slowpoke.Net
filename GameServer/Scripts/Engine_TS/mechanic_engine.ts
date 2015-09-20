@@ -16,8 +16,9 @@ class MechanicEngineTS {
 
     player: PlayerBody;
     mapEngine: MapEngine;
+    physicsEngine: PhysicsEngine;
 
-    constructor(serverMap: ServerMap) {
+    constructor(serverMap: ServerMap, physicsEngine: PhysicsEngine) {
         this.bodies = [];
         this.commandQueue = [];
         this.commandQueueProcessed = [];
@@ -25,6 +26,7 @@ class MechanicEngineTS {
         this.onBodyChanged = new slowpoke.Event< { body: Body; changesType: BodyChangesType }>();
         this.onBodyRemove = new slowpoke.Event<Body>();
         this.mapEngine = new MapEngine(serverMap, this);
+        this.physicsEngine = physicsEngine;
     }
 
     addPlayerBody(body: ServerCharacterBody) {
@@ -38,23 +40,21 @@ class MechanicEngineTS {
 
     removeActiveBody(bodyId: number) {
         var self = this;
-
         this.bodies = this.bodies.filter(function (body: ActiveBody) {
             if (body.id != bodyId) {
                 return true;
             }
             else {
                 self.onBodyRemove.trigger(body);
-
                 return false;
             }
         });
-
-
     }
 
     update() {
         var self = this;
+
+
 
         //Process commands
         while (this.commandQueue.length > 0) {

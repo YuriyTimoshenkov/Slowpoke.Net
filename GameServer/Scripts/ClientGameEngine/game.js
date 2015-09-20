@@ -2,7 +2,7 @@
  * Created by dimapct on 12.02.2015.
  */
 
-function Game(gameContext, serverProxy, controlsManager, viewEngine) {
+function Game(gameContext, serverProxy, controlsManager, viewEngine, physicsEngine) {
     var self = this
 
     this.serverProxy = serverProxy
@@ -10,6 +10,8 @@ function Game(gameContext, serverProxy, controlsManager, viewEngine) {
     this.serverFramesQueue = []
     this.controlsManager = controlsManager
     this.viewEngine = viewEngine
+    this.physicsEngine = physicsEngine;
+    console.log(this.physicsEngine)
     this.lastUpdateTime = 0;
     this.clock = new Date();
     this.lastServerSync = new Date()
@@ -47,7 +49,7 @@ function Game(gameContext, serverProxy, controlsManager, viewEngine) {
 
     this.handleLoadMap = function (serverMap) {
         
-        self.mechanicEngine = new MechanicEngineTS(serverMap);
+        self.mechanicEngine = new MechanicEngineTS(serverMap, self.physicsEngine);
         self.viewEngine.init(self.mechanicEngine);
 
         self.mechanicEngine.addPlayerBody(self.player);

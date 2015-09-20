@@ -183,7 +183,7 @@ class Bullet extends ActiveBody {
         var durationFromStart = currentTime - this.startTime;
         this.lastUpdateTime = currentTime;
 
-        if (duration / 1000  * this.speed > this.flyDistance) {
+        if (durationFromStart / 1000 * this.speed > this.flyDistance) {
             mechanicEngine.removeActiveBody(this.id);
         }
         else {
@@ -215,9 +215,7 @@ class DynamitBody extends ActiveBody {
         var currentTime = new Date().getTime();
         var duration = currentTime - this.lastUpdateTime;
         var durationFromStart = currentTime - this.startTime;
-        this.lastUpdateTime = currentTime;
-
-        if (duration / 1000 * this.speed > this.flyDistance) {
+        if (durationFromStart / 1000 * this.speed > this.flyDistance) {
             mechanicEngine.removeActiveBody(this.id);
         }
         else {
@@ -226,5 +224,7 @@ class DynamitBody extends ActiveBody {
 
             mechanicEngine.addCommand(moveCommand);
         }
+
+        this.lastUpdateTime = currentTime;
     }
 }

@@ -55,6 +55,11 @@ class ViewEngine {
             self.addBodyHandler(body, bodyImageObject.image);
 
             self.createInfoboxes(body, bodyImageObject);
+
+            // create animation
+            if (body instanceof DynamitBody) self.addAnimationAndStart(new DynamitFlyAnimation(body, self.levelContainers[2], bodyImageObject));
+
+
         });
 
         mechanicEngine.onBodyChanged.add(function (e) {
@@ -115,12 +120,8 @@ class ViewEngine {
             });
 
             // Create Animations
-            if (body instanceof BoxPassiveBody) {
-                var anim = new BoxDestroyAnimation(body, self.levelContainers[1]);
-                self.animations.push(anim);
-                self.addAnimationHandler(anim);
-                anim.start();
-            }
+            if (body instanceof BoxPassiveBody) self.addAnimationAndStart(new BoxDestroyAnimation(body, self.levelContainers[1]));
+            else if (body instanceof DynamitBody) self.addAnimationAndStart(new DynamitExplosionAnimation(body, self.levelContainers[2]));
 
             childrenImageObjectsToRemove.forEach(function (item) { 
                 if (body instanceof DynamitBody) {
@@ -171,10 +172,16 @@ class ViewEngine {
         else console.log("ViewEngine: onboardObjectForRendering: Incorrect body type")
     }
 
-    addAnimationHandler(animation: Animation) {
-        if (animation instanceof BoxDestroyAnimation) {
+    addAnimationToContainerHandler(animation: Animation) {
+        if (animation instanceof BoxDestroyAnimation || animation instanceof DynamitExplosionAnimation) {
             animation.parentContainer.addChild(animation.animationContainer);
         }
+    }
+
+    addAnimationAndStart(animation: Animation) {
+        this.animations.push(animation);
+        this.addAnimationToContainerHandler(animation);
+        animation.start();
     }
 
     render() {

@@ -119,17 +119,6 @@
         revolverImage.graphics.beginFill("yellow").drawRect(x, y, w, h);
         return revolverImage;
     }
-    this.builders[gameTypes.gameObjects.DYNAMITE] = function (serverBody) {
-        var activeBodyRadius = 50;
-        var w = 3;
-        var h = activeBodyRadius + 15;
-        var x = -w / 2;
-        var y = -h;
-        var dynamitImage = new createjs.Shape();
-        dynamitImage.graphics.beginFill("red").drawRect(x, y, w, h);
-        return dynamitImage;
-    }
-
     this.builders[gameTypes.gameObjects.BULLETSHOTGUN] = function (serverBody) {
         var bulletImage = new createjs.Shape();
         bulletImage.graphics.lf(["#F08200", "#FAFAC8"], [0, 0.3], 0, 0, 0, 80).dr(0, 2, 2, 40).ss(1).f("#F08200").dc(2, 2, 2);
@@ -150,47 +139,20 @@
     }
 
     this.builders[gameTypes.gameObjects.DYNAMITE] = function (serverBody) {
-        var bulletImage = new createjs.Shape();
-        bulletImage.graphics.rf(["#FF2828", "#FAFAC8"], [1, 0], 15, 15, 1, 15, 15, 15).ss(1).dc(15, 15, 16);
-        bulletImage.scaleX = 0.5;
-        bulletImage.scaleY = 0.5;
-        bulletImage.zIndex = 6;
+        var dynamitWidth = 6;
+        var dynamitHeight = dynamitWidth * 4;
+        var fuseLength = dynamitHeight * 0.5;
+        var fuseWidth = dynamitWidth * 0.1 < 1 ? 1 : dynamitWidth * 0.1;
+        var flameRadius = dynamitWidth * 1;
 
-        var c0 = new createjs.Container();
-        c0.addChild(bulletImage);
-        c0.cache(0,0,32,32);
+        var dynamit = new createjs.Shape();
 
-        var bulletImage2 = new createjs.Shape();
-        bulletImage2.graphics.rf(["#FF2828", "#FAFAC8"], [1, 0], 30, 30, 1, 30, 30, 30).ss(1).dc(30, 30, 31);
-        bulletImage2.scaleX = 0.5;
-        bulletImage2.scaleY = 0.5;
-        bulletImage2.zIndex = 6;
-
-        var c1 = new createjs.Container();
-        c1.addChild(bulletImage2);
-        c1.cache(0, 0, 62, 62);
-
-        var bulletImage3 = new createjs.Shape();
-        bulletImage3.graphics.rf(["#FF2828", "#FAFAC8"], [1, 0], 60, 60, 1, 60, 60, 60).ss(1).dc(60, 60, 61);
-        bulletImage3.scaleX = 0.5;
-        bulletImage3.scaleY = 0.5;
-        bulletImage3.zIndex = 6;
-
-        var c2 = new createjs.Container();
-        c2.addChild(bulletImage3);
-        c2.cache(0, 0, 122, 122);
-
-        // Build SpriteSheet and Sprite
-        var builder = new createjs.SpriteSheetBuilder();
-        builder.addFrame(c0);
-        builder.addFrame(c1);
-        builder.addFrame(c2);
-
-        builder.addAnimation("default", [0]);
-        builder.addAnimation("detonate", [1], [2])
-        var spriteSheet = builder.build();
-
-        return new createjs.Sprite(spriteSheet, "default");
+        dynamit.graphics.setStrokeStyle(fuseWidth).beginStroke("darkgreen").moveTo(0, 0).lineTo(0, fuseLength).endStroke();
+        dynamit.graphics.beginFill("tomato").drawRect(-dynamitWidth / 2, fuseLength, dynamitWidth, dynamitHeight);
+        dynamit.graphics.beginFill("#FF0").drawPolyStar(0, 0, flameRadius, 8, 0.7, 20);
+        dynamit.regX = dynamitWidth / 2;
+        dynamit.regY = dynamitHeight / 2 + fuseLength;
+        return dynamit;
     }
 
     this.builders[gameTypes.gameObjects.BULLETREVOLVER] = function (serverBody) {
@@ -270,7 +232,6 @@
         var xStep = serverBody.gameRect.width / 10;
 
         for (var x = xStep; x < serverBody.gameRect.width; x += xStep) {
-            console.log(111, x);
             boxImage.graphics.beginStroke("black").moveTo(x, 0).lineTo(x, serverBody.gameRect.height);
         }
 
