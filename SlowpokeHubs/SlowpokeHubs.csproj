@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BodyFacade.cs" />
+    <Compile Include="GameLoadResponse.cs" />
     <Compile Include="InputEvent.cs" />
     <Compile Include="IPlayerContainer.cs" />
     <Compile Include="MapTileFacade.cs" />

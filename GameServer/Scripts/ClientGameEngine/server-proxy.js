@@ -16,18 +16,13 @@ function serverProxySignalR(url) {
         })
     }
 
-    this.loadPlayer = function () {
-        return new Promise(function(resolve, reject) {
-            gameProxy.server.loadPlayer().done(resolve).fail(reject);
+    this.loadGame = function () {
+        return new Promise(function (resolve, reject) {
+            gameProxy.server.loadGame().done(resolve).fail(reject);
         })
     }
     this.syncState = function (inputData, doneHandler, failHandler) {
         gameProxy.server.syncState(inputData).done(doneHandler).fail(failHandler);
-    };
-    this.getMap = function () {
-        return new Promise(function(resolve, reject) {
-            gameProxy.server.getMap().done(resolve).fail(reject)
-        })
     };
     this.changeWeapon = function () {
         gameProxy.server.changeWeapon()

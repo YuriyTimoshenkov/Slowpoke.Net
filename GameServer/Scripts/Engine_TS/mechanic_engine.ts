@@ -4,6 +4,7 @@ class MechanicEngineTS {
     bodies: Body[];
     commandQueue: CommandBase[];
     commandQueueProcessed: CommandBase[];
+    configuration: IEngineConfiguration;
 
     onBodyAdd: slowpoke.Event<Body>;
     get BodyAdded(): slowpoke.IEvent<Body> { return this.onBodyAdd; }
@@ -18,7 +19,7 @@ class MechanicEngineTS {
     mapEngine: MapEngine;
     physicsEngine: PhysicsEngine;
 
-    constructor(serverMap: ServerMap, physicsEngine: PhysicsEngine) {
+    constructor(serverMap: ServerMap, physicsEngine: PhysicsEngine, configuration: IEngineConfiguration) {
         this.bodies = [];
         this.commandQueue = [];
         this.commandQueueProcessed = [];
@@ -27,6 +28,7 @@ class MechanicEngineTS {
         this.onBodyRemove = new slowpoke.Event<Body>();
         this.mapEngine = new MapEngine(serverMap, this);
         this.physicsEngine = physicsEngine;
+        this.configuration = configuration;
     }
 
     addPlayerBody(body: ServerCharacterBody) {

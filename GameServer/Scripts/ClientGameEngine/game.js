@@ -22,9 +22,9 @@ function Game(gameContext, serverProxy, controlsManager, viewEngine, physicsEngi
             console.log("Game STARTED")
 
             serverProxy.run(self.disconnectedHandler, self.gameOverHandler).then(function () {
-                    serverProxy.loadPlayer().then(function(player){
-                        self.handleLoadPlayer(player).then(resolve()
-                        , reject)
+                serverProxy.loadGame().then(function (loadGameResponse) {
+                    self.handleLoadGame(loadGameResponse);
+                    resolve();
                 }, reject)
             },reject)
         })
@@ -34,22 +34,10 @@ function Game(gameContext, serverProxy, controlsManager, viewEngine, physicsEngi
         return self.viewEngine.calculatePlayerDirectionVector(new Point(e.clientX, e.clientY))
     }
     
-    this.handleLoadPlayer = function (player) {
-        return new Promise(function(resolve, reject) {
-            self.player = player
-
-            //Load map
-            serverProxy.getMap()
-                .then(function (map) {
-                self.handleLoadMap(map)
-                resolve()
-                }, reject)
-        })
-    }
-
-    this.handleLoadMap = function (serverMap) {
+    this.handleLoadGame = function (loadGameResponse) {
+        self.player = loadGameResponse.Player;
         
-        self.mechanicEngine = new MechanicEngineTS(serverMap, self.physicsEngine);
+        self.mechanicEngine = new MechanicEngineTS(loadGameResponse.Map, self.physicsEngine, loadGameResponse.Configuration);
         self.viewEngine.init(self.mechanicEngine);
 
         self.mechanicEngine.addPlayerBody(self.player);

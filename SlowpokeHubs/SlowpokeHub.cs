@@ -237,7 +237,7 @@ namespace SlowpokeHubs
             }
         }
 
-        public BodyFacade LoadPlayer()
+        private BodyFacade LoadPlayer()
         {
             try
             {
@@ -256,7 +256,7 @@ namespace SlowpokeHubs
 
             return null;
         }
-        public IMap GetMap()
+        private IMap GetMap()
         {
             try
             {
@@ -351,5 +351,15 @@ namespace SlowpokeHubs
 
 			return base.OnConnected ();
 		}
+
+        public GameLoadResponse LoadGame()
+        {
+            return new GameLoadResponse()
+            {
+                 Map = GetMap(),
+                 Player = LoadPlayer(),
+                 Configuration = _engineConfiguration
+            };
+        }
 	}
 }
