@@ -18,6 +18,9 @@
         public trigger(data?: T) {
             if (this.handlers) {
                 this.handlers.slice(0).forEach(h => h(data));
+                if (data instanceof Bullet) {
+                    console.log('event triggered ');
+                }
             }
         }
     }

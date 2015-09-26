@@ -25,7 +25,7 @@
                 break;
             }
             case "NPCAI": {
-                newBody = new CharacterBody(<ServerCharacterBody> serverBody);
+                newBody = new CharacterBody(<ServerCharacterBody> serverBody, this.mechanicEngine.configuration);
                 break;
             }
             case "Bullet": {
@@ -33,7 +33,7 @@
                 break;
             }
             case "PlayerBody": {
-                newBody = new PlayerOtherBody(<ServerCharacterBody> serverBody);
+                newBody = new PlayerOtherBody(<ServerCharacterBody> serverBody, this.mechanicEngine.configuration);
                 break;
             }
             case "BoxBody": {
@@ -41,7 +41,7 @@
                 break;
             }
             case "Revolver": {
-                newBody = new Weapon(serverBody);
+                newBody = new Weapon(serverBody, this.mechanicEngine.configuration);
                 break;
             }
         }

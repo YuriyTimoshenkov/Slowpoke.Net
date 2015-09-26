@@ -48,6 +48,7 @@ class ViewEngine {
         this.stage.addChildAt(this.levelContainers[0], this.levelContainers[1], this.levelContainers[2], this.levelContainers[3], 0);
         
         mechanicEngine.BodyAdded.add(function (body: Body) {
+
             var bodyImageObject = self.bodyImageFactory.createBodyImagebyServerBody(body);
 
             self.bodyImages.push(bodyImageObject);
@@ -58,8 +59,6 @@ class ViewEngine {
 
             // create animation
             if (body instanceof DynamitBody) self.addAnimationAndStart(new DynamitFlyAnimation(body, self.levelContainers[2], bodyImageObject));
-
-
         });
 
         mechanicEngine.onBodyChanged.add(function (e) {

@@ -106,13 +106,13 @@ class CharacterBody extends ActiveBody{
     maxLife: number;
     score: number;
 
-    constructor(serverBody: ServerCharacterBody) {
+    constructor(serverBody: ServerCharacterBody, configuration: IEngineConfiguration) {
         super(serverBody);
 
         this.life = serverBody.Life || 0;
         this.maxLife = serverBody.MaxLife || 0;
         this.score = 0;
-        this.currentWeapon = new Weapon(serverBody.CurrentWeapon);
+        this.currentWeapon = new Weapon(serverBody.CurrentWeapon, configuration);
     }
 
     serverSync(serverBody, mechanicEngine: MechanicEngineTS) {
@@ -129,8 +129,8 @@ class CharacterBody extends ActiveBody{
 }
 
 class PlayerOtherBody extends CharacterBody {
-    constructor(serverBody: ServerCharacterBody) {
-        super(serverBody);
+    constructor(serverBody: ServerCharacterBody, configuration: IEngineConfiguration) {
+        super(serverBody, configuration);
     }
 }
 
@@ -148,7 +148,7 @@ class PlayerBody extends CharacterBody {
 
         // Update weapon
         if ((serverBody.CurrentWeapon == null ? '' : this.currentWeapon.name) != serverBody.CurrentWeapon.Name) {
-            this.currentWeapon = new Weapon(serverBody.CurrentWeapon);
+            this.currentWeapon = new Weapon(serverBody.CurrentWeapon, mechanicEngine.configuration);
             mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.currentWeapon });
         }
 

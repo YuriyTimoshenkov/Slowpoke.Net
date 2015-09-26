@@ -113,7 +113,11 @@ class CommandShoot extends CommandBase {
     }
 
     processBody(body: CharacterBody, mechanicEngine: MechanicEngineTS) {
-        body.currentWeapon.Shoot(body.direction, new Point(body.gameRect.centerx, body.gameRect.centery), mechanicEngine);         
+        body.currentWeapon.Shoot(
+            body.direction,
+            new Point(body.gameRect.centerx, body.gameRect.centery),
+            mechanicEngine,
+            this.id);         
     }
 
     toServerCommand(): ServerCommand {

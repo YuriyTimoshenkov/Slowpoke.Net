@@ -32,7 +32,7 @@ class MechanicEngineTS {
     }
 
     addPlayerBody(body: ServerCharacterBody) {
-        this.player = new PlayerBody(body);
+        this.player = new PlayerBody(body, this.configuration);
         this.bodies.push(this.player);
     }
 

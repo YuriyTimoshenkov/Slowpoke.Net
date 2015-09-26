@@ -65,7 +65,7 @@ namespace SlowpokeHubs
                     BulletSize = 2,
                     ShootingDistance = 400,
                     BulletSpeed = 1400,
-                    ShootingFrequency = 300,
+                    ShootingFrequency = 2000,
                     Name = "Revolver",
                     Shape = new ShapeRectangle(3, 7, new Point(0, 0))
                 },
