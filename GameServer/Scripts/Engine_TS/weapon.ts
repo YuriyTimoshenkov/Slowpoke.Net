@@ -123,7 +123,7 @@
                             Y: direction.y
                         },
                         Speed: dynamitConfiguration.BulletSpeed
-                    }, dynamitConfiguration.ShootingDistance);
+                    }, dynamitConfiguration.DetonationTime);
 
                     newBullet.createdByCommandId = this.id;
 
