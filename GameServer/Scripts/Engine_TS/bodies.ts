@@ -199,23 +199,24 @@ class DynamitBody extends ActiveBody {
     lastUpdateTime: number;
     startTime: number;
     unitDirection: Vector;
-    flyDistance: number;
+    dynamiteDetonationTime: number;
     bulletTypeName: string;
+    flyDistance: number;
 
-    constructor(activeBody: ServerActiveBody, flyDistance: number) {
+    constructor(activeBody: ServerActiveBody, dynamiteDetonationTime: number) {
         super(activeBody);
 
         this.lastUpdateTime = new Date().getTime();
         this.startTime = this.lastUpdateTime;
         this.unitDirection = new Vector(this.direction.x, this.direction.y).calculateUnitVector();
-        this.flyDistance = flyDistance;
+        this.dynamiteDetonationTime = dynamiteDetonationTime;
     }
 
     update(mechanicEngine: MechanicEngineTS) {
         var currentTime = new Date().getTime();
         var duration = currentTime - this.lastUpdateTime;
         var durationFromStart = currentTime - this.startTime;
-        if (durationFromStart / 1000 * this.speed > this.flyDistance) {
+        if (durationFromStart > this.dynamiteDetonationTime) {
             mechanicEngine.removeActiveBody(this.id);
         }
         else {

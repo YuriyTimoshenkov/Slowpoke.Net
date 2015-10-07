@@ -33,7 +33,9 @@ namespace SlowpokeEngine.Engines
                         {
                             var bulletOwnerBody = mechanicEngine.FindBody(bullet.OwnerId) as CharacterBody;
 
-                            if (body is CharacterBody && ((CharacterBody)body).SocialGroups.Intersect(bulletOwnerBody.SocialGroups).Count() > 0)
+                            if (
+                                (body is CharacterBody && ((CharacterBody)body).SocialGroups.Intersect(bulletOwnerBody.SocialGroups).Count() > 0)
+                                || (body is BoxBody && !(bulletOwnerBody is PlayerBody) ))
                             {
                                 continue;
                             }

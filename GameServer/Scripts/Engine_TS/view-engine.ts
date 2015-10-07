@@ -127,10 +127,11 @@ class ViewEngine {
                     item.animate("detonate");
                 }
 
+                //Todo: refactor hardocded type usage
                 if (body instanceof Tile) {
                     self.levelContainers[0].removeChild(item.image);
                 }
-                else if (body instanceof PassiveBody) {
+                else if (body instanceof PassiveBody || body instanceof Weapon) {
                     self.levelContainers[1].removeChild(item.image);
 
                 }

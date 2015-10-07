@@ -39,11 +39,11 @@ namespace SlowpokeHubs
                 BoxesGenerationService = new SimpleEntityGenerationServiceConfiguration() { EntitiesCount = 50 },
                 Dynamit = new SimpleDynamitConfiguration()
                 {
-                    BangRadius = 300,
-                    DetonationTime = 1000,
+                    BangRadius = 100,
+                    DetonationTime = 1500,
                     Damage = 50,
                     BulletSize = 2,
-                    ShootingDistance = 200,
+                    ShootingDistance = 800,
                     BulletSpeed = 400,
                     ShootingFrequency = 1000,
                     Name = "Dynamite",
