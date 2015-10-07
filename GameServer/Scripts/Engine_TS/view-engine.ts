@@ -199,9 +199,9 @@ class ViewEngine {
     }
 
     updateContainersPosition = () => {
+        var self = this;
         var halfCanvasWidth = this.canvas.width / 2;
         var halfCanvasHeight = this.canvas.height / 2;
-        var self = this;
 
         this.levelContainers.forEach(function (container) {
             container.regX = self.targetBody.gameRect.centerx - halfCanvasWidth;
