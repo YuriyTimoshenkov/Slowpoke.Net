@@ -1,4 +1,4 @@
-﻿/// <reference path="Event.ts" />
+﻿/// <reference path="../../Entities/Event.ts" />
 
 class MechanicEngineTS {
     bodies: Body[];

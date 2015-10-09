@@ -41,7 +41,7 @@ interface IEngineConfiguration
     BoxesGenerationService: IEntityGenerationServiceConfiguration;
     Revolver: IWeaponSimpleBulletConfiguration;
     Gun: IWeaponSimpleBulletConfiguration;
-    ShortGun: IWeaponSimpleBulletConfiguration;
+    ShotGun: IWeaponSimpleBulletConfiguration;
     Dynamit: IDynamitConfiguration;
     } 
 

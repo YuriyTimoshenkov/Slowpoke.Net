@@ -19,7 +19,7 @@
                 break;
             }
             case 'Shotgun': {
-                this.configuration = configuration.ShortGun;
+                this.configuration = configuration.ShotGun;
                 break;
             } 
             case 'Dynamite': {

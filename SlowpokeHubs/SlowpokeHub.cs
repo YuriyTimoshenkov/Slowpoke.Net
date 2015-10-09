@@ -69,7 +69,7 @@ namespace SlowpokeHubs
                     Name = "Revolver",
                     Shape = new ShapeRectangle(3, 7, new Point(0, 0))
                 },
-                ShortGun = new SimpleWeaponSimpleBulletConfiguration()
+                ShotGun = new SimpleWeaponSimpleBulletConfiguration()
                 {
                     Damage = 15,
                     BulletSize = 1,
