@@ -15,7 +15,7 @@ namespace SlowpokeEngine.Configuration
         IEntityGenerationServiceConfiguration BoxesGenerationService { get; set; }
         IWeaponSimpleBulletConfiguration Revolver { get; set; }
         IWeaponSimpleBulletConfiguration Gun { get; set; }
-        IWeaponSimpleBulletConfiguration ShortGun { get; set; }
+        IWeaponSimpleBulletConfiguration ShotGun { get; set; }
         IDynamitConfiguration Dynamit { get; set; }
     }
 }

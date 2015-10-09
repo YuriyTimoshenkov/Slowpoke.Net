@@ -6,7 +6,7 @@ class PhysicsProcessingResultCollision extends PhysicsProcessingResult {
     constructor(bodies: Body[]) {
         super();
         bodies = bodies;
-    };
+    }
 }
 
 class PhysicsProcessingResultEmpty extends PhysicsProcessingResult { }

@@ -114,11 +114,11 @@ namespace SlowpokeEngine
                 ));
             string shotGun = "Shotgun";
             unityContainer.RegisterType<WeaponMultipleShotgunBullet>(shotGun, new InjectionConstructor(
-               configuration.ShortGun.Damage,
-                configuration.ShortGun.BulletSize,
-                configuration.ShortGun.ShootingDistance,
-                configuration.ShortGun.BulletSpeed,
-                new TimeSpan(0, 0, 0, 0, configuration.ShortGun.ShootingFrequency), typeof(IMechanicEngine), configuration.ShortGun.Name, configuration.ShortGun.Shape
+               configuration.ShotGun.Damage,
+                configuration.ShotGun.BulletSize,
+                configuration.ShotGun.ShootingDistance,
+                configuration.ShotGun.BulletSpeed,
+                new TimeSpan(0, 0, 0, 0, configuration.ShotGun.ShootingFrequency), typeof(IMechanicEngine), configuration.ShotGun.Name, configuration.ShotGun.Shape
                 ));
 
             string dynamite = "Dynamite";
