@@ -231,6 +231,7 @@
     <Folder Include="Scripts\Resources\Sounds\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\Engine_TS\Engines\PhysicsEngine\physics-engine.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Engines\ViewEngine\animation.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\bodies.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\commands.ts" />
@@ -248,7 +249,6 @@
     <TypeScriptCompile Include="Scripts\Engine_TS\Engines\MapEngine\map_engine.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Engines\MechanicEngine\mechanic_engine.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Engines\ViewEngine\menu.ts" />
-    <TypeScriptCompile Include="Scripts\Engine_TS\Engines\PhysicsEngine\physics-engine.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\serverbody_synchronizer.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Engines\MapEngine\tile.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Factories\body-image-factory.ts" />
