@@ -43,7 +43,9 @@
         return bodyImage;
     }
     this.builders[gameTypes.gameObjects.GUN] = function (serverBody) {
-        // this is for weapon creation as separate object (e.g. shotgun is on the ground)
+        var image = self.viewBodyFactory.createViewBody(gameTypes.gameObjects.GUN, serverBody);
+        var bodyImage = new BodyImage(serverBody.id, image);
+        return bodyImage;
     }
     this.builders[gameTypes.gameObjects.REVOLVER] = function (serverBody) {
         var image = self.viewBodyFactory.createViewBody(gameTypes.gameObjects.REVOLVER, serverBody);

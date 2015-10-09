@@ -40,6 +40,9 @@
                 newBody = new BoxPassiveBody(serverBody);
                 break;
             }
+            case "Gun": 
+            case "Shotgun":
+            case "Dynamite":
             case "Revolver": {
                 newBody = new Weapon(serverBody, this.mechanicEngine.configuration);
                 break;
