@@ -17,11 +17,13 @@ namespace SlowpokeEngine.Bodies
         {
             _lifeContent = lifeContent;
         }
-        public void Use(ActiveBody consumerBody)
+        public bool Use(ActiveBody consumerBody)
         {
             consumerBody.Heal(_lifeContent);
 
             _lifeContent = 0;
+
+            return true;
         }
     }
 }

@@ -9,6 +9,6 @@ namespace SlowpokeEngine.Bodies
     public interface IUsableBody
     {
         Guid Id { get; }
-        void Use(ActiveBody consumerBody);
+        bool Use(ActiveBody consumerBody);
     }
 }

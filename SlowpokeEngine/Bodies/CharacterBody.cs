@@ -63,17 +63,19 @@ namespace SlowpokeEngine.Bodies
             }
         }
 
-        public void AddWeapon(WeaponBase weapon)
+        public bool AddWeapon(WeaponBase weapon)
         {
-            _weapons.Add(weapon);
-        }
+            //Check if already exists the same weapon in the hands
+            var sameWeapon = _weapons.FirstOrDefault(v => v.Name == weapon.Name);
 
-        public void ThrowAwayCurrentWeapon()
-        {
-            _weapons.RemoveAt(_currentWeaponIndex);
+            if(sameWeapon == null)
+            {
+                _weapons.Add(weapon);
 
-            if (_currentWeaponIndex <= _weapons.Count)
-                _currentWeaponIndex--;
+                return true;
+            }
+
+            return false;
         }
 
         public void Shoot(long commandId = 0)
@@ -100,7 +102,9 @@ namespace SlowpokeEngine.Bodies
             {
                 return;
             }
+
             var currentWeapon = CurrentWeapon;
+
             //Remove weapon from list and get next one
             _weapons.RemoveAt(_currentWeaponIndex);
 
@@ -112,7 +116,7 @@ namespace SlowpokeEngine.Bodies
                 }
                 else
                 {
-                    _currentWeaponIndex = 100;
+                    _currentWeaponIndex = int.MaxValue;
                 }
             }
 

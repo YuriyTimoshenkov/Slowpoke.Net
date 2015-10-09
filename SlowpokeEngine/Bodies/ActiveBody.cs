@@ -86,9 +86,8 @@ namespace SlowpokeEngine.Bodies
         }
         public void Use()
         {
-            if (UsableBodyInScope != null)
+            if (UsableBodyInScope != null && UsableBodyInScope.Use(this))
             {
-                UsableBodyInScope.Use(this);
                 _mechanicEngine.ReleaseBody(UsableBodyInScope.Id);
             }
         }

@@ -35,7 +35,7 @@ namespace SlowpokeEngineTests
 
             player.ChangeWeapon();
 
-            player.ThrowAwayCurrentWeapon();
+            player.ThrowCurrentWeapon();
 
             Assert.AreEqual(1, player.WeaponsCount);
             Assert.IsNotNull(player.CurrentWeapon);

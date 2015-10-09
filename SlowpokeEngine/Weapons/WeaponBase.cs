@@ -27,11 +27,9 @@ namespace SlowpokeEngine.Weapons
 
         public abstract void Shoot(Point startPosition, Vector direction, Guid ownerId, long commandId = 0);
 
-        public void Use(ActiveBody consumerBody)
+        public bool Use(ActiveBody consumerBody)
         {
-            _mechanicEngine.ReleaseBody(this.Id);
-
-            ((CharacterBody)consumerBody).AddWeapon(this);
+            return ((CharacterBody)consumerBody).AddWeapon(this);
         }
     }
 }
