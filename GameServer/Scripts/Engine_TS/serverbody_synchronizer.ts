@@ -117,8 +117,8 @@
         //Update body if needed
         if (firstSyncedCommand !== undefined && !firstSyncedCommand.compareState(serverBody)) {
 
-            mechanicEngine.player.gameRect.centerx = serverBody.Shape.Position.X;
-            mechanicEngine.player.gameRect.centery = serverBody.Shape.Position.Y;
+            mechanicEngine.player.shape.position.x = serverBody.Shape.Position.X;
+            mechanicEngine.player.shape.position.y = serverBody.Shape.Position.Y;
             mechanicEngine.player.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y).calculateUnitVector();
 
             //Recalculate applied commands

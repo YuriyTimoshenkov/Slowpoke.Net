@@ -52,7 +52,7 @@ class Point {
     }
 }
 
-class Rect{
+class Rect_old{
     x: number;
     y: number;
     width: number;

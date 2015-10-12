@@ -36,8 +36,8 @@ class CommandBase{
 
             //save state
             this.state = {
-                x: body.gameRect.center.x,
-                y: body.gameRect.center.y,
+                x: body.shape.position.x,
+                y: body.shape.position.y,
                 direction: body.direction
             };
         }
@@ -66,9 +66,9 @@ class CommandMove extends CommandBase{
     }
 
     processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS)  {
-        body.gameRect.center = new Point(
-            body.gameRect.centerx + body.speed * this.duration * this.unitDirection.x / 1000,
-            body.gameRect.centery + body.speed * this.duration * this.unitDirection.y / 1000
+        body.shape.position = new Point(
+            body.shape.position.x + body.speed * this.duration * this.unitDirection.x / 1000,
+            body.shape.position.y + body.speed * this.duration * this.unitDirection.y / 1000
             );
 
         mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.position });
@@ -115,7 +115,7 @@ class CommandShoot extends CommandBase {
     processBody(body: CharacterBody, mechanicEngine: MechanicEngineTS) {
         body.currentWeapon.Shoot(
             body.direction,
-            new Point(body.gameRect.centerx, body.gameRect.centery),
+            new Point(body.shape.position.x, body.shape.position.y),
             mechanicEngine,
             this.id);         
     }

@@ -24,13 +24,13 @@ function Point(x, y) {
     this.y = y;
 }
 
-function Rect(x, y, w, h) {
+function Rect_old(x, y, w, h) {
     this.x = x;
     this.y = y;
     this.width = w;
     this.height = h;
 }
-Rect.prototype = {
+Rect_old.prototype = {
 
     get centerx() { return this.x + this.width / 2 },
     set centerx(value) { this.x = value - this.width / 2 },

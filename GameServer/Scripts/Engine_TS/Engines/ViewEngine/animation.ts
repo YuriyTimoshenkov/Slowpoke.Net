@@ -12,8 +12,8 @@
         this.id = animationInitiator.id;
         this.animationInitiator = animationInitiator;
         this.animationContainer = new createjs.Container();
-        this.animationContainer.x = animationInitiator.gameRect.x;
-        this.animationContainer.y = animationInitiator.gameRect.y;
+        this.animationContainer.x = animationInitiator.shape.x;
+        this.animationContainer.y = animationInitiator.shape.y;
         this.parentContainer = parentContainer;
         this.creationTime = new Date().getTime();
     }
@@ -37,7 +37,7 @@ class BoxDestroyAnimation extends Animation {
     constructor(animationInitiator: Body, parentContainer: createjs.Container) {
         super(animationInitiator, parentContainer);
         this.animationDuration = 10000;
-        this.createAnimation(animationInitiator.gameRect);
+        this.createAnimation(animationInitiator.shape);
     }
     start() {
         super.start();
@@ -54,7 +54,7 @@ class BoxDestroyAnimation extends Animation {
         this.pieces.forEach((piece) => { piece.update(speedDecreaseFactor) });
         this.animationContainer.alpha = 1 - alphaDecreaseFactor;
     }
-    createAnimation(boxRect: Rect) {
+    createAnimation(boxRect: Shape) {
         var piecesCount = Math.floor((Math.random() * (this.piecesCountRange[1] - this.piecesCountRange[0])) + this.piecesCountRange[0] + 1);
         var pieceWidth = boxRect.width * 0.05;
         var pieceMaxHeight = boxRect.height * 0.7;

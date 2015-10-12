@@ -104,8 +104,8 @@ class PlayerInfoboxFloating implements Infobox {
         this.nameText.zIndex = 100;
     }
     updatePosition(body: CharacterBody) {
-        this.nameText.x = body.gameRect.centerx - body.gameRect.width / 2;
-        this.nameText.y = body.gameRect.centery - body.gameRect.height / 2 - 20;
+        this.nameText.x = body.shape.position.x - body.shape.width / 2;
+        this.nameText.y = body.shape.position.y - body.shape.height / 2 - 20;
     }
     removeSelf(container) {
         container.removeChild(this.nameText);
@@ -139,8 +139,8 @@ class NPCInfoboxFloating implements Infobox {
     }
 
     updatePosition(body: CharacterBody) {
-        this.lifeText.x = body.gameRect.centerx - body.gameRect.width / 2;
-        this.lifeText.y = body.gameRect.centery - body.gameRect.height / 2 - 30;
+        this.lifeText.x = body.shape.position.x - body.shape.width / 2;
+        this.lifeText.y = body.shape.position.y - body.shape.height / 2 - 30;
     }
     updateLifeText(body: CharacterBody) {
         this.lifeText.text = body.life.toString();

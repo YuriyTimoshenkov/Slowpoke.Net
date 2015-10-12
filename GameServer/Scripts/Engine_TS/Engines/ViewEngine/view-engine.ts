@@ -156,8 +156,8 @@ class ViewEngine {
     }
 
     addBodyHandler(body: Body, image: createjs.DisplayObject) {
-        image.x = body.gameRect.centerx;
-        image.y = body.gameRect.centery;
+        image.x = body.shape.position.x;
+        image.y = body.shape.position.y;
 
         if (body instanceof Tile) {
             this.levelContainers[0].addChild(image);
@@ -205,14 +205,14 @@ class ViewEngine {
         var halfCanvasHeight = this.canvas.height / 2;
 
         this.levelContainers.forEach(function (container) {
-            container.regX = self.targetBody.gameRect.centerx - halfCanvasWidth;
-            container.regY = self.targetBody.gameRect.centery - halfCanvasHeight
+            container.regX = self.targetBody.shape.position.x - halfCanvasWidth;
+            container.regY = self.targetBody.shape.position.y - halfCanvasHeight
         });
     }
 
     positionChangeHandler(body: Body, bodyImageObject: BodyImage) {
-        bodyImageObject.image.x = body.gameRect.centerx;
-        bodyImageObject.image.y = body.gameRect.centery;
+        bodyImageObject.image.x = body.shape.position.x;
+        bodyImageObject.image.y = body.shape.position.y;
 
         //bodyImageObject.infoboxes.forEach(function (infobox) {
         //    infobox.update(BodyChangesType.position, body);

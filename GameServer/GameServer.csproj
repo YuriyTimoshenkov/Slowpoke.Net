@@ -239,6 +239,7 @@
     <TypeScriptCompile Include="Scripts\Engine_TS\Engines\PhysicsEngine\IPhysicsEngine.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Engines\PhysicsEngine\IShapeCollisionManager.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Engines\PhysicsEngine\physics-processing-result.ts" />
+    <TypeScriptCompile Include="Scripts\Engine_TS\Entities\IShape.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Entities\shape.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Entities\Event.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Engines\ViewEngine\body-image.ts" />

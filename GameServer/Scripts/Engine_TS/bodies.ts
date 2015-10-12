@@ -28,7 +28,7 @@ interface ServerBulletBody extends ServerActiveBody {
 class Body {
     id: number;
     name: string;
-    gameRect: Rect;
+    shape: IShape;
     zIndex: number;
     bodyType: string;
     syncSessionId: number;
@@ -40,18 +40,19 @@ class Body {
         this.id = serverBody.Id;
         this.name = serverBody.Name;
         this.bodyType = serverBody.BodyType;
-
+        console.log("creating new Body", serverBody.BodyType)
         //TODO: implement correct polymorhic rect creation
         var shape = <ServerShapeCircle>serverBody.Shape;
         if (shape.Radius) {
-            this.gameRect = new Rect(0, 0, shape.Radius * 2, shape.Radius * 2);
+            this.shape = new ShapeCircle(shape.Radius, new Point(shape.Position.X, shape.Position.Y));
+            if(serverBody.BodyType === "NPCAI") console.log("New position", shape.Position)
         }
         else {
             var shapeRectangle = <ServerShapeRectangle>serverBody.Shape;
-            this.gameRect = new Rect(0, 0, shapeRectangle.Width * 2, shapeRectangle.Height * 2);
+            this.shape = new ShapeRectangle(shapeRectangle.Width, shapeRectangle.Height, new Point(shapeRectangle.Position.X, shapeRectangle.Position.Y));
+            if (serverBody.BodyType === "NPCAI") console.log("New position", shapeRectangle.Position)
         }
-
-        this.gameRect.center = new Point(shape.Position.X, shape.Position.Y);
+        if(serverBody.BodyType === "NPCAI") console.log("Body created. Position=", this.shape.position);
     }
 
     update(mechanicEngine: MechanicEngineTS) { }
@@ -96,7 +97,7 @@ class ActiveBody extends Body{
         }
 
         //Position
-        this.gameRect.center = new Point(serverBody.Shape.Position.X, serverBody.Shape.Position.Y);
+        this.shape.position = new Point(serverBody.Shape.Position.X, serverBody.Shape.Position.Y);
     }
 } 
 
