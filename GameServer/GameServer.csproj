@@ -264,7 +264,7 @@
     <TypeScriptCompile Include="Scripts\Engine_TS\serverbody_synchronizer.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Engines\MapEngine\tile.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\Factories\body-image-factory.ts" />
-    <TypeScriptCompile Include="Scripts\Engine_TS\Entities\view-engine.ts" />
+    <TypeScriptCompile Include="Scripts\Engine_TS\Engines\ViewEngine\view-engine.ts" />
     <TypeScriptCompile Include="Scripts\Engine_TS\weapon.ts" />
     <TypeScriptCompile Include="Scripts\lib\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\Resources\Images\cowboyTS.ts" />

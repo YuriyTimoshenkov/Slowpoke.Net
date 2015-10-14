@@ -7,35 +7,30 @@
 class MapEngine {
     width: number;
     height: number;
-    tileSize: number;
-    tiles: Tile[];
+    MapTileSize: number;
+    MapTiles: MapTile[];
     mechanicEngine: MechanicEngineTS;
-    serverSynchronizer: ObjectsContainersSynchronizerTS<Tile, ServerTile>;
+    serverSynchronizer: ObjectsContainersSynchronizerTS<MapTile, MapTile>;
 
     constructor(serverMap: ServerMap, mechanicEngine: MechanicEngineTS) {
         this.height = serverMap.Height;
         this.width = serverMap.Width;
-        this.tileSize = serverMap.CellSize;
+        this.MapTileSize = serverMap.CellSize;
         this.mechanicEngine = mechanicEngine;
-        this.tiles = [];
-        this.serverSynchronizer = new ObjectsContainersSynchronizerTS<Tile, ServerTile>();
+        this.MapTiles = [];
+        this.serverSynchronizer = new ObjectsContainersSynchronizerTS<MapTile, MapTile>();
     }
 
-    update(tiles: ServerTile[]) {
+    update(MapTiles: MapTile[]) {
         var self = this;
-        this.tiles = this.serverSynchronizer.syncObjectsContainersTS(this.tiles, tiles,
-            function (tile: ServerTile) {
-                var shapeCircle = <ServerShapeCircle>tile.Shape;
-                shapeCircle.Radius = self.tileSize;
+        this.MapTiles = this.serverSynchronizer.syncObjectsContainersTS(this.MapTiles, MapTiles,
+            function (MapTile: MapTile) {
+                //generate add MapTile event
+                self.mechanicEngine.onBodyAdd.trigger(MapTile);
 
-                var newTile = <Tile>SerializationHelper.deserialize(tile, window);
+                //self.mechanicEngine.passiveBodies.push(newMapTile);
 
-                //generate add tile event
-                self.mechanicEngine.onBodyAdd.trigger(newTile);
-
-                //self.mechanicEngine.passiveBodies.push(newTile);
-
-                return newTile;
+                return MapTile;
             },
             function (body: Body) {
                 //self.mechanicEngine.onBodyChanged.forEach(function (item) {

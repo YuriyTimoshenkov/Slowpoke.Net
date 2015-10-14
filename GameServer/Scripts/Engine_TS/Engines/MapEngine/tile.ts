@@ -2,6 +2,6 @@
     Solid: string;
 }
 
-class Tile extends Body {
+class MapTile extends Body {
     size: number;
 } 

@@ -22,7 +22,7 @@ namespace NPCClient
                 return new ViewFrameFacade()
                 {
                      Bodies = new List<Body>(),
-                     Map = new List<MapTileFacade>()
+                     Map = new List<MapTile>()
                 };
             }
             else

@@ -14,6 +14,6 @@ namespace NPCClient
     {
         Task SyncState(InputEvent inputEvent, Action<ViewFrameFacade> resultHandler);
 
-        Task StartGame(Action<BodyFacade> resultHandler);
+        Task StartGame(Action<Body> resultHandler);
     }
 }

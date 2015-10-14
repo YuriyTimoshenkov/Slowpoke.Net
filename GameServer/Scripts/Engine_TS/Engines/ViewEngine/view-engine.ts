@@ -1,4 +1,4 @@
-﻿/// <reference path="../../typings/easeljs/easeljs.d.ts" />
+﻿/// <reference path="../../../typings/easeljs/easeljs.d.ts" />
 
 class ViewEngine {
     bodyImages: BodyImage[];
@@ -128,7 +128,7 @@ class ViewEngine {
                 }
 
                 //Todo: refactor hardocded type usage
-                if (body instanceof Tile) {
+                if (body instanceof MapTile) {
                     self.levelContainers[0].removeChild(item.image);
                 }
                 else if (body instanceof PassiveBody || body instanceof WeaponBase) {
@@ -159,7 +159,7 @@ class ViewEngine {
         image.x = body.Shape.Position.X;
         image.y = body.Shape.Position.Y;
 
-        if (body instanceof Tile) {
+        if (body instanceof MapTile) {
             this.levelContainers[0].addChild(image);
         }
         else if (body instanceof PassiveBody || body instanceof WeaponBase) {

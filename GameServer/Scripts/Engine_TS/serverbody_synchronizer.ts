@@ -169,7 +169,11 @@
 
 
         if (frame.Map) {
-            self.mechanicEngine.mapEngine.update(frame.Map);
+            var tiles = frame.Map.map(function (tile) {
+                return <MapTile>SerializationHelper.deserialize(tile, window);
+            });
+
+            self.mechanicEngine.mapEngine.update(tiles);
         }
 
         return serverCommands;

@@ -33,12 +33,12 @@ namespace NPCClient
             return;
         }
 
-        public async Task StartGame(Action<BodyFacade> resultHandler)
+        public async Task StartGame(Action<Body> resultHandler)
         {
             if (_connection.State != ConnectionState.Connected)
                 _connection.Start().Wait();
 
-            var playerBody = await _proxy.Invoke<BodyFacade>("LoadPlayer");
+            var playerBody = await _proxy.Invoke<Body>("LoadPlayer");
 
             resultHandler(playerBody);
 

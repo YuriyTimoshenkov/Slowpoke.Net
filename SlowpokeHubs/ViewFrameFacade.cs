@@ -12,7 +12,7 @@ namespace SlowpokeHubs
     public class ViewFrameFacade
     {
         public IList<Body> Bodies { get; set; }
-        public IList<MapTileFacade> Map { get; set; }
+        public IList<MapTile> Map { get; set; }
 
         public ViewFrameFacade()
         {
@@ -27,7 +27,7 @@ namespace SlowpokeHubs
 
             if (viewFrame.Map != null)
             {
-                result.Map = viewFrame.Map.Select(v => MapTileFacade.FromMapTile(v)).ToList();
+                result.Map = viewFrame.Map.Select(v => (MapTile)v).ToList();
             }
 
             return result;

@@ -58,7 +58,7 @@ class Point {
 
 enum BodyChangesType { Direction, Position, hp, score, currentWeapon }
 
-class ObjectsContainersSynchronizerTS<T extends Body, F extends ServerBody> {
+class ObjectsContainersSynchronizerTS<T extends Body, F extends Body> {
 
     syncObjectsContainersTS(
         oldContainer: T[],

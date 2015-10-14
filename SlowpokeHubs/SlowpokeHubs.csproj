@@ -78,14 +78,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BodyFacade.cs" />
     <Compile Include="GameLoadResponse.cs" />
     <Compile Include="InputEvent.cs" />
     <Compile Include="IPlayerContainer.cs" />
-    <Compile Include="MapTileFacade.cs" />
     <Compile Include="PlayerContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShapeFacade.cs" />
     <Compile Include="SlowpokeHub.cs" />
     <Compile Include="ViewFrameFacade.cs" />
   </ItemGroup>
