@@ -6,6 +6,7 @@ using SlowpokeEngine.Weapons;
 using System.Linq;
 using SlowpokeEngine;
 using SlowpokeHubs;
+using SlowpokeEngine.Bodies;
 
 namespace NPCClient
 {
@@ -30,20 +31,20 @@ namespace NPCClient
             var frame = _mechanicEngine.ViewPort.GetFrame(CharacterId, null);
 
             //Update position
-            var mySelf = frame.Bodies.FirstOrDefault(v => v.Id == CharacterId);
+            var mySelf = (CharacterBody)frame.Bodies.FirstOrDefault(v => v.Id == CharacterId);
 
             if (mySelf == null) return;
 
             _position = mySelf.Shape.Position;
             _direction = mySelf.Direction;
 
-            BodyFacade enemy = null;
+            CharacterBody enemy = null;
             double minDistance = -1;
 
             var newDirection = new Vector();
 
             //Find enemy
-            foreach (var body in frame.Bodies.Where(v => v.Id != CharacterId))
+            foreach (CharacterBody body in frame.Bodies.Where(v => v.Id != CharacterId && v is CharacterBody))
             {
                 // Only PlayerBodies can be enemies
                 if (isEnemy(body))
@@ -95,7 +96,7 @@ namespace NPCClient
                 _startMove = DateTime.MinValue;
         }
 
-        private bool isEnemy(BodyFacade body)
+        private bool isEnemy(CharacterBody body)
         {
             return body.BodyType == "PlayerBody";
         }

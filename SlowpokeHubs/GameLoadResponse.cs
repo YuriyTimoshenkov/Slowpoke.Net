@@ -1,4 +1,5 @@
-﻿using SlowpokeEngine.Configuration;
+﻿using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Configuration;
 using SlowpokeEngine.Engines.Map;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace SlowpokeHubs
 {
     public class GameLoadResponse
     {
-        public BodyFacade Player { get; set; }
+        public PlayerBody Player { get; set; }
         public IMap Map { get; set; }
         public IEngineConfiguration Configuration { get; set; }
     }

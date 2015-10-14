@@ -21,7 +21,7 @@ namespace NPCClient
             {
                 return new ViewFrameFacade()
                 {
-                     Bodies = new List<BodyFacade>(),
+                     Bodies = new List<Body>(),
                      Map = new List<MapTileFacade>()
                 };
             }

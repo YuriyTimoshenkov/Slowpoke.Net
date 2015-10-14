@@ -1,4 +1,4 @@
-﻿interface ServerBody {
+﻿class ServerBody {
     Id: number;
     BodyType: string;
     LastProcessedCommandId: number;
@@ -7,53 +7,32 @@
     Name: string;
 }
 
-interface ServerActiveBody extends ServerBody {
+class ServerActiveBody extends ServerBody {
     Name: string;
     Direction: { X: number; Y: number }
     Speed: number;
 }
 
-interface ServerCharacterBody extends ServerActiveBody {
+class ServerCharacterBody extends ServerActiveBody {
     Life: number;
     MaxLife: number;
     CurrentWeapon: ServerBody;
     Score: number;
 }
 
-interface ServerBulletBody extends ServerActiveBody {
+class ServerBulletBody extends ServerActiveBody {
     BulletTypeName: string;
     ShootingDistance: number;
 }
 
 class Body {
-    id: number;
-    name: string;
-    shape: IShape;
+    Id: number;
+    Name: string;
+    Shape: Shape;
     zIndex: number;
-    bodyType: string;
+    BodyType: string;
     syncSessionId: number;
-    direction: Vector;
     createdByCommandId: number;
-
-
-    constructor(serverBody: ServerBody) {
-        this.id = serverBody.Id;
-        this.name = serverBody.Name;
-        this.bodyType = serverBody.BodyType;
-        console.log("creating new Body", serverBody.BodyType)
-        //TODO: implement correct polymorhic rect creation
-        var shape = <ServerShapeCircle>serverBody.Shape;
-        if (shape.Radius) {
-            this.shape = new ShapeCircle(shape.Radius, new Point(shape.Position.X, shape.Position.Y));
-            if(serverBody.BodyType === "NPCAI") console.log("New position", shape.Position)
-        }
-        else {
-            var shapeRectangle = <ServerShapeRectangle>serverBody.Shape;
-            this.shape = new ShapeRectangle(shapeRectangle.Width, shapeRectangle.Height, new Point(shapeRectangle.Position.X, shapeRectangle.Position.Y));
-            if (serverBody.BodyType === "NPCAI") console.log("New position", shapeRectangle.Position)
-        }
-        if(serverBody.BodyType === "NPCAI") console.log("Body created. Position=", this.shape.position);
-    }
 
     update(mechanicEngine: MechanicEngineTS) { }
 
@@ -61,101 +40,80 @@ class Body {
 }
 
 class PassiveBody extends Body {
-    constructor(serverBody: ServerBody){
-        super(serverBody);
-    }
 }
 
-class BoxPassiveBody extends PassiveBody {
-    constructor(serverBody: ServerBody) {
-        super(serverBody);
-    }
+class BoxBody extends PassiveBody {
 }
 
 class ActiveBody extends Body{
-    speed: number;
+    Speed: number;
     baseRotationVector: Vector;
+    Direction: Vector;
+    Life: number;
+    LifeMax: number;
+    State: number;
+    OwnerId: number;
+    LastProcessedCommandId: number;
+    CreatedByCommandId: number;
 
-
-    constructor(serverBody: ServerActiveBody) {
-        this.id = serverBody.Id;
-        this.name = serverBody.Name;
-        this.bodyType = serverBody.BodyType;
-
-        this.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y)
-        || new Vector(0, -1);
-        this.zIndex = 1;
-        this.speed = serverBody.Speed;
-        this.baseRotationVector = new Vector(0, -1);
-
-        super(serverBody);
-    }
     serverSync(serverBody: ServerActiveBody, mechanicEngine: MechanicEngineTS) {
-        // Update direction
-        if (Math.abs(this.direction.x - serverBody.Direction.X) > 0.0001 || Math.abs(this.direction.y - serverBody.Direction.Y) > 0.0001) {
-            this.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y);
+        // Update Direction
+        if (Math.abs(this.Direction.X - serverBody.Direction.X) > 0.0001 || Math.abs(this.Direction.Y - serverBody.Direction.Y) > 0.0001) {
+            this.Direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y);
         }
 
         //Position
-        this.shape.position = new Point(serverBody.Shape.Position.X, serverBody.Shape.Position.Y);
+        this.Shape.Position = new Point(serverBody.Shape.Position.X, serverBody.Shape.Position.Y);
     }
 } 
 
 class CharacterBody extends ActiveBody{
-    currentWeapon: Weapon;
-    life: number;
-    maxLife: number;
-    score: number;
-
-    constructor(serverBody: ServerCharacterBody, configuration: IEngineConfiguration) {
-        super(serverBody);
-
-        this.life = serverBody.Life || 0;
-        this.maxLife = serverBody.MaxLife || 0;
-        this.score = 0;
-        this.currentWeapon = new Weapon(serverBody.CurrentWeapon, configuration);
-    }
+    CurrentWeapon: WeaponBase;
+    Score: number;
+    WeaponsCount: number;
+    SocialGroups: string[];
 
     serverSync(serverBody, mechanicEngine: MechanicEngineTS) {
         super.serverSync(serverBody, mechanicEngine);
-        if (serverBody.Life !== this.life) {
-            // to avoid body hit when drinking a bottle
-            //if (serverBody.Life < this.life) { 
+        if (serverBody.Life !== this.Life) {
+            // to avoId body hit when drinking a bottle
+            //if (serverBody.Life < this.Life) { 
                 mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.hp });
             //}
-            this.life = serverBody.Life;
+            this.Life = serverBody.Life;
         }
 
     }
 }
 
 class PlayerOtherBody extends CharacterBody {
-    constructor(serverBody: ServerCharacterBody, configuration: IEngineConfiguration) {
-        super(serverBody, configuration);
-    }
+}
+
+class NPCAI extends CharacterBody {
 }
 
 class PlayerBody extends CharacterBody {
+    Name: string;
 
-    serverSync(serverBody: ServerCharacterBody, mechanicEngine: MechanicEngineTS) {
+    serverSync(serverBody: CharacterBody, mechanicEngine: MechanicEngineTS) {
         //TODO: implement true polumorphic body processing
 
-        if (serverBody.Life !== this.life) {
+        if (serverBody.Life !== this.Life) {
 
             mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.hp });
 
-            this.life = serverBody.Life;
+            this.Life = serverBody.Life;
         }
 
         // Update weapon
-        if ((serverBody.CurrentWeapon == null ? '' : this.currentWeapon.name) != serverBody.CurrentWeapon.Name) {
-            this.currentWeapon = new Weapon(serverBody.CurrentWeapon, mechanicEngine.configuration);
+        if ((serverBody.CurrentWeapon == null ? '' : this.CurrentWeapon.Name) != serverBody.CurrentWeapon.Name) {
+            this.CurrentWeapon = serverBody.CurrentWeapon;
             mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.currentWeapon });
         }
 
         // Update score
-        if (serverBody.Score && serverBody.Score !== this.score) {
-            this.score = serverBody.Score;
+        if (serverBody.Score && serverBody.Score !== this.Score) {
+            this.Score = serverBody.Score;
             mechanicEngine.onBodyChanged.trigger({ body: this, changesType: BodyChangesType.score });
         }
     }
@@ -168,14 +126,12 @@ class Bullet extends ActiveBody {
     flyDistance: number;
     bulletTypeName: string;
 
-    constructor(serverBody: ServerBulletBody) {
-        super(serverBody);
+    constructor() {
+        super();
 
         this.lastUpdateTime = new Date().getTime();
         this.startTime = this.lastUpdateTime;
-        this.unitDirection = new Vector(this.direction.x, this.direction.y).calculateUnitVector();
-        this.bulletTypeName = serverBody.BulletTypeName;
-        this.flyDistance = serverBody.ShootingDistance;
+        this.unitDirection = new Vector(this.Direction.X, this.Direction.Y).calculateUnitVector();
     }
 
     update(mechanicEngine: MechanicEngineTS) {
@@ -184,11 +140,11 @@ class Bullet extends ActiveBody {
         var durationFromStart = currentTime - this.startTime;
         this.lastUpdateTime = currentTime;
 
-        if (durationFromStart / 1000 * this.speed > this.flyDistance) {
-            mechanicEngine.removeActiveBody(this.id);
+        if (durationFromStart / 1000 * this.Speed > this.flyDistance) {
+            mechanicEngine.removeActiveBody(this.Id);
         }
         else {
-            var moveCommand = new CommandMove(this.id, new Date().getTime(), duration, this.unitDirection);
+            var moveCommand = new CommandMove(this.Id, new Date().getTime(), duration, this.unitDirection);
             moveCommand.syncedWithServer = true;
 
             mechanicEngine.addCommand(moveCommand);
@@ -204,13 +160,12 @@ class DynamitBody extends ActiveBody {
     bulletTypeName: string;
     flyDistance: number;
 
-    constructor(activeBody: ServerActiveBody, dynamiteDetonationTime: number) {
-        super(activeBody);
+    constructor() {
+        super();
 
         this.lastUpdateTime = new Date().getTime();
         this.startTime = this.lastUpdateTime;
-        this.unitDirection = new Vector(this.direction.x, this.direction.y).calculateUnitVector();
-        this.dynamiteDetonationTime = dynamiteDetonationTime;
+        this.unitDirection = new Vector(this.Direction.X, this.Direction.Y).calculateUnitVector();
     }
 
     update(mechanicEngine: MechanicEngineTS) {
@@ -218,10 +173,10 @@ class DynamitBody extends ActiveBody {
         var duration = currentTime - this.lastUpdateTime;
         var durationFromStart = currentTime - this.startTime;
         if (durationFromStart > this.dynamiteDetonationTime) {
-            mechanicEngine.removeActiveBody(this.id);
+            mechanicEngine.removeActiveBody(this.Id);
         }
         else {
-            var moveCommand = new CommandMove(this.id, new Date().getTime(), duration, this.unitDirection);
+            var moveCommand = new CommandMove(this.Id, new Date().getTime(), duration, this.unitDirection);
             moveCommand.syncedWithServer = true;
 
             mechanicEngine.addCommand(moveCommand);

@@ -1,4 +1,5 @@
-﻿using SlowpokeEngine.Engines.Map;
+﻿using SlowpokeEngine.Bodies;
+using SlowpokeEngine.Engines.Map;
 using SlowpokeEngine.Engines.View;
 using System;
 using System.Collections.Generic;
@@ -10,19 +11,19 @@ namespace SlowpokeHubs
 {
     public class ViewFrameFacade
     {
-        public IList<BodyFacade> Bodies { get; set; }
+        public IList<Body> Bodies { get; set; }
         public IList<MapTileFacade> Map { get; set; }
 
         public ViewFrameFacade()
         {
-            Bodies = new List<BodyFacade>();
+            Bodies = new List<Body>();
         }
 
         public static ViewFrameFacade FromViewFrame(IViewFrame viewFrame)
         {
             var result = new ViewFrameFacade();
 
-            result.Bodies = viewFrame.Bodies.Select(v => BodyFacade.FromBody(v)).ToList();
+            result.Bodies = viewFrame.Bodies;//.Select(v => BodyFacade.FromBody(v)).ToList();
 
             if (viewFrame.Map != null)
             {

@@ -14,14 +14,14 @@
     this.focus = true;
 
     this.moveKeysToDirectionMap = [
-        { keys: [this.leftCode], direction: { x: -1, y: 0 } },
-        { keys: [this.rightCode], direction: { x: 1, y: 0 } },
-        { keys: [this.upCode], direction: { x: 0, y: -1 } },
-        { keys: [this.downCode], direction: { x: 0, y: 1 } },
-        { keys: [this.upCode, this.leftCode], direction: { x: -0.707, y: -0.707 } },
-        { keys: [this.upCode, this.rightCode], direction: { x: 0.707, y: -0.707 } },
-        { keys: [this.downCode, this.leftCode], direction: { x: -0.707, y: 0.707 } },
-        { keys: [this.downCode, this.rightCode], direction: { x: 0.707, y: 0.707 } }
+        { keys: [this.leftCode], Direction: { x: -1, y: 0 } },
+        { keys: [this.rightCode], Direction: { x: 1, y: 0 } },
+        { keys: [this.upCode], Direction: { x: 0, y: -1 } },
+        { keys: [this.downCode], Direction: { x: 0, y: 1 } },
+        { keys: [this.upCode, this.leftCode], Direction: { x: -0.707, y: -0.707 } },
+        { keys: [this.upCode, this.rightCode], Direction: { x: 0.707, y: -0.707 } },
+        { keys: [this.downCode, this.leftCode], Direction: { x: -0.707, y: 0.707 } },
+        { keys: [this.downCode, this.rightCode], Direction: { x: 0.707, y: 0.707 } }
     ];
 
     this.controlsToReport = {
@@ -129,7 +129,7 @@
         var keysduration = self.processMoveKeysRegistrator();
         var controlsToReport = {};
 
-        // we presume that player could go only 1 direction per report
+        // we presume that player could go only 1 Direction per report
         var appliedRule = self.moveKeysToDirectionMap.filter(function (itemA) {
             return itemA.keys.length === keysduration.length
             && keysduration.filter(function (itemB) {
@@ -139,7 +139,7 @@
 
         if (appliedRule !== undefined) {
             controlsToReport.move = {
-                direction: appliedRule.direction,
+                Direction: appliedRule.Direction,
                 duration: Math.min.apply(Math, keysduration.map(function (item) { return item.duration; }))
             };
         }

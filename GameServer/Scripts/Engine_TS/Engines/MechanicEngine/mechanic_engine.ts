@@ -32,7 +32,8 @@ class MechanicEngineTS {
     }
 
     addPlayerBody(body: ServerCharacterBody) {
-        this.player = new PlayerBody(body, this.configuration);
+        this.player = <PlayerBody>SerializationHelper.deserialize(body, window);
+
         this.bodies.push(this.player);
     }
 
@@ -43,7 +44,7 @@ class MechanicEngineTS {
     removeActiveBody(bodyId: number) {
         var self = this;
         this.bodies = this.bodies.filter(function (body: ActiveBody) {
-            if (body.id != bodyId) {
+            if (body.Id != bodyId) {
                 return true;
             }
             else {

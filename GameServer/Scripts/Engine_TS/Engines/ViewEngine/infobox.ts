@@ -20,8 +20,8 @@ class PlayerInfoboxFixed implements Infobox{
 
         constructor(body: CharacterBody, startPoint: Point) {
             this.weaponPoint = startPoint;
-            this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - this.textGap);
-            this.scorePoint = new Point(this.weaponPoint.x, this.lifePoint.y - this.textGap);
+            this.lifePoint = new Point(this.weaponPoint.X, this.weaponPoint.Y - this.textGap);
+            this.scorePoint = new Point(this.weaponPoint.X, this.lifePoint.Y - this.textGap);
             this.create(body);
         }
         
@@ -36,36 +36,36 @@ class PlayerInfoboxFixed implements Infobox{
         }
 
         createLifeText(body: CharacterBody) {
-            var text = "HP: " + body.life;
+            var text = "HP: " + body.Life;
             this.lifeText = new createjs.Text(text, this.textSize + "px Arial", this.lifeTextColor);
-            this.lifeText.x = this.lifePoint.x;
-            this.lifeText.y = this.lifePoint.y;
+            this.lifeText.x = this.lifePoint.X;
+            this.lifeText.y = this.lifePoint.Y;
             this.lifeText.zIndex = 100;
         }
         createWeaponText(body: CharacterBody) {
-            this.weaponText = new createjs.Text(body.currentWeapon.name, this.textSize + "px Arial", this.lifeTextColor);
+            this.weaponText = new createjs.Text(body.CurrentWeapon.Name, this.textSize + "px Arial", this.lifeTextColor);
             this.weaponText.zIndex = 3;
-            this.weaponText.x = this.weaponPoint.x;
-            this.weaponText.y = this.weaponPoint.y;
+            this.weaponText.x = this.weaponPoint.X;
+            this.weaponText.y = this.weaponPoint.Y;
             this.weaponText.zIndex = 100;
         }
         createScoreText(body: CharacterBody) {
-            var text = "Score: " + body.score;
+            var text = "Score: " + body.Score;
             this.scoreText = new createjs.Text(text, this.textSize + "px Arial", this.scoreTextColor);
-            this.scoreText.x = this.scorePoint.x;
-            this.scoreText.y = this.scorePoint.y;
+            this.scoreText.x = this.scorePoint.X;
+            this.scoreText.y = this.scorePoint.Y;
             this.scoreText.zIndex = 100;
         }
         
         updateScoreText(body: CharacterBody) {
-            this.scoreText.text = "Score: " + body.score;
+            this.scoreText.text = "Score: " + body.Score;
         }
 
         updateCurrentWeaponText(body: CharacterBody) {
-            this.weaponText.text = body.currentWeapon.name;
+            this.weaponText.text = body.CurrentWeapon.Name;
         }
         updateLifeText(body: CharacterBody) {
-            this.lifeText.text = "HP: " + body.life;
+            this.lifeText.text = "HP: " + body.Life;
         } 
 
         removeSelf(container) {
@@ -99,13 +99,13 @@ class PlayerInfoboxFloating implements Infobox {
     }
 
     createNameText(body: CharacterBody) {
-        this.nameText = new createjs.Text(body.name, this.textSize + "px Arial", this.nameTextColor);
+        this.nameText = new createjs.Text(body.Name, this.textSize + "px Arial", this.nameTextColor);
         this.updatePosition(body);
         this.nameText.zIndex = 100;
     }
     updatePosition(body: CharacterBody) {
-        this.nameText.x = body.shape.position.x - body.shape.width / 2;
-        this.nameText.y = body.shape.position.y - body.shape.height / 2 - 20;
+        this.nameText.x = body.Shape.Position.X - body.Shape.Width / 2;
+        this.nameText.y = body.Shape.Position.Y - body.Shape.Height / 2 - 20;
     }
     removeSelf(container) {
         container.removeChild(this.nameText);
@@ -133,17 +133,17 @@ class NPCInfoboxFloating implements Infobox {
         container.addChild(this.lifeText);
     }
     createLifeText(body: CharacterBody) {
-        this.lifeText = new createjs.Text(body.life.toString(), this.textSize + "px Arial", this.lifeTextColor);
+        this.lifeText = new createjs.Text(body.Life.toString(), this.textSize + "px Arial", this.lifeTextColor);
         this.updatePosition(body);
         this.lifeText.zIndex = 100;
     }
 
     updatePosition(body: CharacterBody) {
-        this.lifeText.x = body.shape.position.x - body.shape.width / 2;
-        this.lifeText.y = body.shape.position.y - body.shape.height / 2 - 30;
+        this.lifeText.x = body.Shape.Position.X - body.Shape.Width / 2;
+        this.lifeText.y = body.Shape.Position.Y - body.Shape.Height / 2 - 30;
     }
     updateLifeText(body: CharacterBody) {
-        this.lifeText.text = body.life.toString();
+        this.lifeText.text = body.Life.toString();
     } 
 
     removeSelf(container) {
@@ -169,7 +169,7 @@ class PerformanceInfoboxFixed  {
     constructor(data, startPoint: Point) {
         this.data = data;
         this.ppsPoint = startPoint;
-        this.fpsPoint = new Point(this.ppsPoint.x, this.ppsPoint.y - this.textGap);
+        this.fpsPoint = new Point(this.ppsPoint.X, this.ppsPoint.Y - this.textGap);
         this.create();
     }
 
@@ -183,15 +183,15 @@ class PerformanceInfoboxFixed  {
     createPPSText() {
         var text = "PPS: " + this.data.ping;
         this.ppsText = new createjs.Text(text, this.textSize + "px Arial", this.textColor);
-        this.ppsText.x = this.ppsPoint.x;
-        this.ppsText.y = this.ppsPoint.y;
+        this.ppsText.x = this.ppsPoint.X;
+        this.ppsText.y = this.ppsPoint.Y;
         this.ppsText.zIndex = 100;
     }
     createFPSText() {
         var text = "FPS: " + this.data.fps;
         this.fpsText = new createjs.Text(text, this.textSize + "px Arial", this.textColor);
-        this.fpsText.x = this.fpsPoint.x;
-        this.fpsText.y = this.fpsPoint.y;
+        this.fpsText.x = this.fpsPoint.X;
+        this.fpsText.y = this.fpsPoint.Y;
         this.fpsText.zIndex = 100;
     }
 

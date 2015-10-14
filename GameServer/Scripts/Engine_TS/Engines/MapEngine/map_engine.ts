@@ -28,16 +28,7 @@ class MapEngine {
                 var shapeCircle = <ServerShapeCircle>tile.Shape;
                 shapeCircle.Radius = self.tileSize;
 
-                var newTile = new Tile(
-                    {
-                        Id: tile.Id,
-                        BodyType: tile.BodyType,
-                        LastProcessedCommandId: tile.LastProcessedCommandId,
-                        CreatedByCommandId: tile.CreatedByCommandId,
-                        Shape: tile.Shape,
-                        Name: tile.Name
-                    }
-                    );
+                var newTile = <Tile>SerializationHelper.deserialize(tile, window);
 
                 //generate add tile event
                 self.mechanicEngine.onBodyAdd.trigger(newTile);
@@ -48,7 +39,7 @@ class MapEngine {
             },
             function (body: Body) {
                 //self.mechanicEngine.onBodyChanged.forEach(function (item) {
-                //    item(body, BodyChangesType.direction);
+                //    item(body, BodyChangesType.Direction);
                 //});
             },
             function (body: Body) {

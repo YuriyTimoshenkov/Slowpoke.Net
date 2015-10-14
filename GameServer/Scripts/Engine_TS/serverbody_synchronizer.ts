@@ -11,43 +11,14 @@
 
     getServerBodyProcessingType(serverBody: ServerBody): BodyProcessingTypes {
         if (serverBody.BodyType === 'Bullet') return BodyProcessingTypes.ClientSide;
-        if (serverBody.Id === this.mechanicEngine.player.id) return BodyProcessingTypes.ClientSidePrediction;
+        if (serverBody.Id === this.mechanicEngine.player.Id) return BodyProcessingTypes.ClientSidePrediction;
 
         return BodyProcessingTypes.ServerSide;
     }
 
     createNewBody(serverBody: ServerBody, syncSessionId: number): Body {
-        var newBody: Body;
-
-        switch (serverBody.BodyType) {
-            case "LifeContainer": {
-                newBody = new PassiveBody(serverBody);
-                break;
-            }
-            case "NPCAI": {
-                newBody = new CharacterBody(<ServerCharacterBody> serverBody, this.mechanicEngine.configuration);
-                break;
-            }
-            case "Bullet": {
-                newBody = new Bullet(<ServerBulletBody> serverBody);
-                break;
-            }
-            case "PlayerBody": {
-                newBody = new PlayerOtherBody(<ServerCharacterBody> serverBody, this.mechanicEngine.configuration);
-                break;
-            }
-            case "BoxBody": {
-                newBody = new BoxPassiveBody(serverBody);
-                break;
-            }
-            case "Gun": 
-            case "Shotgun":
-            case "Dynamite":
-            case "Revolver": {
-                newBody = new Weapon(serverBody, this.mechanicEngine.configuration);
-                break;
-            }
-        }
+        var newBody: Body = <Body>SerializationHelper.deserialize(serverBody, window);
+        
 
         if (newBody) {
             this.mechanicEngine.bodies.push(newBody);
@@ -62,7 +33,7 @@
     }
 
     syncServerSideBody(serverBody: ServerBody, syncSessionId: number) {
-        var filtered = this.mechanicEngine.bodies.filter(function (body) { return serverBody.Id === body.id });
+       var filtered = this.mechanicEngine.bodies.filter(function (body) { return serverBody.Id === body.Id });
 
         if (filtered.length > 0) {
             var body: Body = filtered[0];
@@ -76,9 +47,9 @@
             }
             body.syncSessionId = syncSessionId;
 
-            this.mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.position });
+            this.mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.Position });
 
-            this.mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.direction });
+            this.mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.Direction });
         }
         else {
             this.createNewBody(serverBody, syncSessionId);
@@ -88,7 +59,7 @@
     syncClientSideBody(serverBody: ServerBody, syncSessionId: number) {
 
         var filtered = this.mechanicEngine.bodies.filter(function (body) {
-            return serverBody.Id === body.id
+            return serverBody.Id === body.Id
                 || serverBody.CreatedByCommandId === body.createdByCommandId
         });
 
@@ -105,7 +76,7 @@
     syncPredictiveBodies(serverBody: ServerActiveBody, mechanicEngine: MechanicEngineTS): ServerCommand[] {
         //Find first synced with server command
         var firstSyncedCommand: CommandBase = mechanicEngine.commandQueueProcessed.filter(function (command) {
-            return command.id === serverBody.LastProcessedCommandId && command.bodyId == mechanicEngine.player.id;
+            return command.id === serverBody.LastProcessedCommandId && command.bodyId == mechanicEngine.player.Id;
         })[0];
 
         //Remove all commands till synced one
@@ -117,9 +88,9 @@
         //Update body if needed
         if (firstSyncedCommand !== undefined && !firstSyncedCommand.compareState(serverBody)) {
 
-            mechanicEngine.player.shape.position.x = serverBody.Shape.Position.X;
-            mechanicEngine.player.shape.position.y = serverBody.Shape.Position.Y;
-            mechanicEngine.player.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y).calculateUnitVector();
+            mechanicEngine.player.Shape.Position.X = serverBody.Shape.Position.X;
+            mechanicEngine.player.Shape.Position.Y = serverBody.Shape.Position.Y;
+            mechanicEngine.player.Direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y).calculateUnitVector();
 
             //Recalculate applied commands
             mechanicEngine.commandQueueProcessed.forEach(function (command) {
@@ -153,11 +124,15 @@
         var syncSessionId = new Date().getTime();
         var serverCommands: ServerCommand[] = [];
 
+        var bodies = frame.Bodies.map(function (serverBody) {
+            return <Body>SerializationHelper.deserialize(serverBody, window);
+        });
+
         frame.Bodies.forEach(function (serverBody) {
+             
             switch (self.getServerBodyProcessingType(serverBody)) {
                 case BodyProcessingTypes.ServerSide:
                     {
-
                         self.syncServerSideBody(serverBody, syncSessionId);
 
                         break;

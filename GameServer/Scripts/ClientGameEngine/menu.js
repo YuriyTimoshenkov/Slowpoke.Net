@@ -15,7 +15,7 @@
     this.createScoreText = function (score, point) {
         var text = "Score: " + score;
         this.scoreText = new createjs.Text(text, this.scoreTextSize + "px Arial", this.scoreTextColor);
-        this.scoreText.x = point.x;
+        this.scoreText.X = point.X;
         this.scoreText.y = point.y;
         this.scoreText.zIndex = 100;
     }
@@ -32,7 +32,7 @@
     this.createLifeText = function (newLife, point) {
         var text = "HP: " + newLife;
         this.lifeText = new createjs.Text(text, this.lifeTextSize + "px Arial", this.lifeTextColor);
-        this.lifeText.x = point.x;
+        this.lifeText.X = point.X;
         this.lifeText.y = point.y;
         this.lifeText.zIndex = 100;
     }
@@ -49,7 +49,7 @@
     this.createWeaponText = function (newWeapon, point) {
         this.weaponText = new createjs.Text(newWeapon, this.weaponTextSize + "px Arial", this.lifeTextColor);
         this.weaponText.zIndex = 3;
-        this.weaponText.x = point.x;
+        this.weaponText.X = point.X;
         this.weaponText.y = point.y;
         this.weaponText.zIndex = 100;
     }
@@ -66,7 +66,7 @@
     this.createFPSText = function (fps, point) {
         this.fpsText = new createjs.Text("FPS: " + fps, this.fpsTextSize + "px Arial", this.fpsTextColor);
         this.fpsText.zIndex = 3;
-        this.fpsText.x = point.x;
+        this.fpsText.X = point.X;
         this.fpsText.y = point.y;
         this.fpsText.zIndex = 100;
     }
@@ -74,7 +74,7 @@
     this.createPingText = function (ping, point) {
         this.pingText = new createjs.Text("PPS: " + ping, this.fpsTextSize + "px Arial", this.fpsTextColor);
         this.pingText.zIndex = 3;
-        this.pingText.x = point.x;
+        this.pingText.X = point.X;
         this.pingText.y = point.y;
         this.pingText.zIndex = 100;
     }

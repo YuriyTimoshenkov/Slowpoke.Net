@@ -493,7 +493,7 @@ function extractStacktrace( e, offset ) {
 
 	if ( e.stacktrace ) {
 
-		// Opera 12.x
+		// Opera 12.X
 		return e.stacktrace.split( "\n" )[ offset + 3 ];
 	} else if ( e.stack ) {
 

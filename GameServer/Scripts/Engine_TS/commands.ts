@@ -15,7 +15,7 @@ class CommandBase{
     bodyId: number;
     syncedWithServer: boolean;
     static directionPossibleDiff: number = 0.0001;
-    state: { x: number; y: number; direction: Vector};
+    state: { x: number; y: number; Direction: Vector};
 
    constructor(bodyId, id:number) {
         this.bodyId = bodyId;
@@ -26,7 +26,7 @@ class CommandBase{
         var self = this;
 
         var bodies = mechanicEngine.bodies.filter(function (item) {
-            return item.id === self.bodyId;
+            return item.Id === self.bodyId;
         });
 
         if (bodies && bodies.length > 0) {
@@ -34,13 +34,16 @@ class CommandBase{
 
             this.processBody(body, mechanicEngine);
 
-            //save state
-            this.state = {
-                x: body.shape.position.x,
-                y: body.shape.position.y,
-                direction: body.direction
-            };
+            this.saveState(body);
         }
+   }
+
+   saveState(body) {
+       this.state = {
+           x: body.Shape.Position.X,
+           y: body.Shape.Position.y,
+           Direction: body.Direction
+       };
    }
 
     processBody(body: Body, mechanicEngine: MechanicEngineTS) {}
@@ -48,37 +51,37 @@ class CommandBase{
     compareState(body) {
         return this.state === undefined || (body.Shape.Position.X === this.state.x
             && body.Shape.Position.Y === this.state.y
-            && (body.Direction.X - this.state.direction.x) < CommandBase.directionPossibleDiff
-            && (body.Direction.Y - this.state.direction.y) < CommandBase.directionPossibleDiff);
+            && (body.Direction.X - this.state.Direction.X) < CommandBase.directionPossibleDiff
+            && (body.Direction.Y - this.state.Direction.Y) < CommandBase.directionPossibleDiff);
     }
 } 
 
 class CommandMove extends CommandBase{
     duration: number;
-    direction: Vector;
+    Direction: Vector;
     unitDirection: Vector;
 
-    constructor(bodyId:number, id:number, duration:number, direction:Vector) {
+    constructor(bodyId:number, id:number, duration:number, Direction:Vector) {
         super(bodyId, id);
         this.duration = duration;
-        this.direction = new Vector(direction.x, direction.y);
-        this.unitDirection = this.direction.calculateUnitVector();
+        this.Direction = new Vector(Direction.X, Direction.Y);
+        this.unitDirection = this.Direction.calculateUnitVector();
     }
 
     processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS)  {
-        body.shape.position = new Point(
-            body.shape.position.x + body.speed * this.duration * this.unitDirection.x / 1000,
-            body.shape.position.y + body.speed * this.duration * this.unitDirection.y / 1000
+        body.Shape.Position = new Point(
+            body.Shape.Position.X + body.Speed * this.duration * this.unitDirection.X / 1000,
+            body.Shape.Position.Y + body.Speed * this.duration * this.unitDirection.Y / 1000
             );
 
-        mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.position });
+        mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.Position });
     }
 
     toServerCommand(): ServerCommand {
         return new ServerCommand(this.id, "Move",
             [
-                ["X", this.direction.x.toString()],
-                ["Y", this.direction.y.toString()],
+                ["X", this.Direction.X.toString()],
+                ["Y", this.Direction.Y.toString()],
                 ["Duration", this.duration.toString()]]
             )
     }
@@ -92,16 +95,16 @@ class CommandChangeDirection extends CommandBase {
         this.unitNewDirection = newDirection.calculateUnitVector();
     }
     processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS) {
-        body.direction = this.unitNewDirection;
+        body.Direction = this.unitNewDirection;
 
-        mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.direction });
+        mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.Direction });
     }
 
     toServerCommand(): ServerCommand {
         return new ServerCommand(this.id, "ChangeDirection",
             [
-                ["X", this.unitNewDirection.x.toString()],
-                ["Y", this.unitNewDirection.y.toString()]]
+                ["X", this.unitNewDirection.X.toString()],
+                ["Y", this.unitNewDirection.Y.toString()]]
             );
     }
 }
@@ -113,9 +116,9 @@ class CommandShoot extends CommandBase {
     }
 
     processBody(body: CharacterBody, mechanicEngine: MechanicEngineTS) {
-        body.currentWeapon.Shoot(
-            body.direction,
-            new Point(body.shape.position.x, body.shape.position.y),
+        body.CurrentWeapon.Shoot(
+            body.Direction,
+            new Point(body.Shape.Position.X, body.Shape.Position.Y),
             mechanicEngine,
             this.id);         
     }

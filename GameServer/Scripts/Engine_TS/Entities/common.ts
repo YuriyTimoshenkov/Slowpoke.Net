@@ -17,68 +17,46 @@ interface ServerPoint {
     Y: number;
 }
 
+class BodyFacade {
+    Name: string;
+}
+
 
 class Vector{
-    x: number;
-    y: number;
+    X: number;
+    Y: number;
 
     constructor(x:number, y:number){
-        this.x = x;
-        this.y = y;
+        this.X = x;
+        this.Y = y;
     }
 
     calculateUnitVector(): Vector{
-        var magnitude = Math.sqrt((this.x * this.x) + (this.y * this.y));
+        var magnitude = Math.sqrt((this.X * this.X) + (this.Y * this.Y));
 
-        return new Vector(this.x / magnitude, this.y / magnitude);
+        return new Vector(this.X / magnitude, this.Y / magnitude);
     }
 
     product(vector: Vector): number {
-        return this.x * vector.x + this.y * vector.y;
+        return this.X * vector.X + this.Y * vector.Y;
     }
 
     length() :number{
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+        return Math.sqrt(Math.pow(this.X, 2) + Math.pow(this.Y, 2));
     }
 } 
 
 class Point {
-    x: number;
-    y: number;
+    X: number;
+    Y: number;
 
     constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+        this.X = x;
+        this.Y = y;
     }
 }
 
-class Rect_old{
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-
-    constructor(x: number, y: number, w: number, h: number) {
-        this.x = x;
-        this.y = y;
-        this.width = w;
-        this.height = h;
-    }
-
-    get centerx(): number { return this.x + this.width / 2; }
-    set centerx(value) { this.x = value - this.width / 2; }
-
-    get centery(): number { return this.y + this.height / 2; }
-    set centery(value) { this.y = value - this.height / 2; }
-
-    get center(): Point { return new Point(this.centerx, this.centery); }
-    set center(value: Point) {
-        this.centerx = value.x;
-        this.centery = value.y;
-    }
-}
-
-enum BodyChangesType { direction, position, hp, score, currentWeapon }
+enum BodyChangesType { Direction, Position, hp, score, currentWeapon }
 
 class ObjectsContainersSynchronizerTS<T extends Body, F extends ServerBody> {
 
@@ -92,7 +70,7 @@ class ObjectsContainersSynchronizerTS<T extends Body, F extends ServerBody> {
         //Create new container with new + updated elements
         var result = newContainer.map(function (newElement) {
 
-            var objectsFromOldContainer = oldContainer.filter(function (oldElement) { return newElement.Id == oldElement.id })
+            var objectsFromOldContainer = oldContainer.filter(function (oldElement) { return newElement.Id == oldElement.Id })
 
             if (objectsFromOldContainer.length > 0) {
                 updateHandler(objectsFromOldContainer[0]);
@@ -106,7 +84,7 @@ class ObjectsContainersSynchronizerTS<T extends Body, F extends ServerBody> {
 
         // Generate remove events
         oldContainer.forEach(function (item) {
-            var existingItem = result.filter(function (v) { return v.id === item.id });
+            var existingItem = result.filter(function (v) { return v.Id === item.Id });
 
             if (existingItem.length === 0) {
                 removehandler(item);
@@ -132,4 +110,33 @@ function getRandomInt(fromToRange: number[]): number {
 }
 function now(): number {
     return new Date().getTime();
+}
+
+class SerializationHelper {
+    static deserialize(json, environment) {
+
+        if (json === null) {
+            return null;
+        }
+
+        if (json.$type === undefined) {
+            return json;
+        }
+
+        var typeName = json.$type.match(/.+\.(\w+),.+/i)[1];
+        var instance = new environment[typeName]();
+        for (var prop in json) {
+            if (!json.hasOwnProperty(prop)) {
+                continue;
+            }
+
+            if (typeof json[prop] === 'object') {
+                instance[prop] = this.deserialize(json[prop], environment);
+            } else {
+                instance[prop] = json[prop];
+            }
+        }
+
+        return instance;
+    }
 }

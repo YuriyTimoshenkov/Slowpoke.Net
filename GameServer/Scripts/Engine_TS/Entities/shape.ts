@@ -1,45 +1,37 @@
-﻿class Shape implements IShape {
-    x: number;        // x  -  it is always the top left X coordinate
-    y: number;        // y  -  it is always the top left Y coordinate
-    width: number;
-    height: number;
-    maxDimension: number;
-    set position(newPosition: Point) { }  // Position is always the visual center of an object
-    constructor(position: Point) {
-        this.position = position;
-    }
+﻿class Shape {
+    X: number;        // x  -  it is always the top left X coordinate
+    Y: number;        // y  -  it is always the top left Y coordinate
+    MaxDimension: number;
+    Width: number;
+    Height: number;
+
+    get Position() { return null; }
+    set Position(newPosition: Point) { }  // Position is always the visual center of an object
 }
 
 class ShapeCircle extends Shape {
-    radius: number;
-    get maxDimension() { return this.radius }
-    get position(): Point {
-        return new Point(this.x + this.radius, this.y + this.radius)
+    Radius: number;
+    get MaxDimension() { return this.Radius }
+    get Position(): Point {
+        return new Point(this.X + this.Radius, this.Y + this.Radius)
     }
-    set position(newPosition: Point) {
+    set Position(newPosition: Point) {
         //console.log("Setting position circle")
-        this.x = newPosition.x - this.radius;
-        this.y = newPosition.y - this.radius;
-    }
-    constructor(radius: number, point: Point) {
-        this.radius = radius;
-        super(point);
+        this.X = newPosition.X - this.Radius;
+        this.Y = newPosition.Y - this.Radius;
     }
 }
 
 class ShapeRectangle extends Shape {
-    constructor(width: number, height: number, position: Point) {
-        this.width = width;
-        this.height = height;
-        super(position);
+
+
+    get MaxDimension() { return this.Width > this.Height ? this.Width : this.Height }
+    get Position(): Point {
+        return new Point(this.X + this.Width / 2, this.Y + this.Height / 2)
     }
-    get maxDimension() { return this.width > this.height ? this.width : this.height }
-    get position(): Point {
-        return new Point(this.x + this.width / 2, this.y + this.height / 2)
-    }
-    set position(newPosition: Point) {
+    set Position(newPosition: Point) {
         //console.log("Setting position rect")
-        this.x = newPosition.x - this.width / 2;
-        this.y = newPosition.y - this.height / 2;
+        this.X = newPosition.X - this.Width / 2;
+        this.Y = newPosition.Y - this.Height / 2;
     }
 }

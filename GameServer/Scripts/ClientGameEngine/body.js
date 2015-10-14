@@ -6,7 +6,7 @@
         this.name = serverBody.Name;
         this.gameRect = new Rect(0, 0, serverBody.Shape.Radius * 2, serverBody.Shape.Radius * 2);
         this.gameRect.center = serverBody.Shape.Position;
-        this.direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y)
+        this.Direction = new Vector(serverBody.Direction.X, serverBody.Direction.Y)
             || new Vector(0,-1);
         this.image = new createjs.Container();
         this.image.zIndex = 1;
@@ -19,9 +19,9 @@
 
         var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
 
-        // To check rotation direction
-        var centerX = this.image.x;
-        var mouseX = centerX + newDirection.x;
+        // To check rotation Direction
+        var centerX = this.image.X;
+        var mouseX = centerX + newDirection.X;
 
         // Clockwise
         if (mouseX >= centerX) {
@@ -31,14 +31,14 @@
             this.image.rotation = 360 - rotationDeltaDegree;
         }
 
-        // Update direction and weapon
-        this.direction = newDirection;
+        // Update Direction and weapon
+        this.Direction = newDirection;
     },
     serverSync: function (serverBody) {
-        // Update direction
+        // Update Direction
         var newDirection = serverBody.Direction;
 
-        if (Math.abs(this.direction.x - serverBody.Direction.X) > 0.0001 || Math.abs(this.direction.y - serverBody.Direction.Y) > 0.0001) {
+        if (Math.abs(this.Direction.X - serverBody.Direction.X) > 0.0001 || Math.abs(this.Direction.y - serverBody.Direction.Y) > 0.0001) {
             this.updateDirection(new Vector(serverBody.Direction.X, serverBody.Direction.Y));
         }
 
@@ -69,7 +69,7 @@ var CharacterBody = BaseBody.extend({
 
         this.addLifeText = function () {
             self.lifeText = self.createLifeText();
-            self.lifeText.x = -self.gameRect.width * 1.5;
+            self.lifeText.X = -self.gameRect.width * 1.5;
             self.lifeText.y = -self.gameRect.height * 1.5;
             self.objectMenu.addChild(self.lifeText);
         }
@@ -120,7 +120,7 @@ var BulletBody = BaseBody.extend({
 
         this._super(serverBody);
         this.lastUpdateTime = new Date().getTime();
-        this.unitDirection = new Vector(self.direction.x, self.direction.y).calculateUnitVector();
+        this.unitDirection = new Vector(self.Direction.X, self.Direction.y).calculateUnitVector();
     },
       serverSync :function (serverBody) { },
 
@@ -130,7 +130,7 @@ var BulletBody = BaseBody.extend({
             this.lastUpdateTime = currentTime;
 
             this.gameRect.center = {
-                X: this.gameRect.centerx + this.speed * duration * this.unitDirection.x / 1000,
+                X: this.gameRect.centerx + this.speed * duration * this.unitDirection.X / 1000,
                 Y: this.gameRect.centery + this.speed * duration * this.unitDirection.y / 1000
             };
         }

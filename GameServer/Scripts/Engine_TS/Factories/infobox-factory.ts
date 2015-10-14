@@ -42,15 +42,15 @@
     getInfoboxTypesToCreate(data: Body): number[] {
         var infoboxTypes = [];
         // if NPC
-        if (data.bodyType === "NPCAI") {
+        if (data.BodyType === "NPCAI") {
             infoboxTypes.push(Infoboxes.NPC_FLOATING);
         }
         // if PlayerOther
-        else if (data.bodyType === "PlayerBody" && data instanceof PlayerOtherBody) {
+        else if (data.BodyType === "PlayerBody" && data instanceof PlayerOtherBody) {
             infoboxTypes.push(Infoboxes.PLAYER_FLOATING);
         }
         // if Player
-        else if (data.bodyType === "PlayerBody" && data instanceof PlayerBody) {
+        else if (data.BodyType === "PlayerBody" && data instanceof PlayerBody) {
             infoboxTypes.push(Infoboxes.PLAYER_FLOATING);
             infoboxTypes.push(Infoboxes.PLAYER_FIXED);
         }

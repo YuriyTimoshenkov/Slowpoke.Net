@@ -1,9 +1,9 @@
 ﻿function MapCell(Id, point, size) {
     this.Id = Id;
-    this.position = point;
+    this.Position = point;
     this.width = size;
     this.height = size;
-    this.gameRect = new Rect(this.position.X, this.position.Y, this.width, this.height)
+    this.gameRect = new Rect(this.Position.X, this.Position.Y, this.width, this.height)
     this.image = null;
 
     this.assignImage = function (image) {

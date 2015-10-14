@@ -20,20 +20,20 @@ KeyPressedHandler.prototype = {
 
 
 function Point(x, y) {
-    this.x = x;
+    this.X = x;
     this.y = y;
 }
 
 function Rect_old(x, y, w, h) {
-    this.x = x;
+    this.X = x;
     this.y = y;
     this.width = w;
     this.height = h;
 }
 Rect_old.prototype = {
 
-    get centerx() { return this.x + this.width / 2 },
-    set centerx(value) { this.x = value - this.width / 2 },
+    get centerx() { return this.X + this.width / 2 },
+    set centerx(value) { this.X = value - this.width / 2 },
 
     get centery() { return this.y + this.height / 2 },
     set centery(value) { this.y = value - this.height / 2 },
@@ -54,22 +54,22 @@ function inArray(what, where) {
 
 function Vector(x, y) {
     var self = this;
-    this.x = x;
+    this.X = x;
     this.y = y;
 
     this.calculateUnitVector = function()
     {
-        var magnitude = Math.sqrt((self.x * self.x) + (self.y * self.y));
+        var magnitude = Math.sqrt((self.X * self.X) + (self.y * self.y));
 
-        return new Vector(self.x / magnitude, self.y / magnitude);
+        return new Vector(self.X / magnitude, self.y / magnitude);
     }
 
     this.product = function (vector) {
-        return self.x * vector.x + self.y * vector.y
+        return self.X * vector.X + self.y * vector.y
     }
 
     this.length = function () {
-        return Math.sqrt(Math.pow(self.x, 2) + Math.pow(self.y, 2));
+        return Math.sqrt(Math.pow(self.X, 2) + Math.pow(self.y, 2));
     }
 }
 

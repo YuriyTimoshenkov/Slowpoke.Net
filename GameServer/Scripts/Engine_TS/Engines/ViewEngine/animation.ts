@@ -9,11 +9,11 @@
     parentContainer: createjs.Container;
 
     constructor(animationInitiator: Body, parentContainer: createjs.Container) {
-        this.id = animationInitiator.id;
+        this.id = animationInitiator.Id;
         this.animationInitiator = animationInitiator;
         this.animationContainer = new createjs.Container();
-        this.animationContainer.x = animationInitiator.shape.x;
-        this.animationContainer.y = animationInitiator.shape.y;
+        this.animationContainer.x = animationInitiator.Shape.X;
+        this.animationContainer.y = animationInitiator.Shape.Y;
         this.parentContainer = parentContainer;
         this.creationTime = new Date().getTime();
     }
@@ -37,7 +37,7 @@ class BoxDestroyAnimation extends Animation {
     constructor(animationInitiator: Body, parentContainer: createjs.Container) {
         super(animationInitiator, parentContainer);
         this.animationDuration = 10000;
-        this.createAnimation(animationInitiator.shape);
+        this.createAnimation(animationInitiator.Shape);
     }
     start() {
         super.start();
@@ -56,14 +56,14 @@ class BoxDestroyAnimation extends Animation {
     }
     createAnimation(boxRect: Shape) {
         var piecesCount = Math.floor((Math.random() * (this.piecesCountRange[1] - this.piecesCountRange[0])) + this.piecesCountRange[0] + 1);
-        var pieceWidth = boxRect.width * 0.05;
-        var pieceMaxHeight = boxRect.height * 0.7;
+        var pieceWidth = boxRect.Width * 0.05;
+        var pieceMaxHeight = boxRect.Height * 0.7;
 
         var speed = 6;
         var skewSpeed = [10, 20];
 
         for (var i = 0; i < piecesCount; i++) {
-            // randomize direction
+            // randomize Direction
             var signX;
             var signY;
             if (Math.floor((Math.random() * 2) + 1) === 1) signX = 1;
@@ -72,11 +72,11 @@ class BoxDestroyAnimation extends Animation {
             else signY = -1;
             var dirX = Math.random() * signX;
             var dirY = Math.random() * signY;
-            var direction = new Vector(dirX, dirY);
+            var Direction = new Vector(dirX, dirY);
 
             // randomize position
-            var x = Math.floor((Math.random() * boxRect.width) + 1);
-            var y = Math.floor((Math.random() * boxRect.height) + 1);
+            var x = Math.floor((Math.random() * boxRect.Width) + 1);
+            var y = Math.floor((Math.random() * boxRect.Height) + 1);
 
             // randomize skew signs
             var skewXSign;
@@ -92,7 +92,7 @@ class BoxDestroyAnimation extends Animation {
 
             // create piece
             var skewSpeedRandomized = Math.floor((Math.random() * (skewSpeed[1] - skewSpeed[0])) + skewSpeed[0] + 1);
-            var piece = new BoxPiece(speed, direction, skewSpeedRandomized, skewXSign, skewYSign);
+            var piece = new BoxPiece(speed, Direction, skewSpeedRandomized, skewXSign, skewYSign);
             piece.createPiece(pieceWidth, pieceMaxHeight, "orange");
             piece.image.x = x;
             piece.image.y = y;
@@ -108,14 +108,14 @@ class BoxDestroyAnimation extends Animation {
 class BoxPiece {
     image: createjs.Shape;
     speed: number;
-    direction: Vector;
+    Direction: Vector;
     skewSpeed: number;
     skewXSign: number;
     skewYSign: number;
-    constructor(speed: number, direction: Vector, skewSpeed: number, skewXSign: number, skewYSign: number) {
+    constructor(speed: number, Direction: Vector, skewSpeed: number, skewXSign: number, skewYSign: number) {
         this.image = new createjs.Shape();
         this.speed = speed;
-        this.direction = direction;
+        this.Direction = Direction;
         this.skewSpeed = skewSpeed;
         this.skewXSign = skewXSign;
         this.skewYSign = skewYSign;
@@ -140,8 +140,8 @@ class BoxPiece {
         if (speedDecreaseFactor !== -1) {
             this.image.skewX += this.skewXSign * this.skewSpeed / 2;
             this.image.skewY += this.skewYSign * this.skewSpeed;
-            this.image.x += this.speed * speedDecreaseFactor * this.direction.x;
-            this.image.y += this.speed * speedDecreaseFactor * this.direction.y;
+            this.image.x += this.speed * speedDecreaseFactor * this.Direction.X;
+            this.image.y += this.speed * speedDecreaseFactor * this.Direction.Y;
         }
     }
 }
@@ -206,12 +206,12 @@ class DynamitExplosionAnimation extends Animation {
 
         // For each quarter
         for (var q = 0; q < 4; q++) {  
-            var x = baseVectors[q].x;
-            var y = baseVectors[q].y;
+            var x = baseVectors[q].X;
+            var y = baseVectors[q].Y;
             // create smoke particles
             for (var i = 0; i < smokeCount / 4; i++) {
                 var image = this.smokeImage.clone();
-                var direction = new Vector(x, y);
+                var Direction = new Vector(x, y);
                 var speed = getRandomInt(this.firstStageSpeed);
                 //if (Math.random() < this.luckyGuysPercentage) {
                 //    speed *= 3;
@@ -222,7 +222,7 @@ class DynamitExplosionAnimation extends Animation {
                 var rotationSpeed = getRandomInt(this.firstStageRotationSpeed);
                 var r = getRandomInt([0, 2]);
                 if (r === 1) rotationSpeed *= -1; 
-                var particle = new DynamitAfterExplosionSmokeParticle(image, direction, speed, lifeDuration, rotationSpeed);
+                var particle = new DynamitAfterExplosionSmokeParticle(image, Direction, speed, lifeDuration, rotationSpeed);
                 this.particles.push(particle);
                 x += step * quarterSignX[q];
                 y += step * quarterSignY[q];
@@ -252,15 +252,15 @@ class DynamitExplosionAnimation extends Animation {
 
 class DynamitAfterExplosionSmokeParticle {
     image: createjs.DisplayObject;
-    direction: Vector;
+    Direction: Vector;
     speed: number;
     lifeDuration: number;
     lastUpdateTime: number;
     rotationSpeed: number;
 
-    constructor(image: createjs.DisplayObject, direction: Vector, speed: number, lifeDuration: number, rotationSpeed: number) {
+    constructor(image: createjs.DisplayObject, Direction: Vector, speed: number, lifeDuration: number, rotationSpeed: number) {
         this.image = image;
-        this.direction = direction;
+        this.Direction = Direction;
         this.speed = speed;
         this.lifeDuration = lifeDuration;
         this.rotationSpeed = rotationSpeed;
@@ -269,8 +269,8 @@ class DynamitAfterExplosionSmokeParticle {
 
     update() {
         var now = new Date().getTime();
-        this.image.x += this.speed * this.direction.x;
-        this.image.y += this.speed * this.direction.y;
+        this.image.x += this.speed * this.Direction.X;
+        this.image.y += this.speed * this.Direction.Y;
         this.image.rotation += this.rotationSpeed;
         this.image.alpha -= (now - this.lastUpdateTime) / this.lifeDuration;
         this.lastUpdateTime = now;

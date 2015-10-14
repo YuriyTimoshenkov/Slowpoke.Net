@@ -15,9 +15,9 @@
 
         var canvasXY = new Point($(document).width() / 2,
                                  $(document).height() / 2);
-        player.image.x = canvasXY.x;
+        player.image.X = canvasXY.X;
         player.image.y = canvasXY.y;
-        player.objectMenu.x = canvasXY.x;
+        player.objectMenu.X = canvasXY.X;
         player.objectMenu.y = canvasXY.y;
 
         // Assign image
@@ -27,7 +27,7 @@
         // Create name text
         var textSize = 15;
         var nameText = new createjs.Text(player.name, textSize + "px Arial", "#AAA9AB");
-        nameText.x = -player.gameRect.width * 1.5;
+        nameText.X = -player.gameRect.width * 1.5;
         nameText.y = -player.gameRect.height * 1.5;
         player.objectMenu.addChild(nameText);
 
@@ -51,7 +51,7 @@
         // Create name text
         var textSize = 15;
         var nameText = new createjs.Text(player.name, textSize + "px Arial", "#AAA9AB");
-        nameText.x = -player.gameRect.width * 1.5;
+        nameText.X = -player.gameRect.width * 1.5;
         nameText.y = -player.gameRect.height * 1.5;
         player.objectMenu.addChild(nameText);
 
@@ -94,8 +94,8 @@
         bulletImage.scaleX = 0.5;
         bulletImage.scaleY = 0.5;
             // KOSTIL 
-            // trigger direction update
-        bullet.updateDirection(bullet.direction);
+            // trigger Direction update
+        bullet.updateDirection(bullet.Direction);
         bullet.image.addChild(bulletImage);
 
         return bullet;

@@ -2,11 +2,14 @@
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
+using Newtonsoft.Json;
 using Owin;
 using SlowpokeHubs;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 
 [assembly: OwinStartupAttribute(typeof(GameServer.Startup))]
 namespace GameServer
@@ -33,7 +36,7 @@ namespace GameServer
 
             ConfigureAuth(app);
             GlobalHost.Configuration.MaxIncomingWebSocketMessageSize = int.MaxValue;
-            
+
             GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(18);
             GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(5);
             GlobalHost.Configuration.DefaultMessageBufferSize = int.MaxValue;
@@ -45,6 +48,12 @@ namespace GameServer
 
                 var hubConfiguration = new HubConfiguration();
                 hubConfiguration.EnableDetailedErrors = true;
+
+                var serializerSettings = new JsonSerializerSettings();
+                serializerSettings.TypeNameHandling = TypeNameHandling.Objects;
+
+                var serializer = JsonSerializer.Create(serializerSettings);
+                GlobalHost.DependencyResolver.Register(typeof(JsonSerializer), () => serializer);
 
                 map.RunSignalR(hubConfiguration);
             });

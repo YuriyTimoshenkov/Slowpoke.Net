@@ -14,8 +14,8 @@
         //Try tp merge duplication commands 
         if (self.commandQueue.length > 0
             && command.__proto__ === CommandMove.prototypes
-            && self.commandQueue[self.commandQueue.length - 1].direction.x === command.direction.x
-            && self.commandQueue[self.commandQueue.length - 1].direction.y === command.direction.y
+            && self.commandQueue[self.commandQueue.length - 1].Direction.X === command.Direction.X
+            && self.commandQueue[self.commandQueue.length - 1].Direction.y === command.Direction.y
             && self.commandQueue[self.commandQueue.length - 1].syncedWithServer === false) {
 
             self.commandQueue[self.commandQueue.length - 1] += command.duration;
@@ -114,7 +114,7 @@
 
             self.player.gameRect.centerx = serverBody.Shape.Position.X;
             self.player.gameRect.centery = serverBody.Shape.Position.Y;
-            self.player.direction = new Vector(serverBody.Direction.x, serverBody.Direction.y).calculateUnitVector();
+            self.player.Direction = new Vector(serverBody.Direction.X, serverBody.Direction.y).calculateUnitVector();
 
             //Recalculate applied commands
             self.commandQueueProcessed.forEach(function (item) {
@@ -122,7 +122,7 @@
             });
 
             console.log('[Sync server] Recalculation applied.');
-            console.log('Player X diff mod: ' + (Math.abs(firstSyncedCommand.state.x - serverBody.Shape.Position.X)));
+            console.log('Player X diff mod: ' + (Math.abs(firstSyncedCommand.state.X - serverBody.Shape.Position.X)));
             console.log('Player Y diff mod: ' + (Math.abs(firstSyncedCommand.state.y - serverBody.Shape.Position.Y)));
         }
 

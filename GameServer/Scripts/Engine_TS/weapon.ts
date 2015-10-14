@@ -1,39 +1,52 @@
-﻿class Weapon extends Body {
+﻿class WeaponBase extends Body {
+    Name: string;
+
+    Shoot(Direction: Vector,
+        startPoint: Point,
+        mechanicEngine: MechanicEngineTS,
+        commandId: number) { }
+}
+
+class WeaponSimpleBullet extends WeaponBase {
     bulletDeviationRadians: number[];
     lastShoot: number;
-    configuration: IWeaponSimpleBulletConfiguration;
 
-    constructor(serverBody: ServerBody, configuration: IEngineConfiguration) {
-        super(serverBody);
+    constructor() {
+        super();
 
         this.bulletDeviationRadians = [0.01, 0.025, 0.045, 0, -0.01, -0.025, -0.045];
         this.lastShoot = new Date().getTime();
-        
-        switch (this.name) {
+    }
+
+    Shoot(Direction: Vector,
+        startPoint: Point,
+        mechanicEngine: MechanicEngineTS,
+        commandId: number) {
+
+        var currentTime = new Date().getTime();
+        var configuration: IWeaponSimpleBulletConfiguration;
+
+        switch (this.Name) {
             case 'Revolver': {
-                this.configuration = configuration.Revolver;
+                configuration = mechanicEngine.configuration.Revolver;
                 break;
             }
             case 'Gun': {
-                this.configuration = configuration.Gun;
+                configuration = mechanicEngine.configuration.Gun;
                 break;
             }
             case 'Shotgun': {
-                this.configuration = configuration.ShotGun;
+                configuration = mechanicEngine.configuration.ShotGun;
                 break;
-            } 
+            }
             case 'Dynamite': {
-                this.configuration = configuration.Dynamit;
+                configuration = mechanicEngine.configuration.Dynamit;
                 break;
             }
         }
-    }
 
-    Shoot(direction: Vector, startPoint: Point, mechanicEngine: MechanicEngineTS, commandId: number) {
-        var currentTime = new Date().getTime();
-
-        if (currentTime - this.lastShoot > this.configuration.ShootingFrequency) {
-            var bullets: Bullet[] = this.CreateBullet(direction, startPoint, mechanicEngine);
+        if (currentTime - this.lastShoot > configuration.ShootingFrequency) {
+            var bullets: Bullet[] = this.CreateBullet(Direction, startPoint, mechanicEngine, configuration);
 
             bullets.forEach(function (bullet) {
                 bullet.createdByCommandId = commandId;
@@ -49,11 +62,15 @@
        
     }
 
-    CreateBullet(direction: Vector, startPoint: Point, mechanicEngine: MechanicEngineTS): Bullet[] {
+    CreateBullet(Direction: Vector,
+        startPoint: Point,
+        mechanicEngine: MechanicEngineTS,
+        configuration: IWeaponSimpleBulletConfiguration): Bullet[]{
+
         var bulletList: Bullet[] = [];
         var newBullet: Bullet;
 
-        switch (this.name) {
+        switch (this.Name) {
             case 'Shotgun':
                 {
                     var self = this;
@@ -61,34 +78,35 @@
                     var bulletId = new Date().getTime()
 
                     this.bulletDeviationRadians.forEach(function (item) {
-                        var dirX = direction.x * Math.cos(item) - direction.y * Math.sin(item);
-                        var dirY = direction.x * Math.sin(item) + direction.y * Math.cos(item);
+                        var dirX = Direction.X * Math.cos(item) - Direction.Y * Math.sin(item);
+                        var dirY = Direction.X * Math.sin(item) + Direction.Y * Math.cos(item);
 
-                        newBullet = new Bullet({
-                            CreatedByCommandId: self.id,
+                        newBullet = <Bullet>SerializationHelper.deserialize({
+                            CreatedByCommandId: self.Id,
                             LastProcessedCommandId: 1,
                             BodyType: 'Bullet',
                             Id: bulletId,
-                            BulletTypeName: "Bullet" + self.name,
+                            BulletTypeName: "Bullet" + self.Name,
                             Name: 'Bullet',
                             Shape: {
-                                Radius: self.configuration.BulletSize,
+                                Radius: configuration.BulletSize,
                                 Position:
                                 {
-                                    X: startPoint.x + direction.x * (self.configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension),
-                                    Y: startPoint.y + direction.y * (self.configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension)
+                                    X: startPoint.X + Direction.X * (configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension),
+                                    Y: startPoint.Y + Direction.Y * (configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension)
                                 },
-                                MaxDimension: self.configuration.Shape.MaxDimension
+                                MaxDimension: configuration.Shape.MaxDimension,
+                                ToClientShape: function (): Shape { return null; }
                             },
                             Direction: {
                                 X: dirX,
                                 Y: dirY
                             },
-                            Speed: self.configuration.BulletSpeed,
-                            ShootingDistance: self.configuration.ShootingDistance
-                        });
+                            Speed: configuration.BulletSpeed,
+                            ShootingDistance: configuration.ShootingDistance
+                        }, window);
 
-                        newBullet.createdByCommandId = self.id;
+                        newBullet.createdByCommandId = self.Id;
 
                         bulletList.push(newBullet);
 
@@ -101,10 +119,11 @@
                 {
                     var dynamitConfiguration: IDynamitConfiguration;
 
-                    dynamitConfiguration = <IDynamitConfiguration>this.configuration;
+                    dynamitConfiguration = <IDynamitConfiguration>configuration;
 
-                    newBullet = new DynamitBody({
-                        CreatedByCommandId: this.id,
+                    newBullet = <DynamitBody>SerializationHelper.deserialize(
+                    {
+                        CreatedByCommandId: this.Id,
                         LastProcessedCommandId: 1,
                         BodyType: 'Dynamite',
                         Id: new Date().getTime(),
@@ -113,50 +132,51 @@
                             Radius: dynamitConfiguration.BulletSize,
                             Position:
                             {
-                                X: startPoint.x + direction.x * (dynamitConfiguration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension / 2),
-                                Y: startPoint.y + direction.y * (dynamitConfiguration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension / 2)
+                                X: startPoint.X + Direction.X * (dynamitConfiguration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension / 2),
+                                Y: startPoint.Y + Direction.Y * (dynamitConfiguration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension / 2)
                             },
                             MaxDimension: dynamitConfiguration.Shape.MaxDimension
                         },
                         Direction: {
-                            X: direction.x,
-                            Y: direction.y
+                            X: Direction.X,
+                            Y: Direction.Y
                         },
                         Speed: dynamitConfiguration.BulletSpeed
-                    }, dynamitConfiguration.DetonationTime);
+                    }, window);
 
-                    newBullet.createdByCommandId = this.id;
+                    newBullet.createdByCommandId = this.Id;
 
                     bulletList.push(newBullet);
 
                     break;
                 };
             case 'Gun': {
-                newBullet = new Bullet({
-                    CreatedByCommandId: this.id,
+                newBullet = <Bullet>SerializationHelper.deserialize(
+                {
+                    CreatedByCommandId: this.Id,
                     LastProcessedCommandId: 1,
                     BodyType: 'Bullet',
                     Id: new Date().getTime(),
                     Name: 'Bullet',
-                    BulletTypeName: "Bullet" + this.name,
+                    BulletTypeName: "Bullet" + this.Name,
                     Shape: {
-                        Radius: this.configuration.BulletSize,
+                        Radius: configuration.BulletSize,
                         Position:
                         {
-                            X: startPoint.x + direction.x * (this.configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension),
-                            Y: startPoint.y + direction.y * (this.configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension)
+                            X: startPoint.X + Direction.X * (configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension),
+                            Y: startPoint.Y + Direction.Y * (configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension)
                         },
-                        MaxDimension: this.configuration.Shape.MaxDimension
+                        MaxDimension: configuration.Shape.MaxDimension
                     },
                     Direction: {
-                        X: direction.x,
-                        Y: direction.y
+                        X: Direction.X,
+                        Y: Direction.Y
                     },
-                    Speed: this.configuration.BulletSpeed,
-                    ShootingDistance: this.configuration.ShootingDistance
-                });
+                    Speed: configuration.BulletSpeed,
+                    ShootingDistance: configuration.ShootingDistance
+                }, window);
 
-                newBullet.createdByCommandId = this.id;
+                newBullet.createdByCommandId = this.Id;
 
                 bulletList.push(newBullet);
 
@@ -164,31 +184,31 @@
             }
             default:
                 {
-                    newBullet = new Bullet({
-                        CreatedByCommandId: this.id,
+                    newBullet = <Bullet>SerializationHelper.deserialize({
+                        CreatedByCommandId: this.Id,
                         LastProcessedCommandId: 1,
                         BodyType: 'Bullet',
                         Id: new Date().getTime(),
                         Name: 'Bullet',
-                        BulletTypeName: "Bullet" + this.name,
+                        BulletTypeName: "Bullet" + this.Name,
                         Shape: {
-                            Radius: this.configuration.BulletSize,
+                            Radius: configuration.BulletSize,
                             Position:
                             {
-                                X: startPoint.x + direction.x * (this.configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension),
-                                Y: startPoint.y + direction.y * (this.configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension)
+                                X: startPoint.X + Direction.X * (configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension),
+                                Y: startPoint.Y + Direction.Y * (configuration.Shape.MaxDimension + mechanicEngine.configuration.Player.Shape.MaxDimension)
                             },
-                            MaxDimension: this.configuration.Shape.MaxDimension
+                            MaxDimension: configuration.Shape.MaxDimension
                         },
                         Direction: {
-                            X: direction.x,
-                            Y: direction.y
+                            X: Direction.X,
+                            Y: Direction.Y
                         },
-                        Speed: this.configuration.BulletSpeed,
-                        ShootingDistance: this.configuration.ShootingDistance
-                    });
+                        Speed: configuration.BulletSpeed,
+                        ShootingDistance: configuration.ShootingDistance
+                    }, window);
 
-                    newBullet.createdByCommandId = this.id;
+                    newBullet.createdByCommandId = this.Id;
 
                     bulletList.push(newBullet);
 
@@ -198,4 +218,7 @@
 
         return bulletList;
     }
+}
+
+class WeaponMultipleShotgunBullet extends WeaponSimpleBullet {
 }

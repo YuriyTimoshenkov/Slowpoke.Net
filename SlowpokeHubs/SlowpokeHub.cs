@@ -237,7 +237,7 @@ namespace SlowpokeHubs
             }
         }
 
-        private BodyFacade LoadPlayer()
+        private PlayerBody LoadPlayer()
         {
             try
             {
@@ -247,7 +247,7 @@ namespace SlowpokeHubs
 
                 MechanicEngine.StartGame(playerContainer.Player);
 
-                return BodyFacade.FromBody(playerContainer.Player);
+                return playerContainer.Player;
             }
             catch (Exception exp)
             {

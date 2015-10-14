@@ -1691,7 +1691,7 @@ Expr = Sizzle.selectors = {
 										return false;
 									}
 								}
-								// Reverse direction for :only-* (if we haven't yet done so)
+								// Reverse Direction for :only-* (if we haven't yet done so)
 								start = dir = type === "only" && !start && "nextSibling";
 							}
 							return true;
@@ -3707,7 +3707,7 @@ var data_user = new Data();
 
 //	Implementation Summary
 //
-//	1. Enforce API surface and semantic compatibility with 1.9.x branch
+//	1. Enforce API surface and semantic compatibility with 1.9.X branch
 //	2. Improve the module's maintainability by reducing the storage
 //		paths to a single mechanism.
 //	3. Use the same single mechanism to support "private" and "user" data.
@@ -4936,7 +4936,7 @@ wrapMap.optgroup = wrapMap.option;
 wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
 wrapMap.th = wrapMap.td;
 
-// Support: 1.x compatibility
+// Support: 1.X compatibility
 // Manipulating tables requires a tbody
 function manipulationTarget( elem, content ) {
 	return jQuery.nodeName( elem, "table" ) &&
@@ -8922,7 +8922,7 @@ jQuery.offset = {
 
 		// Set position first, in-case top/left are set even on static elem
 		if ( position === "static" ) {
-			elem.style.position = "relative";
+			elem.style.Position = "relative";
 		}
 
 		curOffset = curElem.offset();
@@ -8934,7 +8934,7 @@ jQuery.offset = {
 		// Need to be able to calculate position if either
 		// top or left is auto and position is either absolute or fixed
 		if ( calculatePosition ) {
-			curPosition = curElem.position();
+			curPosition = curElem.Position();
 			curTop = curPosition.top;
 			curLeft = curPosition.left;
 
@@ -9076,7 +9076,7 @@ jQuery.each( { scrollLeft: "pageXOffset", scrollTop: "pageYOffset" }, function( 
 });
 
 // Support: Safari<7+, Chrome<37+
-// Add the top/left cssHooks using jQuery.fn.position
+// Add the top/left cssHooks using jQuery.fn.Position
 // Webkit bug: https://bugs.webkit.org/show_bug.cgi?id=29084
 // Blink bug: https://code.google.com/p/chromium/issues/detail?id=229280
 // getComputedStyle returns percent when specified for top/left/bottom/right;
@@ -9088,7 +9088,7 @@ jQuery.each( [ "top", "left" ], function( i, prop ) {
 				computed = curCSS( elem, prop );
 				// If curCSS returns percentage, fallback to offset
 				return rnumnonpx.test( computed ) ?
-					jQuery( elem ).position()[ prop ] + "px" :
+					jQuery( elem ).Position()[ prop ] + "px" :
 					computed;
 			}
 		}

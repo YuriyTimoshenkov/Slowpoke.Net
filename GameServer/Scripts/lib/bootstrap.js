@@ -359,12 +359,12 @@ if (typeof jQuery === 'undefined') {
     return this.$items.index(item || this.$active)
   }
 
-  Carousel.prototype.getItemForDirection = function (direction, active) {
+  Carousel.prototype.getItemForDirection = function (Direction, active) {
     var activeIndex = this.getItemIndex(active)
-    var willWrap = (direction == 'prev' && activeIndex === 0)
-                || (direction == 'next' && activeIndex == (this.$items.length - 1))
+    var willWrap = (Direction == 'prev' && activeIndex === 0)
+                || (Direction == 'next' && activeIndex == (this.$items.length - 1))
     if (willWrap && !this.options.wrap) return active
-    var delta = direction == 'prev' ? -1 : 1
+    var delta = Direction == 'prev' ? -1 : 1
     var itemIndex = (activeIndex + delta) % this.$items.length
     return this.$items.eq(itemIndex)
   }
@@ -408,7 +408,7 @@ if (typeof jQuery === 'undefined') {
     var $active   = this.$element.find('.item.active')
     var $next     = next || this.getItemForDirection(type, $active)
     var isCycling = this.interval
-    var direction = type == 'next' ? 'left' : 'right'
+    var Direction = type == 'next' ? 'left' : 'right'
     var that      = this
 
     if ($next.hasClass('active')) return (this.sliding = false)
@@ -416,7 +416,7 @@ if (typeof jQuery === 'undefined') {
     var relatedTarget = $next[0]
     var slideEvent = $.Event('slide.bs.carousel', {
       relatedTarget: relatedTarget,
-      direction: direction
+      Direction: Direction
     })
     this.$element.trigger(slideEvent)
     if (slideEvent.isDefaultPrevented()) return
@@ -431,16 +431,16 @@ if (typeof jQuery === 'undefined') {
       $nextIndicator && $nextIndicator.addClass('active')
     }
 
-    var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
+    var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, Direction: Direction }) // yes, "slid"
     if ($.support.transition && this.$element.hasClass('slide')) {
       $next.addClass(type)
       $next[0].offsetWidth // force reflow
-      $active.addClass(direction)
-      $next.addClass(direction)
+      $active.addClass(Direction)
+      $next.addClass(Direction)
       $active
         .one('bsTransitionEnd', function () {
-          $next.removeClass([type, direction].join(' ')).addClass('active')
-          $active.removeClass(['active', direction].join(' '))
+          $next.removeClass([type, Direction].join(' ')).addClass('active')
+          $active.removeClass(['active', Direction].join(' '))
           that.sliding = false
           setTimeout(function () {
             that.$element.trigger(slidEvent)

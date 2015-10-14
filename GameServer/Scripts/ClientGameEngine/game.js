@@ -46,7 +46,7 @@ function Game(gameContext, serverProxy, controlsManager, viewEngine, physicsEngi
         self.mechanicEngine.onBodyAdd.trigger(self.mechanicEngine.player);
         self.viewEngine.setTargetBodyImage();
 
-        self.mechanicEngine.onBodyChanged.trigger({ body: self.mechanicEngine.player, changesType: BodyChangesType.position });
+        self.mechanicEngine.onBodyChanged.trigger({ body: self.mechanicEngine.player, changesType: BodyChangesType.Position });
 
         self.controlsManager.addMouseMoveHandler(self.handleMouseMove)
 
@@ -113,7 +113,7 @@ function Game(gameContext, serverProxy, controlsManager, viewEngine, physicsEngi
                 self.mechanicEngine.player.id,
                 new Date().getTime(),
                 clientEventData.move.duration,
-                clientEventData.move.direction
+                clientEventData.move.Direction
                 ));
         }
 

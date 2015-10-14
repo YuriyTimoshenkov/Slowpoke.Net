@@ -7,8 +7,8 @@
     var textGap = 30;
     this.bodyImages = [];
     this.weaponPoint = new Point(5, canvas.height - 50);
-    this.lifePoint = new Point(this.weaponPoint.x, this.weaponPoint.y - textGap);
-    this.scorePoint = new Point(this.weaponPoint.x, this.lifePoint.y - textGap)
+    this.lifePoint = new Point(this.weaponPoint.X, this.weaponPoint.y - textGap);
+    this.scorePoint = new Point(this.weaponPoint.X, this.lifePoint.y - textGap)
     this.fpsPoint = new Point(canvas.width - 80, this.weaponPoint.y - 10);
     this.pingPoint = new Point(canvas.width - 80, this.weaponPoint.y - 20);
     this.baseRotationVector = new Vector(0, -1);
@@ -37,10 +37,10 @@
     }
 
     this.calculatePlayerDirectionVector = function (mousePoint) {
-        var playerCenter = new Point(self.targetBodyImage.x, self.targetBodyImage.y);
+        var playerCenter = new Point(self.targetBodyImage.X, self.targetBodyImage.y);
 
         // Get mouse vector not normalized
-        var mouseVectorNotNormalized = new Vector(Math.round(mousePoint.x - playerCenter.x), Math.round(mousePoint.y - playerCenter.y));
+        var mouseVectorNotNormalized = new Vector(Math.round(mousePoint.X - playerCenter.X), Math.round(mousePoint.y - playerCenter.y));
         return mouseVectorNotNormalized;
     } 
 
@@ -55,12 +55,12 @@
                     var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
                     var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
 
-                    bodyImage.x = self.targetBodyImage.x - dx;
+                    bodyImage.X = self.targetBodyImage.X - dx;
                     bodyImage.y = self.targetBodyImage.y - dy;
 
                     // Update objectMenu for NPCAI only
                     //if (obj.serverBody.BodyType === "NPCAI") {
-                    //    obj.objectMenu.x = self.target.image.x - dx;
+                    //    obj.objectMenu.X = self.target.image.X - dx;
                     //    obj.objectMenu.y = self.target.image.y - dy;
                     //}
                 }
@@ -75,7 +75,7 @@
                     var dx = self.targetBody.gameRect.centerx - body.gameRect.centerx;
                     var dy = self.targetBody.gameRect.centery - body.gameRect.centery;
 
-                    bodyImage.x = self.targetBodyImage.x - dx - body.gameRect.width / 2;
+                    bodyImage.X = self.targetBodyImage.X - dx - body.gameRect.width / 2;
                     bodyImage.y = self.targetBodyImage.y - dy - body.gameRect.width / 2;
                 }
             }
@@ -87,7 +87,7 @@
         //        var dy = self.target.gameRect.centery - cell.gameRect.centery;
 
         //        // Cells are rects, and rects do not have center property
-        //        cell.image.x = self.target.image.x - dx - cell.width / 2;
+        //        cell.image.X = self.target.image.X - dx - cell.width / 2;
         //        cell.image.y = self.target.image.y - dy - cell.height / 2;
         //    })
     }
@@ -136,9 +136,9 @@
 
         var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
 
-        // To check rotation direction
-        var centerX = image.x;
-        var mouseX = centerX + newDirection.x;
+        // To check rotation Direction
+        var centerX = image.X;
+        var mouseX = centerX + newDirection.X;
 
         // Clockwise
         if (mouseX >= centerX) {
@@ -156,8 +156,8 @@
             var image = self.viewBodyFactory.createGameObjectbyServerBody(body);
             self.bodyImages.push({id:body.id, image: image});
 
-            if (body.direction !== undefined) {
-                self.updateDirection(body.direction, image);
+            if (body.Direction !== undefined) {
+                self.updateDirection(body.Direction, image);
             }
 
             self.stage.addChild(image);
@@ -171,7 +171,7 @@
                     {
                         var bodyImage = self.bodyImages.filter(function (v) { return v.id === body.id ? true : false })[0].image;
 
-                        self.updateDirection(body.direction, bodyImage);
+                        self.updateDirection(body.Direction, bodyImage);
 
                         break;
                     }

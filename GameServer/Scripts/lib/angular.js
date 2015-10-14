@@ -4419,7 +4419,7 @@ function $AnchorScrollProvider() {
       } else if (isElement(offset)) {
         var elem = offset[0];
         var style = $window.getComputedStyle(elem);
-        if (style.position !== 'fixed') {
+        if (style.Position !== 'fixed') {
           offset = 0;
         } else {
           offset = elem.getBoundingClientRect().bottom;
@@ -8225,7 +8225,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       if (!jQuery) {
         delete jqLite.cache[firstElementToRemove[jqLite.expando]];
       } else {
-        // jQuery 2.x doesn't expose the data storage. Use jQuery.cleanData to clean up after
+        // jQuery 2.X doesn't expose the data storage. Use jQuery.cleanData to clean up after
         // the replaced element. The cleanData version monkey-patched by Angular would cause
         // the scope to be trashed and we do need the very same scope to work with the new
         // element. However, we cannot just cache the non-patched version and use it here as
@@ -21050,7 +21050,7 @@ var ngClassEvenDirective = classDirective('Even', 1);
  * For CSP mode please add `angular-csp.css` to your html file (see {@link ng.directive:ngCsp ngCsp}).
  *
  * ```css
- * [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+ * [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .X-ng-cloak {
  *   display: none !important;
  * }
  * ```
@@ -26306,4 +26306,4 @@ var minlengthDirective = function() {
 
 })(window, document);
 
-!window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
+!window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.X-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
