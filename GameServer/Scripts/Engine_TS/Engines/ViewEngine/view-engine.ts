@@ -268,8 +268,6 @@ class ViewEngine {
     stop() {
         this.stage.removeAllChildren();
         this.stage.clear();
-
-
         this.levelContainers.forEach(function (container) {
             container.removeAllChildren();
         });

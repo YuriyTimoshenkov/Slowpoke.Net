@@ -128,7 +128,6 @@ class Bullet extends ActiveBody {
 
     constructor() {
         super();
-
         this.lastUpdateTime = new Date().getTime();
         this.startTime = this.lastUpdateTime;
         this.unitDirection = new Vector(this.Direction.X, this.Direction.Y).calculateUnitVector();

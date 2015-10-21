@@ -16,21 +16,17 @@ class ShapeCircle extends Shape {
         return new Point(this.X + this.Radius, this.Y + this.Radius)
     }
     set Position(newPosition: Point) {
-        //console.log("Setting position circle")
         this.X = newPosition.X - this.Radius;
         this.Y = newPosition.Y - this.Radius;
     }
 }
 
 class ShapeRectangle extends Shape {
-
-
     get MaxDimension() { return this.Width > this.Height ? this.Width : this.Height }
     get Position(): Point {
         return new Point(this.X + this.Width / 2, this.Y + this.Height / 2)
     }
     set Position(newPosition: Point) {
-        //console.log("Setting position rect")
         this.X = newPosition.X - this.Width / 2;
         this.Y = newPosition.Y - this.Height / 2;
     }

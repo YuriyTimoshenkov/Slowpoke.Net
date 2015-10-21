@@ -7,7 +7,12 @@
     }
 
     this.createBodyImagebyServerBody = function (body) {
-        var bodyTypeToCreate = body.BodyType === "Bullet" ? body.bulletTypeName : body.BodyType;
+        var bodyTypeToCreate;
+        if (body.BodyType === "Bullet") bodyTypeToCreate = body.bulletTypeName;
+        else if (body.BodyType) bodyTypeToCreate = body.BodyType;
+        else bodyTypeToCreate = body.TileTypeName;
+        
+        console.log(bodyTypeToCreate)
         return self.createBodyImage(self.serverTypeMap[bodyTypeToCreate], body);
     }
 
@@ -20,7 +25,6 @@
         var weaponType = self.serverTypeMap[serverBody.CurrentWeapon.Name];
         var weaponImage = self.viewBodyFactory.createViewBody(weaponType, serverBody.CurrentWeapon);
         bodyImage.setNewWeaponImage(weaponImage);
-
         return bodyImage;
     }
     this.builders[gameTypes.gameObjects.PLAYEROTHER] = function (serverBody) {

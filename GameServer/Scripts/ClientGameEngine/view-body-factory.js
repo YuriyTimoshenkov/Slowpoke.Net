@@ -224,7 +224,6 @@
         return image;
     }
     this.builders[gameTypes.gameObjects.BOX] = function (serverBody) {
-
         var boxImage = new createjs.Shape();
         boxImage.graphics.beginFill("orange").beginStroke("black").drawRect(0, 0, serverBody.Shape.Width, serverBody.Shape.Height);
         boxImage.regX = serverBody.Shape.Width / 2;
