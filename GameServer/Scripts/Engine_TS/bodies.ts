@@ -123,7 +123,7 @@ class Bullet extends ActiveBody {
     lastUpdateTime: number;
     startTime: number;
     flyDistance: number;
-    bulletTypeName: string;
+    //bulletTypeName: string;
 
     constructor() {
         super();
