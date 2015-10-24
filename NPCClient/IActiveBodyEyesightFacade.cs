@@ -10,7 +10,7 @@ namespace NPCClient
 {
 	public interface IActiveBodyEyesightFacade
 	{
-        ViewFrameFacade GetFrame(Guid playerId, IMapTile previousTile);
+        IViewFrame GetFrame(Guid playerId, IMapTile previousTile);
         IMap Map { get; }
         IMapTile GetPlayerCurrentTile(Guid playerId);
 	}

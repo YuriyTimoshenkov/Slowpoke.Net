@@ -14,15 +14,15 @@ namespace NPCClient
 {
     public class ActiveBodyEyesightFacade : IActiveBodyEyesightFacade
     {
-        public ConcurrentDictionary<Guid, ViewFrameFacade> PlayersFrames = new ConcurrentDictionary<Guid, ViewFrameFacade>();
-        public ViewFrameFacade GetFrame(Guid playerId, SlowpokeEngine.Engines.Map.IMapTile previousTile)
+        public ConcurrentDictionary<Guid, IViewFrame> PlayersFrames = new ConcurrentDictionary<Guid, IViewFrame>();
+        public IViewFrame GetFrame(Guid playerId, SlowpokeEngine.Engines.Map.IMapTile previousTile)
         {   
             if (!PlayersFrames.ContainsKey(playerId))
             {
-                return new ViewFrameFacade()
+                return new ViewFrame()
                 {
                      Bodies = new List<Body>(),
-                     Map = new List<MapTile>()
+                     Map = (IList<IMapTile>)new List<MapTile>()
                 };
             }
             else

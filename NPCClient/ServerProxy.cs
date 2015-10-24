@@ -24,9 +24,9 @@ namespace NPCClient
             _connection.Start().Wait();
         }
 
-        public async Task SyncState(InputEvent inputEvent, Action<ViewFrameFacade> resultHandler)
+        public async Task SyncState(InputEvent inputEvent, Action<IViewFrame> resultHandler)
         {
-            var frame = await _proxy.Invoke<ViewFrameFacade>("SyncState", inputEvent);
+            var frame = await _proxy.Invoke<ViewFrame>("SyncState", inputEvent);
 
             resultHandler(frame);
 
