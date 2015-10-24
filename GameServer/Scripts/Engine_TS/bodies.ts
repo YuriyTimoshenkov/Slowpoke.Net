@@ -122,7 +122,6 @@ class PlayerBody extends CharacterBody {
 class Bullet extends ActiveBody {
     lastUpdateTime: number;
     startTime: number;
-    unitDirection: Vector;
     flyDistance: number;
     bulletTypeName: string;
 
@@ -130,7 +129,7 @@ class Bullet extends ActiveBody {
         super();
         this.lastUpdateTime = new Date().getTime();
         this.startTime = this.lastUpdateTime;
-        this.unitDirection = new Vector(this.Direction.X, this.Direction.Y).calculateUnitVector();
+        //this.unitDirection = new Vector(this.Direction.X, this.Direction.Y).calculateUnitVector();
     }
 
     update(mechanicEngine: MechanicEngineTS) {
@@ -143,7 +142,7 @@ class Bullet extends ActiveBody {
             mechanicEngine.removeActiveBody(this.Id);
         }
         else {
-            var moveCommand = new CommandMove(this.Id, new Date().getTime(), duration, this.unitDirection);
+            var moveCommand = new CommandMove(this.Id, new Date().getTime(), duration, this.Direction);
             moveCommand.syncedWithServer = true;
 
             mechanicEngine.addCommand(moveCommand);
@@ -154,7 +153,6 @@ class Bullet extends ActiveBody {
 class DynamitBody extends ActiveBody {
     lastUpdateTime: number;
     startTime: number;
-    unitDirection: Vector;
     dynamiteDetonationTime: number;
     bulletTypeName: string;
     flyDistance: number;
@@ -175,7 +173,7 @@ class DynamitBody extends ActiveBody {
             mechanicEngine.removeActiveBody(this.Id);
         }
         else {
-            var moveCommand = new CommandMove(this.Id, new Date().getTime(), duration, this.unitDirection);
+            var moveCommand = new CommandMove(this.Id, new Date().getTime(), duration, this.Direction);
             moveCommand.syncedWithServer = true;
 
             mechanicEngine.addCommand(moveCommand);
