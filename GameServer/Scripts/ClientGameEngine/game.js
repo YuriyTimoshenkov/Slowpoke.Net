@@ -110,7 +110,7 @@ function Game(gameContext, serverProxy, controlsManager, viewEngine, physicsEngi
         //TODO: refactor command creation 
         if (clientEventData.move !== undefined) {
             self.mechanicEngine.addCommand(new CommandMove(
-                self.mechanicEngine.player.id,
+                self.mechanicEngine.player.Id,
                 new Date().getTime(),
                 clientEventData.move.duration,
                 clientEventData.move.Direction

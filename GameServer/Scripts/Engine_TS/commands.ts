@@ -15,7 +15,7 @@ class CommandBase{
     bodyId: number;
     syncedWithServer: boolean;
     static directionPossibleDiff: number = 0.0001;
-    state: { x: number; y: number; Direction: Vector};
+    state: { X: number; Y: number; Direction: Vector};
 
    constructor(bodyId, id:number) {
         this.bodyId = bodyId;
@@ -40,8 +40,8 @@ class CommandBase{
 
    saveState(body) {
        this.state = {
-           x: body.Shape.Position.X,
-           y: body.Shape.Position.y,
+           X: body.Shape.Position.X,
+           Y: body.Shape.Position.Y,
            Direction: body.Direction
        };
    }
@@ -49,8 +49,8 @@ class CommandBase{
     processBody(body: Body, mechanicEngine: MechanicEngineTS) {}
     toServerCommand(): ServerCommand { return null; }
     compareState(body) {
-        return this.state === undefined || (body.Shape.Position.X === this.state.x
-            && body.Shape.Position.Y === this.state.y
+        return this.state === undefined || (body.Shape.Position.X === this.state.X
+            && body.Shape.Position.Y === this.state.Y
             && (body.Direction.X - this.state.Direction.X) < CommandBase.directionPossibleDiff
             && (body.Direction.Y - this.state.Direction.Y) < CommandBase.directionPossibleDiff);
     }
@@ -63,6 +63,7 @@ class CommandMove extends CommandBase{
 
     constructor(bodyId:number, id:number, duration:number, Direction:Vector) {
         super(bodyId, id);
+
         this.duration = duration;
         this.Direction = new Vector(Direction.X, Direction.Y);
         this.unitDirection = this.Direction.calculateUnitVector();

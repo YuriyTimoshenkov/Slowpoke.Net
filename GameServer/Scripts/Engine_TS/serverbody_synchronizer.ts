@@ -98,8 +98,8 @@
             });
 
             console.log('[Sync server] Recalculation applied.');
-            console.log('Player X diff mod: ' + (Math.abs(firstSyncedCommand.state.x - serverBody.Shape.Position.X)));
-            console.log('Player Y diff mod: ' + (Math.abs(firstSyncedCommand.state.y - serverBody.Shape.Position.Y)));
+            console.log('Player X diff mod: ' + (Math.abs(firstSyncedCommand.state.X - serverBody.Shape.Position.X)));
+            console.log('Player Y diff mod: ' + (Math.abs(firstSyncedCommand.state.Y - serverBody.Shape.Position.Y)));
         }
 
         //Prepeare command for server
@@ -123,6 +123,10 @@
     syncServerFramesHandler(frame, self: ServerBodySynchornizer): ServerCommand[] {
         var syncSessionId = new Date().getTime();
         var serverCommands: ServerCommand[] = [];
+
+        if (!frame.Bodies) {
+            console.log('sdf');
+        }
 
         var bodies = frame.Bodies.map(function (serverBody) {
             return <Body>SerializationHelper.deserialize(serverBody, window);

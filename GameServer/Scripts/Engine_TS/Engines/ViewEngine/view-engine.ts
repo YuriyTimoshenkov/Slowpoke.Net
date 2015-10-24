@@ -247,12 +247,12 @@ class ViewEngine {
         }
     }
 
-    calculatePlayerDirectionVector(mousePoint) {
+    calculatePlayerDirectionVector(mousePoint: Point) {
         //var playerCenter = new Point(this.targetBodyImage.X, this.targetBodyImage.y);
         var playerCenter = new Point(this.canvas.width / 2, this.canvas.height / 2);
 
         // Get mouse vector not normalized
-        var mouseVectorNotNormalized = new Vector(Math.round(mousePoint.X - playerCenter.X), Math.round(mousePoint.y - playerCenter.Y));
+        var mouseVectorNotNormalized = new Vector(Math.round(mousePoint.X - playerCenter.X), Math.round(mousePoint.Y - playerCenter.Y));
         return mouseVectorNotNormalized;
     }
 

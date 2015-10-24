@@ -14,14 +14,14 @@
     this.focus = true;
 
     this.moveKeysToDirectionMap = [
-        { keys: [this.leftCode], Direction: { x: -1, y: 0 } },
-        { keys: [this.rightCode], Direction: { x: 1, y: 0 } },
-        { keys: [this.upCode], Direction: { x: 0, y: -1 } },
-        { keys: [this.downCode], Direction: { x: 0, y: 1 } },
-        { keys: [this.upCode, this.leftCode], Direction: { x: -0.707, y: -0.707 } },
-        { keys: [this.upCode, this.rightCode], Direction: { x: 0.707, y: -0.707 } },
-        { keys: [this.downCode, this.leftCode], Direction: { x: -0.707, y: 0.707 } },
-        { keys: [this.downCode, this.rightCode], Direction: { x: 0.707, y: 0.707 } }
+        { keys: [this.leftCode], Direction: { X: -1, Y: 0 } },
+        { keys: [this.rightCode], Direction: { X: 1, Y: 0 } },
+        { keys: [this.upCode], Direction: { X: 0, Y: -1 } },
+        { keys: [this.downCode], Direction: { X: 0, Y: 1 } },
+        { keys: [this.upCode, this.leftCode], Direction: { X: -0.707, Y: -0.707 } },
+        { keys: [this.upCode, this.rightCode], Direction: { X: 0.707, Y: -0.707 } },
+        { keys: [this.downCode, this.leftCode], Direction: { X: -0.707, Y: 0.707 } },
+        { keys: [this.downCode, this.rightCode], Direction: { X: 0.707, Y: 0.707 } }
     ];
 
     this.controlsToReport = {
