@@ -22,6 +22,7 @@ namespace SlowpokeHubs
 	{
         private static ConcurrentDictionary<string, IPlayerContainer> _connectionsPlayerMapping =
             new ConcurrentDictionary<string, IPlayerContainer>();
+
         private static ILogger _logger;
         private static readonly IEngineConfiguration _engineConfiguration;
 
@@ -147,7 +148,7 @@ namespace SlowpokeHubs
             if (player != null)
                 player.ChangeWeapon();
         }
-        private ViewFrameFacade GetFrame(IPlayerContainer playerContainer)
+        private IViewFrame GetFrame(IPlayerContainer playerContainer)
         {
             //Get new frame
             var newframe = MechanicEngine.ViewPort.GetFrame(playerContainer.Player.Id, playerContainer.PreviousTile);
@@ -164,10 +165,10 @@ namespace SlowpokeHubs
                     playerContainer.PreviousTile = currentTile;
                 }
 
-                return ViewFrameFacade.FromViewFrame(newframe);
+                return newframe;
             }
 
-            return new ViewFrameFacade();
+            return null;
         }
 
         private void ProcessInputCommands(IEnumerable<InputCommand> commands)
@@ -216,6 +217,7 @@ namespace SlowpokeHubs
         }
         #endregion
 
+        #region public
         public static void Run(ILogger logger)
         {
             _logger = logger;
@@ -270,7 +272,7 @@ namespace SlowpokeHubs
             return null;
         }
 
-        public ViewFrameFacade SyncState(InputEvent inputEvent)
+        public IViewFrame SyncState(InputEvent inputEvent)
         {
             try
             {
@@ -361,5 +363,6 @@ namespace SlowpokeHubs
                  Configuration = _engineConfiguration
             };
         }
-	}
+        #endregion
+    }
 }
