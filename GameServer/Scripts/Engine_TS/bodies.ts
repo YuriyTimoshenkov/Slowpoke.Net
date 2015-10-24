@@ -162,7 +162,6 @@ class DynamitBody extends ActiveBody {
 
         this.lastUpdateTime = new Date().getTime();
         this.startTime = this.lastUpdateTime;
-        this.unitDirection = new Vector(this.Direction.X, this.Direction.Y).calculateUnitVector();
     }
 
     update(mechanicEngine: MechanicEngineTS) {
