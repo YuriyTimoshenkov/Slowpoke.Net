@@ -124,6 +124,7 @@ class SerializationHelper {
         }
 
         var typeName = json.$type.match(/.+\.(\w+),.+/i)[1];
+        
         var instance = new environment[typeName]();
         for (var prop in json) {
             if (!json.hasOwnProperty(prop)) {
@@ -136,7 +137,6 @@ class SerializationHelper {
                 instance[prop] = json[prop];
             }
         }
-
         return instance;
     }
 }

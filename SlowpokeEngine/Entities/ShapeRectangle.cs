@@ -15,8 +15,8 @@ namespace SlowpokeEngine.Entities
         {
             get
             {
-                return Width > Height ? Width : Height;                    
-            }
+                return Width > Height ? Width / 2.0 : Height / 2.0;                    
+            } 
         }
 
         public ShapeRectangle(double width, double height, Point position)

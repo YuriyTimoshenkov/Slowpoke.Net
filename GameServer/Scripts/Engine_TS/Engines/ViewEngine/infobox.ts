@@ -31,7 +31,7 @@ class PlayerInfoboxFixed implements Infobox{
             this.createScoreText(body);
         }
 
-        addSelfToContainer(container) {
+        addSelfToContainer(container: createjs.Container) {
             container.addChild(this.lifeText, this.weaponText, this.scoreText);
         }
 
@@ -68,7 +68,7 @@ class PlayerInfoboxFixed implements Infobox{
             this.lifeText.text = "HP: " + body.Life;
         } 
 
-        removeSelf(container) {
+        removeSelf(container: createjs.Container) {
             container.removeChild(this.lifeText);
             container.removeChild(this.weaponText);
             container.removeChild(this.scoreText);
@@ -94,7 +94,7 @@ class PlayerInfoboxFloating implements Infobox {
         this.createNameText(body);
     }
 
-    addSelfToContainer(container) {
+    addSelfToContainer(container: createjs.Container) {
         container.addChild(this.nameText);
     }
 
@@ -104,10 +104,10 @@ class PlayerInfoboxFloating implements Infobox {
         this.nameText.zIndex = 100;
     }
     updatePosition(body: CharacterBody) {
-        this.nameText.x = body.Shape.Position.X - body.Shape.Width / 2;
-        this.nameText.y = body.Shape.Position.Y - body.Shape.Height / 2 - 20;
+        this.nameText.x = body.Shape.Position.X - body.Shape.MaxDimension;
+        this.nameText.y = body.Shape.Position.Y - body.Shape.MaxDimension - 20;
     }
-    removeSelf(container) {
+    removeSelf(container: createjs.Container) {
         container.removeChild(this.nameText);
     }
 
@@ -121,7 +121,6 @@ class NPCInfoboxFloating implements Infobox {
     textSize = 16;
     lifeText: createjs.Text;
 
-
     constructor(body: CharacterBody) {
         this.create(body);
     }
@@ -129,7 +128,7 @@ class NPCInfoboxFloating implements Infobox {
     create(body: CharacterBody) {
         this.createLifeText(body);
     }
-    addSelfToContainer(container) {
+    addSelfToContainer(container: createjs.Container) {
         container.addChild(this.lifeText);
     }
     createLifeText(body: CharacterBody) {
@@ -139,14 +138,14 @@ class NPCInfoboxFloating implements Infobox {
     }
 
     updatePosition(body: CharacterBody) {
-        this.lifeText.x = body.Shape.Position.X - body.Shape.Width / 2;
-        this.lifeText.y = body.Shape.Position.Y - body.Shape.Height / 2 - 30;
+        this.lifeText.x = body.Shape.Position.X - body.Shape.MaxDimension;
+        this.lifeText.y = body.Shape.Position.Y - body.Shape.MaxDimension - 30;
     }
     updateLifeText(body: CharacterBody) {
         this.lifeText.text = body.Life.toString();
     } 
 
-    removeSelf(container) {
+    removeSelf(container: createjs.Container) {
         container.removeChild(this.lifeText);
     }
 
@@ -177,7 +176,7 @@ class PerformanceInfoboxFixed  {
         this.createPPSText();
         this.createFPSText();
     }
-    addSelfToContainer(container) {
+    addSelfToContainer(container: createjs.Container) {
         container.addChild(this.ppsText, this.fpsText);
     }
     createPPSText() {

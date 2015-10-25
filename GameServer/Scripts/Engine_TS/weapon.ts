@@ -58,8 +58,6 @@ class WeaponSimpleBullet extends WeaponBase {
 
             this.lastShoot = currentTime;
         }
-
-       
     }
 
     CreateBullet(Direction: Vector,

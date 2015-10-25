@@ -56,8 +56,8 @@ class BoxDestroyAnimation extends Animation {
     }
     createAnimation(boxRect: Shape) {
         var piecesCount = Math.floor((Math.random() * (this.piecesCountRange[1] - this.piecesCountRange[0])) + this.piecesCountRange[0] + 1);
-        var pieceWidth = boxRect.Width * 0.05;
-        var pieceMaxHeight = boxRect.Height * 0.7;
+        var pieceWidth = boxRect.MaxDimension * 2 * 0.05;
+        var pieceMaxHeight = boxRect.MaxDimension * 2 * 0.7;
 
         var speed = 6;
         var skewSpeed = [10, 20];
@@ -75,8 +75,8 @@ class BoxDestroyAnimation extends Animation {
             var Direction = new Vector(dirX, dirY);
 
             // randomize position
-            var x = Math.floor((Math.random() * boxRect.Width) + 1);
-            var y = Math.floor((Math.random() * boxRect.Height) + 1);
+            var x = Math.floor((Math.random() * boxRect.MaxDimension * 2) + 1);
+            var y = Math.floor((Math.random() * boxRect.MaxDimension * 2) + 1);
 
             // randomize skew signs
             var skewXSign;
@@ -275,7 +275,6 @@ class DynamitAfterExplosionSmokeParticle {
         this.image.alpha -= (now - this.lastUpdateTime) / this.lifeDuration;
         this.lastUpdateTime = now;
     }
-
 }
 
 class AnimationElementShape {
@@ -302,7 +301,6 @@ class AnimationElementShape {
         }
         if (!this.isAlive) return
     }
-
 }
 
 class DynamitExplosionFlashAnimation extends AnimationElementShape {
@@ -338,7 +336,5 @@ class DynamitExplosionFlashAnimation extends AnimationElementShape {
             this.image.scaleX += this.image.scaleX * this.scaleFactorChangeSpeed;
             this.image.scaleY += this.image.scaleX * this.scaleFactorChangeSpeed;
         }
-
     }
-
 }

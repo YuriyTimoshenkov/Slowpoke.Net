@@ -34,8 +34,8 @@ namespace SlowpokeEngine.Bodies
             foreach (var body in _childBodies)
             {
                 body.Shape.Position = new Point(
-                    this.Shape.Position.X - body.Shape.MaxDimension / 2.0,
-                    this.Shape.Position.Y - body.Shape.MaxDimension / 2.0);
+                    this.Shape.Position.X - body.Shape.MaxDimension,
+                    this.Shape.Position.Y - body.Shape.MaxDimension);
 
                 _mechanicEngine.AddBody(body);
             }

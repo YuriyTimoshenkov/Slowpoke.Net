@@ -71,7 +71,6 @@ class ViewEngine {
                         if (e.body instanceof ActiveBody) {
                             self.updateImageDirection((<ActiveBody>e.body).Direction, bodyImageObject.image);
                         }
-
                         break;
                     }
                 case BodyChangesType.Position:
@@ -168,7 +167,7 @@ class ViewEngine {
         else if (body instanceof ActiveBody) {
             this.updateImageDirection(body.Direction, image);
             this.levelContainers[2].addChild(image);
-        }
+        }   
         else console.log("ViewEngine: onboardObjectForRendering: Incorrect body type")
     }
 
@@ -256,7 +255,7 @@ class ViewEngine {
         return mouseVectorNotNormalized;
     }
 
-    setTarget(body) {
+    setTarget(body: PlayerBody) {
         this.targetBody = body;
     }
 

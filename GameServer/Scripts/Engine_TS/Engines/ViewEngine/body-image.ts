@@ -3,7 +3,7 @@
     image: createjs.Container;
     baseImage: any;
     infoboxes: Infobox[];
-    constructor(id, image) {
+    constructor(id: number, image: createjs.DisplayObject) {
         this.id = id;
         this.image = new createjs.Container();
         this.image.addChild(image);
@@ -15,7 +15,7 @@
 
 class CharacterBodyImage extends BodyImage {
     weaponImageContainer: createjs.Container;
-    constructor(id, image) {
+    constructor(id: number, image: createjs.DisplayObject) {
         super(id, image);
         this.weaponImageContainer = new createjs.Container();
         this.image.addChildAt(this.weaponImageContainer, 0);
@@ -36,6 +36,4 @@ class CharacterBodyImage extends BodyImage {
                 break;
         }
     }
-
-
 }

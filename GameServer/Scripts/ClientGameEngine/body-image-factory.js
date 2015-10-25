@@ -8,12 +8,9 @@
 
     this.createBodyImagebyServerBody = function (body) {
         var bodyTypeToCreate;
-        console.log(111, body)
         if (body.BodyType === "Bullet") bodyTypeToCreate = body.BulletTypeName;
         else if (body.BodyType) bodyTypeToCreate = body.BodyType;
         else bodyTypeToCreate = body.TileTypeName;
-        
-        console.log(bodyTypeToCreate)
         return self.createBodyImage(self.serverTypeMap[bodyTypeToCreate], body);
     }
 
