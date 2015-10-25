@@ -189,38 +189,38 @@
 
     this.builders[gameTypes.gameObjects.MEADOW] = function (serverBody) {
         var image = new createjs.Shape();
-        image.graphics.beginFill("#C0F598").drawRect(-serverBody.size / 2, -serverBody.size / 2, serverBody.size, serverBody.size);
+        image.graphics.beginFill("#C0F598").drawRect(-serverBody.Shape.MaxDimension, -serverBody.Shape.MaxDimension, serverBody.Shape.MaxDimension * 2, serverBody.Shape.MaxDimension * 2);
         image.zIndex = 0;
         return image;
     }
     this.builders[gameTypes.gameObjects.WATER] = function (serverBody) {
         var image = new createjs.Shape();
         image.zIndex = 0;
-        image.graphics.beginFill("#89EBF0").drawRect(-serverBody.size / 2, -serverBody.size / 2,serverBody.size, serverBody.size);
+        image.graphics.beginFill("#89EBF0").drawRect(-serverBody.Shape.MaxDimension, -serverBody.Shape.MaxDimension, serverBody.Shape.MaxDimension * 2, serverBody.Shape.MaxDimension * 2);
         return image;
     }
     this.builders[gameTypes.gameObjects.ROCK] = function (serverBody) {
         var image = new createjs.Shape();
         image.zIndex = 0;
-        image.graphics.beginFill("#6E6E6E").drawRect(-serverBody.size / 2, -serverBody.size / 2,serverBody.size, serverBody.size);
+        image.graphics.beginFill("#6E6E6E").drawRect(-serverBody.Shape.MaxDimension, -serverBody.Shape.MaxDimension, serverBody.Shape.MaxDimension * 2, serverBody.Shape.MaxDimension * 2);
         return image;
     }
     this.builders[gameTypes.gameObjects.ROAD] = function (serverBody) {
         var image = new createjs.Shape();
         image.zIndex = 0;
-        image.graphics.beginFill("#EDC791").drawRect(-serverBody.size / 2, -serverBody.size / 2, serverBody.size, serverBody.size);
+        image.graphics.beginFill("#EDC791").drawRect(-serverBody.Shape.MaxDimension, -serverBody.Shape.MaxDimension, serverBody.Shape.MaxDimension * 2, serverBody.Shape.MaxDimension * 2);
         return image;
     }
     this.builders[gameTypes.gameObjects.FORD] = function (serverBody) {
         var image = new createjs.Shape();
         image.zIndex = 0;
-        image.graphics.beginFill("#EDC791").drawRect(-serverBody.size / 2, -serverBody.size / 2, serverBody.size, serverBody.size);
+        image.graphics.beginFill("#EDC791").drawRect(-serverBody.Shape.MaxDimension, -serverBody.Shape.MaxDimension, serverBody.Shape.MaxDimension * 2, serverBody.Shape.MaxDimension * 2);
         return image;
     }
     this.builders[gameTypes.gameObjects.TREE] = function (serverBody) {
         var image = new createjs.Shape();
         image.zIndex = 0;
-        image.graphics.beginFill("#5EAB00").drawRect(-serverBody.size / 2, -serverBody.size / 2, serverBody.size, serverBody.size);
+        image.graphics.beginFill("#5EAB00").drawRect(-serverBody.Shape.MaxDimension, -serverBody.Shape.MaxDimension, serverBody.Shape.MaxDimension * 2, serverBody.Shape.MaxDimension * 2);
         return image;
     }
     this.builders[gameTypes.gameObjects.BOX] = function (serverBody) {
@@ -236,26 +236,4 @@
 
         return boxImage;
     }
-
-
-    //this.updateDirection = function (newDirection, image) {
-    //    var baseRotationVector = new Vector(0, -1);
-
-    //    var rotationDeltaRad = Math.acos(baseRotationVector.product(newDirection) /
-    //        baseRotationVector.length() * newDirection.length());
-
-    //    var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
-
-    //    // To check rotation Direction
-    //    var centerX = image.X;
-    //    var mouseX = centerX + newDirection.X;
-
-    //    // Clockwise
-    //    if (mouseX >= centerX) {
-    //        image.rotation = rotationDeltaDegree;
-    //    }// Counter-clockwise
-    //    else {
-    //        image.rotation = 360 - rotationDeltaDegree;
-    //    }
-    //}
 }
