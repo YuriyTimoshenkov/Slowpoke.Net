@@ -15,10 +15,10 @@
 
         var canvasXY = new Point($(document).width() / 2,
                                  $(document).height() / 2);
-        player.image.X = canvasXY.X;
-        player.image.y = canvasXY.y;
-        player.objectMenu.X = canvasXY.X;
-        player.objectMenu.y = canvasXY.y;
+        player.image.x = canvasXY.X;
+        player.image.y = canvasXY.Y;
+        player.objectMenu.x = canvasXY.X;
+        player.objectMenu.y = canvasXY.Y;
 
         // Assign image
         var obj = new CowboyContainer();
@@ -27,7 +27,7 @@
         // Create name text
         var textSize = 15;
         var nameText = new createjs.Text(player.name, textSize + "px Arial", "#AAA9AB");
-        nameText.X = -player.gameRect.width * 1.5;
+        nameText.x = -player.gameRect.width * 1.5;
         nameText.y = -player.gameRect.height * 1.5;
         player.objectMenu.addChild(nameText);
 
@@ -51,7 +51,7 @@
         // Create name text
         var textSize = 15;
         var nameText = new createjs.Text(player.name, textSize + "px Arial", "#AAA9AB");
-        nameText.X = -player.gameRect.width * 1.5;
+        nameText.x = -player.gameRect.width * 1.5;
         nameText.y = -player.gameRect.height * 1.5;
         player.objectMenu.addChild(nameText);
 
@@ -124,7 +124,7 @@
             Name: "TreeContainer",
             BodyType: "PassiveBody",
             Id: 333,
-            Shape: { Position: { X: 0, Y: 0 }, Raius: 10 },
+            Shape: { Position: { X: 0, Y: 0 }, Radius: 10 },
             Life: 10,
             LifeMax: 10,
             Direction: { X: 0, Y: 0 },

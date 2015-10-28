@@ -11,7 +11,6 @@ function Game(gameContext, serverProxy, controlsManager, viewEngine, physicsEngi
     this.controlsManager = controlsManager
     this.viewEngine = viewEngine
     this.physicsEngine = physicsEngine;
-    console.log(this.physicsEngine)
     this.lastUpdateTime = 0;
     this.clock = new Date();
     this.lastServerSync = new Date()
@@ -119,7 +118,7 @@ function Game(gameContext, serverProxy, controlsManager, viewEngine, physicsEngi
 
         if (clientEventData.changeDirection !== undefined && clientEventData.changeDirection !== null) {
             self.mechanicEngine.addCommand(new CommandChangeDirection(
-                self.mechanicEngine.player.id,
+                self.mechanicEngine.player.Id,
                 new Date().getTime(),
                 clientEventData.changeDirection
                 ));

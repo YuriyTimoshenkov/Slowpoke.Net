@@ -16,7 +16,7 @@
     me.addCommand(commandMove);
     me.update();
 
-    assert.ok(me.player.gameRect.center.X !== 0 && me.player.gameRect.center.y !== 0 && me.commandQueueProcessed.length === 1);
+    assert.ok(me.player.gameRect.center.x !== 0 && me.player.gameRect.center.y !== 0 && me.commandQueueProcessed.length === 1);
 });
 
 QUnit.test("MechanicEngine_ServerSync", function (assert) {

@@ -97,7 +97,6 @@ class CommandChangeDirection extends CommandBase {
     }
     processBody(body: ActiveBody, mechanicEngine: MechanicEngineTS) {
         body.Direction = this.unitNewDirection;
-
         mechanicEngine.onBodyChanged.trigger({ body: body, changesType: BodyChangesType.Direction });
     }
 

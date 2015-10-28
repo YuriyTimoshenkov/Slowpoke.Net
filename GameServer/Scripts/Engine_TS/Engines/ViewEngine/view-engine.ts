@@ -69,6 +69,8 @@ class ViewEngine {
                 case BodyChangesType.Direction:
                     {
                         if (e.body instanceof ActiveBody) {
+
+                            //console.log("Player direction", e.body.BodyType)
                             self.updateImageDirection((<ActiveBody>e.body).Direction, bodyImageObject.image);
                         }
                         break;
@@ -154,9 +156,10 @@ class ViewEngine {
         bodyImageObject.infoboxes = bodyImageObject.infoboxes.concat(infoboxes);
     }
 
-    addBodyHandler(body: Body, image: createjs.DisplayObject) {
+    addBodyHandler(body: Body, image: createjs.Container) {
         image.x = body.Shape.Position.X;
         image.y = body.Shape.Position.Y;
+
 
         if (body instanceof MapTile) {
             this.levelContainers[0].addChild(image);
@@ -227,14 +230,14 @@ class ViewEngine {
         this.stage.update();
     }
 
-    updateImageDirection(newDirection: Vector, image: any) {
+    updateImageDirection(newDirection: Vector, image: createjs.DisplayObject) {
         var rotationDeltaRad = Math.acos(this.baseRotationVector.product(newDirection) /
             this.baseRotationVector.length() * newDirection.length());
 
         var rotationDeltaDegree = rotationDeltaRad * (180 / Math.PI);
 
         // To check rotation Direction
-        var centerX = image.X;
+        var centerX = image.x;
         var mouseX = centerX + newDirection.X;
 
         // Clockwise
